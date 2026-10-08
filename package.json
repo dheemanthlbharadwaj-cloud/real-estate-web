@@ -1,0 +1,16 @@
+{
+  "name": "bto-unit-ranker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rank HDB BTO units (June 2026 exercise) by personal importance weights",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node --no-warnings server/server.js",
+    "test": "node --no-warnings --test test/*.test.js"
+  },
+  "engines": { "node": ">=22.13" },
+  "dependencies": {
+    "chart.js": "4.4.1",
+    "express": "4.21.2"
+  }
+}

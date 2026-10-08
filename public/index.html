@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BTO Unit Ranker</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">BTO Unit Ranker <span class="muted">June 2026</span></div>
+    <nav>
+      <a href="#rank">Rank units</a>
+      <a href="#flagged">Flagged <span id="flag-count" class="pill">0</span></a>
+      <a href="#analysis">Analysis</a>
+      <a href="#legend">Legend</a>
+      <a href="#account" id="account-link">Account</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- RANK -->
+    <section id="view-rank" class="view">
+      <div class="layout">
+        <aside class="panel" id="controls">
+          <h2>1. Project</h2>
+          <select id="project"></select>
+          <p id="project-meta" class="muted small"></p>
+
+          <h2>2. Filters</h2>
+          <fieldset><legend>Unit type</legend><div id="f-types" class="checks"></div></fieldset>
+          <fieldset><legend>Blocks</legend>
+            <div class="row small"><button type="button" class="link" data-blocks="all">Select all</button><button type="button" class="link" data-blocks="none">Clear</button></div>
+            <div id="f-blocks" class="checks"></div>
+          </fieldset>
+          <fieldset><legend>Floor level</legend>
+            <label>Min storey <select id="f-min"></select></label>
+            <label>Max storey <select id="f-max"></select></label>
+          </fieldset>
+          <fieldset><legend>Prioritise floors (choose one)</legend>
+            <div class="checks" id="f-pref">
+              <label><input type="radio" name="pref" value="none" checked> No preference</label>
+              <label><input type="radio" name="pref" value="higher"> Higher floors</label>
+              <label><input type="radio" name="pref" value="middle"> Middle floors</label>
+              <label><input type="radio" name="pref" value="lower"> Lower floors</label>
+            </div>
+          </fieldset>
+
+          <h2>3. Importance <span class="muted small">(-5 avoid … +5 must have)</span></h2>
+          <div id="weights"></div>
+          <button id="btn-rank" class="primary">Generate ranked list</button>
+        </aside>
+
+        <div class="results">
+          <div class="toolbar">
+            <span id="result-count" class="muted"></span>
+            <span class="spacer"></span>
+            <label class="small">Queue no. <input id="queue" size="8" placeholder="e.g. 1234"></label>
+            <button id="btn-save">Save list</button>
+            <button id="btn-csv">Download CSV</button>
+          </div>
+          <p id="save-msg" class="small muted"></p>
+          <div class="table-wrap"><table id="results"><thead></thead><tbody></tbody></table></div>
+          <div class="row"><button id="btn-more" hidden>Show more</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLAGGED -->
+    <section id="view-flagged" class="view" hidden>
+      <h1>Flagged units</h1>
+      <p class="muted">Your priority list for <b id="flag-project"></b>. Drag rows or use the arrows to reorder. Saved to your account automatically when logged in.</p>
+      <ol id="flag-list" class="flag-list"></ol>
+    </section>
+
+    <!-- ANALYSIS -->
+    <section id="view-analysis" class="view" hidden>
+      <h1>Analysis</h1>
+      <div class="row">
+        <label>View by <select id="a-group">
+          <option value="all">All projects</option>
+          <option value="project_type">Project type</option>
+          <option value="project">Project</option>
+          <option value="flat_type">Unit type</option>
+        </select></label>
+        <select id="a-value" hidden></select>
+      </div>
+      <p id="a-basis" class="small muted"></p>
+      <div class="grid2">
+        <div class="card"><h3>Minimum storey chosen</h3><canvas id="c-min"></canvas><p id="t-min" class="small"></p></div>
+        <div class="card"><h3>Maximum storey chosen</h3><canvas id="c-max"></canvas><p id="t-max" class="small"></p></div>
+        <div class="card"><h3>Sun directions (most → least popular)</h3><canvas id="c-sun"></canvas></div>
+        <div class="card"><h3>Blocks (most → least popular)</h3><canvas id="c-block"></canvas></div>
+        <div class="card"><h3>Factors (most → least important)</h3><canvas id="c-factor"></canvas></div>
+        <div class="card"><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
+        <div class="card"><h3>Unit types searched</h3><canvas id="c-types"></canvas></div>
+        <div class="card"><h3>Most flagged units</h3><ol id="a-flagged" class="small"></ol><p id="a-queue" class="small muted"></p></div>
+      </div>
+    </section>
+
+    <!-- LEGEND -->
+    <section id="view-legend" class="view" hidden>
+      <h1>Legend: what each factor means</h1>
+      <div class="row"><label>Project <select id="l-project"></select></label></div>
+      <div id="legend-cards" class="grid2"></div>
+    </section>
+
+    <!-- ACCOUNT -->
+    <section id="view-account" class="view" hidden>
+      <h1>Account</h1>
+      <div id="acct-in" hidden>
+        <p>Logged in as <b id="acct-email"></b> — <span id="acct-verified"></span></p>
+        <p id="acct-verify-link" class="small"></p>
+        <button id="btn-logout">Log out</button>
+      </div>
+      <div id="acct-out" class="grid2">
+        <form id="form-login" class="card"><h3>Log in</h3>
+          <input name="email" type="email" placeholder="Email" required>
+          <input name="password" type="password" placeholder="Password" required>
+          <button class="primary">Log in</button><p class="err small"></p></form>
+        <form id="form-register" class="card"><h3>Create account</h3>
+          <input name="email" type="email" placeholder="Email" required>
+          <input name="password" type="password" placeholder="Password (min 8)" minlength="8" required>
+          <button class="primary">Create account</button><p class="err small"></p></form>
+      </div>
+    </section>
+  </main>
+
+  <script src="vendor/chart.js/chart.umd.js"></script>
+  <script src="js/scoring.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
