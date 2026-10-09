@@ -137,29 +137,36 @@
     <section id="view-account" class="view" hidden>
       <span class="eyebrow">A-05</span>
       <h1>Account</h1>
+      <p id="auth-error" class="err" hidden></p>
+      <p id="acct-note" class="devlink" hidden aria-live="polite"></p>
       <div id="acct-in" hidden>
         <p class="lede">Signed in as <b id="acct-email"></b> &nbsp;<span id="acct-badge" class="badge"></span></p>
-        <div id="acct-verify" class="devlink" hidden></div>
+        <div id="verify-box" class="field" hidden>
+          <p class="small muted">Verify your email to unlock Analysis. Check your inbox (and spam) for the link from Firebase.</p>
+          <div class="row-btns"><button id="btn-refresh" class="btn">I've verified</button><button id="btn-resend" class="btn ghost">Resend email</button></div>
+        </div>
         <button id="btn-logout" class="btn ghost">Sign out</button>
       </div>
       <div id="acct-out" class="auth">
         <form id="form-login"><h2>Sign in</h2>
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
-          <button class="btn primary">Sign in</button><p class="err small"></p></form>
+          <button class="btn primary">Sign in</button>
+          <button type="button" id="btn-forgot" class="linkbtn">Forgot password?</button>
+          <p class="err small"></p></form>
         <form id="form-register"><h2>Create account</h2>
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
           <button class="btn primary">Create account</button>
-          <p class="small muted">Save your list with your queue number, keep your shortlist across devices, and — once verified — see the analysis.</p>
+          <p class="small muted">Save your list with your queue number, keep your shortlist across devices, and — once your email is verified — see the analysis.</p>
           <p class="err small"></p></form>
       </div>
     </section>
   </main>
 
-  <script src="vendor/chart.js/chart.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="js/scoring.js"></script>
   <script src="js/legend.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

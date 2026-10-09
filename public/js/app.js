@@ -1,4 +1,5 @@
 /* global Scoring, Chart, LEGEND */
+import * as store from './store.js';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -17,7 +18,7 @@ const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
 
 async function api(path, opts = {}) {
-  const r = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  const r = await fetch(path, opts);
   const data = await r.json().catch(() => ({}));
   if (!r.ok) { const e = new Error(data.error || r.statusText); e.status = r.status; e.code = data.code; throw e; }
   return data;
@@ -41,7 +42,13 @@ window.addEventListener('hashchange', route);
 
 // ---------------------------------------------------------------- init / project
 async function init() {
-  [state.index, { user: state.user }] = await Promise.all([api('/api/projects'), api('/api/me')]);
+  state.index = await api('/data/units/index.json');
+  try {
+    state.user = await store.init(onAuthChange);
+  } catch (err) {
+    state.authError = err.message;
+    state.user = null;
+  }
   const opts = ['Plus', 'Prime', 'Standard'].map(t => `<optgroup label="${t}">${state.index.projects.filter(p => p.project_type === t)
     .map(p => `<option value="${p.key}">${esc(p.name)}</option>`).join('')}</optgroup>`).join('');
   $('#project').innerHTML = opts;
@@ -77,7 +84,7 @@ function renderTitleBlock() {
 async function loadProject(key) {
   state.project = state.index.projects.find(p => p.key === key);
   lsSet('project', key);
-  state.units = await api(`/api/units/${key}`);
+  state.units = await api(`/data/units/${key}.json`);
   const p = state.project;
   $('#project-meta').textContent = `${p.town} · ${p.project_type} · ${p.units.toLocaleString()} units · ${p.blocks.length} blocks`;
   $('#f-types').innerHTML = p.flat_types.map(t => `<label class="chip"><input type="checkbox" value="${esc(t)}" checked><span>${esc(t)}</span></label>`).join('');
@@ -97,7 +104,7 @@ async function loadProject(key) {
   renderTitleBlock();
   $('#save-msg').textContent = '';
   if (state.user) {
-    const { list } = await api(`/api/lists/${key}`).catch(() => ({ list: null }));
+    const list = await store.loadList(key).catch(() => null);
     if (list) applySaved(list);
   }
   runRank();
@@ -176,7 +183,8 @@ function applySaved(list) {
   $('#queue').value = list.queue_number || '';
   state.weights = { ...list.weights };
   renderWeights();
-  $('#save-msg').textContent = `Loaded your saved list · ${list.updated_at} UTC`;
+  const when = list.updated_at?.toDate ? list.updated_at.toDate().toLocaleString() : '';
+  $('#save-msg').textContent = `Loaded your saved list${when ? ` · ${when}` : ''}`;
 }
 
 // ---------------------------------------------------------------- schedule
@@ -243,10 +251,10 @@ async function saveList() {
   if (!state.user) { $('#save-msg').innerHTML = 'Sign in to save your list — <a href="#account">go to account</a>.'; return; }
   const f = readFilters();
   try {
-    await api(`/api/lists/${state.project.key}`, { method: 'PUT', body: {
-      queue_number: $('#queue').value.trim(), flat_types: f.flatTypes, blocks: f.blocks, min_storey: f.minStorey, max_storey: f.maxStorey,
-      floor_pref: readPref(), opposite_gt30: f.oppositeGt30, weights: readWeights(), ranked_ids: state.ranked.map(u => u.id),
-    } });
+    await store.saveList(state.project.key, {
+      project_type: state.project.project_type, queue_number: $('#queue').value.trim().slice(0, 40), flat_types: f.flatTypes, blocks: f.blocks,
+      min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), opposite_gt30: f.oppositeGt30, weights: readWeights(),
+    });
     $('#save-msg').textContent = `Saved · ${state.ranked.length} units · queue ${$('#queue').value.trim() || '—'}`;
   } catch (err) { $('#save-msg').textContent = err.message; }
 }
@@ -265,13 +273,13 @@ function downloadCsv() {
 
 // ---------------------------------------------------------------- shortlist
 async function loadFlags() {
-  if (state.user) return (await api(`/api/flags/${state.project.key}`)).unit_ids;
+  if (state.user) return store.loadFlags(state.project.key).catch(() => lsGet(`flags:${state.project.key}`, []));
   return lsGet(`flags:${state.project.key}`, []);
 }
 async function persistFlags() {
   lsSet(`flags:${state.project.key}`, state.flags);
   updateFlagCount();
-  if (state.user) await api(`/api/flags/${state.project.key}`, { method: 'PUT', body: { unit_ids: state.flags } }).catch(() => {});
+  if (state.user) await store.saveFlags(state.project.key, state.flags).catch(err => console.error(err));
 }
 function toggleFlag(id) {
   state.flags = state.flags.includes(id) ? state.flags.filter(x => x !== id) : [...state.flags, id];
@@ -365,10 +373,11 @@ async function loadAnalysis() {
   if (values.length && !values.some(([v]) => v === sel.value)) sel.innerHTML = values.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('');
   let a;
   try {
-    a = await api(`/api/analysis?${new URLSearchParams({ group, ...(values.length ? { value: sel.value } : {}) })}`);
+    a = await api(`/api/analysis?${new URLSearchParams({ group, ...(values.length ? { value: sel.value } : {}) })}`,
+      { headers: { Authorization: `Bearer ${await store.idToken()}` } });
   } catch (err) {
-    if (err.status === 401 || err.status === 403) { state.user = (await api('/api/me')).user; return loadAnalysis(); }
-    throw err;
+    $('#a-basis').textContent = err.message;
+    return;
   }
   const names = Object.fromEntries(state.index.projects.map(p => [p.key, p.name]));
   $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''} — `
@@ -432,53 +441,78 @@ function renderLegend() {
 function renderAccount() {
   $('#acct-in').hidden = !state.user;
   $('#acct-out').hidden = !!state.user;
+  $('#auth-error').hidden = !state.authError;
+  $('#auth-error').textContent = state.authError || '';
   if (state.user) {
     $('#acct-email').textContent = state.user.email;
     const b = $('#acct-badge');
     b.textContent = state.user.verified ? 'Verified' : 'Not verified';
     b.className = `badge ${state.user.verified ? 'ok' : 'no'}`;
+    $('#verify-box').hidden = state.user.verified;
   }
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
-  if (q.has('verified')) {
-    $('#acct-verify').hidden = false;
-    $('#acct-verify').textContent = q.get('verified') === '1' ? 'Email verified — Analysis is now unlocked.' : 'That verification link is invalid or already used.';
-  }
+  if (q.get('verified') === '1' && state.user && !state.user.verified) refreshVerification();
 }
-async function afterAuth(verifyLink) {
-  state.user = (await api('/api/me')).user;
-  const local = lsGet(`flags:${state.project.key}`, []);
-  const remote = (await api(`/api/flags/${state.project.key}`)).unit_ids;
-  state.flags = [...new Set([...remote, ...local])];
-  await persistFlags();
+function note(msg) { $('#acct-note').hidden = !msg; $('#acct-note').textContent = msg || ''; }
+
+async function refreshVerification() {
+  state.user = await store.refreshUser();
   renderTitleBlock();
   renderAccount();
-  if (verifyLink) {
-    $('#acct-verify').hidden = false;
-    $('#acct-verify').innerHTML = `No email service is connected yet, so here is your verification link (development mode): <a href="${esc(verifyLink)}">verify my email</a>`;
-  }
-  const { list } = await api(`/api/lists/${state.project.key}`).catch(() => ({ list: null }));
-  if (list) { applySaved(list); runRank(); }
+  note(state.user?.verified ? 'Email verified — Analysis is unlocked.' : "Not verified yet. Open the link in the email we sent you, then press this again.");
 }
-for (const [id, url] of [['#form-login', '/api/login'], ['#form-register', '/api/register']]) {
-  $(id).addEventListener('submit', async e => {
-    e.preventDefault();
-    const err = e.target.querySelector('.err');
-    err.textContent = '';
-    try {
-      const r = await api(url, { method: 'POST', body: Object.fromEntries(new FormData(e.target)) });
-      e.target.reset();
-      await afterAuth(r.verify_link);
-    } catch (ex) { err.textContent = ex.message; }
-  });
-}
-$('#btn-logout').addEventListener('click', async () => {
-  await api('/api/logout', { method: 'POST' });
-  state.user = null;
-  state.flags = lsGet(`flags:${state.project.key}`, []);
-  updateFlagCount();
+
+// Called by Firebase whenever the signed-in user changes (sign in / out in this or another tab).
+async function onAuthChange(user) {
+  const was = state.user?.uid;
+  state.user = user;
   renderTitleBlock();
   renderAccount();
+  if (!state.project) return;
+  if (user && user.uid !== was) {
+    // Merge flags made while signed out into the account.
+    const local = lsGet(`flags:${state.project.key}`, []);
+    const remote = await store.loadFlags(state.project.key).catch(() => []);
+    state.flags = [...new Set([...remote, ...local])];
+    await persistFlags();
+    const list = await store.loadList(state.project.key).catch(() => null);
+    if (list) { applySaved(list); runRank(); }
+  } else if (!user) {
+    state.flags = lsGet(`flags:${state.project.key}`, []);
+    updateFlagCount();
+  }
+  if (location.hash.startsWith('#analysis')) loadAnalysis();
+}
+
+$('#form-login').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = e.target.querySelector('.err');
+  err.textContent = '';
+  const fd = new FormData(e.target);
+  try { await store.login(fd.get('email'), fd.get('password')); e.target.reset(); note(''); } catch (ex) { err.textContent = ex.message; }
 });
+$('#form-register').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = e.target.querySelector('.err');
+  err.textContent = '';
+  const fd = new FormData(e.target);
+  try {
+    await store.register(fd.get('email'), fd.get('password'));
+    e.target.reset();
+    note(`We've sent a verification link to ${fd.get('email')}. Open it to unlock Analysis.`);
+  } catch (ex) { err.textContent = ex.message; }
+});
+$('#btn-forgot').addEventListener('click', async () => {
+  const email = $('#form-login [name=email]').value.trim();
+  const err = $('#form-login .err');
+  if (!email) { err.textContent = 'Type your email above first.'; return; }
+  try { await store.resetPassword(email); err.textContent = `Password reset email sent to ${email}.`; } catch (ex) { err.textContent = ex.message; }
+});
+$('#btn-resend').addEventListener('click', async () => {
+  try { await store.resendVerification(); note(`Verification email re-sent to ${state.user.email}.`); } catch (ex) { note(ex.message); }
+});
+$('#btn-refresh').addEventListener('click', refreshVerification);
+$('#btn-logout').addEventListener('click', () => store.logout());
 
 init().catch(err => {
   document.querySelector('main').insertAdjacentHTML('afterbegin', `<p class="err">Couldn't load the app: ${esc(err.message)}</p>`);

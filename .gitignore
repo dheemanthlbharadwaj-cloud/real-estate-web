@@ -1,4 +1,6 @@
 node_modules/
-data/app.db*
+.env*
+!.env.example
+.vercel/
 *.pyc
 __pycache__/

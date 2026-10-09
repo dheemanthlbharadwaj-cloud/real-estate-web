@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "pipeline" / "raw"
-OUT_UNITS = ROOT / "data" / "units"
+OUT_UNITS = ROOT / "public" / "data" / "units"
 
 # Thresholds (metres). Change here and rebuild.
 LIFT_NEAR_M = 15

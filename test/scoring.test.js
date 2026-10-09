@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const S = require('../public/js/scoring.js');
-const { storeyDistribution, binomPmf, selectPopulation, analyse } = require('../server/analysis.js');
+const { storeyDistribution, binomPmf, selectPopulation, analyse } = require('../lib/analysis.js');
 
 const U = (o) => ({ id: o.id, block: 'A', storey: 5, unit: '101', flat_type: '4-Room', unit_design: null, facing: 'N', position: 'Corridor',
   lift_m: 10, chute_m: 10, gt30m: false, roof_access: false, mrt_near: false, fac_has_count: 0, fac_near_count: 0, ...o });

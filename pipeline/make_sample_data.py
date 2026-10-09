@@ -13,7 +13,7 @@ import random
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "data" / "units"
+OUT = ROOT / "public" / "data" / "units"
 
 LIFT_NEAR_M, CHUTE_NEAR_M, MRT_NEAR_M, CLEARANCE_M = 15, 10, 400, 30
 COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]

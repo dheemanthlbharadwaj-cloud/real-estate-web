@@ -1,0 +1,27 @@
+rules_version = '2';
+// Each user can only read/write their own saved lists and flags.
+// Doc ids are "<uid>_<projectKey>". Aggregate analysis is computed server-side (admin SDK).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owns(docId) {
+      return request.auth != null && docId.matches(request.auth.uid + '_[a-z0-9_-]+');
+    }
+    match /submissions/{docId} {
+      allow read, delete: if owns(docId);
+      allow create, update: if owns(docId)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.project is string
+        && request.resource.data.floor_pref in ['none', 'higher', 'lower', 'middle']
+        && request.resource.data.weights is map
+        && request.resource.data.size() < 20;
+    }
+    match /flags/{docId} {
+      allow read, delete: if owns(docId);
+      allow create, update: if owns(docId)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.unit_ids is list
+        && request.resource.data.unit_ids.size() <= 500;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
