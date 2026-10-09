@@ -1,0 +1,151 @@
+{
+ "sample": true,
+ "projects": [
+  {
+   "key": "kebun-baru_breeze-5",
+   "name": "Kebun Baru Breeze",
+   "town": "Ang Mo Kio",
+   "project_type": "Plus",
+   "units": 406,
+   "blocks": [
+    "247A",
+    "248A"
+   ],
+   "max_storey": 30,
+   "flat_types": [
+    "2-Room Flexi (Type 1)",
+    "2-Room Flexi (Type 2)",
+    "4-Room"
+   ],
+   "data_status": "sample data"
+  },
+  {
+   "key": "kebun-baru_ridge-1",
+   "name": "Kebun Baru Ridge",
+   "town": "Ang Mo Kio",
+   "project_type": "Plus",
+   "units": 392,
+   "blocks": [
+    "183A",
+    "184A",
+    "184B"
+   ],
+   "max_storey": 28,
+   "flat_types": [
+    "2-Room Flexi (Type 1)",
+    "3-Room",
+    "4-Room"
+   ],
+   "data_status": "sample data"
+  },
+  {
+   "key": "berlayar-rise-7",
+   "name": "Berlayar Rise",
+   "town": "Bukit Merah",
+   "project_type": "Prime",
+   "units": 1976,
+   "blocks": [
+    "200A",
+    "200B",
+    "201A",
+    "201B",
+    "204A",
+    "204B"
+   ],
+   "max_storey": 49,
+   "flat_types": [
+    "2-Room Flexi (Type 1)",
+    "2-Room Flexi (Type 2)",
+    "3-Room",
+    "4-Room"
+   ],
+   "data_status": "real unit list, sample attributes"
+  },
+  {
+   "key": "lakeview-cascadia-2",
+   "name": "Lakeview Cascadia",
+   "town": "Bishan",
+   "project_type": "Prime",
+   "units": 802,
+   "blocks": [
+    "325A",
+    "326A",
+    "326B",
+    "327A",
+    "328A"
+   ],
+   "max_storey": 40,
+   "flat_types": [
+    "2-Room Flexi (Type 1)",
+    "4-Room"
+   ],
+   "data_status": "sample data"
+  },
+  {
+   "key": "sembawang-brook-6",
+   "name": "Sembawang Brook",
+   "town": "Sembawang",
+   "project_type": "Standard",
+   "units": 300,
+   "blocks": [
+    "437A",
+    "437B",
+    "439A",
+    "440A"
+   ],
+   "max_storey": 16,
+   "flat_types": [
+    "3-Room",
+    "4-Room",
+    "5-Room"
+   ],
+   "data_status": "sample data"
+  },
+  {
+   "key": "sembawang-portico-4",
+   "name": "Sembawang Portico",
+   "town": "Sembawang",
+   "project_type": "Standard",
+   "units": 234,
+   "blocks": [
+    "433A",
+    "433B",
+    "434A"
+   ],
+   "max_storey": 14,
+   "flat_types": [
+    "3-Room",
+    "4-Room",
+    "5-Room"
+   ],
+   "data_status": "sample data"
+  },
+  {
+   "key": "woodgrove-acres-3",
+   "name": "Woodgrove Acres",
+   "town": "Woodlands",
+   "project_type": "Standard",
+   "units": 466,
+   "blocks": [
+    "446A",
+    "446B",
+    "447A",
+    "447B"
+   ],
+   "max_storey": 19,
+   "flat_types": [
+    "3-Room",
+    "4-Room",
+    "5-Room"
+   ],
+   "data_status": "sample data"
+  }
+ ],
+ "flat_types": [
+  "2-Room Flexi (Type 1)",
+  "2-Room Flexi (Type 2)",
+  "3-Room",
+  "4-Room",
+  "5-Room"
+ ]
+}

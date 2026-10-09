@@ -85,7 +85,7 @@ function analyse(subs, meta, flags, group = 'all', value = null) {
   const queues = chosen.map(s => parseInt(String(s.queue_number || '').replace(/\D/g, ''), 10)).filter(Number.isFinite);
 
   return {
-    group, value, users: chosen.length, basis,
+    group, value, users: chosen.length, sample_users: chosen.filter(s => s.is_sample).length, basis,
     min_storey: storeyDistribution(minVals, n),
     max_storey: storeyDistribution(maxVals, n),
     sun_directions: rankAverages(chosen.map(s => s.weights.sun)),
@@ -95,6 +95,7 @@ function analyse(subs, meta, flags, group = 'all', value = null) {
     floor_preference: floorPref,
     flat_types: flatTypeCounts,
     most_flagged: Object.entries(flagCounts).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([unit_id, count]) => ({ unit_id, count })),
+    privacy_filter: { on: chosen.filter(s => s.opposite_gt30).length, total: chosen.length },
     queue: { count: queues.length, median: queues.length ? queues.sort((a, b) => a - b)[Math.floor(queues.length / 2)] : null },
   };
 }

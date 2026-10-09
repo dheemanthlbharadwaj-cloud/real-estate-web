@@ -57,7 +57,8 @@
       (!f.flatTypes || !f.flatTypes.length || f.flatTypes.includes(u.flat_type)) &&
       (!f.blocks || !f.blocks.length || f.blocks.includes(u.block)) &&
       (f.minStorey == null || u.storey >= f.minStorey) &&
-      (f.maxStorey == null || u.storey <= f.maxStorey));
+      (f.maxStorey == null || u.storey <= f.maxStorey) &&
+      (!f.oppositeGt30 || u.opposite_gt30m));
   }
 
   // weights: { block: {200A: n}, sun: {N: n}, design: {'Type 1': n}, lift: n, clearance: n, ... }
@@ -82,5 +83,22 @@
     return out;
   }
 
-  return { SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, FACTORS, FLOOR_PREF_WEIGHT, context, floorFeature, filterUnits, scoreUnit, rank };
+  // Which importance meters apply to a set of units: a factor is shown only when at least one
+  // of the units has it (distances: when measured), sun directions / designs only when present.
+  function availability(units) {
+    const has = fn => units.some(fn);
+    return {
+      sun: SUN_DIRECTIONS.filter(d => has(u => u.facing === d)),
+      design: UNIT_DESIGNS.filter(d => has(u => u.unit_design === d)),
+      lift: has(u => u.lift_m != null),
+      clearance: has(u => u.gt30m),
+      corner: has(u => u.position === 'Corner'),
+      roof: has(u => u.roof_access),
+      chute: has(u => u.chute_m != null),
+      mrt: has(u => u.mrt_near),
+      facilities: has(u => facilityPoints(u) > 0),
+    };
+  }
+
+  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, FACTORS, FLOOR_PREF_WEIGHT, context, floorFeature, filterUnits, scoreUnit, rank };
 });

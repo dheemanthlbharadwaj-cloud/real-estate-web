@@ -3,131 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BTO Unit Ranker</title>
+  <title>Stack &amp; Storey — BTO unit ranker</title>
+  <meta name="description" content="Rank every unit in the June 2026 BTO projects by what matters to you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-  <header class="top">
-    <div class="brand">BTO Unit Ranker <span class="muted">June 2026</span></div>
-    <nav>
-      <a href="#rank">Rank units</a>
-      <a href="#flagged">Flagged <span id="flag-count" class="pill">0</span></a>
-      <a href="#analysis">Analysis</a>
-      <a href="#legend">Legend</a>
-      <a href="#account" id="account-link">Account</a>
+  <header class="masthead">
+    <p class="wordmark">Stack <em>&amp;</em> Storey<small>BTO unit ranker · June 2026 exercise</small></p>
+    <nav class="sheets" aria-label="Sections">
+      <a href="#rank"><span>A-01</span>Rank</a>
+      <a href="#shortlist"><span>A-02</span>Shortlist <b class="count" id="flag-count">0</b></a>
+      <a href="#analysis"><span>A-03</span>Analysis</a>
+      <a href="#legend"><span>A-04</span>Legend</a>
+      <a href="#account" id="account-link"><span>A-05</span>Account</a>
     </nav>
+    <div class="titleblock" aria-hidden="true">
+      <div>Project</div><div><b id="tb-project">—</b></div>
+      <div>Type</div><div><b id="tb-type">—</b></div>
+      <div>User</div><div><b id="tb-user">Guest</b></div>
+    </div>
   </header>
+  <div class="sample-band" id="sample-band" hidden><b>SAMPLE</b><span id="sample-text"></span></div>
 
   <main>
-    <!-- RANK -->
-    <section id="view-rank" class="view">
-      <div class="layout">
-        <aside class="panel" id="controls">
-          <h2>1. Project</h2>
-          <select id="project"></select>
-          <p id="project-meta" class="muted small"></p>
+    <!-- A-01 RANK -->
+    <section id="view-rank" class="view" hidden>
+      <div class="desk">
+        <aside class="rail" aria-label="Preferences">
+          <div class="step">
+            <div class="step-h"><span class="n">1</span><h2>Project</h2></div>
+            <select id="project" class="project-select" aria-label="Project"></select>
+            <p id="project-meta" class="small muted" style="margin:8px 0 0"></p>
+          </div>
 
-          <h2>2. Filters</h2>
-          <fieldset><legend>Unit type</legend><div id="f-types" class="checks"></div></fieldset>
-          <fieldset><legend>Blocks</legend>
-            <div class="row small"><button type="button" class="link" data-blocks="all">Select all</button><button type="button" class="link" data-blocks="none">Clear</button></div>
-            <div id="f-blocks" class="checks"></div>
-          </fieldset>
-          <fieldset><legend>Floor level</legend>
-            <label>Min storey <select id="f-min"></select></label>
-            <label>Max storey <select id="f-max"></select></label>
-          </fieldset>
-          <fieldset><legend>Prioritise floors (choose one)</legend>
-            <div class="checks" id="f-pref">
-              <label><input type="radio" name="pref" value="none" checked> No preference</label>
-              <label><input type="radio" name="pref" value="higher"> Higher floors</label>
-              <label><input type="radio" name="pref" value="middle"> Middle floors</label>
-              <label><input type="radio" name="pref" value="lower"> Lower floors</label>
+          <div class="step">
+            <div class="step-h"><span class="n">2</span><h2>Filters</h2></div>
+            <div class="field"><span class="eyebrow">Unit type</span><div id="f-types" class="chips"></div></div>
+            <div class="field"><span class="eyebrow">Blocks</span>
+              <div class="mini-links"><button type="button" data-blocks="all">All</button><button type="button" data-blocks="none">None</button></div>
+              <div id="f-blocks" class="chips"></div>
             </div>
-          </fieldset>
+            <div class="field"><span class="eyebrow">Storey range</span>
+              <div class="storey-pair"><select id="f-min" aria-label="Minimum storey"></select><span class="muted">to</span><select id="f-max" aria-label="Maximum storey"></select></div>
+            </div>
+            <div class="field"><span class="eyebrow">Prioritise floors</span>
+              <div class="chips" id="f-pref" role="radiogroup">
+                <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
+                <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
+                <label class="chip"><input type="radio" name="pref" value="middle"><span>Middle</span></label>
+                <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
+              </div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="f-opposite">
+              <span><b>Privacy: opposite unit &gt; 30 m away</b><span class="small muted">Only show units whose windows face nothing closer than 30 m.</span></span></label>
+          </div>
 
-          <h2>3. Importance <span class="muted small">(-5 avoid … +5 must have)</span></h2>
-          <div id="weights"></div>
-          <button id="btn-rank" class="primary">Generate ranked list</button>
+          <div class="step">
+            <div class="step-h"><span class="n">3</span><h2>Importance</h2></div>
+            <p class="small muted" style="margin:-4px 0 4px">−5 avoid · 0 don't care · +5 must have. Only factors that exist in your selected blocks are shown.</p>
+            <div id="weights"></div>
+            <p id="hidden-factors" class="hidden-note"></p>
+          </div>
+          <button id="btn-rank" class="btn primary">Rank units →</button>
         </aside>
 
-        <div class="results">
-          <div class="toolbar">
-            <span id="result-count" class="muted"></span>
-            <span class="spacer"></span>
-            <label class="small">Queue no. <input id="queue" size="8" placeholder="e.g. 1234"></label>
-            <button id="btn-save">Save list</button>
-            <button id="btn-csv">Download CSV</button>
+        <div>
+          <div class="sched-head">
+            <div><span class="eyebrow">Unit schedule</span><div class="count" id="result-count">0<small>units</small></div></div>
+            <div class="spacer"></div>
+            <div class="queue"><span class="eyebrow">Queue no.</span><input id="queue" type="text" inputmode="numeric" placeholder="e.g. 1234" aria-label="Queue number"></div>
+            <button id="btn-save" class="btn">Save list</button>
+            <button id="btn-csv" class="btn ghost">CSV</button>
           </div>
-          <p id="save-msg" class="small muted"></p>
-          <div class="table-wrap"><table id="results"><thead></thead><tbody></tbody></table></div>
-          <div class="row"><button id="btn-more" hidden>Show more</button></div>
+          <p id="save-msg" class="save-msg" aria-live="polite"></p>
+          <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
+          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
         </div>
       </div>
     </section>
 
-    <!-- FLAGGED -->
-    <section id="view-flagged" class="view" hidden>
-      <h1>Flagged units</h1>
-      <p class="muted">Your priority list for <b id="flag-project"></b>. Drag rows or use the arrows to reorder. Saved to your account automatically when logged in.</p>
-      <ol id="flag-list" class="flag-list"></ol>
+    <!-- A-02 SHORTLIST -->
+    <section id="view-shortlist" class="view" hidden>
+      <span class="eyebrow">A-02</span>
+      <h1>Your <em>shortlist</em></h1>
+      <p class="lede">Units you flagged in <b id="flag-project"></b>. Drag to reorder, or use the arrows — this is the order you'd pick on selection day. Saved to your account when logged in.</p>
+      <ol id="flag-list" class="shortlist"></ol>
     </section>
 
-    <!-- ANALYSIS -->
+    <!-- A-03 ANALYSIS -->
     <section id="view-analysis" class="view" hidden>
-      <h1>Analysis</h1>
-      <div class="row">
-        <label>View by <select id="a-group">
-          <option value="all">All projects</option>
-          <option value="project_type">Project type</option>
-          <option value="project">Project</option>
-          <option value="flat_type">Unit type</option>
-        </select></label>
-        <select id="a-value" hidden></select>
+      <span class="eyebrow">A-03</span>
+      <h1>What other <em>buyers</em> want</h1>
+      <p class="lede">Built from saved lists. Per project, only verified users are counted once there are at least 100 of them; until then every saved list counts.</p>
+      <div id="analysis-locked" class="locked" hidden>
+        <h2>For verified users</h2>
+        <p id="locked-text">Create an account and verify your email to unlock the analysis.</p>
+        <a class="btn" href="#account">Go to account</a>
       </div>
-      <p id="a-basis" class="small muted"></p>
-      <div class="grid2">
-        <div class="card"><h3>Minimum storey chosen</h3><canvas id="c-min"></canvas><p id="t-min" class="small"></p></div>
-        <div class="card"><h3>Maximum storey chosen</h3><canvas id="c-max"></canvas><p id="t-max" class="small"></p></div>
-        <div class="card"><h3>Sun directions (most → least popular)</h3><canvas id="c-sun"></canvas></div>
-        <div class="card"><h3>Blocks (most → least popular)</h3><canvas id="c-block"></canvas></div>
-        <div class="card"><h3>Factors (most → least important)</h3><canvas id="c-factor"></canvas></div>
-        <div class="card"><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
-        <div class="card"><h3>Unit types searched</h3><canvas id="c-types"></canvas></div>
-        <div class="card"><h3>Most flagged units</h3><ol id="a-flagged" class="small"></ol><p id="a-queue" class="small muted"></p></div>
+      <div id="analysis-body" hidden>
+        <div class="filters-row">
+          <label><span class="eyebrow">View by</span><br><select id="a-group">
+            <option value="all">All projects</option><option value="project_type">Project type</option>
+            <option value="project">Project</option><option value="flat_type">Unit type</option></select></label>
+          <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
+        </div>
+        <p id="a-basis" class="basis"></p>
+        <div class="board">
+          <div class="panel"><span class="eyebrow">Fig. 1</span><h3>Lowest storey people will accept</h3><canvas id="c-min"></canvas><div class="stats" id="s-min"></div></div>
+          <div class="panel"><span class="eyebrow">Fig. 2</span><h3>Highest storey people consider</h3><canvas id="c-max"></canvas><div class="stats" id="s-max"></div></div>
+          <div class="panel w4"><span class="eyebrow">Fig. 3</span><h3>Sun direction, most → least wanted</h3><ol class="ranklist" id="r-sun"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Fig. 4</span><h3>Blocks, most → least wanted</h3><ol class="ranklist" id="r-block"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Fig. 5</span><h3>Factors, most → least important</h3><ol class="ranklist" id="r-factor"></ol></div>
+          <div class="panel w8"><span class="eyebrow">Fig. 6</span><h3>Average importance by factor</h3><canvas id="c-factor"></canvas></div>
+          <div class="panel w4"><span class="eyebrow">Fig. 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas><div class="stats" id="s-privacy"></div></div>
+          <div class="panel"><span class="eyebrow">Fig. 8</span><h3>Unit types searched</h3><canvas id="c-types"></canvas></div>
+          <div class="panel"><span class="eyebrow">Fig. 9</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats" id="s-queue"></div></div>
+        </div>
       </div>
     </section>
 
-    <!-- LEGEND -->
+    <!-- A-04 LEGEND -->
     <section id="view-legend" class="view" hidden>
-      <h1>Legend: what each factor means</h1>
-      <div class="row"><label>Project <select id="l-project"></select></label></div>
-      <div id="legend-cards" class="grid2"></div>
+      <span class="eyebrow">A-04</span>
+      <h1>How each <em>factor</em> is measured</h1>
+      <p class="lede">Every number in the schedule comes from the HDB sales brochure: the unit distribution grid, the block floor plans and the site plan, measured with each drawing's own scale bar.</p>
+      <div id="legend" class="legend-grid"></div>
     </section>
 
-    <!-- ACCOUNT -->
+    <!-- A-05 ACCOUNT -->
     <section id="view-account" class="view" hidden>
+      <span class="eyebrow">A-05</span>
       <h1>Account</h1>
       <div id="acct-in" hidden>
-        <p>Logged in as <b id="acct-email"></b> — <span id="acct-verified"></span></p>
-        <p id="acct-verify-link" class="small"></p>
-        <button id="btn-logout">Log out</button>
+        <p class="lede">Signed in as <b id="acct-email"></b> &nbsp;<span id="acct-badge" class="badge"></span></p>
+        <div id="acct-verify" class="devlink" hidden></div>
+        <button id="btn-logout" class="btn ghost">Sign out</button>
       </div>
-      <div id="acct-out" class="grid2">
-        <form id="form-login" class="card"><h3>Log in</h3>
-          <input name="email" type="email" placeholder="Email" required>
-          <input name="password" type="password" placeholder="Password" required>
-          <button class="primary">Log in</button><p class="err small"></p></form>
-        <form id="form-register" class="card"><h3>Create account</h3>
-          <input name="email" type="email" placeholder="Email" required>
-          <input name="password" type="password" placeholder="Password (min 8)" minlength="8" required>
-          <button class="primary">Create account</button><p class="err small"></p></form>
+      <div id="acct-out" class="auth">
+        <form id="form-login"><h2>Sign in</h2>
+          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+          <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+          <button class="btn primary">Sign in</button><p class="err small"></p></form>
+        <form id="form-register"><h2>Create account</h2>
+          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+          <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
+          <button class="btn primary">Create account</button>
+          <p class="small muted">Save your list with your queue number, keep your shortlist across devices, and — once verified — see the analysis.</p>
+          <p class="err small"></p></form>
       </div>
     </section>
   </main>
 
   <script src="vendor/chart.js/chart.umd.js"></script>
   <script src="js/scoring.js"></script>
+  <script src="js/legend.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

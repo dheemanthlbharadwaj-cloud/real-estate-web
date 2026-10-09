@@ -14,6 +14,7 @@ function open(file = process.env.DB_FILE || path.join(__dirname, '..', 'data', '
       verified INTEGER NOT NULL DEFAULT 0,
       verify_token TEXT,
       is_admin INTEGER NOT NULL DEFAULT 0,
+      is_sample INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE IF NOT EXISTS sessions (
@@ -32,6 +33,7 @@ function open(file = process.env.DB_FILE || path.join(__dirname, '..', 'data', '
       min_storey INTEGER,
       max_storey INTEGER,
       floor_pref TEXT NOT NULL,
+      opposite_gt30 INTEGER NOT NULL DEFAULT 0,
       weights TEXT NOT NULL,
       ranked_ids TEXT NOT NULL,
       updated_at TEXT NOT NULL DEFAULT (datetime('now')),

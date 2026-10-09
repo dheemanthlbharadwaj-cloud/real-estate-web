@@ -115,13 +115,13 @@ function createApp(db = open()) {
     if (Number.isNaN(minS) || Number.isNaN(maxS)) return res.status(400).json({ error: 'Storeys must be whole numbers' });
     if (!['none', 'higher', 'lower', 'middle'].includes(b.floor_pref)) return res.status(400).json({ error: 'Invalid floor preference' });
     const arr = v => (Array.isArray(v) ? v.map(String) : []);
-    db.prepare(`INSERT INTO submissions (user_id, project, project_type, queue_number, flat_types, blocks, min_storey, max_storey, floor_pref, weights, ranked_ids, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    db.prepare(`INSERT INTO submissions (user_id, project, project_type, queue_number, flat_types, blocks, min_storey, max_storey, floor_pref, opposite_gt30, weights, ranked_ids, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
       ON CONFLICT (user_id, project) DO UPDATE SET project_type = excluded.project_type, queue_number = excluded.queue_number,
         flat_types = excluded.flat_types, blocks = excluded.blocks, min_storey = excluded.min_storey, max_storey = excluded.max_storey,
-        floor_pref = excluded.floor_pref, weights = excluded.weights, ranked_ids = excluded.ranked_ids, updated_at = excluded.updated_at`)
+        floor_pref = excluded.floor_pref, opposite_gt30 = excluded.opposite_gt30, weights = excluded.weights, ranked_ids = excluded.ranked_ids, updated_at = excluded.updated_at`)
       .run(req.user.id, project, meta[project].type, b.queue_number ? String(b.queue_number).slice(0, 40) : null,
-        JSON.stringify(arr(b.flat_types)), JSON.stringify(arr(b.blocks)), minS, maxS, b.floor_pref,
+        JSON.stringify(arr(b.flat_types)), JSON.stringify(arr(b.blocks)), minS, maxS, b.floor_pref, b.opposite_gt30 ? 1 : 0,
         JSON.stringify(sanitiseWeights(b.weights)), JSON.stringify(arr(b.ranked_ids).slice(0, 2000)));
     res.json({ ok: true });
   });
@@ -146,9 +146,11 @@ function createApp(db = open()) {
   });
 
   // --- analysis ---
-  app.get('/api/analysis', (req, res) => {
+  // Analysis is for verified users only.
+  app.get('/api/analysis', requireUser, (req, res) => {
+    if (!req.user.verified) return res.status(403).json({ error: 'Verify your email to unlock Analysis', code: 'unverified' });
     const group = ['all', 'flat_type', 'project', 'project_type'].includes(req.query.group) ? req.query.group : 'all';
-    const subs = db.prepare('SELECT s.*, u.verified FROM submissions s JOIN users u ON u.id = s.user_id').all().map(parseSub);
+    const subs = db.prepare('SELECT s.*, u.verified, u.is_sample FROM submissions s JOIN users u ON u.id = s.user_id').all().map(parseSub);
     const flags = db.prepare('SELECT user_id, project, unit_id FROM flags').all();
     res.json(analyse(subs, meta, flags, group, req.query.value || null));
   });
@@ -160,7 +162,7 @@ function createApp(db = open()) {
 }
 
 function parseSub(r) {
-  return { ...r, verified: !!r.verified, flat_types: JSON.parse(r.flat_types), blocks: JSON.parse(r.blocks), weights: JSON.parse(r.weights), ranked_ids: JSON.parse(r.ranked_ids) };
+  return { ...r, verified: !!r.verified, opposite_gt30: !!r.opposite_gt30, flat_types: JSON.parse(r.flat_types), blocks: JSON.parse(r.blocks), weights: JSON.parse(r.weights), ranked_ids: JSON.parse(r.ranked_ids) };
 }
 
 // Keep only numeric importances clamped to -5..5.
@@ -181,7 +183,13 @@ function sanitiseWeights(w) {
 
 if (require.main === module) {
   const port = Number(process.env.PORT || 3000);
-  createApp().listen(port, () => console.log(`BTO unit ranker on http://localhost:${port}`));
+  const db = open();
+  // Sample analysis data until real users arrive; set SEED_SAMPLE=0 to disable.
+  if (process.env.SEED_SAMPLE !== '0') {
+    const n = require('./seed_sample').seed(db);
+    if (n) console.log(`seeded ${n} sample users`);
+  }
+  createApp(db).listen(port, () => console.log(`BTO unit ranker on http://localhost:${port}`));
 }
 
 module.exports = { createApp, sanitiseWeights };
