@@ -17,18 +17,27 @@ window.LEGEND = [
   },
   {
     key: 'corner', title: 'Corridor or corner unit', tag: 'Corner unit',
-    img: 'corner-chute.webp', alt: 'Annotated floor plan showing a corner unit far from the rubbish chute and a corridor unit near it',
-    pins: [{ x: 33, y: 8, text: 'Corner: end of the row, windows on two sides' }],
-    text: 'A corner unit sits at the end of a row. It shares a wall with one neighbour and usually has windows on two sides. Corridor units sit between two other units along the common corridor.',
-    rule: 'Source: block floor plan.',
+    img: 'plan-200a.webp', alt: 'Block 200A floor plan with a corner unit and a corridor unit highlighted',
+    marks: [
+      { type: 'box', x: 2.9, y: 7.6, w: 24.7, h: 23.4, tone: 'sea', label: 'Corner unit: end of the row, windows on two sides' },
+      { type: 'box', x: 61.2, y: 41.2, w: 18.8, h: 24.6, tone: 'navy', label: 'Corridor unit: door opens onto the common corridor' },
+    ],
+    text: 'A corner unit sits at the end of a row. It shares a wall with one neighbour and usually has windows on two sides. Corridor units sit along the common corridor, next to other units.',
+    rule: 'Source: block floor plan (Berlayar Rise, Block 200A).',
   },
+
   {
     key: 'chute', title: 'Distance from rubbish chute', tag: 'Further is better',
-    img: 'corner-chute.webp', alt: 'Annotated floor plan with the rubbish chute circled',
-    pins: [{ x: 30, y: 40, text: 'Refuse chute and wash area' }],
+    img: 'plan-200a.webp', alt: 'Block 200A floor plan with the refuse chute ringed',
+    marks: [
+      { type: 'ring', x: 22.7, y: 45, d: 7, label: 'Refuse chute' },
+      { type: 'box', x: 2.9, y: 7.6, w: 24.7, h: 23.4, tone: 'navy', label: 'Close to the chute' },
+      { type: 'box', x: 64.7, y: 68.6, w: 30.6, h: 31, tone: 'sea', label: 'Far from the chute' },
+    ],
     text: 'Straight line distance from the unit’s front door to the nearest refuse chute, measured with the floor plan’s scale bar. Further usually means less smell and less noise. A unit within 10 m counts as near.',
     rule: 'Source: block floor plan, measured with its scale bar.',
   },
+
   {
     key: 'lift', title: 'Distance from lift', tag: 'Closer or further, your call',
     img: 'lift.webp', alt: 'Floor plan showing the lift lobby between two rows of units',
@@ -38,25 +47,37 @@ window.LEGEND = [
   },
   {
     key: 'clearance', title: 'More than 30 m from the next block', tag: 'Importance and privacy filter',
-    img: 'privacy.webp', alt: 'Site plan of Sembawang Brook with a 15 m circle drawn around each unit; overlapping circles shown in red',
-    pins: [{ x: 38, y: 33, text: 'Circles overlap: under 30 m apart' }, { x: 80, y: 46, text: 'No overlap: over 30 m' }],
-    text: 'Each unit gets a 15 m circle around its centre on the site plan. When the circles of two facing units overlap, the units are less than 30 m apart. Switch on the privacy filter to hide every unit whose windows face another home closer than 30 m.',
+    img: 'site-privacy.webp', alt: 'Site plan of blocks 200A and 200B with a 15 m ring around one unit in each block',
+    marks: [
+      { type: 'ring', x: 14, y: 48, d: 16.4, label: '15 m' },
+      { type: 'ring', x: 42.9, y: 46.5, d: 16.4, label: '15 m' },
+      { type: 'line', x1: 14, x2: 42.9, y: 47.2, label: 'Rings do not touch: more than 30 m apart' },
+    ],
+    text: 'Each unit gets a 15 m ring around its centre on the site plan, drawn to the plan’s scale. If the rings of two facing units overlap, the units are less than 30 m apart. Switch on the privacy filter to hide every unit whose windows face another home closer than 30 m.',
     rule: 'Source: site plan, measured with its scale bar.',
   },
+
   {
     key: 'roof', title: 'Access to roof', tag: 'Access to roof',
-    img: 'roof.webp', alt: 'Block 204B floor plan with roof at 2nd storey annotations circled',
-    pins: [{ x: 20, y: 30, text: 'Roof at 2nd storey only' }],
+    img: 'plan-204b.webp', alt: 'Block 204B floor plan with the roof at 2nd storey notes highlighted',
+    marks: [
+      { type: 'box', x: 12.5, y: 61, w: 14.5, h: 17, tone: 'sea', label: 'Note on the plan: roof at 2nd storey only' },
+    ],
     text: 'Some units look onto, or step out towards, a roof drawn on the floor plan, such as “roof at 2nd storey only”. This usually applies only on the storey just above that roof.',
-    rule: 'Source: floor plan annotations, per storey.',
+    rule: 'Source: floor plan annotations, per storey (Berlayar Rise, Block 204B).',
   },
+
   {
     key: 'mrt', title: 'Near MRT', tag: 'Near MRT',
-    img: 'mrt.webp', alt: 'Berlayar Rise site plan with the MRT station at the top, marking blocks near and far from it',
-    pins: [{ x: 45, y: 8, text: 'Telok Blangah MRT' }],
-    text: 'Straight line distance from the unit’s block to the nearest MRT station. Within 400 m, roughly a five minute walk, counts as near.',
+    img: 'site-mrt.webp', alt: 'Northern part of the Berlayar Rise site plan with Telok Blangah MRT station',
+    marks: [
+      { type: 'ring', x: 65.6, y: 24, d: 73.8, label: '100 m' },
+    ],
+    pins: [{ x: 65.6, y: 13, text: 'Telok Blangah MRT' }],
+    text: 'Straight line distance from the unit’s block to the nearest MRT station, measured with the site plan’s scale bar. Within 400 m, roughly a five minute walk, counts as near. The ring shows 100 m to scale.',
     rule: 'Source: site plan, or the location plan when the station sits outside the site.',
   },
+
   {
     key: 'facilities', title: 'Facilities nearby', tag: 'Has and near',
     img: 'facilities.webp', alt: 'Site plan detail with numbered facility markers around blocks 201B and 204A',

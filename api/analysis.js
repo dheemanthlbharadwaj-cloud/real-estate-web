@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { auth, db } = require('../lib/firebase');
 const { analyse } = require('../lib/analysis');
+const { verifyIdToken } = require('../lib/verify-token');
 
 const GROUPS = ['all', 'flat_type', 'project', 'project_type'];
 const CACHE_MS = 60 * 1000;
@@ -63,6 +64,13 @@ const makeHandler = ({ verifyToken, load }) => async (req, res) => {
   }
 };
 
-module.exports = makeHandler({ verifyToken: t => auth().verifyIdToken(t), load: loadAll });
+// With a service account: real saved lists from Firestore plus the sample. Without one: tokens are
+// still verified (against Google's public certificates) and the sample data is shown on its own.
+const HAS_ADMIN = !!process.env.FIREBASE_SERVICE_ACCOUNT;
+const sampleOnly = async () => { const s = sampleData(); return { subs: s.submissions, flags: s.flags }; };
+module.exports = makeHandler({
+  verifyToken: t => (HAS_ADMIN ? auth().verifyIdToken(t) : verifyIdToken(t, process.env.FIREBASE_PROJECT_ID)),
+  load: HAS_ADMIN ? loadAll : sampleOnly,
+});
 module.exports.makeHandler = makeHandler;
 module.exports.sampleData = sampleData;

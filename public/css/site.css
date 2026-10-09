@@ -106,7 +106,7 @@ a { color: inherit; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100svh - 74px); }
 .hero-copy { padding: clamp(48px, 7vw, 100px) var(--gutter) clamp(36px, 5vw, 60px) max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))); display: flex; flex-direction: column; justify-content: space-between; gap: 48px; }
 .hero .label { color: var(--sand); }
-.hero .display { color: #fff; margin-top: 26px; }
+.hero .display { color: #fff; margin-top: 0; }
 .hero .display em { color: var(--sand); }
 .hero .lede { color: rgba(255, 255, 255, .78); margin: 28px 0 38px; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
