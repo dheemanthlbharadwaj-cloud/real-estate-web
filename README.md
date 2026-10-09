@@ -35,7 +35,14 @@ aggregate analysis for verified users with the Firebase Admin SDK.
 
 ## Setup (one time)
 
-### 1. Firebase
+### 1. Firebase — project `sgrealestate-5fbd4` (done, except where marked)
+Already set up: web app "BTO Unit Ranker", Firestore `(default)` in `asia-southeast1`, `firestore.rules` deployed
+(`npx firebase-tools deploy --only firestore:rules`). Public web config for Vercel:
+`FIREBASE_API_KEY=AIzaSyCxE_qlCh9PpNTRvfxKEKOddUzUinjKSok`, `FIREBASE_AUTH_DOMAIN=sgrealestate-5fbd4.firebaseapp.com`,
+`FIREBASE_PROJECT_ID=sgrealestate-5fbd4`, `FIREBASE_APP_ID=1:856616027394:web:e452177bee763fd74fee1b`.
+Still to do by hand: steps 2, 3 and 7 below.
+
+Reference steps for a new project:
 1. https://console.firebase.google.com → **Add project** (Google Analytics not needed).
 2. **Build → Authentication → Get started → Sign-in method → Email/Password → Enable** (leave "Email link" off).
 3. **Authentication → Settings → Authorized domains → Add domain**: your Vercel domain(s), e.g. `your-app.vercel.app`.
