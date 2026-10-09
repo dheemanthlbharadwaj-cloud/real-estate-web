@@ -2,6 +2,8 @@
 import * as store from './store.js';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
+const on = (sel, ev, fn) => { const el = typeof sel === 'string' ? $(sel) : sel; if (el) el.addEventListener(ev, fn); };
+const PAGE = document.body.dataset.page;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const FACTOR_HELP = {
@@ -26,19 +28,13 @@ async function api(path, opts = {}) {
 const lsGet = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } };
 
-// ---------------------------------------------------------------- routing
+// ---------------------------------------------------------------- page dispatch
 function route() {
-  const name = location.hash.replace('#', '').split('?')[0] || 'rank';
-  const known = ['rank', 'shortlist', 'analysis', 'legend', 'account'];
-  const view = known.includes(name) ? name : 'rank';
-  $$('.view').forEach(v => { v.hidden = v.id !== `view-${view}`; });
-  $$('.sheets a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${view}`));
-  if (view === 'shortlist') renderShortlist();
-  if (view === 'analysis') loadAnalysis();
-  if (view === 'legend') renderLegend();
-  if (view === 'account') renderAccount();
+  if (PAGE === 'shortlist') renderShortlist();
+  if (PAGE === 'analysis') loadAnalysis();
+  if (PAGE === 'guide') renderLegend();
+  if (PAGE === 'account') renderAccount();
 }
-window.addEventListener('hashchange', route);
 
 // ---------------------------------------------------------------- init / project
 async function init() {
@@ -49,36 +45,44 @@ async function init() {
     state.authError = err.message;
     state.user = null;
   }
-  const opts = ['Plus', 'Prime', 'Standard'].map(t => `<optgroup label="${t}">${state.index.projects.filter(p => p.project_type === t)
-    .map(p => `<option value="${p.key}">${esc(p.name)}</option>`).join('')}</optgroup>`).join('');
-  $('#project').innerHTML = opts;
-  const saved = lsGet('project', null);
-  $('#project').value = state.index.projects.some(p => p.key === saved) ? saved : state.index.projects[0].key;
-  $('#project').addEventListener('change', () => loadProject($('#project').value));
-  $('#btn-rank').addEventListener('click', runRank);
-  $('#btn-more').addEventListener('click', () => renderResults(false));
-  $('#btn-save').addEventListener('click', saveList);
-  $('#btn-csv').addEventListener('click', downloadCsv);
+  // Project: ?project= in the URL wins, then the last one used, then the first.
+  const valid = k => state.index.projects.some(p => p.key === k);
+  const fromUrl = new URLSearchParams(location.search).get('project');
+  const key = valid(fromUrl) ? fromUrl : valid(lsGet('project', null)) ? lsGet('project', null) : state.index.projects[0].key;
+  if ($('#project')) {
+    $('#project').innerHTML = ['Prime', 'Plus', 'Standard'].map(t => `<optgroup label="${t}">${state.index.projects.filter(p => p.project_type === t)
+      .map(p => `<option value="${p.key}">${esc(p.name)}</option>`).join('')}</optgroup>`).join('');
+    $('#project').value = key;
+    on('#project', 'change', () => loadProject($('#project').value));
+  }
+  on('#btn-rank', 'click', runRank);
+  on('#btn-more', 'click', () => renderResults(false));
+  on('#btn-save', 'click', saveList);
+  on('#btn-csv', 'click', downloadCsv);
   $$('[data-blocks]').forEach(b => b.addEventListener('click', () => {
     $$('#f-blocks input').forEach(i => { i.checked = b.dataset.blocks === 'all'; });
     renderWeights();
   }));
-  $('#f-types').addEventListener('change', renderWeights);
-  $('#f-blocks').addEventListener('change', renderWeights);
+  on('#f-types', 'change', renderWeights);
+  on('#f-blocks', 'change', renderWeights);
+  if (PAGE === 'rank' || PAGE === 'shortlist') await loadProject(key);
+  else { state.project = state.index.projects.find(p => p.key === key); state.flags = await loadFlags(); }
   renderTitleBlock();
-  await loadProject($('#project').value);
   route();
 }
 
+// Sample-data note on the page hero, plus hints the shared header reads on every page.
 function renderTitleBlock() {
-  $('#tb-project').textContent = state.project?.name || '—';
-  $('#tb-type').textContent = state.project?.project_type || '—';
-  $('#tb-user').textContent = state.user ? (state.user.verified ? 'Verified' : 'Member') : 'Guest';
   const p = state.project;
-  $('#sample-band').hidden = !state.index?.sample;
-  if (p) $('#sample-text').textContent = p.data_status === 'sample data'
-    ? `${p.name}: all units and attributes are placeholder sample data until the brochure extraction is complete.`
-    : `${p.name}: blocks, storeys, unit numbers and flat types are real (all ${p.units} units). Facing, distances, roof, corner and facilities are placeholders.`;
+  if ($('#sample-note') && state.index?.sample && p && (PAGE === 'rank' || PAGE === 'shortlist')) {
+    $('#sample-note').hidden = false;
+    $('#sample-text').textContent = p.data_status === 'sample data'
+      ? `${p.name}: units and attributes shown are placeholders until the brochure data is verified.`
+      : `${p.name}: blocks, storeys, unit numbers and flat types are real (${p.units.toLocaleString()} units); facing, distances and facilities are placeholders.`;
+  }
+  lsSet('mybto:user', state.user ? { verified: !!state.user.verified } : null);
+  const link = $('#account-link');
+  if (link) link.textContent = state.user ? 'My account' : 'Sign in';
 }
 
 async function loadProject(key) {
@@ -86,6 +90,15 @@ async function loadProject(key) {
   lsSet('project', key);
   state.units = await api(`/data/units/${key}.json`);
   const p = state.project;
+  if (PAGE !== 'rank') {
+    state.flags = await loadFlags();
+    updateFlagCount();
+    const list = state.user ? await store.loadList(key).catch(() => null) : null;
+    state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey, oppositeGt30: list.opposite_gt30 }, list.weights, list.floor_pref) : [];
+    renderTitleBlock();
+    if (PAGE === 'shortlist') renderShortlist();
+    return;
+  }
   $('#project-meta').textContent = `${p.town} · ${p.project_type} · ${p.units.toLocaleString()} units · ${p.blocks.length} blocks`;
   $('#f-types').innerHTML = p.flat_types.map(t => `<label class="chip"><input type="checkbox" value="${esc(t)}" checked><span>${esc(t)}</span></label>`).join('');
   $('#f-blocks').innerHTML = p.blocks.map(b => `<label class="chip block"><input type="checkbox" value="${esc(b)}" checked><span>${esc(b)}</span></label>`).join('');
@@ -197,6 +210,8 @@ function runRank() {
 
 const compass = d => `<span class="compass"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-opacity=".3"/><path d="M8 2 L10.5 9 H5.5Z" fill="currentColor" transform="rotate(${BEARING[d] ?? 0} 8 8)"/></svg>${esc(d)}</span>`;
 
+const dist = m => (m == null ? '–' : `${Math.round(m)} m`);
+
 function tags(u) {
   const t = [];
   if (u.position === 'Corner') t.push('<span class="tag">corner</span>');
@@ -208,7 +223,7 @@ function tags(u) {
 }
 
 function renderResults(reset) {
-  const head = ['#', '', 'Unit', 'Type', 'Facing', 'Lift', 'Chute', 'Opposite', 'MRT', 'Facilities', 'Notes', 'Score'];
+  const head = ['#', '', 'Unit', 'Type · facing', 'Lift · chute', 'Opposite · MRT', 'Facilities', 'Score'];
   if (reset) {
     $('#results thead').innerHTML = `<tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>`;
     $('#results tbody').innerHTML = '';
@@ -225,22 +240,18 @@ function renderResults(reset) {
     return `<tr class="${u.rank <= 3 ? 'top3' : ''}">
       <td class="rk">${u.rank}</td>
       <td><button class="star ${state.flags.includes(u.id) ? 'on' : ''}" data-id="${esc(u.id)}" aria-label="Flag ${esc(u.address)}" title="Add to shortlist">★</button></td>
-      <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small></td>
-      <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span></td>
-      <td>${compass(u.facing)}</td>
-      <td class="num">${u.lift_m == null ? '–' : `${Math.round(u.lift_m)} m`}</td>
-      <td class="num">${u.chute_m == null ? '–' : `${Math.round(u.chute_m)} m`}</td>
-      <td class="num">${u.opposite_m == null ? '–' : `${Math.round(u.opposite_m)} m`}</td>
-      <td class="num">${u.mrt_m == null ? '–' : `${u.mrt_m} m`}</td>
-      <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} has · ${u.fac_near_count} near</td>
-      <td>${tags(u)}</td>
+      <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small>${tags(u)}</td>
+      <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span><div class="sub">${compass(u.facing)}</div></td>
+      <td class="num">${dist(u.lift_m)}<div class="sub">${dist(u.chute_m)}</div></td>
+      <td class="num">${dist(u.opposite_m)}<div class="sub">${dist(u.mrt_m)}</div></td>
+      <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} in block<div class="sub">${u.fac_near_count} nearby</div></td>
       <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td></tr>`;
   }).join(''));
   state.shown += next.length;
   $('#btn-more').hidden = state.shown >= state.ranked.length;
 }
 
-$('#results').addEventListener('click', e => {
+on('#results', 'click', e => {
   const b = e.target.closest('.star');
   if (!b) return;
   toggleFlag(b.dataset.id);
@@ -248,7 +259,7 @@ $('#results').addEventListener('click', e => {
 });
 
 async function saveList() {
-  if (!state.user) { $('#save-msg').innerHTML = 'Sign in to save your list — <a href="#account">go to account</a>.'; return; }
+  if (!state.user) { $('#save-msg').innerHTML = 'Sign in to save your list — <a href="/account">sign in here</a>.'; return; }
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
@@ -285,20 +296,22 @@ function toggleFlag(id) {
   state.flags = state.flags.includes(id) ? state.flags.filter(x => x !== id) : [...state.flags, id];
   persistFlags();
 }
-function updateFlagCount() { $('#flag-count').textContent = state.flags.length; }
+function updateFlagCount() {
+  if ($('#flag-count')) $('#flag-count').textContent = state.flags.length;
+  try { localStorage.setItem('mybto:flagcount', String(state.flags.length)); } catch { /* storage unavailable */ }
+}
 
 function renderShortlist() {
-  $('#flag-project').textContent = state.project?.name || '';
   const byId = Object.fromEntries(state.units.map(u => [u.id, u]));
   const ranked = Object.fromEntries(state.ranked.map(u => [u.id, u]));
   const list = $('#flag-list');
   const items = state.flags.filter(id => byId[id]);
-  if (!items.length) { list.innerHTML = '<div class="empty">Nothing flagged yet. Tap ★ on any unit in the schedule.</div>'; return; }
+  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet — star ★ units on the Rank page.</div>'; return; }
   list.innerHTML = items.map((id, i) => {
     const u = byId[id], r = ranked[id];
     return `<li draggable="true" data-id="${esc(id)}">
       <div><div class="addr">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}</div>
-        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${r ? ` · rank ${r.rank} in current schedule` : ' · outside current filters'}</div></div>
+        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${r ? ` · rank ${r.rank} in your saved list` : ''}</div></div>
       <div></div>
       <div class="ctrl"><button data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button data-act="down" ${i === items.length - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button data-act="rm" aria-label="Remove">✕</button></div></li>`;
   }).join('');
@@ -311,7 +324,7 @@ function moveFlag(from, to) {
   persistFlags();
   renderShortlist();
 }
-$('#flag-list').addEventListener('click', e => {
+on('#flag-list', 'click', e => {
   const b = e.target.closest('button');
   if (!b) return;
   const i = state.flags.indexOf(b.closest('li').dataset.id);
@@ -320,13 +333,13 @@ $('#flag-list').addEventListener('click', e => {
   if (b.dataset.act === 'rm') { state.flags.splice(i, 1); persistFlags(); renderShortlist(); }
 });
 let dragId = null;
-$('#flag-list').addEventListener('dragstart', e => { const li = e.target.closest('li'); dragId = li?.dataset.id; li?.classList.add('dragging'); });
-$('#flag-list').addEventListener('dragend', () => { $$('#flag-list li').forEach(l => l.classList.remove('dragging', 'over')); });
-$('#flag-list').addEventListener('dragover', e => {
+on('#flag-list', 'dragstart', e => { const li = e.target.closest('li'); dragId = li?.dataset.id; li?.classList.add('dragging'); });
+on('#flag-list', 'dragend', () => { $$('#flag-list li').forEach(l => l.classList.remove('dragging', 'over')); });
+on('#flag-list', 'dragover', e => {
   e.preventDefault();
   $$('#flag-list li').forEach(l => l.classList.toggle('over', l === e.target.closest('li')));
 });
-$('#flag-list').addEventListener('drop', e => {
+on('#flag-list', 'drop', e => {
   e.preventDefault();
   const to = state.flags.indexOf(e.target.closest('li')?.dataset.id);
   const from = state.flags.indexOf(dragId);
@@ -338,10 +351,10 @@ $('#flag-list').addEventListener('drop', e => {
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function chart(id, config) {
   state.charts[id]?.destroy();
-  Chart.defaults.font.family = "'Geist Mono', monospace";
-  Chart.defaults.font.size = 11;
+  Chart.defaults.font.family = "'Hanken Grotesk', sans-serif";
+  Chart.defaults.font.size = 12;
   Chart.defaults.color = css('--ink-2');
-  Chart.defaults.borderColor = css('--rule');
+  Chart.defaults.borderColor = css('--line');
   state.charts[id] = new Chart(document.getElementById(id), config);
 }
 function statsHtml(d) {
@@ -383,7 +396,7 @@ async function loadAnalysis() {
   $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''} — `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
-  const ink = css('--ink'), signal = css('--signal'), green = css('--green'), rule = css('--rule-strong');
+  const ink = css('--forest'), signal = css('--rose'), green = css('--brass'), rule = css('--line-2');
   const prefOrder = ['higher', 'middle', 'lower', 'none'];
   for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
     chart(`c-${k}`, {
@@ -427,18 +440,20 @@ async function loadAnalysis() {
   }).join('') : '<li><span></span><span class="muted">No flags yet</span><span></span></li>';
   $('#s-queue').innerHTML = a.queue.count ? `<span><b>${a.queue.median}</b>median queue no. (${a.queue.count} users)</span>` : '';
 }
-$('#a-group').addEventListener('change', loadAnalysis);
-$('#a-value').addEventListener('change', loadAnalysis);
+on('#a-group', 'change', loadAnalysis);
+on('#a-value', 'change', loadAnalysis);
 
 // ---------------------------------------------------------------- legend
 function renderLegend() {
   if ($('#legend').childElementCount) return;
-  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg"><span class="eyebrow">L-${String(i + 1).padStart(2, '0')} · ${esc(c.tag)}</span>
+  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg reveal"><span class="eyebrow">${String(i + 1).padStart(2, '0')} · ${esc(c.tag)}</span>
     <h3>${esc(c.title)}</h3>${c.svg}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
+  window.revealAll && window.revealAll($('#legend'));
 }
 
 // ---------------------------------------------------------------- account
 function renderAccount() {
+  if (PAGE !== 'account') return;
   $('#acct-in').hidden = !state.user;
   $('#acct-out').hidden = !!state.user;
   $('#auth-error').hidden = !state.authError;
@@ -450,10 +465,10 @@ function renderAccount() {
     b.className = `badge ${state.user.verified ? 'ok' : 'no'}`;
     $('#verify-box').hidden = state.user.verified;
   }
-  const q = new URLSearchParams(location.hash.split('?')[1] || '');
+  const q = new URLSearchParams(location.search);
   if (q.get('verified') === '1' && state.user && !state.user.verified) refreshVerification();
 }
-function note(msg) { $('#acct-note').hidden = !msg; $('#acct-note').textContent = msg || ''; }
+function note(msg) { if (!$('#acct-note')) return; $('#acct-note').hidden = !msg; $('#acct-note').textContent = msg || ''; }
 
 async function refreshVerification() {
   state.user = await store.refreshUser();
@@ -476,22 +491,23 @@ async function onAuthChange(user) {
     state.flags = [...new Set([...remote, ...local])];
     await persistFlags();
     const list = await store.loadList(state.project.key).catch(() => null);
-    if (list) { applySaved(list); runRank(); }
+    if (list && PAGE === 'rank') { applySaved(list); runRank(); }
+    if (PAGE === 'shortlist') loadProject(state.project.key);
   } else if (!user) {
     state.flags = lsGet(`flags:${state.project.key}`, []);
     updateFlagCount();
   }
-  if (location.hash.startsWith('#analysis')) loadAnalysis();
+  if (PAGE === 'analysis') loadAnalysis();
 }
 
-$('#form-login').addEventListener('submit', async e => {
+on('#form-login', 'submit', async e => {
   e.preventDefault();
   const err = e.target.querySelector('.err');
   err.textContent = '';
   const fd = new FormData(e.target);
   try { await store.login(fd.get('email'), fd.get('password')); e.target.reset(); note(''); } catch (ex) { err.textContent = ex.message; }
 });
-$('#form-register').addEventListener('submit', async e => {
+on('#form-register', 'submit', async e => {
   e.preventDefault();
   const err = e.target.querySelector('.err');
   err.textContent = '';
@@ -502,23 +518,24 @@ $('#form-register').addEventListener('submit', async e => {
     note(`We've sent a verification link to ${fd.get('email')}. Open it to unlock Analysis.`);
   } catch (ex) { err.textContent = ex.message; }
 });
-$('#btn-forgot').addEventListener('click', async () => {
+on('#btn-forgot', 'click', async () => {
   const email = $('#form-login [name=email]').value.trim();
   const err = $('#form-login .err');
   if (!email) { err.textContent = 'Type your email above first.'; return; }
   try { await store.resetPassword(email); err.textContent = `Password reset email sent to ${email}.`; } catch (ex) { err.textContent = ex.message; }
 });
-$('#btn-resend').addEventListener('click', async () => {
+on('#btn-resend', 'click', async () => {
   try { await store.resendVerification(); note(`Verification email re-sent to ${state.user.email}.`); } catch (ex) { note(ex.message); }
 });
-$('#btn-refresh').addEventListener('click', refreshVerification);
+on('#btn-refresh', 'click', refreshVerification);
 $$('[data-google]').forEach(b => b.addEventListener('click', async () => {
   const err = b.closest('form').querySelector('.err');
   err.textContent = '';
   try { await store.loginWithGoogle(); note(''); } catch (ex) { err.textContent = ex.message; }
 }));
-$('#btn-logout').addEventListener('click', () => store.logout());
+on('#btn-logout', 'click', () => store.logout());
 
 init().catch(err => {
-  document.querySelector('main').insertAdjacentHTML('afterbegin', `<p class="err">Couldn't load the app: ${esc(err.message)}</p>`);
+  console.error(err);
+  ($('.tool .wrap') || document.body).insertAdjacentHTML('afterbegin', `<p class="err">Couldn't load: ${esc(err.message)}</p>`);
 });

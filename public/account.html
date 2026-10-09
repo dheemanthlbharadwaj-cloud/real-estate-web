@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account — MyBTO</title>
+  <meta name="description" content="Sign in or create a MyBTO account.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-page="account" data-over-hero>
+  <main>
+    <section class="page-hero">
+      <div class="bg" style="background-image:url('/img/berlayar-rise-7.webp')"></div>
+      <div class="wrap">
+        <span class="kicker">Account</span>
+        <h1 class="h1">Your <em>MyBTO</em> account.</h1>
+        <p>Save your ranked list with your queue number, keep your shortlist on every device, and — once verified — unlock insights.</p>
+        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+      </div>
+    </section>
+
+    <section class="tool"><div class="wrap">
+      <p id="auth-error" class="err" hidden></p>
+      <p id="acct-note" class="devlink" hidden aria-live="polite"></p>
+      <div id="acct-in" class="acct-card" hidden>
+        <span class="kicker">Signed in</span>
+        <h2 style="margin-top:14px" id="acct-email"></h2>
+        <p><span id="acct-badge" class="badge"></span></p>
+        <div id="verify-box" hidden>
+          <p class="small muted">Verify your email to unlock insights. Check your inbox (and spam) for the link.</p>
+          <div class="row-btns"><button id="btn-refresh" class="btn primary">I've verified</button><button id="btn-resend" class="btn ghost">Resend email</button></div>
+        </div>
+        <div class="row-btns"><a class="btn" href="/rank">Rank units</a><a class="btn" href="/shortlist">My shortlist</a><button id="btn-logout" class="btn ghost">Sign out</button></div>
+      </div>
+      <div id="acct-out" class="auth">
+        <form id="form-login"><h2>Sign in</h2>
+          <button type="button" class="btn google" data-google>Continue with Google</button>
+          <div class="or">or</div>
+          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+          <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+          <button class="btn primary">Sign in</button>
+          <button type="button" id="btn-forgot" class="linkbtn">Forgot password?</button>
+          <p class="err small"></p></form>
+        <form id="form-register"><h2>Create account</h2>
+          <button type="button" class="btn google" data-google>Sign up with Google</button>
+          <div class="or">or</div>
+          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+          <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
+          <button class="btn primary">Create account</button>
+          <p class="small muted">Free. We only use your email to sign you in and verify your account.</p>
+          <p class="err small"></p></form>
+      </div>
+    </div></section>
+  </main>
+  <script src="/js/site.js"></script>
+  <script src="/js/scoring.js"></script>
+  <script src="/js/legend.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

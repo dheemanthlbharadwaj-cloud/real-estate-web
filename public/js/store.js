@@ -24,7 +24,7 @@ const FRIENDLY = {
 };
 const friendly = e => new Error(FRIENDLY[e.code] || e.message);
 const toUser = u => (u ? { uid: u.uid, email: u.email, verified: u.emailVerified } : null);
-const continueUrl = () => `${location.origin}/#account?verified=1`;
+const continueUrl = () => `${location.origin}/account?verified=1`;
 
 // Resolves with the first auth state; `onChange` is called on every later change.
 export function init(onChange) {

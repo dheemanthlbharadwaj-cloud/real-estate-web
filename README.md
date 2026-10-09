@@ -23,6 +23,11 @@ aggregate analysis for verified users with the Firebase Admin SDK.
 - The real-data pipeline (`pipeline/build_dataset.py`) builds the same JSON plus the Excel workbook
   (tabs Plus / Prime / Standard) from the reconciled brochure extractions in `pipeline/raw/`.
 
+## Pages
+`/` home · `/rank` · `/shortlist` · `/analysis` (Insights) · `/guide` (How it works) · `/account`.
+Inner pages are generated from one shell: edit `pipeline/build_pages.py`, then `python3 pipeline/build_pages.py`.
+Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochures (© HDB), credited in the footer.
+
 ## Features
 - **Rank**: project, unit type, blocks, storey range, floor priority (higher / middle / lower / none) and a
   **privacy filter** (only units whose windows face nothing within 30 m). Importance −5…+5 per selected block,

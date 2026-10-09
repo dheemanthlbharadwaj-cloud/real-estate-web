@@ -3,173 +3,141 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MyBTO — rank every BTO unit by what matters to you</title>
-  <meta name="description" content="Rank every unit in the June 2026 BTO projects by what matters to you.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/app.css">
+  <title>MyBTO — every BTO unit, ranked for you</title>
+  <meta name="description" content="Rank every unit in the June 2026 HDB BTO exercise by sun direction, height, privacy, convenience and more. Build your shortlist before selection day.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="/img/hero.webp">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
-<body>
-  <header class="masthead">
-    <p class="wordmark">My<em>BTO</em><small>Unit ranker · June 2026 BTO exercise</small></p>
-    <nav class="sheets" aria-label="Sections">
-      <a href="#rank"><span>A-01</span>Rank</a>
-      <a href="#shortlist"><span>A-02</span>Shortlist <b class="count" id="flag-count">0</b></a>
-      <a href="#analysis"><span>A-03</span>Analysis</a>
-      <a href="#legend"><span>A-04</span>Legend</a>
-      <a href="#account" id="account-link"><span>A-05</span>Account</a>
-    </nav>
-    <div class="titleblock" aria-hidden="true">
-      <div>Project</div><div><b id="tb-project">—</b></div>
-      <div>Type</div><div><b id="tb-type">—</b></div>
-      <div>User</div><div><b id="tb-user">Guest</b></div>
-    </div>
-  </header>
-  <div class="sample-band" id="sample-band" hidden><b>SAMPLE</b><span id="sample-text"></span></div>
-
+<body data-page="home" data-over-hero>
   <main>
-    <!-- A-01 RANK -->
-    <section id="view-rank" class="view" hidden>
-      <div class="desk">
-        <aside class="rail" aria-label="Preferences">
-          <div class="step">
-            <div class="step-h"><span class="n">1</span><h2>Project</h2></div>
-            <select id="project" class="project-select" aria-label="Project"></select>
-            <p id="project-meta" class="small muted" style="margin:8px 0 0"></p>
-          </div>
-
-          <div class="step">
-            <div class="step-h"><span class="n">2</span><h2>Filters</h2></div>
-            <div class="field"><span class="eyebrow">Unit type</span><div id="f-types" class="chips"></div></div>
-            <div class="field"><span class="eyebrow">Blocks</span>
-              <div class="mini-links"><button type="button" data-blocks="all">All</button><button type="button" data-blocks="none">None</button></div>
-              <div id="f-blocks" class="chips"></div>
-            </div>
-            <div class="field"><span class="eyebrow">Storey range</span>
-              <div class="storey-pair"><select id="f-min" aria-label="Minimum storey"></select><span class="muted">to</span><select id="f-max" aria-label="Maximum storey"></select></div>
-            </div>
-            <div class="field"><span class="eyebrow">Prioritise floors</span>
-              <div class="chips" id="f-pref" role="radiogroup">
-                <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
-                <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
-                <label class="chip"><input type="radio" name="pref" value="middle"><span>Middle</span></label>
-                <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
-              </div>
-            </div>
-            <label class="toggle"><input type="checkbox" id="f-opposite">
-              <span><b>Privacy: opposite unit &gt; 30 m away</b><span class="small muted">Only show units whose windows face nothing closer than 30 m.</span></span></label>
-          </div>
-
-          <div class="step">
-            <div class="step-h"><span class="n">3</span><h2>Importance</h2></div>
-            <p class="small muted" style="margin:-4px 0 4px">−5 avoid · 0 don't care · +5 must have. Only factors that exist in your selected blocks are shown.</p>
-            <div id="weights"></div>
-            <p id="hidden-factors" class="hidden-note"></p>
-          </div>
-          <button id="btn-rank" class="btn primary">Rank units →</button>
-        </aside>
-
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-img" style="background-image:url('/img/hero.webp')" role="img" aria-label="Landscaped courtyard between residential towers at Berlayar Rise (artist's impression)"></div>
+      <div class="wrap">
         <div>
-          <div class="sched-head">
-            <div><span class="eyebrow">Unit schedule</span><div class="count" id="result-count">0<small>units</small></div></div>
-            <div class="spacer"></div>
-            <div class="queue"><span class="eyebrow">Queue no.</span><input id="queue" type="text" inputmode="numeric" placeholder="e.g. 1234" aria-label="Queue number"></div>
-            <button id="btn-save" class="btn">Save list</button>
-            <button id="btn-csv" class="btn ghost">CSV</button>
+          <span class="kicker">June 2026 BTO exercise · 7 projects</span>
+          <h1 class="display">Choose your home <em>before</em> you choose your flat.</h1>
+          <p>MyBTO ranks every unit in every block — by sun, height, privacy, the walk to the lift and the MRT — according to what matters to you. Walk into selection day with a shortlist you trust.</p>
+          <div class="actions">
+            <a class="btn brass" href="/rank">Rank the units <span class="arr">→</span></a>
+            <a class="btn light" href="#projects">Explore projects</a>
           </div>
-          <p id="save-msg" class="save-msg" aria-live="polite"></p>
-          <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
-          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
+        </div>
+        <aside class="hero-card" aria-label="Example ranking">
+          <span class="kicker">Example · top match</span>
+          <div class="unit" id="hc-unit">#38-141</div>
+          <div class="meta" id="hc-meta">Blk 201A · Berlayar Rise · 4-Room</div>
+          <div class="bars" id="hc-bars">
+            <div><span>North-facing</span><i><b style="width:92%"></b></i></div>
+            <div><span>High floor</span><i><b style="width:84%"></b></i></div>
+            <div><span>Far from chute</span><i><b style="width:76%"></b></i></div>
+            <div><span>Corner unit</span><i><b style="width:100%"></b></i></div>
+          </div>
+        </aside>
+      </div>
+      <span class="scroll-hint" aria-hidden="true">SCROLL</span>
+    </section>
+
+    <!-- INTRO + STATS -->
+    <section class="section">
+      <div class="wrap">
+        <div class="split">
+          <div class="reveal">
+            <span class="kicker">Why MyBTO</span>
+            <h2 class="h2" style="margin:22px 0 24px">Two units on the same floor can feel like <em>different homes.</em></h2>
+            <p class="lede">One catches the morning light and looks out over a park; the other faces the afternoon sun and a neighbour's window twenty metres away. The brochure has all of this — buried across floor plans, site plans and unit grids. We read every page so you don't have to.</p>
+            <a class="btn" href="/guide" style="margin-top:14px">How we measure <span class="arr">→</span></a>
+          </div>
+          <div class="img reveal d2"><img src="/img/garden-lakeview.webp" alt="Community garden and playground at Lakeview Cascadia (artist's impression)" loading="lazy"><span class="tag-img">Lakeview Cascadia · Bishan</span></div>
+        </div>
+        <div class="stats reveal" style="margin-top:clamp(64px,9vw,120px)" id="stats">
+          <div><b data-stat="projects">7</b><span>BTO projects</span></div>
+          <div><b data-stat="units">—</b><span>units ranked</span></div>
+          <div><b>11</b><span>factors per unit</span></div>
+          <div><b>3</b><span>Plus · Prime · Standard</span></div>
         </div>
       </div>
     </section>
 
-    <!-- A-02 SHORTLIST -->
-    <section id="view-shortlist" class="view" hidden>
-      <span class="eyebrow">A-02</span>
-      <h1>Your <em>shortlist</em></h1>
-      <p class="lede">Units you flagged in <b id="flag-project"></b>. Drag to reorder, or use the arrows — this is the order you'd pick on selection day. Saved to your account when logged in.</p>
-      <ol id="flag-list" class="shortlist"></ol>
+    <!-- PROJECTS -->
+    <section class="section paper" id="projects">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="reveal"><span class="kicker">The collection</span><h2 class="h2" style="margin-top:22px">Seven projects. <em>One</em> way to compare them.</h2></div>
+          <p class="lede reveal d1">From Prime sites a stop from the city to Standard estates wrapped in greenery up north. Pick a project to rank every one of its units.</p>
+        </div>
+        <div class="filters-tabs reveal" role="tablist" aria-label="Filter by project type">
+          <button class="on" data-type="all">All</button><button data-type="Prime">Prime</button><button data-type="Plus">Plus</button><button data-type="Standard">Standard</button>
+        </div>
+        <div class="projects" id="project-grid"></div>
+      </div>
     </section>
 
-    <!-- A-03 ANALYSIS -->
-    <section id="view-analysis" class="view" hidden>
-      <span class="eyebrow">A-03</span>
-      <h1>What other <em>buyers</em> want</h1>
-      <p class="lede">Built from saved lists. Per project, only verified users are counted once there are at least 100 of them; until then every saved list counts.</p>
-      <div id="analysis-locked" class="locked" hidden>
-        <h2>For verified users</h2>
-        <p id="locked-text">Create an account and verify your email to unlock the analysis.</p>
-        <a class="btn" href="#account">Go to account</a>
-      </div>
-      <div id="analysis-body" hidden>
-        <div class="filters-row">
-          <label><span class="eyebrow">View by</span><br><select id="a-group">
-            <option value="all">All projects</option><option value="project_type">Project type</option>
-            <option value="project">Project</option><option value="flat_type">Unit type</option></select></label>
-          <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
+    <!-- HOW IT WORKS -->
+    <section class="section dark">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="reveal"><span class="kicker">How it works</span><h2 class="h2" style="margin-top:22px">From brochure to <em>shortlist</em> in three steps.</h2></div>
+          <p class="lede reveal d1">No spreadsheets, no squinting at floor plans. Tell us what you care about and we do the arithmetic for every unit.</p>
         </div>
-        <p id="a-basis" class="basis"></p>
-        <div class="board">
-          <div class="panel"><span class="eyebrow">Fig. 1</span><h3>Lowest storey people will accept</h3><canvas id="c-min"></canvas><div class="stats" id="s-min"></div></div>
-          <div class="panel"><span class="eyebrow">Fig. 2</span><h3>Highest storey people consider</h3><canvas id="c-max"></canvas><div class="stats" id="s-max"></div></div>
-          <div class="panel w4"><span class="eyebrow">Fig. 3</span><h3>Sun direction, most → least wanted</h3><ol class="ranklist" id="r-sun"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Fig. 4</span><h3>Blocks, most → least wanted</h3><ol class="ranklist" id="r-block"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Fig. 5</span><h3>Factors, most → least important</h3><ol class="ranklist" id="r-factor"></ol></div>
-          <div class="panel w8"><span class="eyebrow">Fig. 6</span><h3>Average importance by factor</h3><canvas id="c-factor"></canvas></div>
-          <div class="panel w4"><span class="eyebrow">Fig. 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas><div class="stats" id="s-privacy"></div></div>
-          <div class="panel"><span class="eyebrow">Fig. 8</span><h3>Unit types searched</h3><canvas id="c-types"></canvas></div>
-          <div class="panel"><span class="eyebrow">Fig. 9</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats" id="s-queue"></div></div>
+        <div class="steps">
+          <article class="reveal"><div class="num">01</div><h3>Set your filters</h3><p>Choose a project, the flat types and blocks you're considering, your floor range — and switch on the privacy filter if you'd rather not look into a neighbour's window.</p></article>
+          <article class="reveal d1"><div class="num">02</div><h3>Weigh what matters</h3><p>Slide each factor from −5 to +5: north–south facing, corner unit, distance from the lift or rubbish chute, the MRT, facilities next door.</p></article>
+          <article class="reveal d2"><div class="num">03</div><h3>Shortlist &amp; save</h3><p>Every unit is scored and ranked. Star your favourites into a shortlist you can reorder, and save it with your queue number.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- A-04 LEGEND -->
-    <section id="view-legend" class="view" hidden>
-      <span class="eyebrow">A-04</span>
-      <h1>How each <em>factor</em> is measured</h1>
-      <p class="lede">Every number in the schedule comes from the HDB sales brochure: the unit distribution grid, the block floor plans and the site plan, measured with each drawing's own scale bar.</p>
-      <div id="legend" class="legend-grid"></div>
+    <!-- FACTORS -->
+    <section class="section">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="reveal"><span class="kicker">What we measure</span><h2 class="h2" style="margin-top:22px">The details that make a unit <em>yours.</em></h2></div>
+          <p class="lede reveal d1">Each measurement is taken from the official drawings, using each plan's own scale bar.</p>
+        </div>
+        <div class="factors">
+          <article class="reveal"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="17" r="6"/><path d="M17 3v4M17 27v4M3 17h4M27 17h4M7 7l3 3M24 24l3 3M27 7l-3 3M10 24l-3 3"/></svg><h3>Sun direction</h3><p>Which way the living room faces — eight compass points.</p></article>
+          <article class="reveal d1"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="3" width="14" height="28"/><path d="M10 10h14M10 17h14M10 24h14"/><rect x="17" y="10" width="7" height="7" fill="currentColor" fill-opacity=".25"/></svg><h3>Floor level</h3><p>Higher, middle or lower — relative to each block's height.</p></article>
+          <article class="reveal d2"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="10" cy="17" r="7"/><circle cx="25" cy="17" r="7"/><path d="M3 31h28" stroke-dasharray="2 2"/></svg><h3>Privacy</h3><p>Whether the unit you face is more than 30 m away.</p></article>
+          <article class="reveal d3"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h12v12H4zM16 4h14v12H16z"/><path d="M4 4v12" stroke-width="3"/><path d="M4 22h26" stroke-dasharray="3 2"/></svg><h3>Corner unit</h3><p>End-of-row homes with windows on two sides.</p></article>
+          <article class="reveal"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="8" width="10" height="18"/><path d="M4 8l10 18M14 8L4 26"/><path d="M18 17h12" stroke-dasharray="3 2"/></svg><h3>Lift distance</h3><p>Metres from your door to the lift lobby.</p></article>
+          <article class="reveal d1"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="6" width="10" height="22"/><path d="M8 10h4M8 14h4"/><path d="M19 17h11" stroke-dasharray="3 2"/></svg><h3>Rubbish chute</h3><p>How far the refuse chute is from your front door.</p></article>
+          <article class="reveal d2"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="9" width="24" height="15" rx="7"/><path d="M10 28l3-4M24 28l-3-4M5 16h24"/></svg><h3>Near MRT</h3><p>Blocks within a five-minute walk of a station.</p></article>
+          <article class="reveal d3"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M17 30V14"/><circle cx="17" cy="10" r="7"/><path d="M6 30h22"/></svg><h3>Facilities</h3><p>Playgrounds, fitness corners, shops — in or beside your block.</p></article>
+        </div>
+      </div>
     </section>
 
-    <!-- A-05 ACCOUNT -->
-    <section id="view-account" class="view" hidden>
-      <span class="eyebrow">A-05</span>
-      <h1>Account</h1>
-      <p id="auth-error" class="err" hidden></p>
-      <p id="acct-note" class="devlink" hidden aria-live="polite"></p>
-      <div id="acct-in" hidden>
-        <p class="lede">Signed in as <b id="acct-email"></b> &nbsp;<span id="acct-badge" class="badge"></span></p>
-        <div id="verify-box" class="field" hidden>
-          <p class="small muted">Verify your email to unlock Analysis. Check your inbox (and spam) for the link from Firebase.</p>
-          <div class="row-btns"><button id="btn-refresh" class="btn">I've verified</button><button id="btn-resend" class="btn ghost">Resend email</button></div>
+    <!-- BAND -->
+    <section class="band">
+      <div class="bg" style="background-image:url('/img/garden-breeze.webp')" role="img" aria-label="Rooftop garden and fitness corner at Kebun Baru Breeze (artist's impression)"></div>
+      <div class="wrap">
+        <span class="kicker reveal">Insights</span>
+        <h2 class="h2 reveal d1">See what other buyers are <em>looking for.</em></h2>
+        <p class="reveal d2">Which directions are most wanted, which blocks are most popular, how high people are willing to go. Verified members see live insights built from everyone's saved lists.</p>
+        <a class="btn brass reveal d3" href="/analysis">View insights <span class="arr">→</span></a>
+        <div class="mini-stats reveal d3">
+          <div><b>N · S</b><span>most-wanted facings</span></div>
+          <div><b>±1σ</b><span>floor-range spread</span></div>
+          <div><b>100+</b><span>verified users per project</span></div>
         </div>
-        <button id="btn-logout" class="btn ghost">Sign out</button>
       </div>
-      <div id="acct-out" class="auth">
-        <form id="form-login"><h2>Sign in</h2>
-          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
-          <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
-          <button class="btn primary">Sign in</button>
-          <button type="button" class="btn google" data-google>Continue with Google</button>
-          <button type="button" id="btn-forgot" class="linkbtn">Forgot password?</button>
-          <p class="err small"></p></form>
-        <form id="form-register"><h2>Create account</h2>
-          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
-          <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
-          <button class="btn primary">Create account</button>
-          <button type="button" class="btn google" data-google>Sign up with Google</button>
-          <p class="small muted">Save your list with your queue number, keep your shortlist across devices, and — once your email is verified — see the analysis.</p>
-          <p class="err small"></p></form>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-final">
+      <div class="wrap">
+        <span class="kicker reveal">Start now</span>
+        <h2 class="h1 reveal d1">Your queue number is coming. <em>Be ready.</em></h2>
+        <div class="actions reveal d2"><a class="btn primary" href="/rank">Rank the units <span class="arr">→</span></a><a class="btn" href="/account">Create a free account</a></div>
       </div>
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="js/scoring.js"></script>
-  <script src="js/legend.js"></script>
-  <script type="module" src="js/app.js"></script>
+  <script src="/js/site.js"></script>
+  <script src="/js/home.js"></script>
 </body>
 </html>

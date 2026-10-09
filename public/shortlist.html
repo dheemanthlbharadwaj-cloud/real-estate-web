@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shortlist — MyBTO</title>
+  <meta name="description" content="Your ordered shortlist of BTO units.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-page="shortlist" data-over-hero>
+  <main>
+    <section class="page-hero">
+      <div class="bg" style="background-image:url('/img/garden-portico.webp')"></div>
+      <div class="wrap">
+        <span class="kicker">Your shortlist</span>
+        <h1 class="h1">The homes you'd <em>pick first.</em></h1>
+        <p>Units you starred, in the order you'd choose them on selection day. Drag to reorder — it's saved to your account when you're signed in.</p>
+        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+      </div>
+    </section>
+
+    <section class="tool"><div class="wrap">
+      <div class="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/rank">Add more units <span class="arr">→</span></a></div>
+      <ol id="flag-list" class="shortlist"></ol>
+    </div></section>
+  </main>
+  <script src="/js/site.js"></script>
+  <script src="/js/scoring.js"></script>
+  <script src="/js/legend.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
