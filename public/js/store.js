@@ -3,7 +3,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
   getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
-  sendEmailVerification, sendPasswordResetEmail, reload,
+  sendEmailVerification, sendPasswordResetEmail, reload, GoogleAuthProvider, signInWithPopup,
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
@@ -18,6 +18,9 @@ const FRIENDLY = {
   'auth/user-not-found': 'Wrong email or password.',
   'auth/too-many-requests': 'Too many attempts — try again in a few minutes.',
   'auth/network-request-failed': 'Network error — check your connection.',
+  'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
+  'auth/popup-blocked': 'Your browser blocked the Google sign-in window — allow pop-ups and try again.',
+  'auth/account-exists-with-different-credential': 'That email already has a password account — sign in with your password.',
 };
 const friendly = e => new Error(FRIENDLY[e.code] || e.message);
 const toUser = u => (u ? { uid: u.uid, email: u.email, verified: u.emailVerified } : null);
@@ -50,6 +53,10 @@ export async function register(email, password) {
 }
 export async function login(email, password) {
   try { return toUser((await signInWithEmailAndPassword(auth, email, password)).user); } catch (e) { throw friendly(e); }
+}
+// Google accounts arrive with a verified email, so they unlock Analysis straight away.
+export async function loginWithGoogle() {
+  try { return toUser((await signInWithPopup(auth, new GoogleAuthProvider())).user); } catch (e) { throw friendly(e); }
 }
 export const logout = () => signOut(auth);
 export async function resendVerification() {

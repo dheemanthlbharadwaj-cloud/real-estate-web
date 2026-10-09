@@ -1,4 +1,6 @@
-# BTO Unit Ranker (HDB June 2026 exercise)
+# MyBTO — BTO unit ranker (HDB June 2026 exercise)
+
+Live: https://mybto.vercel.app (target domain: mybto.sg)
 
 Ranks every sale unit of the June 2026 BTO projects by each user's own importance weights.
 
@@ -8,7 +10,7 @@ Ranks every sale unit of the June 2026 BTO projects by each user's own importanc
 | Prime | Berlayar Rise (Bukit Merah), Lakeview Cascadia (Bishan) |
 | Standard | Sembawang Brook, Sembawang Portico (Sembawang), Woodgrove Acres (Woodlands) |
 
-**Stack:** static site on **Vercel** (`public/`), **Firebase Auth** (email + password, email verification),
+**Stack:** static site on **Vercel** (`public/`), **Firebase Auth** (email + password with email verification, and Google sign-in),
 **Firestore** (each user's saved lists and flags), and one Vercel function (`api/analysis.js`) that computes the
 aggregate analysis for verified users with the Firebase Admin SDK.
 

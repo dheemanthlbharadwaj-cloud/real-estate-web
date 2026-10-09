@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stack &amp; Storey — BTO unit ranker</title>
+  <title>MyBTO — rank every BTO unit by what matters to you</title>
   <meta name="description" content="Rank every unit in the June 2026 BTO projects by what matters to you.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
 </head>
 <body>
   <header class="masthead">
-    <p class="wordmark">Stack <em>&amp;</em> Storey<small>BTO unit ranker · June 2026 exercise</small></p>
+    <p class="wordmark">My<em>BTO</em><small>Unit ranker · June 2026 BTO exercise</small></p>
     <nav class="sheets" aria-label="Sections">
       <a href="#rank"><span>A-01</span>Rank</a>
       <a href="#shortlist"><span>A-02</span>Shortlist <b class="count" id="flag-count">0</b></a>
@@ -152,12 +152,14 @@
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
           <button class="btn primary">Sign in</button>
+          <button type="button" class="btn google" data-google>Continue with Google</button>
           <button type="button" id="btn-forgot" class="linkbtn">Forgot password?</button>
           <p class="err small"></p></form>
         <form id="form-register"><h2>Create account</h2>
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
           <button class="btn primary">Create account</button>
+          <button type="button" class="btn google" data-google>Sign up with Google</button>
           <p class="small muted">Save your list with your queue number, keep your shortlist across devices, and — once your email is verified — see the analysis.</p>
           <p class="err small"></p></form>
       </div>

@@ -1,4 +1,4 @@
-/* Stack & Storey — drawing-sheet aesthetic: paper, ink hairlines, brochure green, signal orange. */
+/* MyBTO — drawing-sheet aesthetic: paper, ink hairlines, brochure green, signal orange. */
 :root {
   --paper: #f2eee4;
   --paper-2: #e9e4d6;
@@ -247,6 +247,8 @@ table.schedule { width: 100%; border-collapse: collapse; font-size: 13px; }
 .auth h2 { font: 400 28px/1 var(--serif); margin: 0 0 4px; }
 .badge { display: inline-block; font: 600 10px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 4px 7px; border: 1px solid currentColor; }
 .badge.ok { color: var(--green); } .badge.no { color: var(--signal); }
+.btn.google { width: 100%; display: flex; gap: 10px; align-items: center; justify-content: center; }
+.btn.google::before { content: 'G'; font: 700 14px/1 var(--sans); color: var(--signal); }
 .row-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 .linkbtn { all: unset; cursor: pointer; font: 500 12px/1 var(--mono); color: var(--green); text-decoration: underline; text-underline-offset: 3px; justify-self: start; }
 .devlink { font: 12px/1.5 var(--mono); background: var(--sheet); border: 1px dashed var(--rule-strong); padding: 10px; margin: 12px 0; }

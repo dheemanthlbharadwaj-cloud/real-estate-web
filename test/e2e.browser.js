@@ -99,6 +99,13 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.click('#form-login button.primary');
     await p.waitForFunction(() => /Wrong email or password/.test(document.querySelector('#form-login .err').textContent));
     check(true, 'wrong password rejected with friendly message');
+    await p.click('#form-login [data-google]');
+    await p.waitForSelector('#acct-in:not([hidden])');
+    check((await p.textContent('#acct-badge')) === 'Verified', 'Google sign-in gives a verified account');
+    await p.goto(`${base}/#analysis`);
+    await p.waitForSelector('#analysis-body:not([hidden])');
+    check(true, 'Google user can open Analysis');
+    check((await p.title()).startsWith('MyBTO'), 'site is named MyBTO');
 
     const phone = await ctx.newPage();
     await phone.setViewportSize({ width: 390, height: 844 });

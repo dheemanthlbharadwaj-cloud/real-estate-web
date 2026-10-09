@@ -40,3 +40,12 @@ export async function signOut() { setUser(null); }
 export async function sendEmailVerification(user) { window.__verifySent = (window.__verifySent || 0) + 1; }
 export async function sendPasswordResetEmail() {}
 export async function reload() {}
+export class GoogleAuthProvider {}
+// Fake Google popup: signs in as a Google account whose email is already verified.
+export async function signInWithPopup() {
+  const u = users();
+  const email = 'google.user@gmail.com';
+  u[email] = u[email] || { uid: `g${Object.keys(u).length + 1}`, email, password: null, verified: true };
+  saveUsers(u); setUser(u[email]);
+  return { user: auth.currentUser };
+}

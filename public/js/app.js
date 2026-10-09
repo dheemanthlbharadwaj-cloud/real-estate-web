@@ -512,6 +512,11 @@ $('#btn-resend').addEventListener('click', async () => {
   try { await store.resendVerification(); note(`Verification email re-sent to ${state.user.email}.`); } catch (ex) { note(ex.message); }
 });
 $('#btn-refresh').addEventListener('click', refreshVerification);
+$$('[data-google]').forEach(b => b.addEventListener('click', async () => {
+  const err = b.closest('form').querySelector('.err');
+  err.textContent = '';
+  try { await store.loginWithGoogle(); note(''); } catch (ex) { err.textContent = ex.message; }
+}));
 $('#btn-logout').addEventListener('click', () => store.logout());
 
 init().catch(err => {
