@@ -355,7 +355,7 @@ on('#flag-list', 'drop', e => {
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function chart(id, config) {
   state.charts[id]?.destroy();
-  Chart.defaults.font.family = "'Hanken Grotesk', sans-serif";
+  Chart.defaults.font.family = "'Manrope', sans-serif";
   Chart.defaults.font.size = 12;
   Chart.defaults.color = css('--ink-2');
   Chart.defaults.borderColor = css('--line');
@@ -400,7 +400,7 @@ async function loadAnalysis() {
   $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''}. `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
-  const ink = css('--forest'), signal = css('--rose'), green = css('--brass'), rule = css('--line-2');
+  const ink = css('--navy'), signal = css('--neg'), green = css('--sea'), rule = css('--stone-2');
   const prefOrder = ['higher', 'middle', 'lower', 'none'];
   for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
     chart(`c-${k}`, {

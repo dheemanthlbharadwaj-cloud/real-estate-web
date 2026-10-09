@@ -9,7 +9,7 @@
     ['/shortlist', 'Shortlist', 'shortlist'],
     ['/analysis', 'Insights', 'analysis'],
   ];
-  const logo = '<span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>MyBTO';
+  const logo = '<em>My</em>BTO';
 
   const header = document.createElement('header');
   header.className = 'site-header';
@@ -28,9 +28,8 @@
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
   footer.innerHTML = `<div class="wrap">
-      <p class="big" aria-hidden="true">My<i>BTO</i></p>
       <div class="top">
-        <div><p style="max-width:40ch;margin:0;font-size:17px;color:#f3efe6">Every unit in this BTO exercise, ranked by what matters to you: sun, height, privacy and convenience.</p></div>
+        <div><a class="logo" href="/">${logo}</a><p class="about">Every unit in this BTO exercise, ranked by what matters to you: sun, height, privacy and convenience.</p></div>
         <div><h4>Explore</h4><ul><li><a href="/#projects">Projects</a></li><li><a href="/rank">Rank units</a></li><li><a href="/shortlist">Shortlist</a></li><li><a href="/analysis">Insights</a></li></ul></div>
         <div><h4>More</h4><ul><li><a href="/rank?legend=sun">What each factor means</a></li><li><a href="/account">${signedIn ? 'My account' : 'Sign in or sign up'}</a></li><li><a href="https://homes.hdb.gov.sg" target="_blank" rel="noopener">HDB Homes ↗</a></li></ul></div>
       </div>

@@ -16,21 +16,19 @@ HEAD = """<!doctype html>
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body data-page="{page}">
   <main>
-    <section class="page-hero c-{color}">
-      <div class="ph-grid">
-        <div class="copy">
-          <span class="label">{kicker}</span>
-          <h1 class="h1">{h1}</h1>
-          <p>{lede}</p>
-          <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
-        </div>
-        <div class="media"><img src="/img/{img}" alt=""></div>
+    <section class="page-hero">
+      <div class="bg" style="background-image:url('/img/{img}')" aria-hidden="true"></div>
+      <div class="wrap">
+        <span class="label">{kicker}</span>
+        <h1 class="h1">{h1}</h1>
+        <p>{lede}</p>
+        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
       </div>
     </section>
 """
@@ -47,7 +45,7 @@ FOOT = """  </main>
 PAGES = {
     "rank": dict(
         title="Rank units", img="garden-ridge.webp", kicker="Rank units", color="sky",
-        h1="Every unit, <i>ranked</i> for you.",
+        h1="Every unit, <em>ranked</em> for you.",
         lede="Choose a project, narrow it to the units you would consider, then weigh each factor from minus 5 (avoid) to plus 5 (must have).",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
@@ -89,7 +87,7 @@ PAGES = {
           <button id="btn-rank" class="btn primary">Rank units <span class="arr">→</span></button>
           <button type="button" class="btn ghost legend-open" data-legend="sun">What these factors mean</button>
         </aside>
-        <div>
+        <div class="results-card">
           <div class="sched-head">
             <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div></div>
             <div class="spacer"></div>
@@ -113,7 +111,7 @@ PAGES = {
 """),
     "shortlist": dict(
         title="Shortlist", img="garden-portico.webp", kicker="Your shortlist", color="butter",
-        h1="The homes you'd <i>pick first.</i>",
+        h1="The homes you'd <em>pick first.</em>",
         lede="The units you starred, in the order you would choose them on selection day. Drag to reorder. It is saved to your account when you are signed in.",
         desc="Your ordered shortlist of BTO units.",
         body="""
@@ -124,7 +122,7 @@ PAGES = {
 """),
     "analysis": dict(
         title="Insights", img="garden-brook.webp", kicker="Insights", color="forest",
-        h1="What other buyers <i>want.</i>",
+        h1="What other buyers <em>want.</em>",
         lede="Built from saved lists. Per project, only verified members are counted once there are at least 100 of them; until then every saved list counts.",
         desc="Aggregate insights from MyBTO users: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
@@ -160,7 +158,7 @@ PAGES = {
 """),
     "account": dict(
         title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
-        h1="Your <i>MyBTO</i> account.",
+        h1="Your <em>MyBTO</em> account.",
         lede="Save your ranked list with your queue number, keep your shortlist on every device and, once verified, unlock insights.",
         desc="Sign in or create a MyBTO account.",
         body="""
