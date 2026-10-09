@@ -3,71 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MyBTO — every BTO unit, ranked for you</title>
-  <meta name="description" content="Rank every unit in the June 2026 HDB BTO exercise by sun direction, height, privacy, convenience and more. Build your shortlist before selection day.">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <title>MyBTO · Every BTO unit, ranked your way</title>
+  <meta name="description" content="Rank every unit in this HDB BTO exercise by sun direction, height, privacy, convenience and more. Build your shortlist before selection day.">
+  <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="/img/hero.webp">
   <link rel="stylesheet" href="/css/site.css">
 </head>
-<body data-page="home" data-over-hero>
+<body data-page="home">
   <main>
-    <!-- HERO -->
+    <!-- HERO: copy on a solid block, photo beside it -->
     <section class="hero">
-      <div class="hero-img" style="background-image:url('/img/hero.webp')" role="img" aria-label="Landscaped courtyard between residential towers at Berlayar Rise (artist's impression)"></div>
-      <div class="wrap">
-        <div>
-          <span class="kicker">June 2026 BTO exercise · 7 projects</span>
-          <h1 class="display">Choose your home <em>before</em> you choose your flat.</h1>
-          <p>MyBTO ranks every unit in every block — by sun, height, privacy, the walk to the lift and the MRT — according to what matters to you. Walk into selection day with a shortlist you trust.</p>
-          <div class="actions">
-            <a class="btn brass" href="/rank">Rank the units <span class="arr">→</span></a>
-            <a class="btn light" href="#projects">Explore projects</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div>
+            <h1 class="display">Every unit, ranked <i>your</i> way.</h1>
+            <p class="lede">Two flats on the same floor can feel like different homes. MyBTO scores every unit in every block on sun, height, privacy and convenience, using the weights you choose, so you walk into selection day with a shortlist you trust.</p>
+            <div class="actions">
+              <a class="btn lime" href="/rank">Rank the units <span class="arr">→</span></a>
+              <a class="btn light" href="#projects">See the projects</a>
+            </div>
+          </div>
+          <div class="hero-foot">
+            <div><b>7</b><span>projects</span></div>
+            <div><b data-stat="units">4,576</b><span>units scored</span></div>
+            <div><b>11</b><span>factors per unit</span></div>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Example ranking">
-          <span class="kicker">Example · top match</span>
-          <div class="unit" id="hc-unit">#38-141</div>
-          <div class="meta" id="hc-meta">Blk 201A · Berlayar Rise · 4-Room</div>
-          <div class="bars" id="hc-bars">
-            <div><span>North-facing</span><i><b style="width:92%"></b></i></div>
-            <div><span>High floor</span><i><b style="width:84%"></b></i></div>
-            <div><span>Far from chute</span><i><b style="width:76%"></b></i></div>
-            <div><span>Corner unit</span><i><b style="width:100%"></b></i></div>
+        <div class="hero-media">
+          <img src="/img/hero.webp" alt="Courtyard playground between the towers of Berlayar Rise (artist's impression)">
+          <div class="ticket" aria-label="Example ranking">
+            <div class="top"><span class="label">Example shortlist</span><span class="pill">North facing · High floor</span></div>
+            <ol>
+              <li><b>1</b><span class="u">#38-141<small>Blk 201A · 4-Room</small></span><span class="s">9.4</span></li>
+              <li><b>2</b><span class="u">#36-143<small>Blk 201A · 4-Room</small></span><span class="s">9.1</span></li>
+              <li><b>3</b><span class="u">#41-113<small>Blk 200A · 4-Room</small></span><span class="s">8.7</span></li>
+            </ol>
           </div>
-        </aside>
+        </div>
       </div>
-      <span class="scroll-hint" aria-hidden="true">SCROLL</span>
     </section>
 
-    <!-- INTRO + STATS -->
-    <section class="section">
-      <div class="wrap">
-        <div class="split">
-          <div class="reveal">
-            <span class="kicker">Why MyBTO</span>
-            <h2 class="h2" style="margin:22px 0 24px">Two units on the same floor can feel like <em>different homes.</em></h2>
-            <p class="lede">One catches the morning light and looks out over a park; the other faces the afternoon sun and a neighbour's window twenty metres away. The brochure has all of this — buried across floor plans, site plans and unit grids. We read every page so you don't have to.</p>
-            <a class="btn" href="/guide" style="margin-top:14px">How we measure <span class="arr">→</span></a>
-          </div>
-          <div class="img reveal d2"><img src="/img/garden-lakeview.webp" alt="Community garden and playground at Lakeview Cascadia (artist's impression)" loading="lazy"><span class="tag-img">Lakeview Cascadia · Bishan</span></div>
+    <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+    <!-- INTRO -->
+    <section class="section intro">
+      <div class="wrap intro-grid">
+        <div class="reveal">
+          <span class="label"><span class="n">01</span>Why it matters</span>
+          <p class="statement">One unit catches the <b>morning light</b> and looks over a park. Its neighbour faces the <em>afternoon sun</em> and a window twenty metres away.</p>
+          <p class="body">The brochure has the answers, spread across unit grids, floor plans and site plans. We read every page, measure every drawing and put it in one place.</p>
+          <a class="btn" href="/rank?legend=sun">What we measure <span class="arr">→</span></a>
         </div>
-        <div class="stats reveal" style="margin-top:clamp(64px,9vw,120px)" id="stats">
-          <div><b data-stat="projects">7</b><span>BTO projects</span></div>
-          <div><b data-stat="units">—</b><span>units ranked</span></div>
-          <div><b>11</b><span>factors per unit</span></div>
-          <div><b>3</b><span>Plus · Prime · Standard</span></div>
-        </div>
+        <figure class="intro-photo reveal d2"><img src="/img/garden-lakeview.webp" alt="Garden and playground at Lakeview Cascadia (artist's impression)" loading="lazy"><figcaption>Lakeview Cascadia, Bishan</figcaption></figure>
       </div>
     </section>
 
     <!-- PROJECTS -->
-    <section class="section paper" id="projects">
+    <section class="section collection" id="projects">
       <div class="wrap">
         <div class="sec-head">
-          <div class="reveal"><span class="kicker">The collection</span><h2 class="h2" style="margin-top:22px">Seven projects. <em>One</em> way to compare them.</h2></div>
-          <p class="lede reveal d1">From Prime sites a stop from the city to Standard estates wrapped in greenery up north. Pick a project to rank every one of its units.</p>
+          <div class="reveal"><span class="label"><span class="n">02</span>The projects</span><h2 class="h2">Seven projects. <i>One</i> way to compare.</h2></div>
+          <p class="lede reveal d1">Prime sites a few stops from the city, Plus estates in Ang Mo Kio, and leafy Standard estates up north. Pick one to rank every unit in it.</p>
         </div>
         <div class="filters-tabs reveal" role="tablist" aria-label="Filter by project type">
           <button class="on" data-type="all">All</button><button data-type="Prime">Prime</button><button data-type="Plus">Plus</button><button data-type="Standard">Standard</button>
@@ -76,63 +74,58 @@
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="section dark">
+    <!-- STEPS -->
+    <section class="section steps-sec">
       <div class="wrap">
         <div class="sec-head">
-          <div class="reveal"><span class="kicker">How it works</span><h2 class="h2" style="margin-top:22px">From brochure to <em>shortlist</em> in three steps.</h2></div>
-          <p class="lede reveal d1">No spreadsheets, no squinting at floor plans. Tell us what you care about and we do the arithmetic for every unit.</p>
+          <div class="reveal"><span class="label"><span class="n">03</span>How it works</span><h2 class="h2">Brochure to shortlist in <i>three</i> steps.</h2></div>
+          <p class="lede reveal d1">No spreadsheets and no squinting at floor plans. Tell us what you care about and we do the maths for every unit.</p>
         </div>
         <div class="steps">
-          <article class="reveal"><div class="num">01</div><h3>Set your filters</h3><p>Choose a project, the flat types and blocks you're considering, your floor range — and switch on the privacy filter if you'd rather not look into a neighbour's window.</p></article>
-          <article class="reveal d1"><div class="num">02</div><h3>Weigh what matters</h3><p>Slide each factor from −5 to +5: north–south facing, corner unit, distance from the lift or rubbish chute, the MRT, facilities next door.</p></article>
-          <article class="reveal d2"><div class="num">03</div><h3>Shortlist &amp; save</h3><p>Every unit is scored and ranked. Star your favourites into a shortlist you can reorder, and save it with your queue number.</p></article>
+          <article class="reveal"><div class="num">1</div><h3>Filter</h3><p>Choose a project, the flat types and blocks you would consider and your floor range. Turn on the privacy filter if you would rather not look into a neighbour's window.</p></article>
+          <article class="reveal d1"><div class="num">2</div><h3>Weigh</h3><p>Slide each factor from minus 5 to plus 5: facing, corner unit, distance from the lift or chute, the MRT and facilities next door.</p></article>
+          <article class="reveal d2"><div class="num">3</div><h3>Shortlist</h3><p>Every unit gets a score and a rank. Star your favourites into a shortlist, put them in order and save it with your queue number.</p></article>
         </div>
       </div>
     </section>
 
     <!-- FACTORS -->
-    <section class="section">
+    <section class="section factors-sec">
       <div class="wrap">
         <div class="sec-head">
-          <div class="reveal"><span class="kicker">What we measure</span><h2 class="h2" style="margin-top:22px">The details that make a unit <em>yours.</em></h2></div>
-          <p class="lede reveal d1">Each measurement is taken from the official drawings, using each plan's own scale bar.</p>
+          <div class="reveal"><span class="label"><span class="n">04</span>What we measure</span><h2 class="h2">The details that make a unit <i>yours.</i></h2></div>
+          <p class="lede reveal d1">Every value comes from the official drawings, measured with each plan's own scale bar. Tap a factor to see the drawing behind it.</p>
         </div>
-        <div class="factors">
-          <article class="reveal"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="17" r="6"/><path d="M17 3v4M17 27v4M3 17h4M27 17h4M7 7l3 3M24 24l3 3M27 7l-3 3M10 24l-3 3"/></svg><h3>Sun direction</h3><p>Which way the living room faces — eight compass points.</p></article>
-          <article class="reveal d1"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="3" width="14" height="28"/><path d="M10 10h14M10 17h14M10 24h14"/><rect x="17" y="10" width="7" height="7" fill="currentColor" fill-opacity=".25"/></svg><h3>Floor level</h3><p>Higher, middle or lower — relative to each block's height.</p></article>
-          <article class="reveal d2"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="10" cy="17" r="7"/><circle cx="25" cy="17" r="7"/><path d="M3 31h28" stroke-dasharray="2 2"/></svg><h3>Privacy</h3><p>Whether the unit you face is more than 30 m away.</p></article>
-          <article class="reveal d3"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h12v12H4zM16 4h14v12H16z"/><path d="M4 4v12" stroke-width="3"/><path d="M4 22h26" stroke-dasharray="3 2"/></svg><h3>Corner unit</h3><p>End-of-row homes with windows on two sides.</p></article>
-          <article class="reveal"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="8" width="10" height="18"/><path d="M4 8l10 18M14 8L4 26"/><path d="M18 17h12" stroke-dasharray="3 2"/></svg><h3>Lift distance</h3><p>Metres from your door to the lift lobby.</p></article>
-          <article class="reveal d1"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="6" width="10" height="22"/><path d="M8 10h4M8 14h4"/><path d="M19 17h11" stroke-dasharray="3 2"/></svg><h3>Rubbish chute</h3><p>How far the refuse chute is from your front door.</p></article>
-          <article class="reveal d2"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="9" width="24" height="15" rx="7"/><path d="M10 28l3-4M24 28l-3-4M5 16h24"/></svg><h3>Near MRT</h3><p>Blocks within a five-minute walk of a station.</p></article>
-          <article class="reveal d3"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M17 30V14"/><circle cx="17" cy="10" r="7"/><path d="M6 30h22"/></svg><h3>Facilities</h3><p>Playgrounds, fitness corners, shops — in or beside your block.</p></article>
-        </div>
+        <ul class="findex findex-wrap">
+          <li class="reveal"><span class="n">01</span><h3><a href="/rank?legend=sun" style="text-decoration:none">Sun direction</a></h3><p>Which way the living room windows face, to the nearest of eight compass points.</p><span class="src">Floor plan + site plan</span></li>
+          <li class="reveal"><span class="n">02</span><h3><a href="/rank?legend=floor" style="text-decoration:none">Floor level</a></h3><p>Higher, middle or lower, judged against each block's own height.</p><span class="src">Unit grid</span></li>
+          <li class="reveal"><span class="n">03</span><h3><a href="/rank?legend=clearance" style="text-decoration:none">Privacy</a></h3><p>Whether the home your windows face is more than 30 m away.</p><span class="src">Site plan</span></li>
+          <li class="reveal"><span class="n">04</span><h3><a href="/rank?legend=corner" style="text-decoration:none">Corner unit</a></h3><p>End of row homes with windows on two sides.</p><span class="src">Floor plan</span></li>
+          <li class="reveal"><span class="n">05</span><h3><a href="/rank?legend=lift" style="text-decoration:none">Lift and chute</a></h3><p>Metres from your front door to the lift lobby and to the refuse chute.</p><span class="src">Floor plan</span></li>
+          <li class="reveal"><span class="n">06</span><h3><a href="/rank?legend=mrt" style="text-decoration:none">MRT and facilities</a></h3><p>Blocks a short walk from the station, and playgrounds, fitness corners and shops in or beside your block.</p><span class="src">Site plan</span></li>
+        </ul>
       </div>
     </section>
 
-    <!-- BAND -->
-    <section class="band">
-      <div class="bg" style="background-image:url('/img/garden-breeze.webp')" role="img" aria-label="Rooftop garden and fitness corner at Kebun Baru Breeze (artist's impression)"></div>
-      <div class="wrap">
-        <span class="kicker reveal">Insights</span>
-        <h2 class="h2 reveal d1">See what other buyers are <em>looking for.</em></h2>
-        <p class="reveal d2">Which directions are most wanted, which blocks are most popular, how high people are willing to go. Verified members see live insights built from everyone's saved lists.</p>
-        <a class="btn brass reveal d3" href="/analysis">View insights <span class="arr">→</span></a>
-        <div class="mini-stats reveal d3">
-          <div><b>N · S</b><span>most-wanted facings</span></div>
-          <div><b>±1σ</b><span>floor-range spread</span></div>
-          <div><b>100+</b><span>verified users per project</span></div>
+    <!-- INSIGHTS -->
+    <section class="section insights-sec">
+      <div class="wrap insights-grid">
+        <div class="reveal">
+          <span class="label" style="color:#d9f26a"><span class="n">05</span>Insights</span>
+          <h2 class="h2" style="margin-top:22px">See what other buyers are <i>looking for.</i></h2>
+          <p class="lede">Which facings are most wanted, which blocks are most popular and how high people are willing to go. Verified members see insights built from everyone's saved lists.</p>
+          <a class="btn lime" href="/analysis">View insights <span class="arr">→</span></a>
+          <div class="chips-list"><span>Floor range spread</span><span>Most wanted facings</span><span>Block popularity</span><span>Factor rankings</span><span>Most starred units</span></div>
         </div>
+        <figure class="insights-photo reveal d2" style="margin:0"><img src="/img/garden-breeze.webp" alt="Rooftop garden and fitness corner at Kebun Baru Breeze (artist's impression)" loading="lazy"></figure>
       </div>
     </section>
 
     <!-- CTA -->
     <section class="section cta-final">
-      <div class="wrap">
-        <span class="kicker reveal">Start now</span>
-        <h2 class="h1 reveal d1">Your queue number is coming. <em>Be ready.</em></h2>
-        <div class="actions reveal d2"><a class="btn primary" href="/rank">Rank the units <span class="arr">→</span></a><a class="btn" href="/account">Create a free account</a></div>
+      <div class="wrap cta-row">
+        <div class="reveal"><span class="label"><span class="n">06</span>Start now</span><h2 class="h1" style="margin-top:22px">Your queue number is coming. <i>Be ready.</i></h2></div>
+        <div class="actions reveal d1"><a class="btn primary" href="/rank">Rank the units <span class="arr">→</span></a><a class="btn" href="/account">Create a free account</a></div>
       </div>
     </section>
   </main>

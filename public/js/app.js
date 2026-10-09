@@ -32,7 +32,7 @@ const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } ca
 function route() {
   if (PAGE === 'shortlist') renderShortlist();
   if (PAGE === 'analysis') loadAnalysis();
-  if (PAGE === 'guide') renderLegend();
+  if (PAGE === 'rank' && new URLSearchParams(location.search).has('legend')) openLegend(new URLSearchParams(location.search).get('legend'));
   if (PAGE === 'account') renderAccount();
 }
 
@@ -135,10 +135,14 @@ function captureWeights() {
   });
 }
 
+const LEGEND_KEY = { sun: 'sun', design: 'design', block: null };
+const helpBtn = key => (key ? `<button type="button" class="help" data-legend="${key}" aria-label="What does this mean?">?</button>` : '');
+
 function meter(group, key, label, help) {
   const v = group === 'factor' ? state.weights[key] ?? 0 : state.weights[group]?.[key] ?? 0;
   const id = `w-${group}-${key}`.replace(/[^a-z0-9-]/gi, '_');
-  return `<div class="meter"><label for="${id}" title="${esc(help || '')}">${esc(label)}</label>
+  const lk = group === 'factor' ? key : LEGEND_KEY[group];
+  return `<div class="meter"><label for="${id}" title="${esc(help || '')}">${esc(label)}${helpBtn(lk)}</label>
     <input id="${id}" type="range" min="-5" max="5" step="1" value="${v}" data-group="${group}" data-key="${esc(key)}">
     <span class="val ${v > 0 ? 'pos' : v < 0 ? 'neg' : ''}">${v > 0 ? '+' : ''}${v}</span></div>`;
 }
@@ -208,7 +212,7 @@ function runRank() {
   renderResults(true);
 }
 
-const compass = d => `<span class="compass"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-opacity=".3"/><path d="M8 2 L10.5 9 H5.5Z" fill="currentColor" transform="rotate(${BEARING[d] ?? 0} 8 8)"/></svg>${esc(d)}</span>`;
+const compass = d => `<span class="compass"><i style="transform:rotate(${BEARING[d] ?? 0}deg)" aria-hidden="true">↑</i>${esc(d)}</span>`;
 
 const dist = m => (m == null ? '–' : `${Math.round(m)} m`);
 
@@ -259,14 +263,14 @@ on('#results', 'click', e => {
 });
 
 async function saveList() {
-  if (!state.user) { $('#save-msg').innerHTML = 'Sign in to save your list — <a href="/account">sign in here</a>.'; return; }
+  if (!state.user) { $('#save-msg').innerHTML = '<a href="/account">Sign in</a> to save your list.'; return; }
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
       project_type: state.project.project_type, queue_number: $('#queue').value.trim().slice(0, 40), flat_types: f.flatTypes, blocks: f.blocks,
       min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), opposite_gt30: f.oppositeGt30, weights: readWeights(),
     });
-    $('#save-msg').textContent = `Saved · ${state.ranked.length} units · queue ${$('#queue').value.trim() || '—'}`;
+    $('#save-msg').textContent = `Saved · ${state.ranked.length} units · queue ${$('#queue').value.trim() || 'not set'}`;
   } catch (err) { $('#save-msg').textContent = err.message; }
 }
 
@@ -306,7 +310,7 @@ function renderShortlist() {
   const ranked = Object.fromEntries(state.ranked.map(u => [u.id, u]));
   const list = $('#flag-list');
   const items = state.flags.filter(id => byId[id]);
-  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet — star ★ units on the Rank page.</div>'; return; }
+  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet. Star ★ units on the Rank page to add them.</div>'; return; }
   list.innerHTML = items.map((id, i) => {
     const u = byId[id], r = ranked[id];
     return `<li draggable="true" data-id="${esc(id)}">
@@ -393,7 +397,7 @@ async function loadAnalysis() {
     return;
   }
   const names = Object.fromEntries(state.index.projects.map(p => [p.key, p.name]));
-  $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''} — `
+  $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''}. `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
   const ink = css('--forest'), signal = css('--rose'), green = css('--brass'), rule = css('--line-2');
@@ -443,13 +447,43 @@ async function loadAnalysis() {
 on('#a-group', 'change', loadAnalysis);
 on('#a-value', 'change', loadAnalysis);
 
-// ---------------------------------------------------------------- legend
-function renderLegend() {
-  if ($('#legend').childElementCount) return;
-  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg reveal"><span class="eyebrow">${String(i + 1).padStart(2, '0')} · ${esc(c.tag)}</span>
-    <h3>${esc(c.title)}</h3>${c.svg}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
-  window.revealAll && window.revealAll($('#legend'));
+// ---------------------------------------------------------------- legend (drawer on the Rank page)
+function legendFigure(c) {
+  const pins = (c.pins || []).map(p => `<span class="pin${p.dir === 'up' ? ' up' : ''}" style="left:${p.x}%;top:${p.y}%">${esc(p.text)}</span>`).join('');
+  const bands = c.bands ? '<span class="band b-hi">Higher</span><span class="band b-mid">Middle</span><span class="band b-lo">Lower</span>' : '';
+  const one = (src, alt, cap) => `<figure class="lg-fig"><img src="/img/legend/${src}" alt="${esc(alt)}" loading="lazy">${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
+  if (c.img2 && c.cap2) return `<div class="lg-pair">${one(c.img, c.alt, c.cap)}${one(c.img2, c.alt2, c.cap2)}</div>`;
+  return `<figure class="lg-fig">${'<img src="/img/legend/' + c.img + '" alt="' + esc(c.alt) + '" loading="lazy">'}${pins}${bands}</figure>${c.img2 ? one(c.img2, c.alt2) : ''}`;
 }
+function renderLegend() {
+  if (!$('#legend') || $('#legend').childElementCount) return;
+  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}"><span class="label"><span class="n">${String(i + 1).padStart(2, '0')}</span>${esc(c.tag)}</span>
+    <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
+}
+function openLegend(key) {
+  renderLegend();
+  const d = $('#legend-drawer');
+  if (!d) return;
+  d.hidden = false;
+  document.body.classList.add('drawer-open');
+  requestAnimationFrame(() => d.classList.add('open'));
+  const target = key && $(`#lg-${key}`);
+  if (target) target.scrollIntoView({ block: 'start' });
+  else d.querySelector('.drawer-body').scrollTop = 0;
+}
+function closeLegend() {
+  const d = $('#legend-drawer');
+  if (!d) return;
+  d.classList.remove('open');
+  document.body.classList.remove('drawer-open');
+  setTimeout(() => { d.hidden = true; }, 300);
+}
+document.addEventListener('click', e => {
+  const h = e.target.closest('[data-legend]');
+  if (h) { e.preventDefault(); openLegend(h.dataset.legend); }
+  if (e.target.closest('[data-close-legend]')) closeLegend();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLegend(); });
 
 // ---------------------------------------------------------------- account
 function renderAccount() {
@@ -474,7 +508,7 @@ async function refreshVerification() {
   state.user = await store.refreshUser();
   renderTitleBlock();
   renderAccount();
-  note(state.user?.verified ? 'Email verified — Analysis is unlocked.' : "Not verified yet. Open the link in the email we sent you, then press this again.");
+  note(state.user?.verified ? 'Email verified. Insights are unlocked.' : "Not verified yet. Open the link in the email we sent you, then press this again.");
 }
 
 // Called by Firebase whenever the signed-in user changes (sign in / out in this or another tab).

@@ -19,15 +19,18 @@
   if (statEl) statEl.textContent = total.toLocaleString();
 
   const grid = document.getElementById('project-grid');
+  const types = p => p.flat_types.map(t => t.replace('2-Room Flexi', '2-Room Flexi').replace(/ \(Type \d\)/, '')).filter((t, j, a) => a.indexOf(t) === j);
   grid.innerHTML = ORDER.filter(k => byKey[k]).map((k, i) => {
     const p = byKey[k];
-    const wide = i < 2 || i > 4 ? ' wide' : ''; // 2 · 3 · 2 layout
+    const wide = i < 2 || i > 4 ? ' wide' : ''; // 2, 3, 2 layout
     return `<a class="pcard${wide} reveal${i % 3 ? ` d${i % 3}` : ''}" href="/rank?project=${encodeURIComponent(k)}" data-type="${esc(p.project_type)}">
       <div class="ph"><img src="/img/${esc(k)}.webp" alt="${esc(p.name)} (artist's impression)" loading="lazy"><span class="badge-type ${esc(p.project_type)}">${esc(p.project_type)}</span></div>
       <div class="body"><h3>${esc(p.name)}</h3><span class="go" aria-hidden="true">→</span><span class="town">${esc(p.town)}</span>
-        <div class="facts"><span>${p.units.toLocaleString()} units</span><span>${p.blocks.length} blocks</span><span>${p.flat_types.map(t => t.replace('2-Room Flexi', '2RF').replace(/ \(Type \d\)/, '')).filter((t, j, a) => a.indexOf(t) === j).join(' · ')}</span></div>
-        <p class="small muted" style="grid-column:1/-1;margin:10px 0 0">${esc(BLURB[k] || '')}</p></div></a>`;
+        <p class="blurb">${esc(BLURB[k] || '')}</p>
+        <div class="facts"><span>${p.units.toLocaleString()} units</span><span>${p.blocks.length} blocks</span>${types(p).map(t => `<span>${esc(t)}</span>`).join('')}</div></div></a>`;
   }).join('');
+  const m = document.getElementById('marquee');
+  if (m) { const names = ORDER.filter(k => byKey[k]).map(k => `<span>${esc(byKey[k].name)}</span>`).join(''); m.innerHTML = names + names; }
   window.revealAll && window.revealAll(grid);
 
   document.querySelectorAll('.filters-tabs button').forEach(b => b.addEventListener('click', () => {

@@ -3,23 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rank units — MyBTO</title>
-  <meta name="description" content="Rank every unit of a June 2026 BTO project by your own priorities.">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <title>Rank units · MyBTO</title>
+  <meta name="description" content="Rank every unit of a BTO project by your own priorities.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/app.css">
 </head>
-<body data-page="rank" data-over-hero>
+<body data-page="rank">
   <main>
-    <section class="page-hero">
-      <div class="bg" style="background-image:url('/img/garden-ridge.webp')"></div>
-      <div class="wrap">
-        <span class="kicker">Rank units</span>
-        <h1 class="h1">Every unit, <em>ranked</em> for you.</h1>
-        <p>Choose a project, filter to the units you'd consider, then weigh each factor from −5 (avoid) to +5 (must have).</p>
-        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+    <section class="page-hero c-sky">
+      <div class="ph-grid">
+        <div class="copy">
+          <span class="label">Rank units</span>
+          <h1 class="h1">Every unit, <i>ranked</i> for you.</h1>
+          <p>Choose a project, narrow it to the units you would consider, then weigh each factor from minus 5 (avoid) to plus 5 (must have).</p>
+          <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+        </div>
+        <div class="media"><img src="/img/garden-ridge.webp" alt=""></div>
       </div>
     </section>
 
@@ -54,11 +57,12 @@
           </div>
           <div class="step">
             <div class="step-h"><span class="n">iii.</span><h2>Importance</h2></div>
-            <p class="small muted" style="margin:-6px 0 0">−5 avoid · 0 don't mind · +5 must have. Only factors present in your selected blocks are shown.</p>
+            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid, 0 means you don't mind, plus 5 means must have. Only factors found in your selected blocks are shown. Tap ? to see what a factor means.</p>
             <div id="weights"></div>
             <p id="hidden-factors" class="hidden-note"></p>
           </div>
           <button id="btn-rank" class="btn primary">Rank units <span class="arr">→</span></button>
+          <button type="button" class="btn ghost legend-open" data-legend="sun">What these factors mean</button>
         </aside>
         <div>
           <div class="sched-head">
@@ -74,6 +78,13 @@
         </div>
       </div>
     </div></section>
+    <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
+      <div class="drawer-scrim" data-close-legend></div>
+      <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">
+        <div class="drawer-head"><h2 class="h3" id="legend-title">What each factor means</h2><button type="button" class="btn ghost" data-close-legend>Close</button></div>
+        <div class="drawer-body"><div id="legend"></div></div>
+      </div>
+    </aside>
   </main>
   <script src="/js/site.js"></script>
   <script src="/js/scoring.js"></script>

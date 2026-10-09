@@ -117,12 +117,29 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.click('#project-grid .pcard:not([hidden]) >> nth=0');
     await p.waitForSelector('#results tbody tr');
     check((await p.inputValue('#project')) === 'berlayar-rise-7', 'project card opens Rank for that project');
-    await p.goto(`${base}/guide`);
-    await p.waitForSelector('#legend .lg');
-    check((await p.$$eval('#legend .lg', c => c.length)) >= 8, 'guide shows the factor legend');
-    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/guide', '/account']) {
+    await p.goto(`${base}/rank`);
+    await p.waitForSelector('#weights .help');
+    await p.click('#weights .help >> nth=0');
+    await p.waitForSelector('#legend-drawer.open #legend .lg');
+    check((await p.$$eval('#legend .lg', c => c.length)) === 10, 'legend drawer opens with all 10 factors');
+    check((await p.$$eval('#legend img', i => i.length)) >= 10, 'legend uses images');
+    await p.click('.drawer-head [data-close-legend]');
+    await p.waitForSelector('#legend-drawer', { state: 'hidden' });
+    check(true, 'legend drawer closes');
+    for (const path of ['/rank?legend=mrt']) {
+      await p.goto(`${base}${path}`);
+      await p.waitForSelector('#legend-drawer.open');
+      check(true, 'legend deep link opens the drawer');
+    }
+    check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
+    const text = await p.evaluate(() => document.body.innerText);
+    check(!text.includes('\u2014'), 'no em dashes on rank page');
+    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/account']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
+      await p.waitForTimeout(300);
+      check(!(await p.evaluate(() => document.body.innerText)).includes('\u2014'), `${path}: no em dashes`);
+      check((await p.$$eval('svg', s => s.length)) === 0, `${path}: no SVG`);
     }
 
     const phone = await ctx.newPage();

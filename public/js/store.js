@@ -10,17 +10,17 @@ import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.
 let auth = null, db = null, ready = null;
 
 const FRIENDLY = {
-  'auth/email-already-in-use': 'That email is already registered — sign in instead.',
+  'auth/email-already-in-use': 'That email is already registered. Sign in instead.',
   'auth/invalid-email': 'Enter a valid email address.',
   'auth/weak-password': 'Password must be at least 6 characters.',
   'auth/invalid-credential': 'Wrong email or password.',
   'auth/wrong-password': 'Wrong email or password.',
   'auth/user-not-found': 'Wrong email or password.',
-  'auth/too-many-requests': 'Too many attempts — try again in a few minutes.',
-  'auth/network-request-failed': 'Network error — check your connection.',
+  'auth/too-many-requests': 'Too many attempts. Try again in a few minutes.',
+  'auth/network-request-failed': 'Network error. Check your connection.',
   'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
-  'auth/popup-blocked': 'Your browser blocked the Google sign-in window — allow pop-ups and try again.',
-  'auth/account-exists-with-different-credential': 'That email already has a password account — sign in with your password.',
+  'auth/popup-blocked': 'Your browser blocked the Google sign-in window. Allow pop-ups and try again.',
+  'auth/account-exists-with-different-credential': 'That email already has a password account. Sign in with your password.',
 };
 const friendly = e => new Error(FRIENDLY[e.code] || e.message);
 const toUser = u => (u ? { uid: u.uid, email: u.email, verified: u.emailVerified } : null);

@@ -1,117 +1,75 @@
-// Legend cards: one line-drawing per factor, drawn in the same ink style as the plans.
-// Diagrams are schematic (not to scale) and use currentColor so they follow the theme.
+// Factor legend shown in the Rank page drawer. Every visual is a real brochure drawing or the
+// project's own annotated screenshot; labels are HTML pins placed by percentage (x, y).
 window.LEGEND = [
   {
-    title: 'Sun direction', tag: 'Importance per direction',
-    text: 'The compass direction the living / dining room windows face, rounded to 8 points. North–south facing units get less direct afternoon sun; west-facing units get the most.',
-    rule: 'Facing = window side on the floor plan, rotated by the site plan north arrow.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <circle cx="80" cy="75" r="52" stroke-opacity=".35"/><circle cx="80" cy="75" r="2" fill="currentColor"/>
-      ${['N','NE','E','SE','S','SW','W','NW'].map((d,i)=>{const a=(i*45-90)*Math.PI/180;const x=80+64*Math.cos(a),y=75+64*Math.sin(a);const x2=80+52*Math.cos(a),y2=75+52*Math.sin(a);return `<line x1="80" y1="75" x2="${x2}" y2="${y2}" stroke-opacity="${i%2?'.25':'.6'}"/><text x="${x}" y="${y+4}" font-family="Hanken Grotesk" font-size="10" text-anchor="middle" fill="currentColor" stroke="none">${d}</text>`}).join('')}
-      <rect x="180" y="50" width="90" height="50" stroke-width="1.6"/><line x1="180" y1="100" x2="270" y2="100" stroke="var(--brass)" stroke-width="4"/>
-      <path d="M225 108 v26 m-6 -8 l6 8 l6 -8" stroke="var(--brass)"/><text x="225" y="44" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">UNIT</text>
-      <text x="246" y="128" font-family="Hanken Grotesk" font-size="9" fill="var(--brass)" stroke="none">S</text></svg>`,
+    key: 'sun', title: 'Sun direction', tag: 'Importance per direction',
+    img: 'sun.webp', alt: 'Floor plan of 4-room units 113 and 115 with living and dining windows along the top edge',
+    pins: [{ x: 50, y: 6, text: 'Living room windows', dir: 'up' }, { x: 50, y: 90, text: 'The way these windows face is the unit’s facing' }],
+    text: 'We look at which side the living and dining room windows are on, then turn that into one of eight compass points using the site plan’s north arrow. North and south facing homes get the least direct afternoon sun; west facing homes get the most.',
+    rule: 'Source: block floor plan and site plan north arrow.',
   },
   {
-    title: 'Corridor or corner unit', tag: 'Corner unit',
-    text: 'A corner unit sits at the end of a row: it shares a wall with only one neighbour and has windows on two sides. Corridor units sit between two units along the common corridor.',
-    rule: 'Taken from the block floor plan.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      ${[0,1,2,3].map(i=>`<rect x="${30+i*60}" y="30" width="60" height="60" ${i===0||i===3?'fill="var(--rose-soft)" stroke-width="1.8"':''}/>`).join('')}
-      <rect x="30" y="98" width="240" height="18" stroke-dasharray="3 3" stroke-opacity=".6"/>
-      <text x="150" y="111" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">COMMON CORRIDOR</text>
-      <text x="60" y="64" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">CORNER</text>
-      <text x="240" y="64" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">CORNER</text>
-      <text x="150" y="64" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none" opacity=".6">CORRIDOR</text>
-      <path d="M26 30 v60 M30 26 h60" stroke="var(--brass)" stroke-width="3"/></svg>`,
+    key: 'floor', title: 'Floor level', tag: 'Filter and floor priority',
+    img: 'floors.webp', alt: 'Berlayar Rise towers (artist’s impression)',
+    bands: true,
+    text: 'Pick the lowest and highest storey you would accept, then choose whether higher, middle or lower floors should rank first. Priority is worked out against each block’s own height, so a 33 storey block and a 49 storey block are treated fairly.',
+    rule: 'Source: unit distribution grid.',
   },
   {
-    title: 'Distance from lift', tag: 'Distance from lift (further)',
-    text: 'Straight-line metres from the unit\'s main door to the lift lobby. Closer is convenient; further is quieter. Set a positive importance if you prefer further away.',
-    rule: 'Measured on the floor plan with its scale bar. "Near" = within 15 m.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <rect x="20" y="40" width="60" height="70"/>${[0,1].map(i=>`<rect x="${28+i*24}" y="50" width="20" height="20"/><path d="M${28+i*24} 50 l20 20 m0 -20 l-20 20" stroke-opacity=".5"/>`).join('')}
-      <text x="50" y="98" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">LIFTS</text>
-      <rect x="200" y="40" width="80" height="70" fill="var(--sage-soft)"/><text x="240" y="80" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">UNIT</text>
-      <path d="M80 75 H200" stroke="var(--brass)" stroke-dasharray="4 3"/><path d="M80 70 v10 M200 70 v10" stroke="var(--brass)"/>
-      <text x="140" y="66" font-family="Hanken Grotesk" font-size="10" text-anchor="middle" fill="var(--brass)" stroke="none">23 m</text></svg>`,
+    key: 'corner', title: 'Corridor or corner unit', tag: 'Corner unit',
+    img: 'corner-chute.webp', alt: 'Annotated floor plan showing a corner unit far from the rubbish chute and a corridor unit near it',
+    pins: [{ x: 33, y: 8, text: 'Corner: end of the row, windows on two sides' }],
+    text: 'A corner unit sits at the end of a row. It shares a wall with one neighbour and usually has windows on two sides. Corridor units sit between two other units along the common corridor.',
+    rule: 'Source: block floor plan.',
   },
   {
-    title: 'Distance from rubbish chute', tag: 'Distance from rubbish chute (further)',
-    text: 'Straight-line metres from the unit\'s door to the nearest refuse chute (next to the wash area). Further usually means fewer smells and less noise.',
-    rule: 'Measured on the floor plan with its scale bar. "Near" = within 10 m.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <rect x="20" y="45" width="56" height="56"/><path d="M28 53 h40 v40 h-40z" stroke-opacity=".5"/><path d="M28 53 l40 40 M68 53 l-40 40" stroke-opacity=".4"/>
-      <text x="48" y="118" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">CHUTE</text>
-      <rect x="120" y="45" width="60" height="56" fill="var(--rose-soft)"/><rect x="220" y="45" width="60" height="56" fill="var(--sage-soft)"/>
-      <text x="150" y="77" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">NEAR</text>
-      <text x="250" y="77" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">FAR</text>
-      <path d="M76 30 H250" stroke="var(--brass)" stroke-dasharray="4 3"/><path d="M76 25 v10 M150 25 v10 M250 25 v10" stroke="var(--brass)"/></svg>`,
+    key: 'chute', title: 'Distance from rubbish chute', tag: 'Further is better',
+    img: 'corner-chute.webp', alt: 'Annotated floor plan with the rubbish chute circled',
+    pins: [{ x: 30, y: 40, text: 'Refuse chute and wash area' }],
+    text: 'Straight line distance from the unit’s front door to the nearest refuse chute, measured with the floor plan’s scale bar. Further usually means less smell and less noise. A unit within 10 m counts as near.',
+    rule: 'Source: block floor plan, measured with its scale bar.',
   },
   {
-    title: 'More than 30 m from neighbouring blocks', tag: 'Importance + privacy filter',
-    text: 'Each unit gets a 15 m circle around its centre on the site plan. If two circles from facing units overlap, the units are less than 30 m apart. The privacy filter hides units whose windows face another unit closer than 30 m.',
-    rule: 'Measured on the site plan with its scale bar.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <rect x="40" y="20" width="70" height="40"/><rect x="40" y="95" width="70" height="40"/><rect x="190" y="20" width="70" height="40"/>
-      <circle cx="75" cy="40" r="30" fill="var(--rose-soft)" fill-opacity=".7" stroke="var(--brass)"/><circle cx="75" cy="115" r="30" fill="var(--rose-soft)" fill-opacity=".7" stroke="var(--brass)"/>
-      <circle cx="225" cy="40" r="30" fill="var(--sage-soft)" fill-opacity=".7" stroke="var(--forest-2)"/>
-      <text x="150" y="85" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">r = 15 m</text>
-      <text x="75" y="80" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="var(--brass)" stroke="none">&lt; 30 m</text>
-      <text x="225" y="88" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="var(--forest-2)" stroke="none">&gt; 30 m</text></svg>`,
+    key: 'lift', title: 'Distance from lift', tag: 'Closer or further, your call',
+    img: 'lift.webp', alt: 'Floor plan showing the lift lobby between two rows of units',
+    pins: [{ x: 70, y: 62, text: 'Lift lobby' }, { x: 42, y: 12, text: 'Front doors open onto the corridor' }],
+    text: 'Straight line distance from the front door to the lift lobby. Close is convenient; further away is quieter. Slide the meter to plus if you would rather be further away. Within 15 m counts as near.',
+    rule: 'Source: block floor plan, measured with its scale bar.',
   },
   {
-    title: 'Access to roof', tag: 'Access to roof',
-    text: 'The unit looks onto or adjoins a roof marked on the floor plan, e.g. "ROOF AT 2ND STOREY ONLY". Usually only applies on the storey just above the roof.',
-    rule: 'From floor plan annotations, per storey.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      ${[0,1,2,3].map(i=>`<rect x="40" y="${20+i*28}" width="80" height="28" ${i===2?'fill="var(--sage-soft)"':''}/>`).join('')}
-      <path d="M120 104 H270 V132 H120" fill="var(--ivory-2)"/><path d="M120 104 H270" stroke-width="2.5"/>
-      <text x="195" y="122" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">ROOF AT 2ND STOREY</text>
-      <text x="80" y="94" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">#03</text>
-      <path d="M126 90 q30 -10 50 6" stroke="var(--brass)"/><path d="M170 90 l6 6 l-8 2" stroke="var(--brass)"/></svg>`,
+    key: 'clearance', title: 'More than 30 m from the next block', tag: 'Importance and privacy filter',
+    img: 'privacy.webp', alt: 'Site plan of Sembawang Brook with a 15 m circle drawn around each unit; overlapping circles shown in red',
+    pins: [{ x: 38, y: 33, text: 'Circles overlap: under 30 m apart' }, { x: 80, y: 46, text: 'No overlap: over 30 m' }],
+    text: 'Each unit gets a 15 m circle around its centre on the site plan. When the circles of two facing units overlap, the units are less than 30 m apart. Switch on the privacy filter to hide every unit whose windows face another home closer than 30 m.',
+    rule: 'Source: site plan, measured with its scale bar.',
   },
   {
-    title: 'Near MRT', tag: 'Near MRT',
-    text: 'Straight-line distance from the unit\'s block to the nearest MRT station. "Near" means within 400 m, about a 5-minute walk.',
-    rule: 'From the site plan, or the location plan when the station is off the site plan.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <circle cx="80" cy="75" r="60" stroke-dasharray="3 4" stroke-opacity=".6"/><rect x="66" y="62" width="28" height="26"/>
-      <text x="80" y="128" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">400 m</text>
-      <rect x="210" y="58" width="56" height="34" rx="17" fill="var(--forest-2)" stroke="none"/><text x="238" y="79" font-family="Hanken Grotesk" font-size="10" text-anchor="middle" fill="var(--paper)" stroke="none">MRT</text>
-      <path d="M94 75 H210" stroke="var(--brass)" stroke-dasharray="4 3"/></svg>`,
+    key: 'roof', title: 'Access to roof', tag: 'Access to roof',
+    img: 'roof.webp', alt: 'Block 204B floor plan with roof at 2nd storey annotations circled',
+    pins: [{ x: 20, y: 30, text: 'Roof at 2nd storey only' }],
+    text: 'Some units look onto, or step out towards, a roof drawn on the floor plan, such as “roof at 2nd storey only”. This usually applies only on the storey just above that roof.',
+    rule: 'Source: floor plan annotations, per storey.',
   },
   {
-    title: 'Facilities nearby', tag: 'Facilities nearby',
-    text: '"Has" = the facility is in the unit\'s own block (e.g. at its 1st storey or on its roof). "Near" = the facility is not in any residential block but is within 50 m of the unit. A "has" counts twice as much as a "near".',
-    rule: 'Facility markers from the site plan legend: playgrounds, fitness stations, pavilions, preschool, RN centre, shops, eating house, supermarket and more.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <rect x="30" y="40" width="90" height="70" fill="var(--sage-soft)"/><text x="75" y="100" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">YOUR BLOCK</text>
-      <circle cx="75" cy="68" r="11" fill="var(--forest)" stroke="none"/><text x="75" y="72" font-family="Hanken Grotesk" font-size="11" text-anchor="middle" fill="var(--paper)" stroke="none">5</text>
-      <circle cx="75" cy="75" r="100" stroke-dasharray="3 4" stroke-opacity=".35"/>
-      <circle cx="190" cy="60" r="11" fill="var(--forest)" stroke="none"/><text x="190" y="64" font-family="Hanken Grotesk" font-size="11" text-anchor="middle" fill="var(--paper)" stroke="none">1</text>
-      <text x="75" y="30" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">HAS</text>
-      <text x="190" y="88" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">NEAR ≤ 50 m</text></svg>`,
+    key: 'mrt', title: 'Near MRT', tag: 'Near MRT',
+    img: 'mrt.webp', alt: 'Berlayar Rise site plan with the MRT station at the top, marking blocks near and far from it',
+    pins: [{ x: 45, y: 8, text: 'Telok Blangah MRT' }],
+    text: 'Straight line distance from the unit’s block to the nearest MRT station. Within 400 m, roughly a five minute walk, counts as near.',
+    rule: 'Source: site plan, or the location plan when the station sits outside the site.',
   },
   {
-    title: 'Unit design', tag: '2-Room Flexi only',
-    text: '2-Room Flexi flats come in Type 1 and Type 2 layouts, shown in different colours on the unit distribution grid. The meter only appears when your selected blocks contain 2-Room Flexi units.',
-    rule: 'From the unit distribution legend.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      <rect x="40" y="30" width="90" height="90" fill="#fde2d1" stroke-opacity=".8"/><rect x="170" y="30" width="90" height="90" fill="#e27f68" fill-opacity=".55"/>
-      <path d="M40 80 h50 v40 M170 70 h40 v50" stroke-opacity=".6"/>
-      <text x="85" y="140" font-family="Hanken Grotesk" font-size="10" text-anchor="middle" fill="currentColor" stroke="none">TYPE 1</text>
-      <text x="215" y="140" font-family="Hanken Grotesk" font-size="10" text-anchor="middle" fill="currentColor" stroke="none">TYPE 2</text></svg>`,
+    key: 'facilities', title: 'Facilities nearby', tag: 'Has and near',
+    img: 'facilities.webp', alt: 'Site plan detail with numbered facility markers around blocks 201B and 204A',
+    img2: 'facilities-key.webp', alt2: 'Facilities key from the site plan',
+    pins: [{ x: 66, y: 22, text: 'RN centre inside block 201B: “has” for 201B' }, { x: 16, y: 40, text: 'Playgrounds in the open: “near”' }],
+    text: '“Has” means the facility is in your own block, for example at its first storey or on its roof. “Near” means it is not inside any residential block but sits within 50 m of your unit. A “has” counts twice as much as a “near”.',
+    rule: 'Source: numbered markers on the site plan and its legend.',
   },
   {
-    title: 'Floor level', tag: 'Filter + floor priority',
-    text: 'Choose the lowest and highest storey you\'d accept, then whether to prioritise higher, middle or lower floors. Priority is relative to each block\'s own height, so a 16-storey and a 48-storey block are treated fairly.',
-    rule: 'Storeys from the unit distribution grid.',
-    svg: `<svg viewBox="0 0 300 150" fill="none" stroke="currentColor" stroke-width="1.2">
-      ${Array.from({length:10},(_,i)=>`<rect x="40" y="${12+i*12.5}" width="60" height="12.5" ${i<3?'fill="var(--sage-soft)"':''}/>`).join('')}
-      ${Array.from({length:6},(_,i)=>`<rect x="170" y="${62+i*12.5}" width="60" height="12.5" ${i<2?'fill="var(--sage-soft)"':''}/>`).join('')}
-      <text x="70" y="146" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">48 STOREYS</text>
-      <text x="200" y="146" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">16 STOREYS</text>
-      <text x="135" y="42" font-family="Hanken Grotesk" font-size="9" text-anchor="middle" fill="var(--forest-2)" stroke="none">TOP 30%</text></svg>`,
+    key: 'design', title: 'Unit design', tag: '2-Room Flexi only',
+    img: 'rf1.webp', alt: '2-Room Flexi Type 1 floor plan', cap: 'Type 1',
+    img2: 'rf2.webp', alt2: '2-Room Flexi Type 2 floor plan', cap2: 'Type 2',
+    text: '2-Room Flexi flats come in two layouts, Type 1 and Type 2, shown in different colours on the unit distribution grid. This meter only appears when your selected blocks contain 2-Room Flexi units.',
+    rule: 'Source: unit distribution legend and floor plans.',
   },
 ];

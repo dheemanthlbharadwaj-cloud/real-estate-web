@@ -24,7 +24,7 @@ aggregate analysis for verified users with the Firebase Admin SDK.
   (tabs Plus / Prime / Standard) from the reconciled brochure extractions in `pipeline/raw/`.
 
 ## Pages
-`/` home · `/rank` · `/shortlist` · `/analysis` (Insights) · `/guide` (How it works) · `/account`.
+`/` home · `/rank` · `/shortlist` · `/analysis` (Insights) · `/account`.
 Inner pages are generated from one shell: edit `pipeline/build_pages.py`, then `python3 pipeline/build_pages.py`.
 Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochures (© HDB), credited in the footer.
 

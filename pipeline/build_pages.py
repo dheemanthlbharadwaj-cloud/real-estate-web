@@ -1,4 +1,4 @@
-"""Generate the inner pages (rank, shortlist, analysis, guide, account) from one shared shell.
+"""Generate the inner pages (rank, shortlist, analysis, account) from one shared shell.
 
 Run after editing a page body below:  python3 pipeline/build_pages.py
 """
@@ -11,23 +11,26 @@ HEAD = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title} — MyBTO</title>
+  <title>{title} · MyBTO</title>
   <meta name="description" content="{desc}">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/app.css">
 </head>
-<body data-page="{page}" data-over-hero>
+<body data-page="{page}">
   <main>
-    <section class="page-hero">
-      <div class="bg" style="background-image:url('/img/{img}')"></div>
-      <div class="wrap">
-        <span class="kicker">{kicker}</span>
-        <h1 class="h1">{h1}</h1>
-        <p>{lede}</p>
-        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+    <section class="page-hero c-{color}">
+      <div class="ph-grid">
+        <div class="copy">
+          <span class="label">{kicker}</span>
+          <h1 class="h1">{h1}</h1>
+          <p>{lede}</p>
+          <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+        </div>
+        <div class="media"><img src="/img/{img}" alt=""></div>
       </div>
     </section>
 """
@@ -43,10 +46,10 @@ FOOT = """  </main>
 
 PAGES = {
     "rank": dict(
-        title="Rank units", img="garden-ridge.webp", kicker="Rank units",
-        h1="Every unit, <em>ranked</em> for you.",
-        lede="Choose a project, filter to the units you'd consider, then weigh each factor from −5 (avoid) to +5 (must have).",
-        desc="Rank every unit of a June 2026 BTO project by your own priorities.",
+        title="Rank units", img="garden-ridge.webp", kicker="Rank units", color="sky",
+        h1="Every unit, <i>ranked</i> for you.",
+        lede="Choose a project, narrow it to the units you would consider, then weigh each factor from minus 5 (avoid) to plus 5 (must have).",
+        desc="Rank every unit of a BTO project by your own priorities.",
         body="""
     <section class="tool"><div class="wrap">
       <div class="desk">
@@ -79,11 +82,12 @@ PAGES = {
           </div>
           <div class="step">
             <div class="step-h"><span class="n">iii.</span><h2>Importance</h2></div>
-            <p class="small muted" style="margin:-6px 0 0">−5 avoid · 0 don't mind · +5 must have. Only factors present in your selected blocks are shown.</p>
+            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid, 0 means you don't mind, plus 5 means must have. Only factors found in your selected blocks are shown. Tap ? to see what a factor means.</p>
             <div id="weights"></div>
             <p id="hidden-factors" class="hidden-note"></p>
           </div>
           <button id="btn-rank" class="btn primary">Rank units <span class="arr">→</span></button>
+          <button type="button" class="btn ghost legend-open" data-legend="sun">What these factors mean</button>
         </aside>
         <div>
           <div class="sched-head">
@@ -99,11 +103,18 @@ PAGES = {
         </div>
       </div>
     </div></section>
+    <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
+      <div class="drawer-scrim" data-close-legend></div>
+      <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">
+        <div class="drawer-head"><h2 class="h3" id="legend-title">What each factor means</h2><button type="button" class="btn ghost" data-close-legend>Close</button></div>
+        <div class="drawer-body"><div id="legend"></div></div>
+      </div>
+    </aside>
 """),
     "shortlist": dict(
-        title="Shortlist", img="garden-portico.webp", kicker="Your shortlist",
-        h1="The homes you'd <em>pick first.</em>",
-        lede="Units you starred, in the order you'd choose them on selection day. Drag to reorder — it's saved to your account when you're signed in.",
+        title="Shortlist", img="garden-portico.webp", kicker="Your shortlist", color="butter",
+        h1="The homes you'd <i>pick first.</i>",
+        lede="The units you starred, in the order you would choose them on selection day. Drag to reorder. It is saved to your account when you are signed in.",
         desc="Your ordered shortlist of BTO units.",
         body="""
     <section class="tool"><div class="wrap">
@@ -112,15 +123,15 @@ PAGES = {
     </div></section>
 """),
     "analysis": dict(
-        title="Insights", img="garden-brook.webp", kicker="Insights",
-        h1="What other buyers <em>want.</em>",
+        title="Insights", img="garden-brook.webp", kicker="Insights", color="forest",
+        h1="What other buyers <i>want.</i>",
         lede="Built from saved lists. Per project, only verified members are counted once there are at least 100 of them; until then every saved list counts.",
         desc="Aggregate insights from MyBTO users: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
         body="""
     <section class="tool"><div class="wrap">
       <div id="analysis-locked" class="locked" hidden>
-        <span class="kicker">Members only</span>
+        <span class="label">Members only</span>
         <h2>For verified members</h2>
         <p id="locked-text">Create an account and verify your email to unlock insights.</p>
         <a class="btn primary" href="/account">Sign in or sign up <span class="arr">→</span></a>
@@ -147,27 +158,17 @@ PAGES = {
       </div>
     </div></section>
 """),
-    "guide": dict(
-        title="How it works", img="garden-woodgrove.webp", kicker="How it works",
-        h1="How each factor is <em>measured.</em>",
-        lede="Every value comes from HDB's sales brochure — the unit distribution grid, the block floor plans and the site plan — measured with each drawing's own scale bar.",
-        desc="How MyBTO measures sun direction, privacy, lift and chute distance, MRT and facilities.",
-        body="""
-    <section class="tool" id="measures"><div class="wrap">
-      <div id="legend" class="legend-grid"></div>
-    </div></section>
-"""),
     "account": dict(
-        title="Account", img="berlayar-rise-7.webp", kicker="Account",
-        h1="Your <em>MyBTO</em> account.",
-        lede="Save your ranked list with your queue number, keep your shortlist on every device, and — once verified — unlock insights.",
+        title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
+        h1="Your <i>MyBTO</i> account.",
+        lede="Save your ranked list with your queue number, keep your shortlist on every device and, once verified, unlock insights.",
         desc="Sign in or create a MyBTO account.",
         body="""
     <section class="tool"><div class="wrap">
       <p id="auth-error" class="err" hidden></p>
       <p id="acct-note" class="devlink" hidden aria-live="polite"></p>
       <div id="acct-in" class="acct-card" hidden>
-        <span class="kicker">Signed in</span>
+        <span class="label">Signed in</span>
         <h2 style="margin-top:14px" id="acct-email"></h2>
         <p><span id="acct-badge" class="badge"></span></p>
         <div id="verify-box" hidden>
@@ -191,7 +192,7 @@ PAGES = {
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
           <button class="btn primary">Create account</button>
-          <p class="small muted">Free. We only use your email to sign you in and verify your account.</p>
+          <p class="small muted">Free. We only use your email to sign you in and to verify your account.</p>
           <p class="err small"></p></form>
       </div>
     </div></section>
@@ -201,7 +202,7 @@ PAGES = {
 
 def main():
     for page, p in PAGES.items():
-        html = HEAD.format(page=page, **{k: p[k] for k in ("title", "desc", "img", "kicker", "h1", "lede")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        html = HEAD.format(page=page, **{k: p[k] for k in ("title", "desc", "img", "kicker", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
         (PUBLIC / f"{page}.html").write_text(html)
         print("wrote", page)
 
