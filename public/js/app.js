@@ -160,16 +160,16 @@ function renderWeights() {
   const av = Scoring.availability(scope);
   const hidden = [];
   let h = '';
-  h += `<div class="meter-group"><span class="eyebrow"><span>Blocks</span><span>${blocks.length}</span></span>${blocks.length
+  h += `<div class="meter-group"><span class="eyebrow"><span>Blocks</span></span>${blocks.length
     ? blocks.map(b => meter('block', b, `Block ${b}`)).join('') : '<p class="small muted">Select at least one block.</p>'}</div>`;
-  if (av.sun.length) h += `<div class="meter-group"><span class="eyebrow"><span>Sun direction</span><span>${av.sun.length}/8</span></span>${av.sun.map(d => meter('sun', d, d, 'Direction the living room windows face')).join('')}</div>`;
+  if (av.sun.length) h += `<div class="meter-group"><span class="eyebrow"><span>Sun direction</span></span>${av.sun.map(d => meter('sun', d, d, 'Direction the living room windows face')).join('')}</div>`;
   const missingSun = Scoring.SUN_DIRECTIONS.filter(d => !av.sun.includes(d));
   if (missingSun.length && scope.length) hidden.push(`facing ${missingSun.join(', ')}`);
   if (av.design.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit design · 2-Room Flexi</span></span>${av.design.map(d => meter('design', d, d)).join('')}</div>`;
   const facs = Object.entries(Scoring.FACTORS).filter(([k]) => av[k]);
   Object.entries(Scoring.FACTORS).filter(([k]) => !av[k]).forEach(([, [l]]) => hidden.push(l.toLowerCase()));
   if (facs.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit &amp; site</span></span>${facs.map(([k, [label]]) => meter('factor', k, label, FACTOR_HELP[k])).join('')}</div>`;
-  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span><span>${av.facilities.length}</span></span>${av.facilities.map(f => meter('facility', f, f, FACILITY_HELP)).join('')}</div>`;
+  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span></span>${av.facilities.map(f => meter('facility', f, f, FACILITY_HELP)).join('')}</div>`;
   else if (scope.length) hidden.push('facilities');
   $('#weights').innerHTML = h;
   $('#hidden-factors').textContent = hidden.length && scope.length ? `Not in your selection, so hidden: ${hidden.join(' · ')}.` : '';
