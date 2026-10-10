@@ -7,14 +7,13 @@ const PAGE = document.body.dataset.page;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const FACTOR_HELP = {
-  lift: 'Metres from your door to the lift lobby. + prefers further away.',
   clearance: 'No unit of another block within 30 m.',
   corner: 'End-of-row unit with windows on two sides.',
   roof: 'Looks onto a podium / 2nd-storey roof.',
   chute: 'Metres from your door to the refuse chute. + prefers further away.',
   mrt: 'Block within 400 m of an MRT station.',
-  facilities: 'Facilities in your block (has) or within 50 m (near).',
 };
+const FACILITY_HELP = 'In your block counts fully; within 50 m counts half.';
 const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
 
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
@@ -94,20 +93,22 @@ async function loadProject(key) {
     state.flags = await loadFlags();
     updateFlagCount();
     const list = state.user ? await store.loadList(key).catch(() => null) : null;
-    state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey, oppositeGt30: list.opposite_gt30 }, list.weights, list.floor_pref) : [];
+    state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey }, list.weights, list.floor_pref) : [];
     renderTitleBlock();
     if (PAGE === 'shortlist') renderShortlist();
     return;
   }
   $('#project-meta').textContent = `${p.town} · ${p.project_type} · ${p.units.toLocaleString()} units · ${p.blocks.length} blocks`;
-  $('#f-types').innerHTML = p.flat_types.map(t => `<label class="chip"><input type="checkbox" value="${esc(t)}" checked><span>${esc(t)}</span></label>`).join('');
+  // One housing type at a time (one application per queue); 2-Room Flexi covers Type 1 and Type 2.
+  const housing = Scoring.HOUSING_TYPES.filter(h => p.flat_types.some(t => Scoring.housingOf(t) === h));
+  const first = housing.includes('4-Room') ? '4-Room' : housing[0];
+  $('#f-types').innerHTML = housing.map(h => `<label class="chip"><input type="radio" name="housing" value="${esc(h)}"${h === first ? ' checked' : ''}><span>${esc(h === '2-Room Flexi' ? '2-Room Flexi (Type 1 and 2)' : h)}</span></label>`).join('');
   $('#f-blocks').innerHTML = p.blocks.map(b => `<label class="chip block"><input type="checkbox" value="${esc(b)}" checked><span>${esc(b)}</span></label>`).join('');
   const storeys = state.units.map(u => u.storey);
   const lo = Math.min(...storeys), hi = Math.max(...storeys);
   const opt = Array.from({ length: hi - lo + 1 }, (_, i) => `<option value="${lo + i}">${String(lo + i).padStart(2, '0')}</option>`).join('');
   $('#f-min').innerHTML = opt; $('#f-max').innerHTML = opt;
   $('#f-min').value = lo; $('#f-max').value = hi;
-  $('#f-opposite').checked = false;
   $('#f-pref input[value=none]').checked = true;
   $('#queue').value = '';
   state.weights = {};
@@ -125,7 +126,11 @@ async function loadProject(key) {
 
 // ---------------------------------------------------------------- importance meters
 function selectedBlocks() { return $$('#f-blocks input:checked').map(i => i.value); }
-function selectedTypes() { return $$('#f-types input:checked').map(i => i.value); }
+// Flat types (as stored on units) covered by the chosen housing type.
+function selectedTypes() {
+  const h = $('#f-types input:checked')?.value;
+  return h ? state.project.flat_types.filter(t => Scoring.housingOf(t) === h) : [];
+}
 
 function captureWeights() {
   $$('#weights input[type=range]').forEach(r => {
@@ -135,7 +140,7 @@ function captureWeights() {
   });
 }
 
-const LEGEND_KEY = { sun: 'sun', design: 'design', block: null };
+const LEGEND_KEY = { sun: 'sun', design: 'design', facility: null, block: null };
 const helpBtn = key => (key ? `<button type="button" class="help" data-legend="${key}" aria-label="What does this mean?">?</button>` : '');
 
 function meter(group, key, label, help) {
@@ -164,6 +169,8 @@ function renderWeights() {
   const facs = Object.entries(Scoring.FACTORS).filter(([k]) => av[k]);
   Object.entries(Scoring.FACTORS).filter(([k]) => !av[k]).forEach(([, [l]]) => hidden.push(l.toLowerCase()));
   if (facs.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit &amp; site</span></span>${facs.map(([k, [label]]) => meter('factor', k, label, FACTOR_HELP[k])).join('')}</div>`;
+  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span><span>${av.facilities.length}</span></span>${av.facilities.map(f => meter('facility', f, f, FACILITY_HELP)).join('')}</div>`;
+  else if (scope.length) hidden.push('facilities');
   $('#weights').innerHTML = h;
   $('#hidden-factors').textContent = hidden.length && scope.length ? `Not in your selection, so hidden: ${hidden.join(' · ')}.` : '';
   $$('#weights input[type=range]').forEach(r => r.addEventListener('input', () => {
@@ -175,7 +182,7 @@ function renderWeights() {
 
 // Weights actually in effect = meters currently shown.
 function readWeights() {
-  const w = { block: {}, sun: {}, design: {} };
+  const w = { block: {}, sun: {}, design: {}, facility: {} };
   $$('#weights input[type=range]').forEach(r => {
     const v = Number(r.value);
     if (r.dataset.group === 'factor') w[r.dataset.key] = v; else w[r.dataset.group][r.dataset.key] = v;
@@ -186,17 +193,19 @@ function readWeights() {
 function readFilters() {
   let min = Number($('#f-min').value), max = Number($('#f-max').value);
   if (min > max) [min, max] = [max, min];
-  return { flatTypes: selectedTypes(), blocks: selectedBlocks(), minStorey: min, maxStorey: max, oppositeGt30: $('#f-opposite').checked };
+  return { flatTypes: selectedTypes(), blocks: selectedBlocks(), minStorey: min, maxStorey: max };
 }
 const readPref = () => $('#f-pref input:checked').value;
 
 function applySaved(list) {
-  $$('#f-types input').forEach(i => { i.checked = !list.flat_types.length || list.flat_types.includes(i.value); });
+  const savedHousing = (list.flat_types || []).map(Scoring.housingOf);
+  const radio = $$('#f-types input').find(i => savedHousing.includes(i.value));
+  if (radio) radio.checked = true;
   $$('#f-blocks input').forEach(i => { i.checked = !list.blocks.length || list.blocks.includes(i.value); });
   if (list.min_storey != null) $('#f-min').value = list.min_storey;
   if (list.max_storey != null) $('#f-max').value = list.max_storey;
-  $$('#f-pref input').forEach(i => { i.checked = i.value === list.floor_pref; });
-  $('#f-opposite').checked = !!list.opposite_gt30;
+  const pref = Scoring.FLOOR_PREFS.includes(list.floor_pref) ? list.floor_pref : 'none';
+  $$('#f-pref input').forEach(i => { i.checked = i.value === pref; });
   $('#queue').value = list.queue_number || '';
   state.weights = { ...list.weights };
   renderWeights();
@@ -210,6 +219,22 @@ function runRank() {
   state.shown = 0;
   $('#result-count').innerHTML = `${state.ranked.length.toLocaleString()}<small>units</small>`;
   renderResults(true);
+  renderFloorGroups();
+}
+
+// Highest, middlemost and lowest storeys among the matching units, with every ranked unit on them.
+function renderFloorGroups() {
+  const el = $('#floor-groups');
+  if (!el) return;
+  const g = Scoring.floorGroups(state.ranked);
+  const card = (key, title) => {
+    const ss = g.storeys[key], units = g[key];
+    const label = ss.length ? `Storey ${ss.map(s => String(s).padStart(2, '0')).join(' and ')}` : '';
+    return `<div class="fg-card"><div class="fg-head"><h3>${title}</h3><span>${label} · ${units.length} unit${units.length === 1 ? '' : 's'}</span></div>
+      <ol class="fg-list">${units.map(u => `<li><span class="rk">${u.rank}</span><span class="u">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>${esc(u.flat_type.replace('2-Room Flexi', '2RF'))} · ${esc(u.facing)} facing${u.position === 'Corner' ? ' · corner' : ''}</small></span><span class="s ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}</span></li>`).join('')}</ol></div>`;
+  };
+  el.hidden = !state.ranked.length;
+  el.innerHTML = state.ranked.length ? card('highest', 'Highest unit(s)') + card('middle', 'Middlemost unit(s)') + card('lowest', 'Lowest unit(s)') : '';
 }
 
 const compass = d => `<span class="compass"><i style="transform:rotate(${BEARING[d] ?? 0}deg)" aria-hidden="true">↑</i>${esc(d)}</span>`;
@@ -221,13 +246,13 @@ function tags(u) {
   if (u.position === 'Corner') t.push('<span class="tag">corner</span>');
   if (u.roof_access) t.push('<span class="tag">roof</span>');
   if (u.mrt_near) t.push('<span class="tag">mrt</span>');
-  if (u.opposite_gt30m) t.push('<span class="tag">private</span>');
+  if (u.gt30m) t.push('<span class="tag">30 m+</span>');
   if (u.chute_near) t.push('<span class="tag warn">chute</span>');
   return `<div class="tags">${t.join('')}</div>`;
 }
 
 function renderResults(reset) {
-  const head = ['#', '', 'Unit', 'Type · facing', 'Lift · chute', 'Opposite · MRT', 'Facilities', 'Score'];
+  const head = ['#', '', 'Unit', 'Type · facing', 'Chute · MRT', 'Facilities', 'Score'];
   if (reset) {
     $('#results thead').innerHTML = `<tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>`;
     $('#results tbody').innerHTML = '';
@@ -246,8 +271,7 @@ function renderResults(reset) {
       <td><button class="star ${state.flags.includes(u.id) ? 'on' : ''}" data-id="${esc(u.id)}" aria-label="Flag ${esc(u.address)}" title="Add to shortlist">★</button></td>
       <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small>${tags(u)}</td>
       <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span><div class="sub">${compass(u.facing)}</div></td>
-      <td class="num">${dist(u.lift_m)}<div class="sub">${dist(u.chute_m)}</div></td>
-      <td class="num">${dist(u.opposite_m)}<div class="sub">${dist(u.mrt_m)}</div></td>
+      <td class="num">${dist(u.chute_m)}<div class="sub">${dist(u.mrt_m)}</div></td>
       <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} in block<div class="sub">${u.fac_near_count} nearby</div></td>
       <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td></tr>`;
   }).join(''));
@@ -268,15 +292,15 @@ async function saveList() {
   try {
     await store.saveList(state.project.key, {
       project_type: state.project.project_type, queue_number: $('#queue').value.trim().slice(0, 40), flat_types: f.flatTypes, blocks: f.blocks,
-      min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), opposite_gt30: f.oppositeGt30, weights: readWeights(),
+      min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
     });
     $('#save-msg').textContent = `Saved · ${state.ranked.length} units · queue ${$('#queue').value.trim() || 'not set'}`;
   } catch (err) { $('#save-msg').textContent = err.message; }
 }
 
 function downloadCsv() {
-  const cols = ['rank', 'score', 'address', 'block', 'storey', 'unit', 'flat_type', 'unit_design', 'facing', 'position', 'lift_m', 'chute_m',
-    'opposite_m', 'neighbour_m', 'roof_access', 'mrt_name', 'mrt_m', 'fac_has_count', 'fac_near_count', 'id'];
+  const cols = ['rank', 'score', 'address', 'block', 'storey', 'unit', 'flat_type', 'unit_design', 'facing', 'position', 'chute_m',
+    'neighbour_m', 'roof_access', 'mrt_name', 'mrt_m', 'fac_has_count', 'fac_near_count', 'id'];
   const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const rows = [cols.join(','), ...state.ranked.map(u => cols.map(k => q(u[k])).join(','))];
   const a = document.createElement('a');
@@ -385,7 +409,7 @@ async function loadAnalysis() {
   const sel = $('#a-value');
   const values = group === 'project' ? state.index.projects.map(p => [p.key, p.name])
     : group === 'project_type' ? ['Plus', 'Prime', 'Standard'].map(t => [t, t])
-    : group === 'flat_type' ? state.index.flat_types.map(t => [t, t]) : [];
+    : group === 'flat_type' ? state.index.housing_types.map(t => [t, t]) : [];
   $('#a-value-wrap').hidden = !values.length;
   if (values.length && !values.some(([v]) => v === sel.value)) sel.innerHTML = values.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('');
   let a;
@@ -401,7 +425,7 @@ async function loadAnalysis() {
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
   const ink = css('--navy'), signal = css('--neg'), green = css('--sea'), rule = css('--stone-2');
-  const prefOrder = ['higher', 'middle', 'lower', 'none'];
+  const prefOrder = ['higher', 'lower', 'none'];
   for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
     chart(`c-${k}`, {
       data: { labels: d.histogram.map((_, i) => i), datasets: [
@@ -425,14 +449,13 @@ async function loadAnalysis() {
       scales: { x: { min: -5, max: 5 }, y: { grid: { display: false } } } },
   });
   const pref = a.floor_preference;
-  const prefLabels = { higher: 'Higher', middle: 'Middle', lower: 'Lower', none: 'No preference' };
+  const prefLabels = { higher: 'Higher', lower: 'Lower', none: 'No preference' };
   chart('c-pref', {
     type: 'doughnut',
-    data: { labels: prefOrder.map(k => prefLabels[k]), datasets: [{ data: prefOrder.map(k => pref[k] || 0), backgroundColor: [ink, green, signal, rule], borderWidth: 0 }] },
+    data: { labels: prefOrder.map(k => prefLabels[k]), datasets: [{ data: prefOrder.map(k => pref[k] || 0), backgroundColor: [ink, signal, rule], borderWidth: 0 }] },
     options: { animation: false, cutout: '62%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } },
   });
-  const pv = a.privacy_filter;
-  $('#s-privacy').innerHTML = pv.total ? `<span><b>${Math.round((pv.on / pv.total) * 100)}%</b>use the 30 m privacy filter</span>` : '';
+  ranklist('#r-facility', a.facilities || []);
   chart('c-types', {
     type: 'bar',
     data: { labels: Object.keys(a.flat_types), datasets: [{ label: 'Lists', data: Object.values(a.flat_types), backgroundColor: ink }] },
@@ -456,7 +479,7 @@ function legendFigure(c) {
     if (m.type === 'line') return `<span class="mk-line" style="left:${m.x1}%;top:${m.y}%;width:${m.x2 - m.x1}%"><em>${esc(m.label)}</em></span>`;
     return '';
   }).join('');
-  const bands = c.bands ? '<span class="band b-hi">Higher</span><span class="band b-mid">Middle</span><span class="band b-lo">Lower</span>' : '';
+  const bands = c.bands ? '<span class="band b-hi">Higher</span><span class="band b-mid">Middlemost</span><span class="band b-lo">Lower</span>' : '';
   const one = (src, alt, cap) => `<figure class="lg-fig"><img src="/img/legend/${src}" alt="${esc(alt)}" loading="lazy">${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
   if (c.img2 && c.cap2) return `<div class="lg-pair">${one(c.img, c.alt, c.cap)}${one(c.img2, c.alt2, c.cap2)}</div>`;
   return `<figure class="lg-fig"><img src="/img/legend/${c.img}" alt="${esc(c.alt)}" loading="lazy">${marks}${pins}${bands}</figure>${c.img2 ? one(c.img2, c.alt2) : ''}`;

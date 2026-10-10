@@ -35,7 +35,7 @@ async function loadAll() {
     user_id: s.uid, verified: verified.has(s.uid), is_sample: false, project: s.project, project_type: s.project_type,
     queue_number: s.queue_number || null, flat_types: s.flat_types || [], blocks: s.blocks || [],
     min_storey: s.min_storey ?? null, max_storey: s.max_storey ?? null, floor_pref: s.floor_pref || 'none',
-    opposite_gt30: !!s.opposite_gt30, weights: s.weights || {},
+    weights: s.weights || {},
   }));
   const realFlags = flagSnap.docs.flatMap(d => {
     const f = d.data();

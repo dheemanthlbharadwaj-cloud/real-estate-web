@@ -12,7 +12,7 @@ window.LEGEND = [
     key: 'floor', title: 'Floor level', tag: 'Filter and floor priority',
     img: 'floors.webp', alt: 'Berlayar Rise towers (artist’s impression)',
     bands: true,
-    text: 'Pick the lowest and highest storey you would accept, then choose whether higher, middle or lower floors should rank first. Priority is worked out against each block’s own height, so a 33 storey block and a 49 storey block are treated fairly.',
+    text: 'Pick the lowest and highest storey you would accept, then choose whether higher or lower floors should rank first. Separately, the Rank page lists every matching unit on the highest, middlemost and lowest storeys of your list. Priority is worked out against each block’s own height, so a 33 storey block and a 49 storey block are treated fairly.',
     rule: 'Source: unit distribution grid.',
   },
   {
@@ -39,21 +39,14 @@ window.LEGEND = [
   },
 
   {
-    key: 'lift', title: 'Distance from lift', tag: 'Closer or further, your call',
-    img: 'lift.webp', alt: 'Floor plan showing the lift lobby between two rows of units',
-    pins: [{ x: 70, y: 62, text: 'Lift lobby' }, { x: 42, y: 12, text: 'Front doors open onto the corridor' }],
-    text: 'Straight line distance from the front door to the lift lobby. Close is convenient; further away is quieter. Slide the meter to plus if you would rather be further away. Within 15 m counts as near.',
-    rule: 'Source: block floor plan, measured with its scale bar.',
-  },
-  {
-    key: 'clearance', title: 'More than 30 m from the next block', tag: 'Importance and privacy filter',
+    key: 'clearance', title: 'More than 30 m from the next block', tag: 'Importance',
     img: 'site-privacy.webp', alt: 'Site plan of blocks 200A and 200B with a 15 m ring around one unit in each block',
     marks: [
       { type: 'ring', x: 14, y: 48, d: 16.4, label: '15 m' },
       { type: 'ring', x: 42.9, y: 46.5, d: 16.4, label: '15 m' },
       { type: 'line', x1: 14, x2: 42.9, y: 47.2, label: 'Rings do not touch: more than 30 m apart' },
     ],
-    text: 'Each unit gets a 15 m ring around its centre on the site plan, drawn to the plan’s scale. If the rings of two facing units overlap, the units are less than 30 m apart. Switch on the privacy filter to hide every unit whose windows face another home closer than 30 m.',
+    text: 'Each unit gets a 15 m ring around its centre on the site plan, drawn to the plan’s scale. If the rings of two facing units overlap, the units are less than 30 m apart.',
     rule: 'Source: site plan, measured with its scale bar.',
   },
 
@@ -79,11 +72,11 @@ window.LEGEND = [
   },
 
   {
-    key: 'facilities', title: 'Facilities nearby', tag: 'Has and near',
+    key: 'facilities', title: 'Facilities nearby', tag: 'One meter per facility',
     img: 'facilities.webp', alt: 'Site plan detail with numbered facility markers around blocks 201B and 204A',
     img2: 'facilities-key.webp', alt2: 'Facilities key from the site plan',
     pins: [{ x: 66, y: 22, text: 'RN centre inside block 201B: “has” for 201B' }, { x: 16, y: 40, text: 'Playgrounds in the open: “near”' }],
-    text: '“Has” means the facility is in your own block, for example at its first storey or on its roof. “Near” means it is not inside any residential block but sits within 50 m of your unit. A “has” counts twice as much as a “near”.',
+    text: '“Has” means the facility is in your own block, for example at its first storey or on its roof. “Near” means it is not inside any residential block but sits within 50 m of your unit. Each facility type found in your selected blocks gets its own meter, so you can want a supermarket close by and keep a hardcourt away. A “has” counts fully and a “near” counts half.',
     rule: 'Source: numbered markers on the site plan and its legend.',
   },
   {

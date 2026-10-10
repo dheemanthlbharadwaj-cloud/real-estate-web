@@ -25,18 +25,25 @@ FACILITIES = ["Children's playground", "Adult fitness station", "Elderly fitness
 PROJECTS = [
     ("kebun-baru_breeze-5", "Kebun Baru Breeze", "Ang Mo Kio", "Plus", "KBB", {"247A": 30, "248A": 30},
      ["4-Room", "2-Room Flexi (Type 1)", "2-Room Flexi (Type 2)"], "Mayflower"),
-    ("kebun-baru_ridge-1", "Kebun Baru Ridge", "Ang Mo Kio", "Plus", "KBR", {"183A": 28, "184A": 26, "184B": 22},
-     ["3-Room", "4-Room", "2-Room Flexi (Type 1)"], "Mayflower"),
+    ("kebun-baru_ridge-1", "Kebun Baru Ridge", "Ang Mo Kio", "Plus", "KBR", {"183A": 21, "184A": 21, "184B": 21},
+     ["3-Room", "4-Room"], "Mayflower"),
     ("berlayar-rise-7", "Berlayar Rise", "Bukit Merah", "Prime", "BR", None, None, "Telok Blangah"),
     ("lakeview-cascadia-2", "Lakeview Cascadia", "Bishan", "Prime", "LC", {"325A": 35, "326A": 40, "326B": 35, "327A": 18, "328A": 18},
-     ["4-Room", "2-Room Flexi (Type 1)"], "Upper Thomson"),
-    ("sembawang-brook-6", "Sembawang Brook", "Sembawang", "Standard", "SB", {"437A": 16, "437B": 16, "439A": 16, "440A": 16},
-     ["3-Room", "4-Room", "5-Room"], "Sembawang"),
-    ("sembawang-portico-4", "Sembawang Portico", "Sembawang", "Standard", "SP", {"433A": 14, "433B": 14, "434A": 14},
-     ["3-Room", "4-Room", "5-Room"], "Sembawang"),
+     ["4-Room", "2-Room Flexi (Type 1)", "2-Room Flexi (Type 2)"], "Upper Thomson"),
+    ("sembawang-brook-6", "Sembawang Brook", "Sembawang", "Standard", "SB", {"437A": 30, "437B": 30, "439A": 30, "440A": 30},
+     ["2-Room Flexi (Type 1)", "2-Room Flexi (Type 2)", "3-Room", "4-Room", "5-Room", "3Gen"], "Sembawang"),
+    ("sembawang-portico-4", "Sembawang Portico", "Sembawang", "Standard", "SP", {"433A": 26, "433B": 26, "434A": 26},
+     ["2-Room Flexi (Type 1)", "2-Room Flexi (Type 2)", "3-Room", "4-Room", "5-Room"], "Sembawang"),
     ("woodgrove-acres-3", "Woodgrove Acres", "Woodlands", "Standard", "WA", {"446A": 17, "446B": 17, "447A": 19, "447B": 18},
-     ["3-Room", "4-Room", "5-Room"], "Woodlands North"),
+     ["2-Room Flexi (Type 1)", "2-Room Flexi (Type 2)", "3-Room", "4-Room", "5-Room"], "Woodlands North"),
 ]
+
+HOUSING = ["2-Room Flexi", "3-Room", "4-Room", "5-Room", "3Gen"]  # same order as Scoring.HOUSING_TYPES
+
+
+def housing(flat_type):
+    return "2-Room Flexi" if flat_type.startswith("2-Room Flexi") else flat_type
+
 
 SAMPLE_FIELDS = ["facing", "position", "lift_m", "chute_m", "roof_access", "neighbour_m", "opposite_m",
                  "mrt_m", "facilities_has", "facilities_near"]
@@ -97,12 +104,14 @@ def main():
                     for s in e["storeys"]:
                         units.append(make_unit(code, name, key, town, ptype, block, s, e["unit"], e["flat_type"], a, mrt, True))
         else:
+            stack_no = 0  # running count, so every flat type in the brochure legend appears
             for bi, (block, top) in enumerate(blocks.items()):
-                n_stacks = rng.choice([4, 6, 8])
+                n_stacks = rng.choice([6, 8, 10])
                 for i in range(n_stacks):
                     unit = str(100 + bi * 20 + i * 2 + 1)
                     a = stack_attrs(rng, bi, i, n_stacks)
-                    t = types[(i // 2) % len(types)]
+                    t = types[stack_no % len(types)]
+                    stack_no += 1
                     for s in range(2, top + 1):
                         units.append(make_unit(code, name, key, town, ptype, block, s, unit, t, a, mrt, False))
         units.sort(key=lambda u: (u["block"], u["storey"], u["unit"]))
@@ -111,9 +120,11 @@ def main():
         index.append({"key": key, "name": name, "town": town, "project_type": ptype, "units": len(units),
                       "blocks": sorted({u["block"] for u in units}), "max_storey": max(u["storey"] for u in units),
                       "flat_types": sorted({u["flat_type"] for u in units}),
+                      "housing_types": [h for h in HOUSING if any(housing(u["flat_type"]) == h for u in units)],
                       "data_status": "real unit list, sample attributes" if blocks is None else "sample data"})
         print(f"{ptype:9} {name:20} {len(units):5} units")
-    (OUT / "index.json").write_text(json.dumps({"sample": True, "projects": index, "flat_types": sorted(all_types)}, indent=1))
+    (OUT / "index.json").write_text(json.dumps({"sample": True, "projects": index, "flat_types": sorted(all_types),
+                                                "housing_types": [h for h in HOUSING if any(housing(t) == h for t in all_types)]}, indent=1))
 
 
 if __name__ == "__main__":

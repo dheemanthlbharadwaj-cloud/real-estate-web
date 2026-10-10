@@ -59,7 +59,7 @@ PAGES = {
           </div>
           <div class="step">
             <div class="step-h"><span class="n">ii.</span><h2>Filters</h2></div>
-            <div class="field"><span class="eyebrow">Unit type</span><div id="f-types" class="chips"></div></div>
+            <div class="field"><span class="eyebrow">Housing type · pick one</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
             <div class="field"><span class="eyebrow">Blocks</span>
               <div class="mini-links"><button type="button" data-blocks="all">Select all</button><button type="button" data-blocks="none">Clear</button></div>
               <div id="f-blocks" class="chips"></div>
@@ -71,12 +71,9 @@ PAGES = {
               <div class="chips" id="f-pref" role="radiogroup">
                 <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
                 <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
-                <label class="chip"><input type="radio" name="pref" value="middle"><span>Middle</span></label>
                 <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
               </div>
             </div>
-            <label class="toggle"><input type="checkbox" id="f-opposite">
-              <span><b>Privacy: opposite unit &gt; 30 m away</b><span class="small muted">Only show units whose windows face nothing closer than 30 m.</span></span></label>
           </div>
           <div class="step">
             <div class="step-h"><span class="n">iii.</span><h2>Importance</h2></div>
@@ -98,6 +95,10 @@ PAGES = {
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
           <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
+          <div class="fg-wrap">
+            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list, with its rank and score. With an even number of storeys, the middle two are shown.</p></div>
+            <div id="floor-groups" class="floor-groups" hidden></div>
+          </div>
         </div>
       </div>
     </div></section>
@@ -138,7 +139,7 @@ PAGES = {
         <div class="filters-row">
           <label><span class="eyebrow">View by</span><br><select id="a-group">
             <option value="all">All projects</option><option value="project_type">Project type</option>
-            <option value="project">Project</option><option value="flat_type">Unit type</option></select></label>
+            <option value="project">Project</option><option value="flat_type">Housing type</option></select></label>
           <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
         </div>
         <p id="a-basis" class="basis"></p>
@@ -149,9 +150,10 @@ PAGES = {
           <div class="panel w4"><span class="eyebrow">Figure 4</span><h3>Blocks, most to least wanted</h3><ol class="ranklist" id="r-block"></ol></div>
           <div class="panel w4"><span class="eyebrow">Figure 5</span><h3>Factors, most to least important</h3><ol class="ranklist" id="r-factor"></ol></div>
           <div class="panel w8"><span class="eyebrow">Figure 6</span><h3>Average importance by factor</h3><canvas id="c-factor"></canvas></div>
-          <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas><div class="stats-row" id="s-privacy"></div></div>
-          <div class="panel"><span class="eyebrow">Figure 8</span><h3>Unit types searched</h3><canvas id="c-types"></canvas></div>
-          <div class="panel"><span class="eyebrow">Figure 9</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
+          <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
+          <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities, most to least wanted</h3><ol class="ranklist" id="r-facility"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types searched</h3><canvas id="c-types"></canvas></div>
+          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
         </div>
       </div>
     </div></section>

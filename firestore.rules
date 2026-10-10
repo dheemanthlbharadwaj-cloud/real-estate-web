@@ -11,7 +11,7 @@ service cloud.firestore {
       allow create, update: if owns(docId)
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.project is string
-        && request.resource.data.floor_pref in ['none', 'higher', 'lower', 'middle']
+        && request.resource.data.floor_pref in ['none', 'higher', 'lower']
         && request.resource.data.weights is map
         && request.resource.data.size() < 20;
     }

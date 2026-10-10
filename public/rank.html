@@ -34,7 +34,7 @@
           </div>
           <div class="step">
             <div class="step-h"><span class="n">ii.</span><h2>Filters</h2></div>
-            <div class="field"><span class="eyebrow">Unit type</span><div id="f-types" class="chips"></div></div>
+            <div class="field"><span class="eyebrow">Housing type · pick one</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
             <div class="field"><span class="eyebrow">Blocks</span>
               <div class="mini-links"><button type="button" data-blocks="all">Select all</button><button type="button" data-blocks="none">Clear</button></div>
               <div id="f-blocks" class="chips"></div>
@@ -46,12 +46,9 @@
               <div class="chips" id="f-pref" role="radiogroup">
                 <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
                 <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
-                <label class="chip"><input type="radio" name="pref" value="middle"><span>Middle</span></label>
                 <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
               </div>
             </div>
-            <label class="toggle"><input type="checkbox" id="f-opposite">
-              <span><b>Privacy: opposite unit &gt; 30 m away</b><span class="small muted">Only show units whose windows face nothing closer than 30 m.</span></span></label>
           </div>
           <div class="step">
             <div class="step-h"><span class="n">iii.</span><h2>Importance</h2></div>
@@ -73,6 +70,10 @@
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
           <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
+          <div class="fg-wrap">
+            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list, with its rank and score. With an even number of storeys, the middle two are shown.</p></div>
+            <div id="floor-groups" class="floor-groups" hidden></div>
+          </div>
         </div>
       </div>
     </div></section>

@@ -31,20 +31,27 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     if (SHOTS) await p.screenshot({ path: `${SHOTS}/rank.png`, fullPage: true });
 
     await p.selectOption('#project', 'berlayar-rise-7');
-    await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('1,976'));
-    check(true, 'Berlayar Rise loads 1,976 units');
+    await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('988'));
+    check(true, 'Berlayar Rise opens on 4-Room (988 units)');
+    check((await p.$$eval('#f-types input', i => i.map(x => x.type + ':' + x.value))).join() === 'radio:2-Room Flexi,radio:3-Room,radio:4-Room', 'one housing type at a time, 2-Room Flexi as one choice');
+    check((await p.$$eval('#results tbody .rk', r => r.map(x => x.textContent))).every(x => x === '1'), 'all importances 0: every unit ranks 1');
+    check((await p.$$eval('#floor-groups h3', h => h.map(x => x.textContent))).join() === 'Highest unit(s),Middlemost unit(s),Lowest unit(s)', 'highest, middlemost and lowest units shown');
+    check(!(await p.$('#f-opposite')) && !(await p.$('#f-pref input[value=middle]')), 'privacy filter and Middle option removed');
+    check(!(await p.textContent('#results thead')).includes('Lift'), 'lift not in results table');
+    await p.click('#f-types label:has-text("2-Room Flexi")');
+    await p.click('#btn-rank');
+    await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('816'));
+    check(true, '2-Room Flexi covers Type 1 and Type 2 (816 units)');
+    const fac = await p.$$eval('#weights .meter-group', g => g.filter(x => /Facilities nearby/.test(x.textContent)).map(x => x.querySelectorAll('.meter').length));
+    check(fac.length === 1 && fac[0] > 1, `one meter per facility type (${fac[0]})`);
     await p.click('[data-blocks=none]');
     await p.click('#f-blocks label:has-text("200B")');
     const meters = await p.$$eval('#weights .meter label', m => m.map(x => x.textContent));
     check(meters.includes('Block 200B') && !meters.includes('Block 200A'), 'only selected blocks get a meter');
-    check(!meters.includes('Type 1'), '2RF Type 1 meter hidden when block 200B has none');
+    check(!meters.some(m => m.startsWith('Type 1')) && meters.some(m => m.startsWith('Type 2')), '2RF Type 1 meter hidden when block 200B has none');
     await p.click('#btn-rank');
     const allIn200B = await p.$$eval('#results tbody .addr small', s => s.every(x => x.textContent === 'Blk 200B'));
     check(allIn200B, 'block filter applied');
-    const before = Number((await p.textContent('#result-count')).replace(/\D/g, ''));
-    await p.click('#f-opposite'); await p.click('#btn-rank');
-    const after = Number((await p.textContent('#result-count')).replace(/\D/g, ''));
-    check(after < before, `privacy filter reduces units (${before} -> ${after})`);
 
     await p.click('.star >> nth=0'); await p.click('.star >> nth=1'); await p.click('.star >> nth=2');
     check((await p.textContent('#flag-count')) === '3', 'three units flagged');
@@ -85,13 +92,14 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/rank`);
     await p.waitForTimeout(300);
     await p.waitForSelector('#results tbody tr');
-    if (!(await p.isChecked('#f-opposite'))) await p.click('#f-opposite');
+    await p.click('#f-types label:has-text("3-Room")');
+    await p.click('#f-pref label:has-text("Lower")');
     await p.fill('#queue', '1234');
     await p.click('#btn-save');
     await p.waitForFunction(() => /Saved/.test(document.querySelector('#save-msg').textContent));
     await p.reload();
     await p.waitForFunction(() => document.querySelector('#queue').value === '1234');
-    check((await p.isChecked('#f-opposite')), 'saved list (queue, privacy filter) restored after reload');
+    check((await p.isChecked('#f-types input[value="3-Room"]')) && (await p.isChecked('#f-pref input[value=lower]')), 'saved list (queue, housing type, floor priority) restored after reload');
     check((await p.textContent('#flag-count')) === '3', 'flags restored after reload');
 
     await p.goto(`${base}/account`);
@@ -121,7 +129,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#weights .help');
     await p.click('#weights .help >> nth=0');
     await p.waitForSelector('#legend-drawer.open #legend .lg');
-    check((await p.$$eval('#legend .lg', c => c.length)) === 10, 'legend drawer opens with all 10 factors');
+    check((await p.$$eval('#legend .lg', c => c.length)) === 9, 'legend drawer opens with all 9 factors');
     check((await p.$$eval('#legend img', i => i.length)) >= 10, 'legend uses images');
     await p.click('.drawer-head [data-close-legend]');
     await p.waitForSelector('#legend-drawer', { state: 'hidden' });

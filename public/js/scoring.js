@@ -6,18 +6,20 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   const SUN_DIRECTIONS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const UNIT_DESIGNS = ['Type 1', 'Type 2'];
-  const FLOOR_PREFS = ['none', 'higher', 'lower', 'middle'];
+  const FLOOR_PREFS = ['none', 'higher', 'lower'];
+  // Housing types are applied for one at a time; 2-Room Flexi covers both Type 1 and Type 2.
+  const HOUSING_TYPES = ['2-Room Flexi', '3-Room', '4-Room', '5-Room', '3Gen'];
+  const housingOf = flatType => (String(flatType).startsWith('2-Room Flexi') ? '2-Room Flexi' : flatType);
   const FLOOR_PREF_WEIGHT = 5;
 
-  // Single-meter factors: key -> [label, feature(unit, ctx) in 0..1]
+  // Single-meter factors: key -> [label, feature(unit, ctx) in 0..1]. Facilities get one meter
+  // per facility type (weights.facility), scored separately in facilityScore.
   const FACTORS = {
-    lift: ['Distance from lift (further)', (u, c) => norm(u.lift_m, c.liftMin, c.liftMax)],
     clearance: ['More than 30 m from neighbouring blocks', u => (u.gt30m ? 1 : 0)],
     corner: ['Corner unit', u => (u.position === 'Corner' ? 1 : 0)],
     roof: ['Access to roof', u => (u.roof_access ? 1 : 0)],
     chute: ['Distance from rubbish chute (further)', (u, c) => norm(u.chute_m, c.chuteMin, c.chuteMax)],
     mrt: ['Near MRT', u => (u.mrt_near ? 1 : 0)],
-    facilities: ['Facilities nearby', (u, c) => (c.facMax > 0 ? facilityPoints(u) / c.facMax : 0)],
   };
 
   function norm(v, lo, hi) {
@@ -25,17 +27,22 @@
     if (hi === lo) return 0;
     return (v - lo) / (hi - lo);
   }
-  // "has" (inside the unit's own block) counts double a "near" facility.
-  function facilityPoints(u) {
-    return (u.fac_has_count || 0) * 1 + (u.fac_near_count || 0) * 0.5;
+  // Per facility type: "has" (inside the unit's own block) = 1, "near" (within 50 m) = 0.5.
+  function facilityFeature(u, name) {
+    if ((u.facilities_has || []).includes(name)) return 1;
+    if ((u.facilities_near || []).includes(name)) return 0.5;
+    return 0;
+  }
+  function facilityScore(u, w) {
+    let s = 0;
+    for (const [name, v] of Object.entries(w || {})) if (v) s += v * facilityFeature(u, name);
+    return s;
   }
 
   function context(units) {
-    const ctx = { liftMin: null, liftMax: null, chuteMin: null, chuteMax: null, facMax: 0, storeyMin: {}, storeyMax: {} };
+    const ctx = { chuteMin: null, chuteMax: null, storeyMin: {}, storeyMax: {} };
     for (const u of units) {
-      if (u.lift_m != null) { ctx.liftMin = ctx.liftMin == null ? u.lift_m : Math.min(ctx.liftMin, u.lift_m); ctx.liftMax = ctx.liftMax == null ? u.lift_m : Math.max(ctx.liftMax, u.lift_m); }
       if (u.chute_m != null) { ctx.chuteMin = ctx.chuteMin == null ? u.chute_m : Math.min(ctx.chuteMin, u.chute_m); ctx.chuteMax = ctx.chuteMax == null ? u.chute_m : Math.max(ctx.chuteMax, u.chute_m); }
-      ctx.facMax = Math.max(ctx.facMax, facilityPoints(u));
       ctx.storeyMin[u.block] = Math.min(ctx.storeyMin[u.block] ?? Infinity, u.storey);
       ctx.storeyMax[u.block] = Math.max(ctx.storeyMax[u.block] ?? -Infinity, u.storey);
     }
@@ -48,7 +55,6 @@
     const t = norm(u.storey, ctx.storeyMin[u.block], ctx.storeyMax[u.block]);
     if (pref === 'higher') return t;
     if (pref === 'lower') return 1 - t;
-    if (pref === 'middle') return 1 - Math.abs(2 * t - 1);
     return 0;
   }
 
@@ -57,11 +63,10 @@
       (!f.flatTypes || !f.flatTypes.length || f.flatTypes.includes(u.flat_type)) &&
       (!f.blocks || !f.blocks.length || f.blocks.includes(u.block)) &&
       (f.minStorey == null || u.storey >= f.minStorey) &&
-      (f.maxStorey == null || u.storey <= f.maxStorey) &&
-      (!f.oppositeGt30 || u.opposite_gt30m));
+      (f.maxStorey == null || u.storey <= f.maxStorey));
   }
 
-  // weights: { block: {200A: n}, sun: {N: n}, design: {'Type 1': n}, lift: n, clearance: n, ... }
+  // weights: { block: {200A: n}, sun: {N: n}, design: {'Type 1': n}, facility: {Shops: n}, clearance: n, ... }
   function scoreUnit(u, w, pref, ctx) {
     let s = 0;
     const parts = {};
@@ -70,17 +75,31 @@
     add('sun', (w.sun && w.sun[u.facing]) || 0);
     add('design', (w.design && u.unit_design && w.design[u.unit_design]) || 0);
     for (const [k, [, fn]] of Object.entries(FACTORS)) add(k, (w[k] || 0) * fn(u, ctx));
+    add('facility', facilityScore(u, w.facility));
     add('floor', FLOOR_PREF_WEIGHT * floorFeature(u, pref, ctx));
     return { score: Math.round(s * 1000) / 1000, parts };
   }
 
-  // Returns filtered units sorted best-first with score + rank. Ties: higher storey, then id.
+  // Returns filtered units sorted best-first with score + rank. Equal scores share a rank
+  // (1, 1, 3, ...); within a tie the list shows higher storeys first, then by id.
   function rank(units, filters, weights, pref) {
     const ctx = context(units);
     const out = filterUnits(units, filters || {}).map(u => ({ ...u, ...scoreUnit(u, weights || {}, pref, ctx) }));
     out.sort((a, b) => b.score - a.score || b.storey - a.storey || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-    out.forEach((u, i) => { u.rank = i + 1; });
+    out.forEach((u, i) => { u.rank = i > 0 && u.score === out[i - 1].score ? out[i - 1].rank : i + 1; });
     return out;
+  }
+
+  // Units on the highest, middlemost and lowest storeys of a ranked list. With an even number of
+  // distinct storeys the middle two storeys are both returned.
+  function floorGroups(ranked) {
+    const storeys = [...new Set(ranked.map(u => u.storey))].sort((a, b) => a - b);
+    if (!storeys.length) return { highest: [], middle: [], lowest: [], storeys: { highest: [], middle: [], lowest: [] } };
+    const n = storeys.length;
+    const mid = n % 2 ? [storeys[(n - 1) / 2]] : [storeys[n / 2 - 1], storeys[n / 2]];
+    const pick = ss => ranked.filter(u => ss.includes(u.storey));
+    const hi = [storeys[n - 1]], lo = [storeys[0]];
+    return { highest: pick(hi), middle: pick(mid), lowest: pick(lo), storeys: { highest: hi, middle: mid, lowest: lo } };
   }
 
   // Which importance meters apply to a set of units: a factor is shown only when at least one
@@ -90,15 +109,15 @@
     return {
       sun: SUN_DIRECTIONS.filter(d => has(u => u.facing === d)),
       design: UNIT_DESIGNS.filter(d => has(u => u.unit_design === d)),
-      lift: has(u => u.lift_m != null),
       clearance: has(u => u.gt30m),
       corner: has(u => u.position === 'Corner'),
       roof: has(u => u.roof_access),
       chute: has(u => u.chute_m != null),
       mrt: has(u => u.mrt_near),
-      facilities: has(u => facilityPoints(u) > 0),
+      facilities: [...new Set(units.flatMap(u => [...(u.facilities_has || []), ...(u.facilities_near || [])]))].sort(),
     };
   }
 
-  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, FACTORS, FLOOR_PREF_WEIGHT, context, floorFeature, filterUnits, scoreUnit, rank };
+  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, context, floorFeature,
+    facilityFeature, filterUnits, scoreUnit, rank, floorGroups };
 });

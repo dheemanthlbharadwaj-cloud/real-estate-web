@@ -13,9 +13,9 @@ test('filters by type, block and storey range', () => {
 });
 
 test('weights move units in the expected direction', () => {
-  const units = [U({ id: 'near', lift_m: 5 }), U({ id: 'far', lift_m: 40 }), U({ id: 'corner', position: 'Corner', lift_m: 20 })];
-  assert.strictEqual(S.rank(units, {}, { lift: 5 }, 'none')[0].id, 'far');
-  assert.strictEqual(S.rank(units, {}, { lift: -5 }, 'none')[0].id, 'near');
+  const units = [U({ id: 'near', chute_m: 5 }), U({ id: 'far', chute_m: 40 }), U({ id: 'corner', position: 'Corner', chute_m: 20 })];
+  assert.strictEqual(S.rank(units, {}, { chute: 5 }, 'none')[0].id, 'far');
+  assert.strictEqual(S.rank(units, {}, { chute: -5 }, 'none')[0].id, 'near');
   assert.strictEqual(S.rank(units, {}, { corner: 5 }, 'none')[0].id, 'corner');
   assert.strictEqual(S.rank(units, {}, { sun: { S: 5 } }, 'none')[0].score, 0);
 });
@@ -24,12 +24,38 @@ test('floor preference uses the block height', () => {
   const units = [U({ id: 'lo', storey: 2 }), U({ id: 'mid', storey: 10 }), U({ id: 'hi', storey: 18 })];
   assert.strictEqual(S.rank(units, {}, {}, 'higher')[0].id, 'hi');
   assert.strictEqual(S.rank(units, {}, {}, 'lower')[0].id, 'lo');
-  assert.strictEqual(S.rank(units, {}, {}, 'middle')[0].id, 'mid');
+  assert.ok(!S.FLOOR_PREFS.includes('middle'));
 });
 
-test('ranks are 1..n and stable', () => {
-  const r = S.rank([U({ id: 'x' }), U({ id: 'y' })], {}, {}, 'none');
-  assert.deepStrictEqual(r.map(u => u.rank), [1, 2]);
+test('equal scores share a rank', () => {
+  const r = S.rank([U({ id: 'x' }), U({ id: 'y' }), U({ id: 'z', storey: 9 })], {}, {}, 'none');
+  assert.deepStrictEqual(r.map(u => u.rank), [1, 1, 1]);
+  const r2 = S.rank([U({ id: 'a', position: 'Corner' }), U({ id: 'b' }), U({ id: 'c' }), U({ id: 'd', position: 'Corner', storey: 2 })], {}, { corner: 3 }, 'none');
+  assert.deepStrictEqual(r2.map(u => [u.id, u.rank]), [['a', 1], ['d', 1], ['b', 3], ['c', 3]]);
+});
+
+test('one meter per facility type: has counts fully, near counts half', () => {
+  const units = [U({ id: 'has', facilities_has: ['Shops'], facilities_near: [] }), U({ id: 'near', facilities_has: [], facilities_near: ['Shops', 'Hardcourt'] }), U({ id: 'none', facilities_has: [], facilities_near: [] })];
+  assert.deepStrictEqual(S.availability(units).facilities, ['Hardcourt', 'Shops']);
+  const r = S.rank(units, {}, { facility: { Shops: 4, Hardcourt: -2 } }, 'none');
+  assert.deepStrictEqual(r.map(u => [u.id, u.score]), [['has', 4], ['none', 0], ['near', 1]].sort((a, b) => b[1] - a[1]));
+});
+
+test('2-Room Flexi Type 1 and 2 form one housing type', () => {
+  assert.strictEqual(S.housingOf('2-Room Flexi (Type 1)'), '2-Room Flexi');
+  assert.strictEqual(S.housingOf('2-Room Flexi (Type 2)'), '2-Room Flexi');
+  assert.strictEqual(S.housingOf('4-Room'), '4-Room');
+});
+
+test('highest, middlemost and lowest storeys', () => {
+  const mk = ss => S.rank(ss.map((s, i) => U({ id: `u${i}`, storey: s })), {}, {}, 'none');
+  const odd = S.floorGroups(mk([2, 3, 3, 7]));
+  assert.deepStrictEqual(odd.storeys, { highest: [7], middle: [3], lowest: [2] });
+  assert.strictEqual(odd.middle.length, 2);
+  const even = S.floorGroups(mk([2, 3, 4, 7]));
+  assert.deepStrictEqual(even.storeys.middle, [3, 4]);
+  assert.strictEqual(even.middle.length, 2);
+  assert.deepStrictEqual(S.floorGroups([]).highest, []);
 });
 
 test('binomial pmf sums to 1 and fit matches mean', () => {
@@ -49,7 +75,8 @@ test('population uses verified users only once a project has 100 of them', () =>
 
 test('analysis ranks averages', () => {
   const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', verified: false, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
-  const a = analyse([sub({ sun: { N: 5, S: -2 }, corner: 4, lift: 1 }), sub({ sun: { N: 3, S: 0 }, corner: 2, lift: 3 })], { p: { maxStorey: 20 } }, [], 'all');
+  const a = analyse([sub({ sun: { N: 5, S: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { N: 3, S: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, [], 'all');
   assert.deepStrictEqual(a.sun_directions.map(r => r.key), ['N', 'S']);
   assert.strictEqual(a.factors[0].key, 'corner');
+  assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
 });
