@@ -11,7 +11,7 @@ HEAD = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1f1f1f">
+  <meta name="theme-color" content="#ffffff">
   <title>{title} · MyBTO</title>
   <meta name="description" content="{desc}">
   <link rel="icon" href="/favicon.png" type="image/png">

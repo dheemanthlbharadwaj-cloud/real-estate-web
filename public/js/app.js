@@ -424,7 +424,7 @@ async function loadAnalysis() {
   $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''}. `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
-  const ink = css('--accent'), signal = css('--neg'), green = css('--accent'), rule = css('--muted');
+  const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');
   const prefOrder = ['higher', 'lower', 'none'];
   for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
     chart(`c-${k}`, {
