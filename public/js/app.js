@@ -379,9 +379,9 @@ on('#flag-list', 'drop', e => {
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function chart(id, config) {
   state.charts[id]?.destroy();
-  Chart.defaults.font.family = "'Manrope', sans-serif";
+  Chart.defaults.font.family = "'Inter', sans-serif";
   Chart.defaults.font.size = 12;
-  Chart.defaults.color = css('--ink-2');
+  Chart.defaults.color = css('--text-2');
   Chart.defaults.borderColor = css('--line');
   state.charts[id] = new Chart(document.getElementById(id), config);
 }
@@ -424,7 +424,7 @@ async function loadAnalysis() {
   $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''}. `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
-  const ink = css('--navy'), signal = css('--neg'), green = css('--sea'), rule = css('--stone-2');
+  const ink = css('--accent'), signal = css('--neg'), green = css('--accent'), rule = css('--muted');
   const prefOrder = ['higher', 'lower', 'none'];
   for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
     chart(`c-${k}`, {
@@ -486,7 +486,7 @@ function legendFigure(c) {
 }
 function renderLegend() {
   if (!$('#legend') || $('#legend').childElementCount) return;
-  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}"><span class="label"><span class="n">${String(i + 1).padStart(2, '0')}</span>${esc(c.tag)}</span>
+  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}"><span class="label">${esc(c.tag)}</span>
     <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
 }
 function openLegend(key) {

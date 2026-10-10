@@ -1,4 +1,4 @@
-// Shared site chrome for every page: header, footer, mobile menu, scroll reveal.
+// Shared site chrome for every page: header, footer and mobile menu.
 (function () {
   const page = document.body.dataset.page || 'home';
   const signedIn = (() => { try { return JSON.parse(localStorage.getItem('mybto:user')); } catch { return null; } })();
@@ -38,12 +38,5 @@
     </div>`;
   document.body.append(footer);
 
-  // Reveal on scroll, with a position sweep as a fallback.
-  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' }) : null;
-  window.revealAll = root => (root || document).querySelectorAll('.reveal:not(.in)').forEach(el => (io ? io.observe(el) : el.classList.add('in')));
-  window.revealAll();
-  const sweep = () => document.querySelectorAll('.reveal:not(.in)').forEach(el => { if (el.getBoundingClientRect().top < innerHeight * 1.05) el.classList.add('in'); });
-  addEventListener('scroll', sweep, { passive: true });
-  addEventListener('load', sweep);
-  setTimeout(sweep, 400);
+  window.revealAll = () => {};
 })();

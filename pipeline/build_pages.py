@@ -11,19 +11,19 @@ HEAD = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f1f1f">
   <title>{title} · MyBTO</title>
   <meta name="description" content="{desc}">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body data-page="{page}">
   <main>
     <section class="page-hero">
-      <div class="bg" style="background-image:url('/img/{img}')" aria-hidden="true"></div>
       <div class="wrap">
         <span class="label">{kicker}</span>
         <h1 class="h1">{h1}</h1>
@@ -53,12 +53,12 @@ PAGES = {
       <div class="desk">
         <aside class="rail" aria-label="Preferences">
           <div class="step">
-            <div class="step-h"><span class="n">i.</span><h2>Project</h2></div>
+            <div class="step-h"><h2>1. Project</h2></div>
             <select id="project" class="project-select" aria-label="Project"></select>
             <p id="project-meta" class="project-meta"></p>
           </div>
           <div class="step">
-            <div class="step-h"><span class="n">ii.</span><h2>Filters</h2></div>
+            <div class="step-h"><h2>2. Filters</h2></div>
             <div class="field"><span class="eyebrow">Housing type · pick one</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
             <div class="field"><span class="eyebrow">Blocks</span>
               <div class="mini-links"><button type="button" data-blocks="all">Select all</button><button type="button" data-blocks="none">Clear</button></div>
@@ -76,7 +76,7 @@ PAGES = {
             </div>
           </div>
           <div class="step">
-            <div class="step-h"><span class="n">iii.</span><h2>Importance</h2></div>
+            <div class="step-h"><h2>3. Importance</h2></div>
             <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid, 0 means you don't mind, plus 5 means must have. Only factors found in your selected blocks are shown. Tap ? to see what a factor means.</p>
             <div id="weights"></div>
             <p id="hidden-factors" class="hidden-note"></p>
