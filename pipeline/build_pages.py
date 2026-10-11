@@ -46,7 +46,7 @@ PAGES = {
     "rank": dict(
         title="Rank units", img="garden-ridge.webp", kicker="Rank units", color="sky",
         h1="Every unit, <em>ranked</em> for you.",
-        lede="Choose a project, narrow it down to the units you’d consider, then rate each factor from minus 5 (avoid) to plus 5 (must have).",
+        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have).",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
     <section class="tool"><div class="wrap">
@@ -77,7 +77,7 @@ PAGES = {
           </div>
           <div class="step">
             <div class="step-h"><h2>3. Importance</h2></div>
-            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid, 0 means you don’t mind and plus 5 means must have. You’ll only see factors found in your selected blocks. Tap ? to see what a factor means.</p>
+            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid and plus 5 means must have. Tap ? to see what a factor means.</p>
             <div id="weights"></div>
             <p id="hidden-factors" class="hidden-note"></p>
           </div>
@@ -96,7 +96,7 @@ PAGES = {
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
           <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
           <div class="fg-wrap">
-            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list, with its rank and score. If your list has an even number of storeys, you’ll see the middle two.</p></div>
+            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list (the middle two if there’s an even number).</p></div>
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
         </div>
@@ -113,7 +113,7 @@ PAGES = {
     "shortlist": dict(
         title="Shortlist", img="garden-portico.webp", kicker="Your shortlist", color="butter",
         h1="The homes you’d <em>pick first.</em>",
-        lede="The units you starred, in the order you’d pick them on selection day. Drag to reorder. When you’re signed in, it’s saved to your account.",
+        lede="The units you starred, in the order you’d pick them. Drag to reorder.",
         desc="Your ordered shortlist of BTO units.",
         body="""
     <section class="tool"><div class="wrap">
@@ -124,7 +124,7 @@ PAGES = {
     "analysis": dict(
         title="Insights", img="garden-brook.webp", kicker="Insights", color="forest",
         h1="What other buyers <em>want.</em>",
-        lede="Built from saved lists. For each project, only verified members count once there are at least 100 of them. Until then, every saved list counts.",
+        lede="Built from saved lists, counting only verified members once a project has 100 of them.",
         desc="Aggregate insights from MyBTO users: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
         body="""
@@ -161,7 +161,7 @@ PAGES = {
     "account": dict(
         title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
         h1="Your <em>MyBTO</em> account.",
-        lede="Save your ranked list with your queue number, keep your shortlist on every device and, once you’re verified, unlock Insights.",
+        lede="Save your list and queue number, and unlock Insights once you’re verified.",
         desc="Sign in or create a MyBTO account.",
         body="""
     <section class="tool"><div class="wrap">
@@ -172,7 +172,7 @@ PAGES = {
         <h2 style="margin-top:14px" id="acct-email"></h2>
         <p><span id="acct-badge" class="badge"></span></p>
         <div id="verify-box" hidden>
-          <p class="small muted">Verify your email to unlock Insights. Check your inbox (and spam folder) for the link.</p>
+          <p class="small muted">Check your inbox (and spam folder) for the verification link.</p>
           <div class="row-btns"><button id="btn-refresh" class="btn primary">I’ve verified</button><button id="btn-resend" class="btn ghost">Resend email</button></div>
         </div>
         <div class="row-btns"><a class="btn" href="/rank">Rank units</a><a class="btn" href="/shortlist">My shortlist</a><button id="btn-logout" class="btn ghost">Sign out</button></div>
@@ -192,7 +192,7 @@ PAGES = {
           <input name="email" type="email" placeholder="Email" autocomplete="email" required>
           <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
           <button class="btn primary">Create account</button>
-          <p class="small muted">It’s free. We only use your email to sign you in and verify your account.</p>
+          <p class="small muted">It’s free. We only use your email to sign you in.</p>
           <p class="err small"></p></form>
       </div>
     </div></section>

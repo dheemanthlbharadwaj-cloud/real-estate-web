@@ -7,13 +7,13 @@ const PAGE = document.body.dataset.page;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const FACTOR_HELP = {
-  clearance: 'No unit in another block within 30 m.',
-  corner: 'End-of-corridor unit, usually with windows on two sides.',
+  clearance: 'More than 30 m from the nearest unit in a neighbouring block.',
+  corner: 'Sits at the end of the corridor.',
   roof: 'Looks onto, or steps out towards, a roof on the floor plan.',
-  chute: 'How far your front door is from the refuse chute. Plus means further is better.',
-  mrt: 'The block is within 100 m of an MRT station.',
+  chute: 'How far the front door is from the nearest refuse chute.',
+  mrt: 'Block within 100 m of an MRT station.',
 };
-const FACILITY_HELP = 'Inside your block counts fully. Within 30 m counts half.';
+const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
 const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
 
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
@@ -76,8 +76,8 @@ function renderTitleBlock() {
   if ($('#sample-note') && state.index?.sample && p && (PAGE === 'rank' || PAGE === 'shortlist')) {
     $('#sample-note').hidden = false;
     $('#sample-text').textContent = p.data_status === 'sample data'
-      ? `${p.name}: the units and details shown are placeholders until the brochure data is checked.`
-      : `${p.name}: blocks, storeys, unit numbers and flat types are real (${p.units.toLocaleString()} units). Facing, distances and facilities are placeholders.`;
+      ? `${p.name}: sample data until the brochure data is checked.`
+      : `${p.name}: real unit list (${p.units.toLocaleString()} units), sample facing, distances and facilities.`;
   }
   lsSet('mybto:user', state.user ? { verified: !!state.user.verified } : null);
   const link = $('#account-link');
@@ -400,7 +400,7 @@ async function loadAnalysis() {
   if (!state.user || !state.user.verified) {
     locked.hidden = false; body.hidden = true;
     $('#locked-text').textContent = state.user
-      ? 'Your account isn’t verified yet. Open the verification link we emailed you when you signed up to unlock Insights.'
+      ? 'Open the verification link we emailed you to unlock Insights.'
       : 'Create an account and verify your email to unlock Insights.';
     return;
   }
