@@ -15,7 +15,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "data" / "units"
 
-LIFT_NEAR_M, CHUTE_NEAR_M, MRT_NEAR_M, CLEARANCE_M = 15, 10, 400, 30
+LIFT_NEAR_M, CHUTE_NEAR_M, MRT_NEAR_M, CLEARANCE_M = 15, 10, 100, 30
+# Berlayar Rise is the only project with a station on its site plan (Telok Blangah MRT). Rough
+# block-to-station distances measured off that plan; every other block is well over 100 m away.
+BERLAYAR_MRT_M = {"201A": (45, 70), "200B": (85, 110)}
 COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 FACILITIES = ["Children's playground", "Adult fitness station", "Elderly fitness station", "Hardcourt",
               "Precinct pavilion", "Drop-off porch", "Community space", "Preschool", "Residents' network centre",
@@ -101,6 +104,8 @@ def main():
                 entries.sort(key=lambda e: e["unit"])
                 for i, e in enumerate(entries):
                     a = stack_attrs(rng, bi, i, len(entries))
+                    lo, hi = BERLAYAR_MRT_M.get(block, (150, 300))
+                    a["mrt_m"] = round(rng.uniform(lo, hi))
                     for s in e["storeys"]:
                         units.append(make_unit(code, name, key, town, ptype, block, s, e["unit"], e["flat_type"], a, mrt, True))
         else:

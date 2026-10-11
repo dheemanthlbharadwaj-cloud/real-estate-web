@@ -7,13 +7,13 @@ const PAGE = document.body.dataset.page;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const FACTOR_HELP = {
-  clearance: 'No unit of another block within 30 m.',
-  corner: 'End-of-row unit with windows on two sides.',
-  roof: 'Looks onto a podium / 2nd-storey roof.',
-  chute: 'Metres from your door to the refuse chute. + prefers further away.',
-  mrt: 'Block within 400 m of an MRT station.',
+  clearance: 'No unit in another block within 30 m.',
+  corner: 'End-of-corridor unit, usually with windows on two sides.',
+  roof: 'Looks onto, or steps out towards, a roof on the floor plan.',
+  chute: 'How far your front door is from the refuse chute. Plus means further is better.',
+  mrt: 'The block is within 100 m of an MRT station.',
 };
-const FACILITY_HELP = 'In your block counts fully. Within 30 m counts half.';
+const FACILITY_HELP = 'Inside your block counts fully. Within 30 m counts half.';
 const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
 
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
@@ -76,8 +76,8 @@ function renderTitleBlock() {
   if ($('#sample-note') && state.index?.sample && p && (PAGE === 'rank' || PAGE === 'shortlist')) {
     $('#sample-note').hidden = false;
     $('#sample-text').textContent = p.data_status === 'sample data'
-      ? `${p.name}: units and attributes shown are placeholders until the brochure data is verified.`
-      : `${p.name}: blocks, storeys, unit numbers and flat types are real (${p.units.toLocaleString()} units); facing, distances and facilities are placeholders.`;
+      ? `${p.name}: the units and details shown are placeholders until the brochure data is checked.`
+      : `${p.name}: blocks, storeys, unit numbers and flat types are real (${p.units.toLocaleString()} units). Facing, distances and facilities are placeholders.`;
   }
   lsSet('mybto:user', state.user ? { verified: !!state.user.verified } : null);
   const link = $('#account-link');
@@ -162,7 +162,7 @@ function renderWeights() {
   let h = '';
   h += `<div class="meter-group"><span class="eyebrow"><span>Blocks</span></span>${blocks.length
     ? blocks.map(b => meter('block', b, `Block ${b}`)).join('') : '<p class="small muted">Select at least one block.</p>'}</div>`;
-  if (av.sun.length) h += `<div class="meter-group"><span class="eyebrow"><span>Sun direction</span></span>${av.sun.map(d => meter('sun', d, d, 'Direction the living room windows face')).join('')}</div>`;
+  if (av.sun.length) h += `<div class="meter-group"><span class="eyebrow"><span>Sun direction</span></span>${av.sun.map(d => meter('sun', d, d, 'The direction the living room windows face')).join('')}</div>`;
   const missingSun = Scoring.SUN_DIRECTIONS.filter(d => !av.sun.includes(d));
   if (missingSun.length && scope.length) hidden.push(`facing ${missingSun.join(', ')}`);
   if (av.design.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit design · 2-Room Flexi</span></span>${av.design.map(d => meter('design', d, d)).join('')}</div>`;
@@ -400,8 +400,8 @@ async function loadAnalysis() {
   if (!state.user || !state.user.verified) {
     locked.hidden = false; body.hidden = true;
     $('#locked-text').textContent = state.user
-      ? 'Your account isn\'t verified yet. Open the verification link from your sign-up to unlock the analysis.'
-      : 'Create an account and verify your email to unlock the analysis.';
+      ? 'Your account isn’t verified yet. Open the verification link we emailed you when you signed up to unlock Insights.'
+      : 'Create an account and verify your email to unlock Insights.';
     return;
   }
   locked.hidden = true; body.hidden = false;
@@ -568,7 +568,7 @@ on('#form-register', 'submit', async e => {
   try {
     await store.register(fd.get('email'), fd.get('password'));
     e.target.reset();
-    note(`We've sent a verification link to ${fd.get('email')}. Open it to unlock Analysis.`);
+    note(`We’ve sent a verification link to ${fd.get('email')}. Open it to unlock Insights.`);
   } catch (ex) { err.textContent = ex.message; }
 });
 on('#btn-forgot', 'click', async () => {
@@ -590,5 +590,5 @@ on('#btn-logout', 'click', () => store.logout());
 
 init().catch(err => {
   console.error(err);
-  ($('.tool .wrap') || document.body).insertAdjacentHTML('afterbegin', `<p class="err">Couldn't load: ${esc(err.message)}</p>`);
+  ($('.tool .wrap') || document.body).insertAdjacentHTML('afterbegin', `<p class="err">Couldn’t load: ${esc(err.message)}</p>`);
 });

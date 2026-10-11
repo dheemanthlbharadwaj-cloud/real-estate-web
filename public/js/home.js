@@ -2,11 +2,11 @@
 (async function () {
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const BLURB = {
-    'berlayar-rise-7': 'Car-lite towers beside Telok Blangah MRT, across the road from Keppel Bay.',
-    'lakeview-cascadia-2': 'Garden terraces and a play garden at the heart of Bishan.',
-    'kebun-baru_breeze-5': 'Twin towers wrapped around a rooftop garden above the car park.',
-    'kebun-baru_ridge-1': 'Courtyard living around a central garden playground.',
-    'sembawang-brook-6': 'Four blocks framing a landscaped fitness garden in the north.',
+    'berlayar-rise-7': 'Car-lite towers next to Telok Blangah MRT, across the road from Keppel Bay.',
+    'lakeview-cascadia-2': 'Garden terraces and a play garden in Bishan.',
+    'kebun-baru_breeze-5': 'Two towers around a rooftop garden on top of the car park.',
+    'kebun-baru_ridge-1': 'Blocks set around a central garden with a playground.',
+    'sembawang-brook-6': 'Blocks set around a landscaped fitness garden in Sembawang.',
     'sembawang-portico-4': 'Garden courts and family playgrounds in Sembawang.',
     'woodgrove-acres-3': 'Blocks set around a wooded central garden in Woodlands.',
   };
@@ -23,7 +23,7 @@
   grid.innerHTML = ORDER.filter(k => byKey[k]).map(k => {
     const p = byKey[k];
     return `<a class="pcard" href="/rank?project=${encodeURIComponent(k)}" data-type="${esc(p.project_type)}">
-      <div class="ph"><img src="/img/${esc(k)}.webp" alt="${esc(p.name)} (artist's impression)" loading="lazy"><span class="badge-type ${esc(p.project_type)}">${esc(p.project_type)}</span></div>
+      <div class="ph"><img src="/img/${esc(k)}.webp" alt="${esc(p.name)} (artist’s impression)" loading="lazy"><span class="badge-type ${esc(p.project_type)}">${esc(p.project_type)}</span></div>
       <div class="body"><h3>${esc(p.name)}</h3><span class="go" aria-hidden="true">→</span><span class="town">${esc(p.town)}</span>
         <p class="blurb">${esc(BLURB[k] || '')}</p>
         <div class="facts"><span><b>${p.units.toLocaleString()}</b>units</span><span><b>${p.blocks.length}</b>blocks</span><span>${types(p).map(esc).join(', ')}</span></div></div></a>`;
