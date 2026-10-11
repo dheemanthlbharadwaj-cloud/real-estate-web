@@ -13,7 +13,7 @@ const FACTOR_HELP = {
   chute: 'Metres from your door to the refuse chute. + prefers further away.',
   mrt: 'Block within 400 m of an MRT station.',
 };
-const FACILITY_HELP = 'In your block counts fully; within 50 m counts half.';
+const FACILITY_HELP = 'In your block counts fully. Within 30 m counts half.';
 const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
 
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
@@ -472,17 +472,7 @@ on('#a-value', 'change', loadAnalysis);
 
 // ---------------------------------------------------------------- legend (drawer on the Rank page)
 function legendFigure(c) {
-  const pins = (c.pins || []).map(p => `<span class="pin${p.dir === 'up' ? ' up' : ''}" style="left:${p.x}%;top:${p.y}%">${esc(p.text)}</span>`).join('');
-  const marks = (c.marks || []).map(m => {
-    if (m.type === 'box') return `<span class="mk-box ${m.tone || 'sea'}${m.x + m.w > 70 ? ' r' : ''}" style="left:${m.x}%;top:${m.y}%;width:${m.w}%;height:${m.h}%"><em>${esc(m.label)}</em></span>`;
-    if (m.type === 'ring') return `<span class="mk-ring" style="left:${m.x}%;top:${m.y}%;width:${m.d}%"><em>${esc(m.label)}</em></span>`;
-    if (m.type === 'line') return `<span class="mk-line" style="left:${m.x1}%;top:${m.y}%;width:${m.x2 - m.x1}%"><em>${esc(m.label)}</em></span>`;
-    return '';
-  }).join('');
-  const bands = c.bands ? '<span class="band b-hi">Higher</span><span class="band b-mid">Middlemost</span><span class="band b-lo">Lower</span>' : '';
-  const one = (src, alt, cap) => `<figure class="lg-fig"><img src="/img/legend/${src}" alt="${esc(alt)}" loading="lazy">${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
-  if (c.img2 && c.cap2) return `<div class="lg-pair">${one(c.img, c.alt, c.cap)}${one(c.img2, c.alt2, c.cap2)}</div>`;
-  return `<figure class="lg-fig"><img src="/img/legend/${c.img}" alt="${esc(c.alt)}" loading="lazy">${marks}${pins}${bands}</figure>${c.img2 ? one(c.img2, c.alt2) : ''}`;
+  return `<figure class="lg-fig"><img src="/img/legend/${c.img}" alt="${esc(c.alt)}" loading="lazy"></figure>`;
 }
 function renderLegend() {
   if (!$('#legend') || $('#legend').childElementCount) return;

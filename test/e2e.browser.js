@@ -130,7 +130,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.click('#weights .help >> nth=0');
     await p.waitForSelector('#legend-drawer.open #legend .lg');
     check((await p.$$eval('#legend .lg', c => c.length)) === 9, 'legend drawer opens with all 9 factors');
-    check((await p.$$eval('#legend img', i => i.length)) >= 10, 'legend uses images');
+    check((await p.$$eval('#legend img', i => i.length)) === 9, 'legend has one picture per factor');
     await p.click('.drawer-head [data-close-legend]');
     await p.waitForSelector('#legend-drawer', { state: 'hidden' });
     check(true, 'legend drawer closes');

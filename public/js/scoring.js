@@ -27,7 +27,7 @@
     if (hi === lo) return 0;
     return (v - lo) / (hi - lo);
   }
-  // Per facility type: "has" (inside the unit's own block) = 1, "near" (within 50 m) = 0.5.
+  // Per facility type: "has" (inside the unit's own block) = 1, "near" (within 30 m) = 0.5.
   function facilityFeature(u, name) {
     if ((u.facilities_has || []).includes(name)) return 1;
     if ((u.facilities_near || []).includes(name)) return 0.5;
