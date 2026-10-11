@@ -59,8 +59,11 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; box-shadow: 0 1
 .sched-head .count { font: 600 40px/1 var(--head); color: var(--text); margin-top: 6px; }
 .sched-head .count small { font: 500 14px/1 var(--sans); color: var(--muted); margin-left: 8px; }
 .sched-head .spacer { flex: 1; }
-.queue { display: flex; align-items: center; gap: 10px; }
-.queue input { width: 120px; }
+.top-note { margin: 6px 0 0; }
+.after-rank { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.after-rank .btn .count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 4px; border-radius: 10px; background: var(--accent-soft); color: var(--accent-ink); font: 700 11px/1 var(--sans); }
+.after-rank .star-ico { color: #f5b301; }
+.after-rank .linkbtn { width: 100%; text-align: right; }
 .save-msg { font-size: 13px; color: var(--muted); min-height: 20px; margin: 10px 0 0; }
 .table-wrap { overflow-x: auto; margin-top: 4px; }
 table.schedule { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -194,3 +197,35 @@ body.drawer-open { overflow: hidden; }
   .auth form, .acct-card, .panel, .lg { padding: 18px; }
   .drawer-body { padding: 14px; } .drawer-head { padding: 12px 14px; }
 }
+
+/* ---------- ranking table additions ---------- */
+.schedule th small { display: block; font-weight: 500; color: var(--muted); opacity: .8; margin-top: 2px; }
+.schedule th.fac { white-space: normal; min-width: 64px; max-width: 90px; font-size: 11px; text-align: center; }
+.schedule td.fac { text-align: center; }
+.yn { font: 700 14px/1 var(--sans); }
+.yn.yes { color: var(--pos); } .yn.no { color: #c3ccd1; }
+.nf { font: 600 12px/1 var(--sans); padding: 4px 8px; border-radius: 6px; }
+.nf.near { background: var(--accent-soft); color: var(--accent-ink); }
+.nf.far { background: var(--card-2); color: var(--text-2); }
+.schedule tr.neg-row { background: var(--neg-soft); }
+.schedule tr.neg-row:hover { background: var(--neg-soft); filter: brightness(.98); }
+.schedule tr.first-neg td { border-top: 3px solid var(--neg); }
+.fg-card.blank p { padding: 14px 0; margin: 0; }
+
+/* ---------- survey ---------- */
+.modal { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 16px; }
+.modal[hidden] { display: none; }
+.modal-scrim { position: absolute; inset: 0; background: rgba(15, 30, 40, .5); }
+.modal-panel { position: relative; width: min(600px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: var(--card); border-radius: var(--r); padding: 26px 24px 22px; display: grid; gap: 16px; }
+.modal-panel .h3 { font: 600 22px/1.2 var(--head); margin: 0; }
+.modal-panel p { margin: 0; }
+.modal-panel fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.modal-panel legend { font: 600 14px/1.3 var(--sans); color: var(--text); padding: 0; margin-bottom: 8px; }
+.survey-queue { display: grid; gap: 8px; font: 600 14px/1.3 var(--sans); }
+.survey-queue input { max-width: 200px; font-weight: 400; }
+.consent { color: var(--text-2); background: var(--bg-2); border-radius: 8px; padding: 10px 12px; }
+.modal-btns { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.who { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.who h4 { font: 600 13px/1.2 var(--sans); margin: 0 0 6px; color: var(--text-2); }
+.who .ranklist li { grid-template-columns: 0 1fr auto; }
+@media (max-width: 760px) { .who { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

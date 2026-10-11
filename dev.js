@@ -1,6 +1,6 @@
 // Local dev server: serves public/ and the /api functions (same handlers Vercel runs).
 //   node dev.js                 -> uses the real Firebase project from your env vars (.env.local)
-//   DEV_FAKE_FIREBASE=1 node dev.js -> no Firebase needed: /api/analysis accepts the token "fake-verified"
+//   DEV_FAKE_FIREBASE=1 node dev.js -> no Firebase needed: /api/analysis accepts any "fake-" token
 //                                      and uses only the sample data (used by the browser tests).
 const http = require('node:http');
 const fs = require('node:fs');
@@ -22,7 +22,7 @@ const handlers = {
   '/api/config': FAKE ? (req, res) => res.status(200).json({ apiKey: 'fake', authDomain: 'fake', projectId: 'fake', appId: 'fake' }) : require('./api/config'),
   '/api/analysis': FAKE
     ? analysis.makeHandler({
-      verifyToken: async t => { if (!t.startsWith('fake-')) throw new Error('bad token'); return { email_verified: t === 'fake-verified' }; },
+      verifyToken: async t => { if (!t.startsWith('fake-')) throw new Error('bad token'); return { uid: t }; },
       load: async () => { const s = analysis.sampleData(); return { subs: s.submissions, flags: s.flags }; },
     })
     : analysis,

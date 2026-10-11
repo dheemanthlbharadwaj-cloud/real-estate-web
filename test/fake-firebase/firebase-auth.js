@@ -6,8 +6,7 @@ const listeners = [];
 const auth = { currentUser: null };
 function wrap(rec) {
   if (!rec) return null;
-  return { uid: rec.uid, email: rec.email, get emailVerified() { return !!users()[rec.email]?.verified; },
-    getIdToken: async () => (users()[rec.email]?.verified ? 'fake-verified' : 'fake-unverified') };
+  return { uid: rec.uid, email: rec.email, isAnonymous: !!rec.anonymous, getIdToken: async () => 'fake-token' };
 }
 function setUser(rec) {
   auth.currentUser = wrap(rec);
@@ -15,7 +14,6 @@ function setUser(rec) {
   listeners.forEach(cb => cb(auth.currentUser));
 }
 const err = code => Object.assign(new Error(code), { code });
-window.__fakeVerify = email => { const u = users(); u[email].verified = true; saveUsers(u); };
 export const getAuth = () => auth;
 export function onAuthStateChanged(a, cb) {
   listeners.push(cb);
@@ -26,7 +24,7 @@ export function onAuthStateChanged(a, cb) {
 export async function createUserWithEmailAndPassword(a, email, password) {
   const u = users();
   if (u[email]) throw err('auth/email-already-in-use');
-  u[email] = { uid: `uid${Object.keys(u).length + 1}`, email, password, verified: false };
+  u[email] = { uid: `uid${Object.keys(u).length + 1}`, email, password };
   saveUsers(u); setUser(u[email]);
   return { user: auth.currentUser };
 }
@@ -37,15 +35,20 @@ export async function signInWithEmailAndPassword(a, email, password) {
   return { user: auth.currentUser };
 }
 export async function signOut() { setUser(null); }
-export async function sendEmailVerification(user) { window.__verifySent = (window.__verifySent || 0) + 1; }
 export async function sendPasswordResetEmail() {}
-export async function reload() {}
+export async function signInAnonymously() {
+  const u = users();
+  const key = `anon${Object.keys(u).length + 1}`;
+  u[key] = { uid: key, email: key, anonymous: true };
+  saveUsers(u); setUser(u[key]);
+  return { user: auth.currentUser };
+}
 export class GoogleAuthProvider {}
-// Fake Google popup: signs in as a Google account whose email is already verified.
+// Fake Google popup: signs in as a Google account.
 export async function signInWithPopup() {
   const u = users();
   const email = 'google.user@gmail.com';
-  u[email] = u[email] || { uid: `g${Object.keys(u).length + 1}`, email, password: null, verified: true };
+  u[email] = u[email] || { uid: `g${Object.keys(u).length + 1}`, email, password: null };
   saveUsers(u); setUser(u[email]);
   return { user: auth.currentUser };
 }

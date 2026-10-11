@@ -1,9 +1,10 @@
-// Firebase Auth (email + password, email verification) and Firestore persistence.
+// Firebase Auth and Firestore persistence. Signing in (email + password or Google) is optional:
+// visitors who don't sign in get an anonymous Firebase user so their rankings can still be saved.
 // Docs: submissions/<uid>_<project>, flags/<uid>_<project>  (see firestore.rules)
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
   getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
-  sendEmailVerification, sendPasswordResetEmail, reload, GoogleAuthProvider, signInWithPopup,
+  sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, signInAnonymously,
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
@@ -23,8 +24,8 @@ const FRIENDLY = {
   'auth/account-exists-with-different-credential': 'That email already has a password account. Sign in with your password.',
 };
 const friendly = e => new Error(FRIENDLY[e.code] || e.message);
-const toUser = u => (u ? { uid: u.uid, email: u.email, verified: u.emailVerified } : null);
-const continueUrl = () => `${location.origin}/account?verified=1`;
+// Anonymous users count as signed out everywhere in the UI.
+const toUser = u => (u && !u.isAnonymous ? { uid: u.uid, email: u.email } : null);
 
 // Resolves with the first auth state; `onChange` is called on every later change.
 export function init(onChange) {
@@ -47,39 +48,36 @@ export function init(onChange) {
 export async function register(email, password) {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(user, { url: continueUrl() });
     return toUser(user);
   } catch (e) { throw friendly(e); }
 }
 export async function login(email, password) {
   try { return toUser((await signInWithEmailAndPassword(auth, email, password)).user); } catch (e) { throw friendly(e); }
 }
-// Google accounts arrive with a verified email, so they unlock Analysis straight away.
 export async function loginWithGoogle() {
   try { return toUser((await signInWithPopup(auth, new GoogleAuthProvider())).user); } catch (e) { throw friendly(e); }
 }
 export const logout = () => signOut(auth);
-export async function resendVerification() {
-  try { await sendEmailVerification(auth.currentUser, { url: continueUrl() }); } catch (e) { throw friendly(e); }
-}
 export async function resetPassword(email) {
   try { await sendPasswordResetEmail(auth, email); } catch (e) { throw friendly(e); }
 }
-// Re-reads the user from Firebase so a just-clicked verification link is picked up.
-export async function refreshUser() {
-  if (!auth?.currentUser) return null;
-  await reload(auth.currentUser);
-  await auth.currentUser.getIdToken(true);
-  return toUser(auth.currentUser);
+// Any Firebase user, signed in or anonymous. Creates an anonymous one when there's none yet.
+export async function ensureUser() {
+  await ready;
+  if (!auth.currentUser) await signInAnonymously(auth);
+  return auth.currentUser.uid;
 }
-export const idToken = () => auth.currentUser?.getIdToken();
+export const hasUser = () => !!auth?.currentUser;
+export const idToken = async () => { await ensureUser(); return auth.currentUser.getIdToken(); };
 
 const key = project => `${auth.currentUser.uid}_${project}`;
 export async function loadList(project) {
+  if (!auth?.currentUser) return null;
   const s = await getDoc(doc(db, 'submissions', key(project)));
   return s.exists() ? s.data() : null;
 }
 export async function saveList(project, data) {
+  await ensureUser();
   await setDoc(doc(db, 'submissions', key(project)), { ...data, uid: auth.currentUser.uid, project, updated_at: serverTimestamp() });
 }
 export async function loadFlags(project) {

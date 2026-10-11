@@ -1,5 +1,5 @@
 // GET /api/analysis?group=all|flat_type|project|project_type&value=...
-// Requires a Firebase ID token (Authorization: Bearer <token>) from a user whose email is verified.
+// Requires a Firebase ID token (Authorization: Bearer <token>); anonymous users are fine.
 const fs = require('node:fs');
 const path = require('node:path');
 const { auth, db } = require('../lib/firebase');
@@ -20,19 +20,13 @@ function sampleData() {
   return require('../lib/sample_submissions.json');
 }
 
-// All saved lists + flags, with each submitter's current email-verification status.
+// All saved rankings + flags. A ranking counts once its owner has answered the survey.
 async function loadAll() {
   if (cache.data && Date.now() - cache.at < CACHE_MS) return cache.data;
   const [subSnap, flagSnap] = await Promise.all([db().collection('submissions').get(), db().collection('flags').get()]);
   const subs = subSnap.docs.map(d => d.data());
-  const uids = [...new Set(subs.map(s => s.uid))];
-  const verified = new Set();
-  for (let i = 0; i < uids.length; i += 100) {
-    const r = await auth().getUsers(uids.slice(i, i + 100).map(uid => ({ uid })));
-    r.users.forEach(u => { if (u.emailVerified) verified.add(u.uid); });
-  }
   const real = subs.map(s => ({
-    user_id: s.uid, verified: verified.has(s.uid), is_sample: false, project: s.project, project_type: s.project_type,
+    user_id: s.uid, surveyed: !!(s.survey && s.survey.consent), survey: s.survey || null, is_sample: false, project: s.project, project_type: s.project_type,
     queue_number: s.queue_number || null, flat_types: s.flat_types || [], blocks: s.blocks || [],
     min_storey: s.min_storey ?? null, max_storey: s.max_storey ?? null, floor_pref: s.floor_pref || 'none',
     weights: s.weights || {},
@@ -52,7 +46,6 @@ const makeHandler = ({ verifyToken, load }) => async (req, res) => {
   if (!token) return res.status(401).json({ error: 'Please sign in' });
   let user;
   try { user = await verifyToken(token); } catch { return res.status(401).json({ error: 'Session expired, please sign in again' }); }
-  if (!user.email_verified) return res.status(403).json({ error: 'Verify your email to unlock Analysis', code: 'unverified' });
   const group = GROUPS.includes(req.query.group) ? req.query.group : 'all';
   try {
     const { subs, flags } = await load();

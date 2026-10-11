@@ -81,13 +81,13 @@
     return { score: Math.round(s * 1000) / 1000, parts };
   }
 
-  // Returns filtered units sorted best-first with score + rank. Equal scores share a rank
-  // (1, 1, 3, ...); within a tie the list shows higher storeys first, then by id.
+  // Returns filtered units sorted best-first with score + rank. Equal scores share a rank and the
+  // next score gets the next number (1, 1, 2, ...); within a tie, higher storeys first, then by id.
   function rank(units, filters, weights, pref) {
     const ctx = context(units);
     const out = filterUnits(units, filters || {}).map(u => ({ ...u, ...scoreUnit(u, weights || {}, pref, ctx) }));
     out.sort((a, b) => b.score - a.score || b.storey - a.storey || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-    out.forEach((u, i) => { u.rank = i > 0 && u.score === out[i - 1].score ? out[i - 1].rank : i + 1; });
+    out.forEach((u, i) => { u.rank = i === 0 ? 1 : u.score === out[i - 1].score ? out[i - 1].rank : out[i - 1].rank + 1; });
     return out;
   }
 

@@ -13,7 +13,7 @@ HEAD = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
   <title>{title} · MyBTO</title>
-  <meta name="description" content="{desc}">
+  <meta name="description" content="{desc}">{robots}
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,11 +84,13 @@ PAGES = {
         </aside>
         <div class="results-card">
           <div class="sched-head">
-            <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div></div>
+            <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div><p id="top-note" class="small muted top-note"></p></div>
             <div class="spacer"></div>
-            <div class="queue"><span class="eyebrow">Queue no.</span><input id="queue" type="text" inputmode="numeric" placeholder="e.g. 1234" aria-label="Queue number"></div>
-            <button id="btn-save" class="btn primary">Save list</button>
-            <button id="btn-csv" class="btn ghost">CSV</button>
+            <div id="after-rank" class="after-rank" hidden>
+              <a id="btn-shortlisted" class="btn" href="/shortlist" target="_blank" rel="noopener"><span class="star-ico" aria-hidden="true">★</span> Shortlisted <span class="count" id="flag-count">0</span></a>
+              <a id="btn-analysis" class="btn primary" href="/analysis" target="_blank" rel="noopener"><span id="analysis-name">Project</span> Analysis</a>
+              <button type="button" class="linkbtn" id="btn-edit-survey">Edit survey answers</button>
+            </div>
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
           <div class="fg-wrap">
@@ -96,10 +98,44 @@ PAGES = {
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
-          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
         </div>
       </div>
     </div></section>
+    <div id="survey" class="modal" hidden>
+      <div class="modal-scrim"></div>
+      <form id="survey-form" class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="survey-title">
+        <h2 class="h3" id="survey-title">Before we show your ranking</h2>
+        <p class="small muted">Four quick questions so the Analysis page can show what buyers like you want. We don’t ask for your name, and you only do this once.</p>
+        <fieldset><legend>How old are you?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="age" value="under-25" required><span>Under 25</span></label>
+          <label class="chip"><input type="radio" name="age" value="25-29"><span>25 to 29</span></label>
+          <label class="chip"><input type="radio" name="age" value="30-34"><span>30 to 34</span></label>
+          <label class="chip"><input type="radio" name="age" value="35-39"><span>35 to 39</span></label>
+          <label class="chip"><input type="radio" name="age" value="40-plus"><span>40 and above</span></label>
+        </div></fieldset>
+        <fieldset><legend>Who will you live with?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="household" value="alone" required><span>On my own</span></label>
+          <label class="chip"><input type="radio" name="household" value="partner"><span>My partner</span></label>
+          <label class="chip"><input type="radio" name="household" value="partner-kids"><span>My partner and kids</span></label>
+          <label class="chip"><input type="radio" name="household" value="parents"><span>Parents or grandparents too</span></label>
+        </div></fieldset>
+        <fieldset><legend>Is this your first flat from HDB?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="timer" value="first" required><span>First-timer</span></label>
+          <label class="chip"><input type="radio" name="timer" value="second"><span>Second-timer</span></label>
+          <label class="chip"><input type="radio" name="timer" value="mixed"><span>One of each (as a couple)</span></label>
+        </div></fieldset>
+        <fieldset><legend>Where do you live now?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="current_home" value="parents" required><span>With my parents</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="hdb-rental"><span>HDB rental flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="own-hdb"><span>My own HDB flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="private"><span>Private property</span></label>
+        </div></fieldset>
+        <label class="survey-queue"><span>Your queue number, if you have one</span><input name="queue_number" type="text" inputmode="numeric" maxlength="12" placeholder="e.g. 1234"></label>
+        <p class="consent small">By continuing, you agree that your answers and your ranking are saved without your name and used only for the combined results on the Analysis page.</p>
+        <p class="err small" id="survey-err"></p>
+        <div class="modal-btns"><button type="button" class="btn ghost" data-close-survey>Not now</button><button type="submit" class="btn primary" id="survey-ok">I agree, show my ranking</button></div>
+      </form>
+    </div>
     <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
       <div class="drawer-scrim" data-close-legend></div>
       <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">
@@ -111,33 +147,33 @@ PAGES = {
     "shortlist": dict(
         title="Shortlist", img="garden-portico.webp", kicker="Your shortlist", color="butter",
         h1="The homes you’d <em>pick first.</em>",
-        lede="The units you starred, in the order you’d pick them. Drag to reorder.",
+        lede="The units you starred, in the order you’d pick them. Drag to reorder.", robots=True,
         desc="Your ordered shortlist of BTO units.",
         body="""
     <section class="tool"><div class="wrap">
-      <div class="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/rank">Add more units <span class="arr">→</span></a></div>
+      <div class="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/">Add more units <span class="arr">→</span></a></div>
       <ol id="flag-list" class="shortlist"></ol>
     </div></section>
 """),
     "analysis": dict(
-        title="Insights", img="garden-brook.webp", kicker="Insights", color="forest",
+        title="Analysis", img="garden-brook.webp", kicker="Analysis", color="forest",
         h1="What other buyers <em>want.</em>",
-        lede="Built from saved lists, counting only verified members once a project has 100 of them.",
-        desc="Aggregate insights from MyBTO users: preferred floors, facings, blocks and factors.",
+        lede="Built from everyone’s saved rankings for this project.", robots=True,
+        desc="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
         body="""
     <section class="tool"><div class="wrap">
       <div id="analysis-locked" class="locked" hidden>
-        <span class="label">Members only</span>
-        <h2>For verified members</h2>
-        <p id="locked-text">Create an account and verify your email to unlock Insights.</p>
-        <a class="btn primary" href="/account">Sign in or sign up <span class="arr">→</span></a>
+        <span class="label">Rank first</span>
+        <h2>Rank a project to see this</h2>
+        <p id="locked-text">Rank units for any project and answer the four quick questions. Analysis opens right after.</p>
+        <a class="btn primary" href="/">Rank units <span class="arr">→</span></a>
       </div>
       <div id="analysis-body" hidden>
         <div class="filters-row">
           <label><span class="eyebrow">View by</span><br><select id="a-group">
-            <option value="all">All projects</option><option value="project_type">Project type</option>
-            <option value="project">Project</option><option value="flat_type">Housing type</option></select></label>
+            <option value="project">Project</option><option value="all">All projects</option><option value="project_type">Project type</option>
+            <option value="flat_type">Housing type</option></select></label>
           <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
         </div>
         <p id="a-basis" class="basis"></p>
@@ -151,7 +187,8 @@ PAGES = {
           <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
           <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities, most to least wanted</h3><ol class="ranklist" id="r-facility"></ol></div>
           <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types searched</h3><canvas id="c-types"></canvas></div>
-          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
+          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Who ranked</h3><div class="who" id="r-who"></div></div>
+          <div class="panel w12"><span class="eyebrow">Figure 11</span><h3>Most shortlisted units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
         </div>
       </div>
     </div></section>
@@ -159,7 +196,7 @@ PAGES = {
     "account": dict(
         title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
         h1="Your <em>MyBTO</em> account.",
-        lede="Save your list and queue number, and unlock Insights once you’re verified.",
+        lede="Signing in is optional. It keeps your shortlist and rankings with you on any device.",
         desc="Sign in or create a MyBTO account.",
         body="""
     <section class="tool"><div class="wrap">
@@ -168,12 +205,7 @@ PAGES = {
       <div id="acct-in" class="acct-card" hidden>
         <span class="label">Signed in</span>
         <h2 style="margin-top:14px" id="acct-email"></h2>
-        <p><span id="acct-badge" class="badge"></span></p>
-        <div id="verify-box" hidden>
-          <p class="small muted">Check your inbox (and spam folder) for the verification link.</p>
-          <div class="row-btns"><button id="btn-refresh" class="btn primary">I’ve verified</button><button id="btn-resend" class="btn ghost">Resend email</button></div>
-        </div>
-        <div class="row-btns"><a class="btn" href="/rank">Rank units</a><a class="btn" href="/shortlist">My shortlist</a><button id="btn-logout" class="btn ghost">Sign out</button></div>
+        <div class="row-btns"><a class="btn" href="/">Rank units</a><button id="btn-logout" class="btn ghost">Sign out</button></div>
       </div>
       <div id="acct-out" class="auth">
         <form id="form-login"><h2>Sign in</h2>
@@ -201,7 +233,8 @@ PAGES = {
 def main():
     for page, p in PAGES.items():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
-        html = HEAD.format(page=page, kicker_html=kicker_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
+        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
         (PUBLIC / f"{page}.html").write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home

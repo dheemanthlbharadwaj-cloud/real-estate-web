@@ -15,8 +15,16 @@ const FACTOR_HELP = {
 };
 const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
+const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
+const SURVEY_KEY = 'mybto:survey';
+const SURVEY_LABELS = {
+  age: { 'under-25': 'Under 25', '25-29': '25 to 29', '30-34': '30 to 34', '35-39': '35 to 39', '40-plus': '40 and above' },
+  household: { alone: 'On their own', partner: 'With a partner', 'partner-kids': 'With a partner and kids', parents: 'With parents or grandparents' },
+  timer: { first: 'First-timer', second: 'Second-timer', mixed: 'One of each' },
+  current_home: { parents: 'With parents', 'hdb-rental': 'HDB rental flat', 'own-hdb': 'Own HDB flat', private: 'Private property' },
+};
 
-const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
+const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, user: null, flags: [], charts: {}, weights: {} };
 
 async function api(path, opts = {}) {
   const r = await fetch(path, opts);
@@ -54,10 +62,7 @@ async function init() {
     $('#project').value = key;
     on('#project', 'change', () => loadProject($('#project').value));
   }
-  on('#btn-rank', 'click', runRank);
-  on('#btn-more', 'click', () => renderResults(false));
-  on('#btn-save', 'click', saveList);
-  on('#btn-csv', 'click', downloadCsv);
+  on('#btn-rank', 'click', onRankClick);
   $$('[data-blocks]').forEach(b => b.addEventListener('click', () => {
     $$('#f-blocks input').forEach(i => { i.checked = b.dataset.blocks === 'all'; });
     renderWeights();
@@ -72,7 +77,7 @@ async function init() {
 
 // Hints the shared header reads on every page.
 function renderTitleBlock() {
-  lsSet('mybto:user', state.user ? { verified: !!state.user.verified } : null);
+  lsSet('mybto:user', state.user ? { signedIn: true } : null);
   const link = $('#account-link');
   if (link) link.textContent = state.user ? 'My account' : 'Sign in';
 }
@@ -85,7 +90,7 @@ async function loadProject(key) {
   if (PAGE !== 'rank') {
     state.flags = await loadFlags();
     updateFlagCount();
-    const list = state.user ? await store.loadList(key).catch(() => null) : null;
+    const list = await store.loadList(key).catch(() => null);
     state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey }, list.weights, list.floor_pref) : [];
     renderTitleBlock();
     if (PAGE === 'shortlist') renderShortlist();
@@ -103,18 +108,18 @@ async function loadProject(key) {
   $('#f-min').innerHTML = opt; $('#f-max').innerHTML = opt;
   $('#f-min').value = lo; $('#f-max').value = hi;
   $('#f-pref input[value=none]').checked = true;
-  $('#queue').value = '';
   state.weights = {};
+  $('#analysis-name').textContent = p.name;
+  $('#btn-analysis').href = `/analysis?project=${encodeURIComponent(key)}`;
+  $('#btn-shortlisted').href = `/shortlist?project=${encodeURIComponent(key)}`;
   state.flags = await loadFlags();
   updateFlagCount();
   renderWeights();
   renderTitleBlock();
   $('#save-msg').textContent = '';
-  if (state.user) {
-    const list = await store.loadList(key).catch(() => null);
-    if (list) applySaved(list);
-  }
-  runRank();
+  const list = await store.loadList(key).catch(() => null);
+  if (list) applySaved(list);
+  showBlank();
 }
 
 // ---------------------------------------------------------------- importance meters
@@ -199,20 +204,38 @@ function applySaved(list) {
   if (list.max_storey != null) $('#f-max').value = list.max_storey;
   const pref = Scoring.FLOOR_PREFS.includes(list.floor_pref) ? list.floor_pref : 'none';
   $$('#f-pref input').forEach(i => { i.checked = i.value === pref; });
-  $('#queue').value = list.queue_number || '';
   state.weights = { ...list.weights };
   renderWeights();
-  const when = list.updated_at?.toDate ? list.updated_at.toDate().toLocaleString() : '';
-  $('#save-msg').textContent = `Loaded your saved list${when ? ` · ${when}` : ''}`;
+  $('#save-msg').textContent = 'Your last settings for this project are filled in. Press Rank units to see the ranking.';
 }
 
 // ---------------------------------------------------------------- schedule
+// Nothing is ranked until Rank units is pressed (and the survey is done).
+function showBlank() {
+  state.ranked = [];
+  state.hasRanked = false;
+  $('#result-count').innerHTML = '0<small>units</small>';
+  $('#top-note').textContent = '';
+  $('#after-rank').hidden = true;
+  renderResults();
+  renderFloorGroups();
+}
+
+function onRankClick() {
+  if (lsGet(SURVEY_KEY, null)?.consent) runRank();
+  else openSurvey();
+}
+
 function runRank() {
   state.ranked = Scoring.rank(state.units, readFilters(), readWeights(), readPref());
-  state.shown = 0;
+  state.hasRanked = true;
   $('#result-count').innerHTML = `${state.ranked.length.toLocaleString()}<small>units</small>`;
-  renderResults(true);
+  $('#top-note').textContent = state.ranked.length > SHOW_TOP ? `Showing the top ${SHOW_TOP}.` : '';
+  $('#after-rank').hidden = false;
+  $('#save-msg').textContent = '';
+  renderResults();
   renderFloorGroups();
+  saveRanking();
 }
 
 // Highest, middlemost and lowest storeys among the matching units, with every ranked unit on them.
@@ -226,50 +249,50 @@ function renderFloorGroups() {
     return `<div class="fg-card"><div class="fg-head"><h3>${title}</h3><span>${label} · ${units.length} unit${units.length === 1 ? '' : 's'}</span></div>
       <ol class="fg-list">${units.map(u => `<li><span class="rk">${u.rank}</span><span class="u">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>${esc(u.flat_type.replace('2-Room Flexi', '2RF'))} · ${esc(u.facing)} facing${u.position === 'Corner' ? ' · corner' : ''}</small></span><span class="s ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}</span></li>`).join('')}</ol></div>`;
   };
-  el.hidden = !state.ranked.length;
-  el.innerHTML = state.ranked.length ? card('highest', 'Highest unit(s)') + card('middle', 'Middlemost unit(s)') + card('lowest', 'Lowest unit(s)') : '';
+  const blank = title => `<div class="fg-card blank"><div class="fg-head"><h3>${title}</h3><span>–</span></div><p class="small muted">–</p></div>`;
+  el.hidden = false;
+  el.innerHTML = state.ranked.length ? card('highest', 'Highest unit(s)') + card('middle', 'Middlemost unit(s)') + card('lowest', 'Lowest unit(s)')
+    : blank('Highest unit(s)') + blank('Middlemost unit(s)') + blank('Lowest unit(s)');
 }
 
 const compass = d => `<span class="compass"><i style="transform:rotate(${BEARING[d] ?? 0}deg)" aria-hidden="true">↑</i>${esc(d)}</span>`;
 
-const dist = m => (m == null ? '–' : `${Math.round(m)} m`);
+const yes = '<span class="yn yes" aria-label="Yes">✓</span>', no = '<span class="yn no" aria-label="No">✗</span>';
+const nearFar = near => `<span class="nf ${near ? 'near' : 'far'}">${near ? 'Near' : 'Far'}</span>`;
 
+// Under each unit: corner or corridor, near MRT, and a warning when the chute is within 10 m.
 function tags(u) {
-  const t = [];
-  if (u.position === 'Corner') t.push('<span class="tag">corner</span>');
-  if (u.roof_access) t.push('<span class="tag">roof</span>');
-  if (u.mrt_near) t.push('<span class="tag">mrt</span>');
-  if (u.gt30m) t.push('<span class="tag">30 m+</span>');
-  if (u.chute_near) t.push('<span class="tag warn">chute ≤ 10 m</span>');
+  const t = [`<span class="tag">${u.position === 'Corner' ? 'corner' : 'corridor'}</span>`];
+  if (u.mrt_near) t.push('<span class="tag">near MRT</span>');
+  if (u.chute_m != null && u.chute_m <= Scoring.CHUTE_FAR_M) t.push(`<span class="tag warn">chute within ${Scoring.CHUTE_FAR_M} m</span>`);
   return `<div class="tags">${t.join('')}</div>`;
 }
 
-function renderResults(reset) {
-  const head = ['#', '', 'Unit', 'Score', 'Type · facing', 'Chute · MRT', 'Facilities'];
-  if (reset) {
-    $('#results thead').innerHTML = `<tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>`;
-    $('#results tbody').innerHTML = '';
-    state.maxAbs = Math.max(1, ...state.ranked.map(u => Math.abs(u.score)));
-  }
+function renderResults() {
+  // One column per facility found among the matching units: ticked when it's in the block or within 30 m.
+  const facs = Scoring.availability(state.ranked).facilities;
+  const head = ['#', '', 'Unit', 'Score', 'Type · facing', `Chute<small>more than ${Scoring.CHUTE_FAR_M} m</small>`, 'MRT<small>within 100 m</small>', ...facs];
+  $('#results thead').innerHTML = `<tr>${head.map((h, i) => `<th${i >= 7 ? ' class="fac"' : ''}>${h}</th>`).join('')}</tr>`;
   if (!state.ranked.length) {
-    $('#results tbody').innerHTML = `<tr><td colspan="${head.length}"><div class="empty">No units match these filters.</div></td></tr>`;
-    $('#btn-more').hidden = true;
+    $('#results tbody').innerHTML = `<tr><td colspan="${head.length}"><div class="empty">${state.hasRanked ? 'No units match these filters.' : 'Set your filters and importance, then press Rank units.'}</div></td></tr>`;
     return;
   }
-  const next = state.ranked.slice(state.shown, state.shown + 100);
-  $('#results tbody').insertAdjacentHTML('beforeend', next.map(u => {
-    const pct = Math.min(100, (Math.abs(u.score) / state.maxAbs) * 100);
-    return `<tr class="${u.rank <= 3 ? 'top3' : ''}">
+  const maxAbs = Math.max(1, ...state.ranked.map(u => Math.abs(u.score)));
+  const shown = state.ranked.slice(0, SHOW_TOP);
+  $('#results tbody').innerHTML = shown.map((u, i) => {
+    const pct = Math.min(100, (Math.abs(u.score) / maxAbs) * 100);
+    const firstNeg = u.score < 0 && (i === 0 || shown[i - 1].score >= 0);
+    const near = new Set([...u.facilities_has, ...u.facilities_near]);
+    return `<tr class="${[u.rank <= 3 && u.score >= 0 ? 'top3' : '', u.score < 0 ? 'neg-row' : '', firstNeg ? 'first-neg' : ''].join(' ').trim()}">
       <td class="rk">${u.rank}</td>
-      <td><button class="star ${state.flags.includes(u.id) ? 'on' : ''}" data-id="${esc(u.id)}" aria-label="Flag ${esc(u.address)}" title="Add to shortlist">★</button></td>
+      <td><button class="star ${state.flags.includes(u.id) ? 'on' : ''}" data-id="${esc(u.id)}" aria-label="Shortlist ${esc(u.address)}" title="Add to shortlist">★</button></td>
       <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small>${tags(u)}</td>
       <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td>
       <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span><div class="sub">${compass(u.facing)}</div></td>
-      <td class="num">${dist(u.chute_m)}<div class="sub">${dist(u.mrt_m)}</div></td>
-      <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} in block<div class="sub">${u.fac_near_count} nearby</div></td></tr>`;
-  }).join(''));
-  state.shown += next.length;
-  $('#btn-more').hidden = state.shown >= state.ranked.length;
+      <td>${u.chute_m == null ? '–' : nearFar(u.chute_m <= Scoring.CHUTE_FAR_M)}</td>
+      <td>${nearFar(u.mrt_near)}</td>
+      ${facs.map(f => `<td class="fac">${near.has(f) ? yes : no}</td>`).join('')}</tr>`;
+  }).join('');
 }
 
 on('#results', 'click', e => {
@@ -279,29 +302,53 @@ on('#results', 'click', e => {
   b.classList.toggle('on', state.flags.includes(b.dataset.id));
 });
 
-async function saveList() {
-  if (!state.user) { $('#save-msg').innerHTML = '<a href="/account">Sign in</a> to save your list.'; return; }
+// Every ranking is saved (anonymously unless signed in) with the survey answers, so Analysis can use it.
+async function saveRanking() {
+  const survey = lsGet(SURVEY_KEY, null);
+  if (!survey?.consent) return;
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
-      project_type: state.project.project_type, queue_number: $('#queue').value.trim().slice(0, 40), flat_types: f.flatTypes, blocks: f.blocks,
+      project_type: state.project.project_type, queue_number: String(survey.queue_number || '').slice(0, 12), flat_types: f.flatTypes, blocks: f.blocks,
       min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
+      survey: { age: survey.age, household: survey.household, timer: survey.timer, current_home: survey.current_home, consent: true, consented_at: survey.consented_at },
+      ranking: state.ranked.map(u => u.id),
     });
-    $('#save-msg').textContent = `Saved · ${state.ranked.length} units · queue ${$('#queue').value.trim() || 'not set'}`;
-  } catch (err) { $('#save-msg').textContent = err.message; }
+  } catch (err) { console.warn('ranking not saved:', err.message); }
 }
 
-function downloadCsv() {
-  const cols = ['rank', 'score', 'address', 'block', 'storey', 'unit', 'flat_type', 'unit_design', 'facing', 'position', 'chute_m',
-    'neighbour_m', 'roof_access', 'mrt_name', 'mrt_m', 'fac_has_count', 'fac_near_count', 'id'];
-  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const rows = [cols.join(','), ...state.ranked.map(u => cols.map(k => q(u[k])).join(','))];
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([rows.join('\n')], { type: 'text/csv' }));
-  a.download = `${state.project.key}-ranked.csv`;
-  a.click();
-  URL.revokeObjectURL(a.href);
+// ---------------------------------------------------------------- survey (once per browser)
+function openSurvey() {
+  const m = $('#survey');
+  if (!m) return;
+  const prev = lsGet(SURVEY_KEY, null) || {};
+  const form = $('#survey-form');
+  for (const k of ['age', 'household', 'timer', 'current_home']) $$(`#survey-form input[name=${k}]`).forEach(i => { i.checked = i.value === prev[k]; });
+  form.queue_number.value = prev.queue_number || '';
+  $('#survey-err').textContent = '';
+  m.hidden = false;
+  document.body.classList.add('drawer-open');
+  form.querySelector('input').focus();
 }
+function closeSurvey() {
+  if (!$('#survey')) return;
+  $('#survey').hidden = true;
+  document.body.classList.remove('drawer-open');
+}
+on('#survey-form', 'submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const missing = ['age', 'household', 'timer', 'current_home'].filter(k => !fd.get(k));
+  if (missing.length) { $('#survey-err').textContent = 'Please answer all four questions.'; return; }
+  lsSet(SURVEY_KEY, { age: fd.get('age'), household: fd.get('household'), timer: fd.get('timer'), current_home: fd.get('current_home'),
+    queue_number: String(fd.get('queue_number') || '').trim().slice(0, 12), consent: true, consented_at: new Date().toISOString() });
+  closeSurvey();
+  runRank();
+});
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-close-survey]')) closeSurvey();
+  if (e.target.closest('#btn-edit-survey')) openSurvey();
+});
 
 // ---------------------------------------------------------------- shortlist
 async function loadFlags() {
@@ -327,12 +374,12 @@ function renderShortlist() {
   const ranked = Object.fromEntries(state.ranked.map(u => [u.id, u]));
   const list = $('#flag-list');
   const items = state.flags.filter(id => byId[id]);
-  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet. Star ★ units on the Rank page to add them.</div>'; return; }
+  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet. Tap the ★ next to a unit in your ranking to shortlist it.</div>'; return; }
   list.innerHTML = items.map((id, i) => {
     const u = byId[id], r = ranked[id];
     return `<li draggable="true" data-id="${esc(id)}">
       <div><div class="addr">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}</div>
-        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${r ? ` · rank ${r.rank} in your saved list` : ''}</div></div>
+        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${r ? ` · rank ${r.rank} in your last ranking` : ''}</div></div>
       <div></div>
       <div class="ctrl"><button data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button data-act="down" ${i === items.length - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button data-act="rm" aria-label="Remove">✕</button></div></li>`;
   }).join('');
@@ -390,14 +437,17 @@ function ranklist(el, rows, fmtKey = k => k) {
 
 async function loadAnalysis() {
   const locked = $('#analysis-locked'), body = $('#analysis-body');
-  if (!state.user || !state.user.verified) {
-    locked.hidden = false; body.hidden = true;
-    $('#locked-text').textContent = state.user
-      ? 'Open the verification link we emailed you to unlock Insights.'
-      : 'Create an account and verify your email to unlock Insights.';
-    return;
-  }
+  if (!lsGet(SURVEY_KEY, null)?.consent) { locked.hidden = false; body.hidden = true; return; }
   locked.hidden = true; body.hidden = false;
+  // Opened from a ranking: start on that project.
+  const urlKey = new URLSearchParams(location.search).get('project');
+  const fromUrl = state.index.projects.some(p => p.key === urlKey) ? urlKey : state.project?.key;
+  if (!state.analysisInit && fromUrl) {
+    $('#a-group').value = 'project';
+    $('#a-value').innerHTML = state.index.projects.map(p => `<option value="${esc(p.key)}">${esc(p.name)}</option>`).join('');
+    $('#a-value').value = fromUrl;
+  }
+  state.analysisInit = true;
   const group = $('#a-group').value;
   const sel = $('#a-value');
   const values = group === 'project' ? state.index.projects.map(p => [p.key, p.name])
@@ -410,12 +460,21 @@ async function loadAnalysis() {
     a = await api(`/api/analysis?${new URLSearchParams({ group, ...(values.length ? { value: sel.value } : {}) })}`,
       { headers: { Authorization: `Bearer ${await store.idToken()}` } });
   } catch (err) {
-    $('#a-basis').textContent = err.message;
+    $('#a-basis').textContent = /operation-not-allowed|admin-restricted/.test(err.code || err.message)
+      ? 'Analysis isn’t switched on yet. Please check back soon.' : err.message;
     return;
   }
   const names = Object.fromEntries(state.index.projects.map(p => [p.key, p.name]));
-  $('#a-basis').textContent = `${a.users} saved lists. `
-    + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
+  const projName = group === 'project' ? names[sel.value] : null;
+  if (projName) document.title = `${projName} Analysis · MyBTO`;
+  $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'}`
+    + (group === 'project' ? '.' : `: ${Object.entries(a.basis).map(([p, n]) => `${names[p] || p} ${n}`).join(' · ')}.`);
+  if ($('#r-who')) $('#r-who').innerHTML = Object.entries(SURVEY_LABELS).map(([q, labels]) => {
+    const counts = a.demographics?.[q] || {}, total = Object.values(counts).reduce((x, y) => x + y, 0);
+    const title = { age: 'Age', household: 'Living with', timer: 'First or second timer', current_home: 'Living now' }[q];
+    return `<div><h4>${title}</h4><ol class="ranklist">${Object.entries(labels).map(([k, l]) => [l, counts[k] || 0]).sort((x, y) => y[1] - x[1])
+      .map(([l, n]) => `<li><span></span><span>${esc(l)}</span><span>${total ? Math.round((n / total) * 100) : 0}%</span></li>`).join('')}</ol></div>`;
+  }).join('');
 
   const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');
   const prefOrder = ['higher', 'lower', 'none'];
@@ -504,24 +563,9 @@ function renderAccount() {
   $('#acct-out').hidden = !!state.user;
   $('#auth-error').hidden = !state.authError;
   $('#auth-error').textContent = state.authError || '';
-  if (state.user) {
-    $('#acct-email').textContent = state.user.email;
-    const b = $('#acct-badge');
-    b.textContent = state.user.verified ? 'Verified' : 'Not verified';
-    b.className = `badge ${state.user.verified ? 'ok' : 'no'}`;
-    $('#verify-box').hidden = state.user.verified;
-  }
-  const q = new URLSearchParams(location.search);
-  if (q.get('verified') === '1' && state.user && !state.user.verified) refreshVerification();
+  if (state.user) $('#acct-email').textContent = state.user.email;
 }
 function note(msg) { if (!$('#acct-note')) return; $('#acct-note').hidden = !msg; $('#acct-note').textContent = msg || ''; }
-
-async function refreshVerification() {
-  state.user = await store.refreshUser();
-  renderTitleBlock();
-  renderAccount();
-  note(state.user?.verified ? 'Email verified. Insights are unlocked.' : "Not verified yet. Open the link in the email we sent you, then press this again.");
-}
 
 // Called by Firebase whenever the signed-in user changes (sign in / out in this or another tab).
 async function onAuthChange(user) {
@@ -537,7 +581,7 @@ async function onAuthChange(user) {
     state.flags = [...new Set([...remote, ...local])];
     await persistFlags();
     const list = await store.loadList(state.project.key).catch(() => null);
-    if (list && PAGE === 'rank') { applySaved(list); runRank(); }
+    if (list && PAGE === 'rank' && !state.hasRanked) applySaved(list);
     if (PAGE === 'shortlist') loadProject(state.project.key);
   } else if (!user) {
     state.flags = lsGet(`flags:${state.project.key}`, []);
@@ -561,7 +605,7 @@ on('#form-register', 'submit', async e => {
   try {
     await store.register(fd.get('email'), fd.get('password'));
     e.target.reset();
-    note(`We’ve sent a verification link to ${fd.get('email')}. Open it to unlock Insights.`);
+    note('');
   } catch (ex) { err.textContent = ex.message; }
 });
 on('#btn-forgot', 'click', async () => {
@@ -570,10 +614,6 @@ on('#btn-forgot', 'click', async () => {
   if (!email) { err.textContent = 'Type your email above first.'; return; }
   try { await store.resetPassword(email); err.textContent = `Password reset email sent to ${email}.`; } catch (ex) { err.textContent = ex.message; }
 });
-on('#btn-resend', 'click', async () => {
-  try { await store.resendVerification(); note(`Verification email re-sent to ${state.user.email}.`); } catch (ex) { note(ex.message); }
-});
-on('#btn-refresh', 'click', refreshVerification);
 $$('[data-google]').forEach(b => b.addEventListener('click', async () => {
   const err = b.closest('form').querySelector('.err');
   err.textContent = '';

@@ -59,11 +59,13 @@
         </aside>
         <div class="results-card">
           <div class="sched-head">
-            <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div></div>
+            <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div><p id="top-note" class="small muted top-note"></p></div>
             <div class="spacer"></div>
-            <div class="queue"><span class="eyebrow">Queue no.</span><input id="queue" type="text" inputmode="numeric" placeholder="e.g. 1234" aria-label="Queue number"></div>
-            <button id="btn-save" class="btn primary">Save list</button>
-            <button id="btn-csv" class="btn ghost">CSV</button>
+            <div id="after-rank" class="after-rank" hidden>
+              <a id="btn-shortlisted" class="btn" href="/shortlist" target="_blank" rel="noopener"><span class="star-ico" aria-hidden="true">★</span> Shortlisted <span class="count" id="flag-count">0</span></a>
+              <a id="btn-analysis" class="btn primary" href="/analysis" target="_blank" rel="noopener"><span id="analysis-name">Project</span> Analysis</a>
+              <button type="button" class="linkbtn" id="btn-edit-survey">Edit survey answers</button>
+            </div>
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
           <div class="fg-wrap">
@@ -71,10 +73,44 @@
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
-          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
         </div>
       </div>
     </div></section>
+    <div id="survey" class="modal" hidden>
+      <div class="modal-scrim"></div>
+      <form id="survey-form" class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="survey-title">
+        <h2 class="h3" id="survey-title">Before we show your ranking</h2>
+        <p class="small muted">Four quick questions so the Analysis page can show what buyers like you want. We don’t ask for your name, and you only do this once.</p>
+        <fieldset><legend>How old are you?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="age" value="under-25" required><span>Under 25</span></label>
+          <label class="chip"><input type="radio" name="age" value="25-29"><span>25 to 29</span></label>
+          <label class="chip"><input type="radio" name="age" value="30-34"><span>30 to 34</span></label>
+          <label class="chip"><input type="radio" name="age" value="35-39"><span>35 to 39</span></label>
+          <label class="chip"><input type="radio" name="age" value="40-plus"><span>40 and above</span></label>
+        </div></fieldset>
+        <fieldset><legend>Who will you live with?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="household" value="alone" required><span>On my own</span></label>
+          <label class="chip"><input type="radio" name="household" value="partner"><span>My partner</span></label>
+          <label class="chip"><input type="radio" name="household" value="partner-kids"><span>My partner and kids</span></label>
+          <label class="chip"><input type="radio" name="household" value="parents"><span>Parents or grandparents too</span></label>
+        </div></fieldset>
+        <fieldset><legend>Is this your first flat from HDB?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="timer" value="first" required><span>First-timer</span></label>
+          <label class="chip"><input type="radio" name="timer" value="second"><span>Second-timer</span></label>
+          <label class="chip"><input type="radio" name="timer" value="mixed"><span>One of each (as a couple)</span></label>
+        </div></fieldset>
+        <fieldset><legend>Where do you live now?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="current_home" value="parents" required><span>With my parents</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="hdb-rental"><span>HDB rental flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="own-hdb"><span>My own HDB flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="private"><span>Private property</span></label>
+        </div></fieldset>
+        <label class="survey-queue"><span>Your queue number, if you have one</span><input name="queue_number" type="text" inputmode="numeric" maxlength="12" placeholder="e.g. 1234"></label>
+        <p class="consent small">By continuing, you agree that your answers and your ranking are saved without your name and used only for the combined results on the Analysis page.</p>
+        <p class="err small" id="survey-err"></p>
+        <div class="modal-btns"><button type="button" class="btn ghost" data-close-survey>Not now</button><button type="submit" class="btn primary" id="survey-ok">I agree, show my ranking</button></div>
+      </form>
+    </div>
     <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
       <div class="drawer-scrim" data-close-legend></div>
       <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">

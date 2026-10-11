@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <title>Insights · MyBTO</title>
-  <meta name="description" content="Aggregate insights from MyBTO users: preferred floors, facings, blocks and factors.">
+  <title>Analysis · MyBTO</title>
+  <meta name="description" content="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.">
+  <meta name="robots" content="noindex">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,24 +18,24 @@
   <main>
     <section class="page-hero">
       <div class="wrap">
-        <span class="label">Insights</span>
+        <span class="label">Analysis</span>
         <h1 class="h1">What other buyers <em>want.</em></h1>
-        <p>Built from saved lists, counting only verified members once a project has 100 of them.</p>
+        <p>Built from everyone’s saved rankings for this project.</p>
       </div>
     </section>
 
     <section class="tool"><div class="wrap">
       <div id="analysis-locked" class="locked" hidden>
-        <span class="label">Members only</span>
-        <h2>For verified members</h2>
-        <p id="locked-text">Create an account and verify your email to unlock Insights.</p>
-        <a class="btn primary" href="/account">Sign in or sign up <span class="arr">→</span></a>
+        <span class="label">Rank first</span>
+        <h2>Rank a project to see this</h2>
+        <p id="locked-text">Rank units for any project and answer the four quick questions. Analysis opens right after.</p>
+        <a class="btn primary" href="/">Rank units <span class="arr">→</span></a>
       </div>
       <div id="analysis-body" hidden>
         <div class="filters-row">
           <label><span class="eyebrow">View by</span><br><select id="a-group">
-            <option value="all">All projects</option><option value="project_type">Project type</option>
-            <option value="project">Project</option><option value="flat_type">Housing type</option></select></label>
+            <option value="project">Project</option><option value="all">All projects</option><option value="project_type">Project type</option>
+            <option value="flat_type">Housing type</option></select></label>
           <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
         </div>
         <p id="a-basis" class="basis"></p>
@@ -48,7 +49,8 @@
           <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
           <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities, most to least wanted</h3><ol class="ranklist" id="r-facility"></ol></div>
           <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types searched</h3><canvas id="c-types"></canvas></div>
-          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Most flagged units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
+          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Who ranked</h3><div class="who" id="r-who"></div></div>
+          <div class="panel w12"><span class="eyebrow">Figure 11</span><h3>Most shortlisted units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
         </div>
       </div>
     </div></section>

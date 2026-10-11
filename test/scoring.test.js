@@ -27,11 +27,11 @@ test('floor preference uses the block height', () => {
   assert.ok(!S.FLOOR_PREFS.includes('middle'));
 });
 
-test('equal scores share a rank', () => {
+test('equal scores share a rank and the next score gets the next number', () => {
   const r = S.rank([U({ id: 'x' }), U({ id: 'y' }), U({ id: 'z', storey: 9 })], {}, {}, 'none');
   assert.deepStrictEqual(r.map(u => u.rank), [1, 1, 1]);
   const r2 = S.rank([U({ id: 'a', position: 'Corner' }), U({ id: 'b' }), U({ id: 'c' }), U({ id: 'd', position: 'Corner', storey: 2 })], {}, { corner: 3 }, 'none');
-  assert.deepStrictEqual(r2.map(u => [u.id, u.rank]), [['a', 1], ['d', 1], ['b', 3], ['c', 3]]);
+  assert.deepStrictEqual(r2.map(u => [u.id, u.rank]), [['a', 1], ['d', 1], ['b', 2], ['c', 2]]);
 });
 
 test('one meter per facility type: has counts fully, near counts half', () => {
@@ -67,16 +67,18 @@ test('binomial pmf sums to 1 and fit matches mean', () => {
   assert.ok(Math.abs(d.binomial_expected.reduce((a, b) => a + b, 0) - 3) < 1e-9);
 });
 
-test('population uses verified users only once a project has 100 of them', () => {
-  const mk = (n, verified, project = 'p') => Array.from({ length: n }, (_, i) => ({ user_id: `${verified}${i}`, project, verified }));
-  assert.strictEqual(selectPopulation([...mk(99, true), ...mk(50, false)]).chosen.length, 149);
-  assert.strictEqual(selectPopulation([...mk(100, true), ...mk(50, false)]).chosen.length, 100);
+test('population counts only rankings with a finished survey', () => {
+  const mk = (n, surveyed, project = 'p') => Array.from({ length: n }, (_, i) => ({ user_id: `${surveyed}${i}`, project, surveyed }));
+  const { chosen, basis } = selectPopulation([...mk(30, true), ...mk(50, false), ...mk(5, true, 'q')]);
+  assert.strictEqual(chosen.length, 35);
+  assert.deepStrictEqual(basis, { p: 30, q: 5 });
 });
 
 test('analysis ranks averages', () => {
-  const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', verified: false, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
+  const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', surveyed: true, survey: { age: '30-34' }, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
   const a = analyse([sub({ sun: { NE: 5, SW: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { NE: 3, SW: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, [], 'all');
   assert.deepStrictEqual(a.sun_directions.map(r => r.key), ['NE', 'SW']);
   assert.strictEqual(a.factors[0].key, 'corner');
   assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
+  assert.deepStrictEqual(a.demographics.age, { '30-34': 2 });
 });
