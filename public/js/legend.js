@@ -10,7 +10,7 @@ window.LEGEND = [
   {
     key: "floor", title: "Floor level", tag: "Filter and floor priority",
     img: "lg-floor.webp", alt: "Berlayar Rise towers with higher, middlemost and lower floors marked (artist’s impression)",
-    text: "This is the storey range you’d accept, and whether higher or lower floors rank first.",
+    text: "Prioritise higher or lower floors to be ranked first.",
     rule: "Source: berlayar-rise-7.pdf, page 8 (artist’s impression). Storeys from the unit distribution, pages 13 to 15.",
   },
   {
@@ -26,9 +26,9 @@ window.LEGEND = [
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan), measured with its scale bar.",
   },
   {
-    key: "clearance", title: "More than 30 m from the next block", tag: "Importance",
+    key: "clearance", title: "More than 30 m from the nearest visible unit", tag: "Importance",
     img: "lg-clearance.webp", alt: "Sembawang Portico site plan with 15 m circles around four units: one overlapping pair and one pair that does not touch",
-    text: "This is whether the unit is more than 30 m from the nearest unit in a neighbouring block.",
+    text: "This is whether the unit is more than 30 m from the nearest visible unit in the same or neighbouring block.",
     rule: "Source: sembawang-portico-4.pdf, page 9 (site plan), measured with its scale bar.",
   },
   {

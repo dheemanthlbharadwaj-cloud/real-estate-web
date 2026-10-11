@@ -15,7 +15,7 @@
   // Single-meter factors: key -> [label, feature(unit, ctx) in 0..1]. Facilities get one meter
   // per facility type (weights.facility), scored separately in facilityScore.
   const FACTORS = {
-    clearance: ['More than 30 m from neighbouring blocks', u => (u.gt30m ? 1 : 0)],
+    clearance: ['More than 30 m from the nearest visible unit', u => (u.gt30m ? 1 : 0)],
     corner: ['Corner unit', u => (u.position === 'Corner' ? 1 : 0)],
     roof: ['Access to roof', u => (u.roof_access ? 1 : 0)],
     chute: ['Distance from rubbish chute (further)', (u, c) => norm(u.chute_m, c.chuteMin, c.chuteMax)],

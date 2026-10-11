@@ -7,7 +7,7 @@ const PAGE = document.body.dataset.page;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const FACTOR_HELP = {
-  clearance: 'More than 30 m from the nearest unit in a neighbouring block.',
+  clearance: 'More than 30 m from the nearest visible unit in the same or neighbouring block.',
   corner: 'Sits at the end of the corridor.',
   roof: 'On the same floor as an accessible roof.',
   chute: 'How far the front door is from the nearest refuse chute.',
