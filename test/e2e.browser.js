@@ -117,9 +117,13 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#analysis-body:not([hidden])');
     check(true, 'Google user can open Analysis');
     await p.goto(`${base}/`);
-    check((await p.title()).startsWith('MyBTO'), 'home page is titled MyBTO');
+    await p.waitForSelector('#results tbody tr');
+    check(true, 'the first page is the ranking page');
+    check(!(await p.$('.nav a[href="/#projects"]')), 'no Projects link in the menu');
+    await p.goto(`${base}/archive/home`);
+    check((await p.title()).startsWith('MyBTO'), 'archived home page is titled MyBTO');
     await p.waitForSelector('#project-grid .pcard');
-    check((await p.$$eval('#project-grid .pcard', c => c.length)) === 7, 'home shows all 7 projects');
+    check((await p.$$eval('#project-grid .pcard', c => c.length)) === 7, 'archived home shows all 7 projects');
     await p.click('.filters-tabs [data-type=Prime]');
     check((await p.$$eval('#project-grid .pcard:not([hidden])', c => c.length)) === 2, 'Prime filter shows 2 projects');
     await p.click('#project-grid .pcard:not([hidden]) >> nth=0');
@@ -142,7 +146,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/account']) {
+    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/account', '/archive/home']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);
@@ -152,7 +156,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
 
     const phone = await ctx.newPage();
     await phone.setViewportSize({ width: 390, height: 844 });
-    await phone.goto(`${base}/`);
+    await phone.goto(`${base}/archive/home`);
     await phone.waitForSelector('#project-grid .pcard');
     const ov2 = await phone.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     check(ov2 <= 0, `home: no horizontal scroll on phone (overflow ${ov2}px)`);

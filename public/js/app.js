@@ -476,7 +476,7 @@ function legendFigure(c) {
 }
 function renderLegend() {
   if (!$('#legend') || $('#legend').childElementCount) return;
-  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}"><span class="label">${esc(c.tag)}</span>
+  $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}">
     <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
 }
 function openLegend(key) {

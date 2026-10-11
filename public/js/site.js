@@ -4,7 +4,6 @@
   const signedIn = (() => { try { return JSON.parse(localStorage.getItem('mybto:user')); } catch { return null; } })();
   const flags = (() => { try { return Number(localStorage.getItem('mybto:flagcount')) || 0; } catch { return 0; } })();
   const NAV = [
-    ['/#projects', 'Projects', 'projects'],
     ['/rank', 'Rank units', 'rank'],
     ['/shortlist', 'Shortlist', 'shortlist'],
     ['/analysis', 'Insights', 'analysis'],
@@ -30,7 +29,7 @@
   footer.innerHTML = `<div class="wrap">
       <div class="top">
         <div><a class="logo" href="/">${logo}</a><p class="about">Every unit in this BTO exercise, ranked your way.</p></div>
-        <div><h4>Explore</h4><ul><li><a href="/#projects">Projects</a></li><li><a href="/rank">Rank units</a></li><li><a href="/shortlist">Shortlist</a></li><li><a href="/analysis">Insights</a></li></ul></div>
+        <div><h4>Explore</h4><ul><li><a href="/rank">Rank units</a></li><li><a href="/shortlist">Shortlist</a></li><li><a href="/analysis">Insights</a></li></ul></div>
         <div><h4>More</h4><ul><li><a href="/rank?legend=sun">What each factor means</a></li><li><a href="/account">${signedIn ? 'My account' : 'Sign in or sign up'}</a></li><li><a href="https://homes.hdb.gov.sg" target="_blank" rel="noopener">HDB Homes ↗</a></li></ul></div>
       </div>
       <div class="fine"><span>© 2026 MyBTO. An independent student project, not affiliated with HDB.</span><span>Data: HDB BTO sales brochures</span></div>

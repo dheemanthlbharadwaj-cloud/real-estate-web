@@ -205,6 +205,9 @@ def main():
         html = HEAD.format(page=page, **{k: p[k] for k in ("title", "desc", "img", "kicker", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
         (PUBLIC / f"{page}.html").write_text(html)
         print("wrote", page)
+        if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home
+            (PUBLIC / "index.html").write_text(html)
+            print("wrote index (rank)")
 
 
 if __name__ == "__main__":

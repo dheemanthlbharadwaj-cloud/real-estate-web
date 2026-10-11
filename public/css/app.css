@@ -172,7 +172,6 @@ body.drawer-open { overflow: hidden; }
 .drawer-body { overflow: auto; padding: 20px 22px 60px; }
 #legend { display: grid; gap: 16px; }
 .lg { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; scroll-margin-top: 16px; }
-.lg .label { font-size: 12px; }
 .lg h3 { font: 600 22px/1.2 var(--head); margin: 6px 0 14px; }
 .lg-fig { position: relative; margin: 0 0 16px; border-radius: 8px; overflow: hidden; background: #fff; border: 1px solid var(--line); }
 .lg-fig img { width: 100%; height: auto; display: block; }

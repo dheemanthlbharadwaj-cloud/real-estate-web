@@ -4,122 +4,90 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <title>MyBTO · Every BTO unit, ranked your way</title>
-  <meta name="description" content="Rank every unit in this HDB BTO exercise by sun direction, height, privacy, convenience and more. Build your shortlist before selection day.">
+  <title>Rank units · MyBTO</title>
+  <meta name="description" content="Rank every unit of a BTO project by your own priorities.">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
-<body data-page="home">
+<body data-page="rank">
   <main>
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <h1 class="display">Every BTO unit, ranked <em>your</em> way.</h1>
-          <p class="lede">MyBTO ranks every unit in every block by the factors you care about.</p>
-          <div class="actions">
-            <a class="btn primary" href="/rank">Rank the units →</a>
-            <a class="btn" href="#projects">View projects</a>
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="label">Rank units</span>
+        <h1 class="h1">Every unit, <em>ranked</em> for you.</h1>
+        <p>Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have).</p>
+        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
+      </div>
+    </section>
+
+    <section class="tool"><div class="wrap">
+      <div class="desk">
+        <aside class="rail" aria-label="Preferences">
+          <div class="step">
+            <div class="step-h"><h2>1. Project</h2></div>
+            <select id="project" class="project-select" aria-label="Project"></select>
+            <p id="project-meta" class="project-meta"></p>
           </div>
-          <div class="hero-foot">
-            <div><b>7</b><span>projects</span></div>
-            <div><b data-stat="units">4,576</b><span>units scored</span></div>
-            <div><b>10</b><span>factors per unit</span></div>
+          <div class="step">
+            <div class="step-h"><h2>2. Filters</h2></div>
+            <div class="field"><span class="eyebrow">Housing type · pick one</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
+            <div class="field"><span class="eyebrow">Blocks</span>
+              <div class="mini-links"><button type="button" data-blocks="all">Select all</button><button type="button" data-blocks="none">Clear</button></div>
+              <div id="f-blocks" class="chips"></div>
+            </div>
+            <div class="field"><span class="eyebrow">Storey range</span>
+              <div class="storey-pair"><select id="f-min" aria-label="Minimum storey"></select><span class="muted">to</span><select id="f-max" aria-label="Maximum storey"></select></div>
+            </div>
+            <div class="field"><span class="eyebrow">Prioritise floors</span>
+              <div class="chips" id="f-pref" role="radiogroup">
+                <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
+                <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
+                <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-h"><h2>3. Importance</h2></div>
+            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid and plus 5 means must have. Tap ? to see what a factor means.</p>
+            <div id="weights"></div>
+            <p id="hidden-factors" class="hidden-note"></p>
+          </div>
+          <button id="btn-rank" class="btn primary">Rank units <span class="arr">→</span></button>
+          <button type="button" class="btn ghost legend-open" data-legend="sun">What these factors mean</button>
+        </aside>
+        <div class="results-card">
+          <div class="sched-head">
+            <div><span class="eyebrow">Matching units</span><div class="count" id="result-count">0<small>units</small></div></div>
+            <div class="spacer"></div>
+            <div class="queue"><span class="eyebrow">Queue no.</span><input id="queue" type="text" inputmode="numeric" placeholder="e.g. 1234" aria-label="Queue number"></div>
+            <button id="btn-save" class="btn primary">Save list</button>
+            <button id="btn-csv" class="btn ghost">CSV</button>
+          </div>
+          <p id="save-msg" class="save-msg" aria-live="polite"></p>
+          <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
+          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
+          <div class="fg-wrap">
+            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list (the middle two if there’s an even number).</p></div>
+            <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
         </div>
-        <figure class="hero-media" style="margin:0">
-          <img src="/img/hero.webp" alt="Courtyard garden between the towers of Berlayar Rise (artist’s impression)">
-          <p>Berlayar Rise, Bukit Merah (artist’s impression)</p>
-        </figure>
       </div>
-    </section>
-
-    <section class="section intro">
-      <div class="wrap intro-grid">
-        <figure class="intro-photo">
-          <img src="/img/garden-lakeview.webp" alt="Garden and playground at Lakeview Cascadia (artist’s impression)" loading="lazy">
-          <figcaption>Lakeview Cascadia, Bishan</figcaption>
-        </figure>
-        <div>
-          <span class="label">Why it matters</span>
-          <p class="statement">Two units on the same floor can get very different <em>sun and views</em>.</p>
-          <p class="body">We measure it all from the HDB brochure and put it in one ranked list.</p>
-          <a class="btn" href="/rank?legend=sun">What we measure →</a>
-        </div>
+    </div></section>
+    <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
+      <div class="drawer-scrim" data-close-legend></div>
+      <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">
+        <div class="drawer-head"><h2 class="h3" id="legend-title">What each factor means</h2><button type="button" class="btn ghost" data-close-legend>Close</button></div>
+        <div class="drawer-body"><div id="legend"></div></div>
       </div>
-    </section>
-
-    <section class="section alt collection" id="projects">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="label">The projects</span>
-          <h2 class="h2">Seven projects in this exercise</h2>
-          <p class="lede">Pick a project to rank every unit in it.</p>
-        </div>
-        <div class="filters-tabs" role="tablist" aria-label="Filter by project type">
-          <button class="on" data-type="all">All</button><button data-type="Prime">Prime</button><button data-type="Plus">Plus</button><button data-type="Standard">Standard</button>
-        </div>
-        <div class="projects" id="project-grid"></div>
-      </div>
-    </section>
-
-    <section class="section steps-sec">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="label">How it works</span>
-          <h2 class="h2">Three steps</h2>
-        </div>
-        <div class="steps">
-          <article><div class="num">1</div><h3>Filter</h3><p>Choose a project, housing type, blocks and floor range.</p></article>
-          <article><div class="num">2</div><h3>Weigh</h3><p>Rate each factor from minus 5 to plus 5.</p></article>
-          <article><div class="num">3</div><h3>Shortlist</h3><p>Star your favourites, put them in order and save them with your queue number.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt factors-sec">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="label">What we measure</span>
-          <h2 class="h2">The details that matter</h2>
-          <p class="lede">Every value comes from the HDB drawings. Open a factor to see its drawing.</p>
-        </div>
-        <ul class="findex">
-          <li><a href="/rank?legend=sun"><h3>Sun direction</h3><p>The direction the living room windows face.</p><span class="src">Floor plan, site plan</span></a></li>
-          <li><a href="/rank?legend=floor"><h3>Floor level</h3><p>Prioritise higher or lower floors to be ranked first.</p><span class="src">Unit grid</span></a></li>
-          <li><a href="/rank?legend=clearance"><h3>Privacy</h3><p>Whether the unit is more than 30 m from the nearest visible unit.</p><span class="src">Site plan</span></a></li>
-          <li><a href="/rank?legend=corner"><h3>Corner unit</h3><p>Whether the unit sits at the end of the corridor.</p><span class="src">Floor plan</span></a></li>
-          <li><a href="/rank?legend=chute"><h3>Rubbish chute</h3><p>How far the front door is from the nearest refuse chute.</p><span class="src">Floor plan</span></a></li>
-          <li><a href="/rank?legend=mrt"><h3>MRT and facilities</h3><p>How close the block is to the MRT and to facilities.</p><span class="src">Site plan</span></a></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section insights-sec">
-      <div class="wrap insights-grid">
-        <div>
-          <span class="label">Insights</span>
-          <h2 class="h2">See what other buyers want</h2>
-          <p class="lede">Verified members see what other buyers want, built from everyone’s saved lists.</p>
-          <a class="btn primary" href="/analysis">View insights →</a>
-          <ul class="bullets"><li>Preferred floor ranges</li><li>Most wanted facings</li><li>Block popularity</li><li>Factor rankings</li><li>Most starred units</li><li>Median queue numbers</li></ul>
-        </div>
-        <figure class="insights-photo"><img src="/img/garden-breeze.webp" alt="Rooftop garden and fitness corner at Kebun Baru Breeze (artist’s impression)" loading="lazy"></figure>
-      </div>
-    </section>
-
-    <section class="section alt cta-final">
-      <div class="wrap cta-row">
-        <span class="label">Start now</span>
-        <h2 class="h1">Your queue number is coming. <em>Be ready.</em></h2>
-        <div class="actions"><a class="btn primary" href="/rank">Rank the units →</a><a class="btn" href="/account">Create a free account</a></div>
-      </div>
-    </section>
+    </aside>
   </main>
-
   <script src="/js/site.js"></script>
-  <script src="/js/home.js"></script>
+  <script src="/js/scoring.js"></script>
+  <script src="/js/legend.js"></script>
+  <script type="module" src="/js/app.js"></script>
 </body>
 </html>
