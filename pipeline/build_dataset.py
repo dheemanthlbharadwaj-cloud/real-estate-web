@@ -43,7 +43,7 @@ COLUMNS = [
     ("id", "Unit ID"), ("project", "Project"), ("project_type", "Project type"), ("town", "Town"),
     ("block", "Block"), ("storey", "Storey"), ("unit", "Unit no."), ("address", "Unit (#storey-unit)"),
     ("flat_type", "Unit type"), ("unit_design", "Unit design (2RF)"),
-    ("facing", "Sun direction (facing)"), ("facing_bearing", "Facing bearing (deg)"),
+    ("facing", "Sun direction (NE, SE, SW or NW)"), ("facing_bearing", "Facing bearing (deg)"),
     ("position", "Corridor / Corner"),
     ("lift_m", "Lift distance (m)"), ("lift_near", "Near lift (<=15 m)"),
     ("chute_m", "Rubbish chute distance (m)"), ("chute_near", "Near rubbish chute (<=10 m)"),
@@ -71,8 +71,9 @@ def norm_block(b):
     return str(b).upper().replace("BLOCK", "").replace("BLK", "").strip()
 
 
-def bearing_to_8pt(b):
-    return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][int(((b % 360) + 22.5) // 45) % 8]
+def bearing_to_quadrant(b):
+    """Facings are only ever NE, SE, SW or NW: the quadrant the bearing falls in."""
+    return ["NE", "SE", "SW", "NW"][int((b % 360) // 90) % 4]
 
 
 def build_project(key, name, town, ptype, code, errors):
@@ -139,7 +140,7 @@ def build_project(key, name, town, ptype, code, errors):
                 "id": uid, "project": name, "project_key": key, "project_type": ptype, "town": town,
                 "block": block, "storey": st, "unit": unit, "address": f"Blk {block} #{st:02d}-{unit}",
                 "flat_type": e["flat_type"], "unit_design": design,
-                "facing": sp["facing_8pt"], "facing_bearing": round(sp["facing_bearing_deg"]),
+                "facing": bearing_to_quadrant(sp["facing_bearing_deg"]), "facing_bearing": round(sp["facing_bearing_deg"]),
                 "position": f["position"].capitalize(),
                 "lift_m": f["lift_distance_m"], "lift_near": f["lift_distance_m"] is not None and f["lift_distance_m"] <= LIFT_NEAR_M,
                 "chute_m": f["chute_distance_m"], "chute_near": f["chute_distance_m"] is not None and f["chute_distance_m"] <= CHUTE_NEAR_M,

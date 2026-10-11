@@ -10,11 +10,11 @@ const FACTOR_HELP = {
   clearance: 'More than 30 m from the nearest visible unit in the same or neighbouring block.',
   corner: 'Sits at the end of the corridor.',
   roof: 'On the same floor as an accessible roof.',
-  chute: 'How far the front door is from the nearest refuse chute.',
+  chute: 'The front door is more than 10 m from the nearest refuse chute.',
   mrt: 'Block within 100 m of an MRT station.',
 };
 const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
-const BEARING = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
+const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
 
 const state = { index: null, project: null, units: [], ranked: [], shown: 0, user: null, flags: [], charts: {}, weights: {} };
 
@@ -91,7 +91,7 @@ async function loadProject(key) {
     if (PAGE === 'shortlist') renderShortlist();
     return;
   }
-  $('#project-meta').textContent = `${p.town} · ${p.project_type} · ${p.units.toLocaleString()} units · ${p.blocks.length} blocks`;
+  $('#project-meta').textContent = `This is a ${p.project_type} project in ${p.town}, with ${p.units.toLocaleString()} flat units and ${p.blocks.length} ${p.blocks.length === 1 ? 'block' : 'blocks'}.`;
   // One housing type at a time (one application per queue); 2-Room Flexi covers Type 1 and Type 2.
   const housing = Scoring.HOUSING_TYPES.filter(h => p.flat_types.some(t => Scoring.housingOf(t) === h));
   const first = housing.includes('4-Room') ? '4-Room' : housing[0];
@@ -240,12 +240,12 @@ function tags(u) {
   if (u.roof_access) t.push('<span class="tag">roof</span>');
   if (u.mrt_near) t.push('<span class="tag">mrt</span>');
   if (u.gt30m) t.push('<span class="tag">30 m+</span>');
-  if (u.chute_near) t.push('<span class="tag warn">chute</span>');
+  if (u.chute_near) t.push('<span class="tag warn">chute ≤ 10 m</span>');
   return `<div class="tags">${t.join('')}</div>`;
 }
 
 function renderResults(reset) {
-  const head = ['#', '', 'Unit', 'Type · facing', 'Chute · MRT', 'Facilities', 'Score'];
+  const head = ['#', '', 'Unit', 'Score', 'Type · facing', 'Chute · MRT', 'Facilities'];
   if (reset) {
     $('#results thead').innerHTML = `<tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>`;
     $('#results tbody').innerHTML = '';
@@ -263,10 +263,10 @@ function renderResults(reset) {
       <td class="rk">${u.rank}</td>
       <td><button class="star ${state.flags.includes(u.id) ? 'on' : ''}" data-id="${esc(u.id)}" aria-label="Flag ${esc(u.address)}" title="Add to shortlist">★</button></td>
       <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small>${tags(u)}</td>
+      <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td>
       <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span><div class="sub">${compass(u.facing)}</div></td>
       <td class="num">${dist(u.chute_m)}<div class="sub">${dist(u.mrt_m)}</div></td>
-      <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} in block<div class="sub">${u.fac_near_count} nearby</div></td>
-      <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td></tr>`;
+      <td class="num" title="${esc([...u.facilities_has.map(f => `In block: ${f}`), ...u.facilities_near.map(f => `Near: ${f}`)].join('\n'))}">${u.fac_has_count} in block<div class="sub">${u.fac_near_count} nearby</div></td></tr>`;
   }).join(''));
   state.shown += next.length;
   $('#btn-more').hidden = state.shown >= state.ranked.length;

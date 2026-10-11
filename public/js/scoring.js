@@ -4,13 +4,15 @@
   if (typeof module === 'object' && module.exports) module.exports = factory();
   else root.Scoring = factory();
 })(typeof self !== 'undefined' ? self : this, function () {
-  const SUN_DIRECTIONS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const SUN_DIRECTIONS = ['NE', 'SE', 'SW', 'NW'];
   const UNIT_DESIGNS = ['Type 1', 'Type 2'];
   const FLOOR_PREFS = ['none', 'higher', 'lower'];
   // Housing types are applied for one at a time; 2-Room Flexi covers both Type 1 and Type 2.
   const HOUSING_TYPES = ['2-Room Flexi', '3-Room', '4-Room', '5-Room', '3Gen'];
   const housingOf = flatType => (String(flatType).startsWith('2-Room Flexi') ? '2-Room Flexi' : flatType);
   const FLOOR_PREF_WEIGHT = 5;
+  const CHUTE_FAR_M = 10;
+  const chuteFar = u => u.chute_m != null && u.chute_m > CHUTE_FAR_M;
 
   // Single-meter factors: key -> [label, feature(unit, ctx) in 0..1]. Facilities get one meter
   // per facility type (weights.facility), scored separately in facilityScore.
@@ -18,7 +20,7 @@
     clearance: ['More than 30 m from the nearest visible unit', u => (u.gt30m ? 1 : 0)],
     corner: ['Corner unit', u => (u.position === 'Corner' ? 1 : 0)],
     roof: ['Access to roof', u => (u.roof_access ? 1 : 0)],
-    chute: ['Distance from rubbish chute (further)', (u, c) => norm(u.chute_m, c.chuteMin, c.chuteMax)],
+    chute: ['More than 10 m from the nearest rubbish chute', u => (chuteFar(u) ? 1 : 0)],
     mrt: ['Near MRT', u => (u.mrt_near ? 1 : 0)],
   };
 
@@ -40,9 +42,8 @@
   }
 
   function context(units) {
-    const ctx = { chuteMin: null, chuteMax: null, storeyMin: {}, storeyMax: {} };
+    const ctx = { storeyMin: {}, storeyMax: {} };
     for (const u of units) {
-      if (u.chute_m != null) { ctx.chuteMin = ctx.chuteMin == null ? u.chute_m : Math.min(ctx.chuteMin, u.chute_m); ctx.chuteMax = ctx.chuteMax == null ? u.chute_m : Math.max(ctx.chuteMax, u.chute_m); }
       ctx.storeyMin[u.block] = Math.min(ctx.storeyMin[u.block] ?? Infinity, u.storey);
       ctx.storeyMax[u.block] = Math.max(ctx.storeyMax[u.block] ?? -Infinity, u.storey);
     }
@@ -66,7 +67,7 @@
       (f.maxStorey == null || u.storey <= f.maxStorey));
   }
 
-  // weights: { block: {200A: n}, sun: {N: n}, design: {'Type 1': n}, facility: {Shops: n}, clearance: n, ... }
+  // weights: { block: {200A: n}, sun: {NE: n}, design: {'Type 1': n}, facility: {Shops: n}, clearance: n, ... }
   function scoreUnit(u, w, pref, ctx) {
     let s = 0;
     const parts = {};
@@ -103,7 +104,7 @@
   }
 
   // Which importance meters apply to a set of units: a factor is shown only when at least one
-  // of the units has it (distances: when measured), sun directions / designs only when present.
+  // of the units has it, sun directions / designs only when present.
   function availability(units) {
     const has = fn => units.some(fn);
     return {
@@ -112,12 +113,12 @@
       clearance: has(u => u.gt30m),
       corner: has(u => u.position === 'Corner'),
       roof: has(u => u.roof_access),
-      chute: has(u => u.chute_m != null),
+      chute: has(chuteFar),
       mrt: has(u => u.mrt_near),
       facilities: [...new Set(units.flatMap(u => [...(u.facilities_has || []), ...(u.facilities_near || [])]))].sort(),
     };
   }
 
-  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, context, floorFeature,
+  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, CHUTE_FAR_M, context, floorFeature,
     facilityFeature, filterUnits, scoreUnit, rank, floorGroups };
 });

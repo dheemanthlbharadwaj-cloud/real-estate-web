@@ -61,7 +61,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.textContent('#flag-list li:nth-child(2) .addr')) === first, 'shortlist reorders');
 
     await p.goto(`${base}/analysis`);
-    check(await p.isVisible('#analysis-locked'), 'analysis locked for guests');
+    check(await p.waitForSelector('#analysis-locked:not([hidden])', { timeout: 5000 }).then(() => true, () => false), 'analysis locked for guests');
 
     await p.goto(`${base}/account`);
     await p.fill('#form-register [name=email]', 'buyer@example.com');
@@ -72,7 +72,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(await p.evaluate(() => window.__verifySent === 1), 'verification email sent');
     check((await p.textContent('#flag-count')) === '3', 'guest flags merged into account');
     await p.goto(`${base}/analysis`);
-    check(await p.isVisible('#analysis-locked'), 'analysis locked for unverified user');
+    check(await p.waitForSelector('#analysis-locked:not([hidden])', { timeout: 5000 }).then(() => true, () => false), 'analysis locked for unverified user');
 
     await p.goto(`${base}/account`);
     await p.waitForSelector('#btn-refresh', { state: 'visible' });
@@ -83,7 +83,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/analysis`);
     await p.waitForSelector('#analysis-body:not([hidden])');
     await p.waitForFunction(() => /saved lists/.test(document.querySelector('#a-basis').textContent));
-    check((await p.$$eval('#r-sun li', l => l.length)) === 8, 'analysis shows 8 sun directions');
+    check((await p.$$eval('#r-sun li', l => l.length)) === 4, 'analysis shows the 4 sun directions');
     await p.selectOption('#a-group', 'project_type');
     await p.waitForFunction(() => /Kebun Baru/.test(document.querySelector('#a-basis').textContent));
     check(true, 'analysis by project type (Plus)');

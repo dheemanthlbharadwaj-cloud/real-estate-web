@@ -3,7 +3,7 @@ const assert = require('node:assert');
 const S = require('../public/js/scoring.js');
 const { storeyDistribution, binomPmf, selectPopulation, analyse } = require('../lib/analysis.js');
 
-const U = (o) => ({ id: o.id, block: 'A', storey: 5, unit: '101', flat_type: '4-Room', unit_design: null, facing: 'N', position: 'Corridor',
+const U = (o) => ({ id: o.id, block: 'A', storey: 5, unit: '101', flat_type: '4-Room', unit_design: null, facing: 'NE', position: 'Corridor',
   lift_m: 10, chute_m: 10, gt30m: false, roof_access: false, mrt_near: false, fac_has_count: 0, fac_near_count: 0, ...o });
 
 test('filters by type, block and storey range', () => {
@@ -13,11 +13,11 @@ test('filters by type, block and storey range', () => {
 });
 
 test('weights move units in the expected direction', () => {
-  const units = [U({ id: 'near', chute_m: 5 }), U({ id: 'far', chute_m: 40 }), U({ id: 'corner', position: 'Corner', chute_m: 20 })];
+  const units = [U({ id: 'near', chute_m: 5 }), U({ id: 'far', chute_m: 40 }), U({ id: 'corner', position: 'Corner', chute_m: 8 })];
   assert.strictEqual(S.rank(units, {}, { chute: 5 }, 'none')[0].id, 'far');
-  assert.strictEqual(S.rank(units, {}, { chute: -5 }, 'none')[0].id, 'near');
+  assert.strictEqual(S.rank(units, {}, { chute: -5 }, 'none').at(-1).id, 'far');
   assert.strictEqual(S.rank(units, {}, { corner: 5 }, 'none')[0].id, 'corner');
-  assert.strictEqual(S.rank(units, {}, { sun: { S: 5 } }, 'none')[0].score, 0);
+  assert.strictEqual(S.rank(units, {}, { sun: { SW: 5 } }, 'none')[0].score, 0);
 });
 
 test('floor preference uses the block height', () => {
@@ -75,8 +75,8 @@ test('population uses verified users only once a project has 100 of them', () =>
 
 test('analysis ranks averages', () => {
   const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', verified: false, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
-  const a = analyse([sub({ sun: { N: 5, S: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { N: 3, S: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, [], 'all');
-  assert.deepStrictEqual(a.sun_directions.map(r => r.key), ['N', 'S']);
+  const a = analyse([sub({ sun: { NE: 5, SW: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { NE: 3, SW: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, [], 'all');
+  assert.deepStrictEqual(a.sun_directions.map(r => r.key), ['NE', 'SW']);
   assert.strictEqual(a.factors[0].key, 'corner');
   assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
 });

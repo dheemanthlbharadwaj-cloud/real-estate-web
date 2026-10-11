@@ -25,8 +25,7 @@ HEAD = """<!doctype html>
   <main>
     <section class="page-hero">
       <div class="wrap">
-        <span class="label">{kicker}</span>
-        <h1 class="h1">{h1}</h1>
+{kicker_html}        <h1 class="h1">{h1}</h1>
         <p>{lede}</p>
       </div>
     </section>
@@ -43,8 +42,8 @@ FOOT = """  </main>
 
 PAGES = {
     "rank": dict(
-        title="Rank units", img="garden-ridge.webp", kicker="Rank units", color="sky",
-        h1="Every unit, <em>ranked</em> for you.",
+        title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
+        h1="Unofficial HDB BTO Flat Unit Ranker",
         lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have).",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
@@ -92,12 +91,12 @@ PAGES = {
             <button id="btn-csv" class="btn ghost">CSV</button>
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
-          <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
-          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
           <div class="fg-wrap">
             <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list (the middle two if there’s an even number).</p></div>
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
+          <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
+          <div class="more"><button id="btn-more" class="btn ghost" hidden>Show 100 more</button></div>
         </div>
       </div>
     </div></section>
@@ -201,7 +200,8 @@ PAGES = {
 
 def main():
     for page, p in PAGES.items():
-        html = HEAD.format(page=page, **{k: p[k] for k in ("title", "desc", "img", "kicker", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
+        html = HEAD.format(page=page, kicker_html=kicker_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
         (PUBLIC / f"{page}.html").write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home

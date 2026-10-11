@@ -4,7 +4,7 @@ window.LEGEND = [
   {
     key: "sun", title: "Sun direction",
     img: "lg-sun.webp", alt: "Sembawang Brook site plan with a coloured arrow on each unit showing where its living room windows face, and a compass for NE, SE, SW and NW",
-    text: "This is the direction the unit’s living room windows face.",
+    text: "This is the direction the unit’s living room windows face: NE, SE, SW or NW.",
     rule: "Source: sembawang-brook-6.pdf, page 9 (site plan), with facings from the floor plans on pages 13, 15, 17 and 19.",
   },
   {
@@ -20,9 +20,9 @@ window.LEGEND = [
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan).",
   },
   {
-    key: "chute", title: "Distance from rubbish chute",
+    key: "chute", title: "More than 10 m from the nearest rubbish chute",
     img: "lg-chute.webp", alt: "Block 200A floor plan with the refuse chute ringed and a near and a far unit marked",
-    text: "This is how far the unit’s front door is from the nearest refuse chute in a straight 10m line.",
+    text: "This is whether the unit’s front door is more than 10 m from the nearest refuse chute, measured in a straight line.",
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan), measured with its scale bar.",
   },
   {

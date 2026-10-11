@@ -19,7 +19,7 @@ LIFT_NEAR_M, CHUTE_NEAR_M, MRT_NEAR_M, CLEARANCE_M = 15, 10, 100, 30
 # Berlayar Rise is the only project with a station on its site plan (Telok Blangah MRT). Rough
 # block-to-station distances measured off that plan; every other block is well over 100 m away.
 BERLAYAR_MRT_M = {"201A": (45, 70), "200B": (85, 110)}
-COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+COMPASS = ["NE", "SE", "SW", "NW"]  # facings are only ever these four quadrants
 FACILITIES = ["Children's playground", "Adult fitness station", "Elderly fitness station", "Hardcourt",
               "Precinct pavilion", "Drop-off porch", "Community space", "Preschool", "Residents' network centre",
               "Eating house", "Shops", "Supermarket", "Green roof"]
@@ -55,7 +55,7 @@ SAMPLE_FIELDS = ["facing", "position", "lift_m", "chute_m", "roof_access", "neig
 def stack_attrs(rng, block_idx, i, n_stacks):
     corner = i in (0, n_stacks - 1)
     return {
-        "facing": COMPASS[(block_idx * 3 + (0 if i < n_stacks / 2 else 4) + rng.choice([0, 0, 1])) % 8],
+        "facing": COMPASS[(block_idx + (0 if i < n_stacks / 2 else 2) + rng.choice([0, 0, 1])) % 4],
         "position": "Corner" if corner else "Corridor",
         "lift_m": round(rng.uniform(4, 9) + abs(i - n_stacks / 2) * rng.uniform(2.5, 4), 1),
         "chute_m": round(rng.uniform(3, 30), 1),

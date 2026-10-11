@@ -90,7 +90,7 @@ table.schedule { width: 100%; border-collapse: collapse; font-size: 14px; }
 .more { display: flex; justify-content: center; padding: 22px 0 16px; }
 
 /* highest / middlemost / lowest storeys */
-.fg-wrap { border-top: 1px solid var(--line); padding: 22px 0 6px; }
+.fg-wrap { border-bottom: 1px solid var(--line); padding: 6px 0 18px; margin-bottom: 8px; }
 .fg-intro { margin-bottom: 14px; }
 .fg-intro .eyebrow { color: var(--accent-ink); }
 .fg-intro p { margin: 6px 0 0; max-width: 640px; }
