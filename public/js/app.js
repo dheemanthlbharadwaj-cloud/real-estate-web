@@ -9,7 +9,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const FACTOR_HELP = {
   clearance: 'More than 30 m from the nearest unit in a neighbouring block.',
   corner: 'Sits at the end of the corridor.',
-  roof: 'Looks onto, or steps out towards, a roof on the floor plan.',
+  roof: 'On the same floor as an accessible roof.',
   chute: 'How far the front door is from the nearest refuse chute.',
   mrt: 'Block within 100 m of an MRT station.',
 };

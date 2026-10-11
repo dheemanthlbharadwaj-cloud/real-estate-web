@@ -3,9 +3,9 @@
 window.LEGEND = [
   {
     key: "sun", title: "Sun direction", tag: "Importance per direction",
-    img: "lg-sun.webp", alt: "Kebun Baru Breeze site plan with a compass laid over it",
+    img: "lg-sun.webp", alt: "Woodgrove Acres site plan with a compass laid over it",
     text: "This is the direction the unit’s living room windows face.",
-    rule: "Source: kebun-baru_breeze-5.pdf, page 9 (site plan).",
+    rule: "Source: woodgrove-acres-3.pdf, page 9 (site plan).",
   },
   {
     key: "floor", title: "Floor level", tag: "Filter and floor priority",
@@ -34,7 +34,7 @@ window.LEGEND = [
   {
     key: "roof", title: "Access to roof", tag: "Access to roof",
     img: "lg-roof.webp", alt: "Block 204B floor plan with the roof at 2nd storey note highlighted",
-    text: "This is whether the unit looks onto, or steps out towards, a roof drawn on the floor plan.",
+    text: "This is whether the unit is on the same floor as an accessible roof (marked on the plan, e.g. “roof at 2nd storey only”).",
     rule: "Source: berlayar-rise-7.pdf, page 31 (Block 204B floor plan).",
   },
   {
