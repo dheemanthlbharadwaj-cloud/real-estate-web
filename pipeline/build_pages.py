@@ -28,7 +28,6 @@ HEAD = """<!doctype html>
         <span class="label">{kicker}</span>
         <h1 class="h1">{h1}</h1>
         <p>{lede}</p>
-        <div class="sample-note" id="sample-note" hidden><b>SAMPLE DATA</b><span id="sample-text"></span></div>
       </div>
     </section>
 """

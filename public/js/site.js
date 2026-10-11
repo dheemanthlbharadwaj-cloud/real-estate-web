@@ -33,7 +33,7 @@
         <div><h4>More</h4><ul><li><a href="/rank?legend=sun">What each factor means</a></li><li><a href="/account">${signedIn ? 'My account' : 'Sign in or sign up'}</a></li><li><a href="https://homes.hdb.gov.sg" target="_blank" rel="noopener">HDB Homes ↗</a></li></ul></div>
       </div>
       <div class="fine"><span>© 2026 MyBTO. An independent student project, not affiliated with HDB.</span><span>Data: HDB BTO sales brochures</span></div>
-      <p class="credits">Project images and drawings come from HDB’s BTO sales brochures, © Housing &amp; Development Board, and are used for reference. Unit data is still being verified, so parts of the site show sample values.</p>
+      <p class="credits">Project images and drawings come from HDB’s BTO sales brochures, © Housing &amp; Development Board, and are used for reference.</p>
     </div>`;
   document.body.append(footer);
 

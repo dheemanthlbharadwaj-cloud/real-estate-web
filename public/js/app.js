@@ -70,15 +70,8 @@ async function init() {
   route();
 }
 
-// Sample-data note on the page hero, plus hints the shared header reads on every page.
+// Hints the shared header reads on every page.
 function renderTitleBlock() {
-  const p = state.project;
-  if ($('#sample-note') && state.index?.sample && p && (PAGE === 'rank' || PAGE === 'shortlist')) {
-    $('#sample-note').hidden = false;
-    $('#sample-text').textContent = p.data_status === 'sample data'
-      ? `${p.name}: sample data until the brochure data is checked.`
-      : `${p.name}: real unit list (${p.units.toLocaleString()} units), sample facing, distances and facilities.`;
-  }
   lsSet('mybto:user', state.user ? { verified: !!state.user.verified } : null);
   const link = $('#account-link');
   if (link) link.textContent = state.user ? 'My account' : 'Sign in';
@@ -421,7 +414,7 @@ async function loadAnalysis() {
     return;
   }
   const names = Object.fromEntries(state.index.projects.map(p => [p.key, p.name]));
-  $('#a-basis').textContent = `${a.users} saved lists${a.sample_users ? ` · includes ${a.sample_users} SAMPLE users for demonstration` : ''}. `
+  $('#a-basis').textContent = `${a.users} saved lists. `
     + Object.entries(a.basis).map(([p, b]) => `${names[p] || p}: ${b.used} (${b.verified} verified of ${b.total})`).join(' · ');
 
   const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');

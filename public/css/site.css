@@ -183,5 +183,3 @@ a { color: inherit; }
 .page-hero .bg { display: none; }
 .page-hero .h1 { margin: 8px 0 12px; }
 .page-hero p { max-width: 60ch; margin: 0; font-size: 16px; color: var(--text-2); }
-.sample-note { display: flex; gap: 12px; align-items: flex-start; margin-top: 20px; max-width: 720px; font-size: 14px; color: var(--text-2); border: 1px solid var(--line-2); border-radius: var(--r); padding: 12px 14px; background: var(--card); }
-.sample-note b { font: 700 11px/1 var(--sans); background: var(--accent); color: var(--on-accent); padding: 5px 8px; border-radius: 6px; white-space: nowrap; margin-top: 1px; }
