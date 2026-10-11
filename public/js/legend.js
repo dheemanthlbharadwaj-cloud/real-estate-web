@@ -22,7 +22,7 @@ window.LEGEND = [
   {
     key: "chute", title: "Distance from rubbish chute", tag: "Further is better",
     img: "lg-chute.webp", alt: "Block 200A floor plan with the refuse chute ringed and a near and a far unit marked",
-    text: "This is how far the unit’s front door is from the nearest refuse chute in a straight line.",
+    text: "This is how far the unit’s front door is from the nearest refuse chute in a straight 10m line.",
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan), measured with its scale bar.",
   },
   {
