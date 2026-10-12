@@ -21,13 +21,12 @@ const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has se
 const facilityHelp = name => (name === 'Future amenities/facilities' ? `${FUTURE_FAC_HELP} ${FACILITY_HELP}` : FACILITY_HELP);
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
 const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
-const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, user: null, flags: [], charts: {}, weights: {}, consentedAt: null };
+const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, flags: [], charts: {}, weights: {}, consentedAt: null };
 
-async function api(path, opts = {}) {
-  const r = await fetch(path, opts);
-  const data = await r.json().catch(() => ({}));
-  if (!r.ok) { const e = new Error(data.error || r.statusText); e.status = r.status; e.code = data.code; throw e; }
-  return data;
+async function api(path) {
+  const r = await fetch(path);
+  if (!r.ok) throw new Error(r.statusText || `HTTP ${r.status}`);
+  return r.json();
 }
 const lsGet = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } };
@@ -37,18 +36,11 @@ function route() {
   if (PAGE === 'shortlist') renderShortlist();
   if (PAGE === 'analytics') openAnalytics();
   if (PAGE === 'rank' && new URLSearchParams(location.search).has('legend')) openLegend(new URLSearchParams(location.search).get('legend'));
-  if (PAGE === 'account') renderAccount();
 }
 
 // ---------------------------------------------------------------- init / project
 async function init() {
   state.index = await api('/data/units/index.json');
-  try {
-    state.user = await store.init(onAuthChange);
-  } catch (err) {
-    state.authError = err.message;
-    state.user = null;
-  }
   // Project: ?project= in the URL wins, then the last one used, then the first.
   const valid = k => state.index.projects.some(p => p.key === k);
   const fromUrl = new URLSearchParams(location.search).get('project');
@@ -67,7 +59,7 @@ async function init() {
   on('#f-types', 'change', renderWeights);
   on('#f-blocks', 'change', renderWeights);
   if (PAGE === 'rank' || PAGE === 'shortlist') await loadProject(key);
-  else { state.project = state.index.projects.find(p => p.key === key); state.flags = await loadFlags(); }
+  else state.project = state.index.projects.find(p => p.key === key);
   route();
 }
 
@@ -78,10 +70,10 @@ async function loadProject(key) {
   state.units = await api(`/data/units/${key}.json`);
   const p = state.project;
   if (PAGE !== 'rank') {
-    state.flags = await loadFlags();
+    state.flags = loadFlags();
     updateFlagCount();
-    const list = await store.loadList(key).catch(() => null);
-    state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey }, list.weights, list.floor_pref) : [];
+    const last = lsGet(`mybto:last:${key}`, null);
+    state.ranked = last ? Scoring.rank(state.units, { flatTypes: last.flat_types, blocks: last.blocks, minStorey: last.min_storey, maxStorey: last.max_storey }, last.weights, last.floor_pref) : [];
     if (PAGE === 'shortlist') renderShortlist();
     return;
   }
@@ -101,12 +93,12 @@ async function loadProject(key) {
   $('#analytics-name').textContent = p.name;
   $('#btn-analytics').href = `/analytics?project=${encodeURIComponent(key)}`;
   $('#btn-shortlisted').href = `/shortlist?project=${encodeURIComponent(key)}`;
-  state.flags = await loadFlags();
+  state.flags = loadFlags();
   updateFlagCount();
   renderWeights();
   $('#save-msg').textContent = '';
-  const list = await store.loadList(key).catch(() => null);
-  if (list) applySaved(list);
+  const last = lsGet(`mybto:last:${key}`, null);
+  if (last) restoreLast(last);
   showBlank();
 }
 
@@ -183,7 +175,8 @@ function readFilters() {
 }
 const readPref = () => $('#f-pref input:checked').value;
 
-function applySaved(list) {
+// A returning visitor gets the filters and weights of their last ranking for this project (kept in this browser only).
+function restoreLast(list) {
   const savedHousing = (list.flat_types || []).map(Scoring.housingOf);
   const radio = $$('#f-types input').find(i => savedHousing.includes(i.value));
   if (radio) radio.checked = true;
@@ -293,29 +286,25 @@ on('#results', 'click', e => {
   b.classList.toggle('on', state.flags.includes(b.dataset.id));
 });
 
-// Every ranking is saved (anonymously unless signed in). `survey` only holds the consent (firestore.rules requires the map).
-async function saveRanking() {
-  if (!state.consentedAt) return;
+// Settings are kept in this browser; the ranking itself goes to the Google Sheet (js/store.js) once the research notice was accepted.
+function saveRanking() {
   const f = readFilters();
-  try {
-    await store.saveList(state.project.key, {
-      project_type: state.project.project_type, flat_types: f.flatTypes, blocks: f.blocks,
-      min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
-      survey: { consent: true, consented_at: state.consentedAt },
-      ranking: state.ranked.map(u => u.id),
-    });
-  } catch (err) { console.warn('ranking not saved:', err.message); }
+  const last = { flat_types: f.flatTypes, blocks: f.blocks, min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights() };
+  lsSet(`mybto:last:${state.project.key}`, last);
+  if (!state.consentedAt) return;
+  store.saveRanking({
+    project: state.project.key, project_type: state.project.project_type, housing_type: $('#f-types input:checked')?.value || 'Any', blocks: f.blocks,
+    min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: last.floor_pref, weights: last.weights,
+    consent: true, consented_at: state.consentedAt, ranking: state.ranked.map(u => u.id),
+  });
 }
 
 // ---------------------------------------------------------------- shortlist
-async function loadFlags() {
-  if (state.user) return store.loadFlags(state.project.key).catch(() => lsGet(`flags:${state.project.key}`, []));
-  return lsGet(`flags:${state.project.key}`, []);
-}
-async function persistFlags() {
+const loadFlags = () => lsGet(`flags:${state.project.key}`, []);
+function persistFlags() {
   lsSet(`flags:${state.project.key}`, state.flags);
   updateFlagCount();
-  if (state.user) await store.saveFlags(state.project.key, state.flags).catch(err => console.error(err));
+  store.saveShortlist(state.project.key, state.flags);
 }
 function toggleFlag(id) {
   state.flags = state.flags.includes(id) ? state.flags.filter(x => x !== id) : [...state.flags, id];
@@ -407,15 +396,8 @@ async function openAnalytics() {
 
 async function loadAnalytics(proj) {
   $('#analysis-body').hidden = false;
-  let a;
-  try {
-    a = await api(`/api/analysis?${new URLSearchParams({ group: 'project', value: proj.key })}`,
-      { headers: { Authorization: `Bearer ${await store.idToken()}` } });
-  } catch (err) {
-    $('#a-basis').textContent = /operation-not-allowed|admin-restricted/.test(err.code || err.message)
-      ? 'Analytics isn’t switched on yet. Please check back soon.' : err.message;
-    return;
-  }
+  const a = await store.getAnalytics(proj.key);
+  if (!a) { $('#a-basis').textContent = 'Analytics will appear here soon.'; return; }
   $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'} for ${proj.name}.`;
 
   const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');
@@ -490,69 +472,6 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-close-legend]')) closeLegend();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLegend(); });
-
-// ---------------------------------------------------------------- account
-function renderAccount() {
-  if (PAGE !== 'account') return;
-  $('#acct-in').hidden = !state.user;
-  $('#acct-out').hidden = !!state.user;
-  $('#auth-error').hidden = !state.authError;
-  $('#auth-error').textContent = state.authError || '';
-  if (state.user) $('#acct-email').textContent = state.user.email;
-}
-function note(msg) { if (!$('#acct-note')) return; $('#acct-note').hidden = !msg; $('#acct-note').textContent = msg || ''; }
-
-// Called by Firebase whenever the signed-in user changes (sign in / out in this or another tab).
-async function onAuthChange(user) {
-  const was = state.user?.uid;
-  state.user = user;
-  renderAccount();
-  if (!state.project) return;
-  if (user && user.uid !== was) {
-    // Merge flags made while signed out into the account.
-    const local = lsGet(`flags:${state.project.key}`, []);
-    const remote = await store.loadFlags(state.project.key).catch(() => []);
-    state.flags = [...new Set([...remote, ...local])];
-    await persistFlags();
-    const list = await store.loadList(state.project.key).catch(() => null);
-    if (list && PAGE === 'rank' && !state.hasRanked) applySaved(list);
-    if (PAGE === 'shortlist') loadProject(state.project.key);
-  } else if (!user) {
-    state.flags = lsGet(`flags:${state.project.key}`, []);
-    updateFlagCount();
-  }
-}
-
-on('#form-login', 'submit', async e => {
-  e.preventDefault();
-  const err = e.target.querySelector('.err');
-  err.textContent = '';
-  const fd = new FormData(e.target);
-  try { await store.login(fd.get('email'), fd.get('password')); e.target.reset(); note(''); } catch (ex) { err.textContent = ex.message; }
-});
-on('#form-register', 'submit', async e => {
-  e.preventDefault();
-  const err = e.target.querySelector('.err');
-  err.textContent = '';
-  const fd = new FormData(e.target);
-  try {
-    await store.register(fd.get('email'), fd.get('password'));
-    e.target.reset();
-    note('');
-  } catch (ex) { err.textContent = ex.message; }
-});
-on('#btn-forgot', 'click', async () => {
-  const email = $('#form-login [name=email]').value.trim();
-  const err = $('#form-login .err');
-  if (!email) { err.textContent = 'Type your email above first.'; return; }
-  try { await store.resetPassword(email); err.textContent = `Password reset email sent to ${email}.`; } catch (ex) { err.textContent = ex.message; }
-});
-$$('[data-google]').forEach(b => b.addEventListener('click', async () => {
-  const err = b.closest('form').querySelector('.err');
-  err.textContent = '';
-  try { await store.loginWithGoogle(); note(''); } catch (ex) { err.textContent = ex.message; }
-}));
-on('#btn-logout', 'click', () => store.logout());
 
 init().catch(err => {
   console.error(err);

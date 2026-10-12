@@ -6,15 +6,11 @@
   "main": "dev.js",
   "scripts": {
     "dev": "node dev.js",
-    "dev:fake": "DEV_FAKE_FIREBASE=1 node dev.js",
+    "dev:fake": "DEV_FAKE_SHEETS=1 node dev.js",
     "sample": "node lib/make_sample_submissions.js",
     "test": "node --no-warnings --test test/*.test.js"
   },
   "engines": {
     "node": ">=20"
-  },
-  "dependencies": {
-    "exceljs": "^4.4.0",
-    "firebase-admin": "^12.7.0"
   }
 }

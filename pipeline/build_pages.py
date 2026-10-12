@@ -1,4 +1,4 @@
-"""Generate the inner pages (rank, shortlist, analytics) and the archived account page from one shared shell.
+"""Generate the inner pages (rank, shortlist, analytics) from one shared shell.
 
 Run after editing a page body below:  python3 pipeline/build_pages.py
 """
@@ -36,6 +36,7 @@ FOOT = """  </main>
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
   <script src="/js/ads.js"></script>
+  <script src="/js/config.js"></script>
   <script type="module" src="/js/app.js"></script>
 </body>
 </html>
@@ -144,40 +145,6 @@ PAGES = {
       </div>
     </div></section>
 """),
-    "account": dict(
-        title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
-        h1="Your <em>MyBTO</em> account.",
-        lede="Signing in is optional. It keeps your shortlist and rankings with you on any device.",
-        desc="Sign in or create a MyBTO account.", robots=True, out="archive/account.html",
-        body="""
-    <section class="tool"><div class="wrap">
-      <p id="auth-error" class="err" hidden></p>
-      <p id="acct-note" class="devlink" hidden aria-live="polite"></p>
-      <div id="acct-in" class="acct-card" hidden>
-        <span class="label">Signed in</span>
-        <h2 style="margin-top:14px" id="acct-email"></h2>
-        <div class="row-btns"><a class="btn" href="/">Rank units</a><button id="btn-logout" class="btn ghost">Sign out</button></div>
-      </div>
-      <div id="acct-out" class="auth">
-        <form id="form-login"><h2>Sign in</h2>
-          <button type="button" class="btn google" data-google>Continue with Google</button>
-          <div class="or">or</div>
-          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
-          <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
-          <button class="btn primary">Sign in</button>
-          <button type="button" id="btn-forgot" class="linkbtn">Forgot password?</button>
-          <p class="err small"></p></form>
-        <form id="form-register"><h2>Create account</h2>
-          <button type="button" class="btn google" data-google>Sign up with Google</button>
-          <div class="or">or</div>
-          <input name="email" type="email" placeholder="Email" autocomplete="email" required>
-          <input name="password" type="password" placeholder="Password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
-          <button class="btn primary">Create account</button>
-          <p class="small muted">It’s free. We only use your email to sign you in.</p>
-          <p class="err small"></p></form>
-      </div>
-    </div></section>
-"""),
 }
 
 
@@ -186,9 +153,7 @@ def main():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
         html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
-        out = PUBLIC / p.get("out", f"{page}.html")  # the account page is archived at /archive/account
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(html)
+        (PUBLIC / f"{page}.html").write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home
             (PUBLIC / "index.html").write_text(html)

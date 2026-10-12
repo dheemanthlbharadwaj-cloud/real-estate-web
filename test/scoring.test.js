@@ -1,7 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const S = require('../public/js/scoring.js');
-const { storeyDistribution, binomPmf, selectPopulation, analyse } = require('../lib/analysis.js');
+const A = require('../apps-script/Analytics.js');
+const { storeyDistribution, binomPmf, selectPopulation, analyse } = A;
 
 const U = (o) => ({ id: o.id, block: 'A', storey: 5, unit: '101', flat_type: '4-Room', unit_design: null, facing: 'NE', position: 'Corridor',
   lift_m: 10, chute_m: 10, gt30m: false, roof_access: false, mrt_near: false, fac_has_count: 0, fac_near_count: 0, ...o });
@@ -122,4 +123,68 @@ test('generated unit data carries the wind and car park fields', () => {
     assert.ok(units.every(u => u.mscp_near === (u.mscp_m !== null && u.mscp_m <= S.MSCP_NEAR_M)), `${p.key}: mscp_near matches mscp_m <= 100`);
     assert.ok(units.every(u => u.sample_fields.includes('wind_open')), `${p.key}: wind_open marked as sample`);
   }
+});
+
+const body = (o = {}) => ({ type: 'ranking', user: 'u0123456789ab', project: 'berlayar-rise-7', project_type: 'Prime', housing_type: '4-Room', blocks: ['200A', '200B'],
+  min_storey: 3, max_storey: 20, floor_pref: 'higher', consent: true, consented_at: '2026-10-12T01:00:00.000Z', ranking: ['BR-1', 'BR-2', 'BR-3'],
+  weights: { block: { '200A': 2 }, sun: { NE: 3, SW: -1 }, design: {}, facility: { "Children's playground": 1, Shops: 4 }, clearance: 1, corner: 2, roof: 0, chute: 3, mrt: 1, mscp: 0, wind_facing: 2, wind_open: -1 }, ...o });
+
+test('analytics factor keys match the scoring factors', () => {
+  assert.deepStrictEqual([...A.FACTOR_KEYS].sort(), Object.keys(S.FACTORS).sort());
+  assert.ok(A.RANKING_COLUMNS.includes('weight_wind_facing') && A.RANKING_COLUMNS.includes('weight_wind_open') && A.RANKING_COLUMNS.includes('weight_mscp'));
+});
+
+test('a ranking becomes one row and reads back the same', () => {
+  const r = A.parseSubmission(JSON.stringify(body()), '2026-10-12T02:00:00.000Z');
+  assert.ok(r.ok && r.kind === 'ranking');
+  assert.strictEqual(r.row.units_ranked, 3);
+  assert.strictEqual(r.row.top50, 'BR-1, BR-2, BR-3');
+  assert.strictEqual(r.row.sun_weights, 'NE: 3; SW: -1');
+  assert.ok(!('queue_position' in r.row));
+  const sub = A.rowToSub(r.row);
+  assert.deepStrictEqual(sub.weights.sun, { NE: 3, SW: -1 });
+  assert.deepStrictEqual(sub.weights.facility, { "Children's playground": 1, Shops: 4 });
+  assert.strictEqual(sub.weights.wind_open, -1);
+  assert.strictEqual(sub.surveyed, true);
+});
+
+test('a long full ranking is split over extra columns', () => {
+  const ids = Array.from({ length: 4000 }, (_, i) => `BR-${String(i).padStart(4, '0')}-0000000000-000000`);
+  const r = A.parseSubmission(JSON.stringify(body({ ranking: ids })), 'now');
+  assert.ok(r.ok);
+  assert.ok(r.row.full_ranking.length <= 49000 && r.row.full_ranking_2.length > 0);
+  assert.strictEqual([r.row.full_ranking, r.row.full_ranking_2, r.row.full_ranking_3, r.row.full_ranking_4].join(''), ids.join(', '));
+});
+
+test('bad submissions are rejected', () => {
+  const bad = o => A.parseSubmission(JSON.stringify(body(o)), 'now').ok;
+  assert.ok(!bad({ type: 'nope' }) && !bad({ project: 'Bad Project!' }) && !bad({ user: 'x' }) && !bad({ consent: false }) && !bad({ floor_pref: 'middle' }));
+  assert.ok(!bad({ ranking: ['a b'] }) && !bad({ min_storey: 'x' }) && !bad({ project_type: 'Other' }));
+  assert.ok(!bad({ weights: { ...body().weights, corner: 9 } }) && !bad({ weights: { ...body().weights, sun: { 'NE; x': 1 } } }));
+  assert.ok(!A.parseSubmission('x'.repeat(A.MAX_BODY_BYTES + 1), 'now').ok && !A.parseSubmission('{not json', 'now').ok && !A.parseSubmission('', 'now').ok);
+  assert.ok(!A.parseSubmission(JSON.stringify({ type: 'shortlist', user: 'u0123456789ab', project: 'p-1', unit_ids: Array(501).fill('a') }), 'now').ok);
+  const sl = A.parseSubmission(JSON.stringify({ type: 'shortlist', user: 'u0123456789ab', project: 'berlayar-rise-7', unit_ids: ['BR-1', 'BR-2'] }), 'now');
+  assert.ok(sl.ok && sl.kind === 'shortlist' && sl.row.unit_ids === 'BR-1, BR-2');
+  assert.strictEqual(A.safeText('=SUM(A1)'), "'=SUM(A1)");
+});
+
+test('analytics uses the latest ranking per user and returns no unit ids', () => {
+  const row = (user, corner, at) => A.rankingToRow(body({ user, weights: { ...body().weights, corner } }), at).row;
+  const rows = [row('uaaaaaaaa1', -5, 't1'), row('uaaaaaaaa1', 4, 't2'), row('ubbbbbbbb2', 2, 't3')];
+  const a = A.analyseProject(rows, [], 'berlayar-rise-7');
+  assert.strictEqual(a.users, 2);
+  assert.strictEqual(a.factors.find(f => f.key === 'corner').mean, 3);
+  assert.ok(!/BR-\d/.test(JSON.stringify(a)));
+  assert.strictEqual(A.analyseProject(rows, [], 'other-project-1').users, 0);
+});
+
+test('sample users fit the row layout and count in analytics', () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const sample = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'sample_submissions.json'), 'utf8')).submissions;
+  const rows = sample.map(s => A.sampleToRow(s, 'now'));
+  assert.ok(rows.every(r => r.ok), 'every sample user passes the same checks as a real ranking');
+  const first = sample[0];
+  const a = A.analyseProject([], rows.map(r => r.row), first.project);
+  assert.ok(a.users > 10 && a.sample_users === a.users);
+  assert.ok(a.min_storey.histogram.length > 0 && a.sun_directions.length === 4);
 });

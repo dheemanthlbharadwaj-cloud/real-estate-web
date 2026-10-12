@@ -1,10 +1,9 @@
-// Browser test of the full flow with Firebase stubbed (run: node test/e2e.browser.js; needs Playwright).
-// Starts the dev server in fake-Firebase mode and routes the Firebase CDN modules to test/fake-firebase/.
+// Browser test of the full flow (run: node test/e2e.browser.js; needs Playwright).
+// Starts the dev server with DEV_FAKE_SHEETS=1: an in-memory stand-in for the Google Sheet at /fake-sheets.
 const { spawn, execSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require(path.join(execSync('npm root -g').toString().trim(), 'playwright'));
-const ExcelJS = require('exceljs');
 
 const SHOTS = process.env.SHOTS_DIR;
 const PORT = 3123;
@@ -12,21 +11,18 @@ const base = `http://localhost:${PORT}`;
 const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } console.log(`ok - ${msg}`); };
 
 (async () => {
-  const server = spawn('node', ['dev.js'], { env: { ...process.env, DEV_FAKE_FIREBASE: '1', PORT: String(PORT) }, stdio: 'inherit' });
+  const server = spawn('node', ['dev.js'], { env: { ...process.env, DEV_FAKE_SHEETS: '1', PORT: String(PORT) }, stdio: 'inherit' });
   await new Promise(r => setTimeout(r, 1200));
   const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
   const errors = [];
   try {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     await ctx.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; }); // the 5 s Rank pop-up stays real; the 15 s video is shortened
-    await ctx.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
-      const name = route.request().url().split('/').pop();
-      route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', name), 'utf8') });
-    });
     const p = await ctx.newPage();
     p.on('pageerror', e => errors.push(e.message));
     p.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
 
+    const dump = async () => (await fetch(`${base}/fake-sheets?action=dump`)).json(); // what the fake sheet holds (tests only)
     const rows = () => p.$$eval('#results tbody tr', r => r.filter(x => x.querySelector('.rk')).length);
     await p.goto(`${base}/rank`);
     await p.waitForSelector('#floor-groups .fg-card');
@@ -62,8 +58,11 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('#results tbody td.fac', n => n.every(x => /^[✓✗]$/.test(x.textContent.trim())))), 'facility columns are ticks and crosses');
     const tagText = await p.$$eval('#results .tags .tag', t => [...new Set(t.map(x => x.textContent.replace(/\d+/, 'N')))]);
     check(tagText.every(t => ['corner', 'corridor', 'near MRT', 'chute within N m'].includes(t)), `only corner/corridor, MRT and chute tags (${tagText.join(', ')})`);
-    const saved = await p.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('fs:submissions/')).map(k => JSON.parse(localStorage.getItem(k))));
-    check(saved.length === 1 && saved[0].survey.consent === true && Object.keys(saved[0].survey).sort().join() === 'consent,consented_at' && saved[0].ranking.length > 50, `ranking saved with consent only and every unit (${saved[0]?.ranking.length})`);
+    const sheetNow = await dump();
+    const sent = sheetNow.rankings;
+    check(sent.length === 1 && sent[0].consent === true && sent[0].project === 'kebun-baru_breeze-5' && sent[0].units_ranked > 50 && sent[0].full_ranking.split(', ').length === sent[0].units_ranked, `the fake sheet got one ranking row with consent and the full ranking (${sent[0]?.units_ranked} units)`);
+    check(sent[0].top50.split(', ').length === 50 && /^u[0-9a-f]{24}$/.test(sent[0].user) && !Object.keys(sent[0]).some(k => /queue|survey|email|age/.test(k)), 'row has the top 50, an anonymous user id and no queue number or survey answers');
+    check((await p.evaluate(() => localStorage.getItem('mybto:uid'))) === sent[0].user && !!(await p.evaluate(() => localStorage.getItem('mybto:last:kebun-baru_breeze-5'))), 'user id and last settings are kept in this browser');
 
     await p.selectOption('#project', 'berlayar-rise-7');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
@@ -119,12 +118,20 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
 
     await p.click('.star >> nth=0'); await p.click('.star >> nth=1'); await p.click('.star >> nth=2');
     check((await p.textContent('#flag-count')) === '3', 'Shortlisted button counts three starred units');
+    await p.waitForTimeout(2600);
+    const starred = (await dump()).shortlists.filter(r => r.project === 'berlayar-rise-7');
+    check(starred.length === 1 && starred[0].unit_ids.split(', ').length === 3, 'starring units sends a shortlist to the fake sheet (3 units, debounced into one send)');
     check((await p.getAttribute('#btn-shortlisted', 'target')) === '_blank' && (await p.getAttribute('#btn-analytics', 'target')) === '_blank', 'Shortlisted and Analytics open in a new tab');
     const [sl] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-shortlisted')]);
     await sl.waitForSelector('#flag-list li .addr');
     const first = await sl.textContent('#flag-list li:nth-child(1) .addr');
     await sl.click('#flag-list li:nth-child(2) [data-act=up]');
     check((await sl.textContent('#flag-list li:nth-child(2) .addr')) === first, 'shortlist reorders');
+    await sl.waitForTimeout(2600);
+    const shortlistOf = async () => (await dump()).shortlists.filter(r => r.project === 'berlayar-rise-7');
+    const after = await shortlistOf();
+    check(after[0].unit_ids !== starred[0].unit_ids && [...after[0].unit_ids.split(', ')].sort().join() === [...starred[0].unit_ids.split(', ')].sort().join(), 'the new order replaced the old one');
+    check(after.length === 1 && after[0].user === (await dump()).rankings[0].user && after[0].unit_ids.split(', ').length === 3, 'reordering sent the shortlist: one row per user and project, 3 units');
     await sl.close();
     const [an] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-analytics')]);
     await an.waitForSelector('.ad-panel');
@@ -139,73 +146,32 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await an.$$eval('#analysis-body select, #analysis-body input, #analysis-body button', n => n.length)) === 0 && !(await an.$('#a-group')), 'analytics has no filters or controls');
     const anText = await an.evaluate(() => document.body.innerText);
     check(!/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(anText) && !/Most shortlisted|Who ranked|Analysis/.test(anText), 'analytics page shows no unit ids, no shortlist list, no Who ranked');
-    const apiJson = await an.evaluate(async () => { const r = await fetch('/api/analysis?group=project&value=berlayar-rise-7', { headers: { Authorization: 'Bearer fake-x' } }); return r.json(); });
-    check(!('most_flagged' in apiJson) && !('demographics' in apiJson) && apiJson.users > 0, 'API response has no most_flagged or demographics');
+    const apiJson = await an.evaluate(async () => (await fetch('/fake-sheets?action=analytics&project=berlayar-rise-7')).json());
+    check(apiJson.ok && apiJson.users > 0 && !/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(JSON.stringify(apiJson)) && !('rows' in apiJson), 'analytics JSON from the sheet has aggregates only, no unit ids or rows');
+    check((await an.$$eval('#r-factor li', l => l.length)) === 8 && (await an.$$eval('canvas', c => c.length && c.every(x => x.width > 0))), 'Analytics renders the factor list and every chart from the sheet endpoint');
+    check(/Based on \d+ saved/.test(await an.textContent('#a-basis')), 'Analytics says how many rankings it is based on');
     await an.reload();
     await an.waitForSelector('#analysis-body:not([hidden])');
     check(!(await an.$('.ad-panel')), 'unlock is remembered for the browser session');
     await an.close();
-    const redirectOk = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8')).redirects.some(r => r.source === '/analysis' && r.destination === '/analytics');
-    check(redirectOk, 'vercel.json redirects /analysis to /analytics');
-
     const fresh = await browser.newContext();
-    await fresh.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
-      route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', route.request().url().split('/').pop()), 'utf8') });
-    });
     const g = await fresh.newPage();
     await g.goto(`${base}/analytics?project=sembawang-brook-6`);
     await g.waitForSelector('.ad-panel');
     check((await g.isHidden('#analysis-body')) && (await g.textContent('#a-basis')) === '', 'a new browser session gets the video gate and nothing loads behind it');
     await fresh.close();
 
-    const dash = await ctx.newPage();
-    await dash.goto(`${base}/archive/dashboard`);
-    check((await dash.getAttribute('meta[name=robots]', 'content')).includes('noindex'), 'dashboard is noindex');
-    await dash.fill('#pw', 'wrong');
-    await dash.click('#login button');
-    await dash.waitForFunction(() => /Wrong password/.test(document.querySelector('#msg').textContent), null, { timeout: 8000 });
-    check(await dash.isHidden('#panel'), 'dashboard rejects a wrong password');
-    await dash.fill('#pw', 'test');
-    await dash.click('#login button');
-    await dash.waitForSelector('#panel:not([hidden])');
-    check((await dash.$$eval('#rows tr', r => r.length)) > 0 && /rankings saved/.test(await dash.textContent('#totals')), 'dashboard shows the summary after the right password');
-    const [dl] = await Promise.all([dash.waitForEvent('download'), dash.click('#dl')]);
-    check(/^mybto-rankings-\d{4}-\d{2}-\d{2}\.xlsx$/.test(dl.suggestedFilename()), `Excel download named ${dl.suggestedFilename()}`);
-    const wb = new ExcelJS.Workbook();
-    await wb.xlsx.readFile(await dl.path());
-    check(['Rankings', 'Shortlists', 'Read me'].every(n => wb.getWorksheet(n)), 'workbook has Rankings, Shortlists and Read me sheets');
-    check(wb.getWorksheet('Rankings').rowCount > 1 && wb.getWorksheet('Shortlists').rowCount > 1, `Rankings has ${wb.getWorksheet('Rankings').rowCount - 1} rows`);
-    const headers = wb.getWorksheet('Rankings').getRow(1).values.filter(Boolean);
-    check(['project', 'anonymous_user', 'floor_pref', 'weight_corner', 'sun_weights', 'consent', 'survey_age', 'top_50_units'].every(h => headers.includes(h)), 'Rankings has the expected columns, including legacy survey answers');
-    const raw = await dash.evaluate(async () => { const r = await fetch('/api/export', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test', format: 'xlsx' }) }); return [r.headers.get('content-type'), r.headers.get('content-disposition')]; });
-    check(raw[0].includes('spreadsheetml') && raw[1].startsWith('attachment'), 'export returns the xlsx content type as an attachment');
-    await dash.close();
+    for (const [from, to, code] of [['/analysis', '/analytics', 301], ['/account', '/', 301], ['/archive/account', '/', 301], ['/archive/dashboard', '/', 301]]) {
+      const r = await fetch(`${base}${from}`, { redirect: 'manual' });
+      check(r.status === code && new URL(r.headers.get('location'), base).pathname === to, `${from} redirects to ${to} (firebase.json)`);
+    }
+    check((await fetch(`${base}/api/analysis`)).status === 404 && (await fetch(`${base}/archive/account`, { redirect: 'follow' })).ok, 'no /api functions any more');
 
-    await p.goto(`${base}/archive/account`);
-    await p.fill('#form-register [name=email]', 'buyer@example.com');
-    await p.fill('#form-register [name=password]', 'password123');
-    await p.click('#form-register button.primary');
-    await p.waitForSelector('#acct-in:not([hidden])');
-    check(!(await p.$('#acct-badge')) && !(await p.$('#verify-box')), 'no email verification step');
-    await p.goto(`${base}/rank`);
-    await p.waitForFunction(() => /last settings/.test(document.querySelector('#save-msg').textContent) || true);
-    check((await p.textContent('#flag-count')) === '3', 'starred units carried into the new account');
-    await p.goto(`${base}/archive/account`);
-    await p.click('#btn-logout');
-    await p.waitForSelector('#acct-out:not([hidden])');
-    await p.fill('#form-login [name=email]', 'buyer@example.com');
-    await p.fill('#form-login [name=password]', 'wrong-password');
-    await p.click('#form-login button.primary');
-    await p.waitForFunction(() => /Wrong email or password/.test(document.querySelector('#form-login .err').textContent));
-    check(true, 'wrong password rejected with friendly message');
-    await p.click('#form-login [data-google]');
-    await p.waitForSelector('#acct-in:not([hidden])');
-    check(true, 'Google sign-in works');
     await p.goto(`${base}/`);
     await p.waitForSelector('#floor-groups .fg-card');
     check(true, 'the first page is the ranking page');
     check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header still has no menu button');
-    check(!(await p.$('.site-footer a[href="/account"]')), 'no account link in the footer');
+    check(!(await p.$('.site-footer a[href*="account"], .site-header a[href*="account"], .site-header a[href*="login"]')) && !/sign[ -]?in|log ?in/i.test(await p.textContent('.site-header') + await p.textContent('.site-footer')), 'no sign-in or account links in the header or footer');
     await p.goto(`${base}/archive/home`);
     check((await p.title()).startsWith('MyBTO'), 'archived home page is titled MyBTO');
     await p.waitForSelector('#project-grid .pcard');
@@ -232,13 +198,38 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/analytics', '/archive/account', '/archive/home', '/archive/dashboard']) {
+    for (const path of ['/', '/rank', '/shortlist', '/analytics', '/archive/home']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);
       check(!(await p.evaluate(() => document.body.innerText)).includes('\u2014'), `${path}: no em dashes`);
       check((await p.$$eval('svg', s => s.length)) === 0, `${path}: no SVG`);
     }
+
+    const noSheet = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+    await noSheet.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 1 }; });
+    await noSheet.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { SHEETS_URL: '' };" }));
+    const ns = await noSheet.newPage();
+    const nsErrors = [];
+    ns.on('pageerror', e => nsErrors.push(e.message));
+    ns.on('console', m => { if (['error', 'warning'].includes(m.type())) nsErrors.push(m.text()); });
+    const before = (await dump()).rankings.length;
+    await ns.goto(`${base}/rank`);
+    await ns.waitForSelector('#floor-groups .fg-card');
+    await ns.click('#btn-rank');
+    await ns.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await ns.click('[data-ad-go]');
+    await ns.waitForSelector('#results tbody .rk');
+    await ns.click('.star >> nth=0');
+    await ns.waitForTimeout(2500);
+    check((await dump()).rankings.length === before && (await dump()).shortlists.length === 1, 'with SHEETS_URL empty nothing is sent');
+    await ns.goto(`${base}/analytics?project=berlayar-rise-7`);
+    await ns.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await ns.click('[data-ad-go]');
+    await ns.waitForFunction(() => document.querySelector('#a-basis').textContent !== '');
+    check((await ns.textContent('#a-basis')) === 'Analytics will appear here soon.', 'with SHEETS_URL empty Analytics says it will appear soon');
+    check(nsErrors.length === 0, `and the console stays quiet${nsErrors.length ? `: ${nsErrors.join(' | ')}` : ''}`);
+    await noSheet.close();
 
     const phone = await ctx.newPage();
     await phone.setViewportSize({ width: 390, height: 844 });
@@ -260,9 +251,6 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     // Phone (390 px): header tabs, ad pop-up, Analytics gate and page, none of them scroll sideways.
     const pc = await browser.newContext({ viewport: { width: 390, height: 844 } });
     await pc.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; });
-    await pc.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
-      route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', route.request().url().split('/').pop()), 'utf8') });
-    });
     const ph = await pc.newPage();
     const over = () => ph.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     await ph.goto(`${base}/rank`);

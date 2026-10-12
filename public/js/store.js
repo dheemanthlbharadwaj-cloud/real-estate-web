@@ -1,89 +1,56 @@
-// Firebase Auth and Firestore persistence. Signing in (email + password or Google) is optional:
-// visitors who don't sign in get an anonymous Firebase user so their rankings can still be saved.
-// Docs: submissions/<uid>_<project>, flags/<uid>_<project>  (see firestore.rules)
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {
-  getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
-  sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, signInAnonymously,
-} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+// Talks to the Google Sheet through the Apps Script web app (window.MYBTO_CONFIG.SHEETS_URL, see js/config.js).
+// Nothing here ever throws or shows an error to the visitor: when the sheet is not connected or a send fails,
+// the site simply keeps working from the browser.
+const url = () => (window.MYBTO_CONFIG && window.MYBTO_CONFIG.SHEETS_URL) || '';
+const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } };
 
-let auth = null, db = null, ready = null;
+export const connected = () => !!url();
 
-const FRIENDLY = {
-  'auth/email-already-in-use': 'That email is already registered. Sign in instead.',
-  'auth/invalid-email': 'Enter a valid email address.',
-  'auth/weak-password': 'Password must be at least 6 characters.',
-  'auth/invalid-credential': 'Wrong email or password.',
-  'auth/wrong-password': 'Wrong email or password.',
-  'auth/user-not-found': 'Wrong email or password.',
-  'auth/too-many-requests': 'Too many attempts. Try again in a few minutes.',
-  'auth/network-request-failed': 'Network error. Check your connection.',
-  'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
-  'auth/popup-blocked': 'Your browser blocked the Google sign-in window. Allow pop-ups and try again.',
-  'auth/account-exists-with-different-credential': 'That email already has a password account. Sign in with your password.',
-};
-const friendly = e => new Error(FRIENDLY[e.code] || e.message);
-// Anonymous users count as signed out everywhere in the UI.
-const toUser = u => (u && !u.isAnonymous ? { uid: u.uid, email: u.email } : null);
-
-// Resolves with the first auth state; `onChange` is called on every later change.
-export function init(onChange) {
-  ready = (async () => {
-    const r = await fetch('/api/config');
-    if (!r.ok) throw new Error('Sign-in is not configured yet (Firebase settings missing on the server).');
-    const app = initializeApp(await r.json());
-    auth = getAuth(app);
-    db = getFirestore(app);
-    return new Promise(resolve => {
-      let first = true;
-      onAuthStateChanged(auth, u => {
-        if (first) { first = false; resolve(toUser(u)); } else onChange(toUser(u));
-      });
-    });
-  })();
-  return ready;
+// Anonymous random id for this browser, kept in localStorage `mybto:uid`. Starts with a letter.
+export function userId() {
+  let id = lsGet('mybto:uid');
+  if (!/^[A-Za-z][A-Za-z0-9_-]{7,63}$/.test(id || '')) {
+    const bytes = crypto.getRandomValues(new Uint8Array(12));
+    id = `u${[...bytes].map(b => b.toString(16).padStart(2, '0')).join('')}`;
+    lsSet('mybto:uid', id);
+  }
+  return id;
 }
 
-export async function register(email, password) {
+// text/plain keeps this a "simple" request, so the browser sends no CORS preflight (Apps Script cannot answer one).
+function post(payload) {
+  if (!url()) return Promise.resolve(false);
+  return fetch(url(), { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+    .then(() => true, err => { console.warn('not sent to the sheet:', err.message); return false; });
+}
+
+export const saveRanking = data => post({ type: 'ranking', user: userId(), ...data });
+
+let timer = null, pending = null;
+function flushShortlist() {
+  clearTimeout(timer);
+  timer = null;
+  if (pending) { const p = pending; pending = null; post({ type: 'shortlist', user: userId(), project: p.project, unit_ids: p.ids }); }
+}
+// Debounced: a burst of stars or reorders becomes one send, about 2 seconds after the last change.
+export function saveShortlist(project, ids) {
+  if (!url()) return;
+  pending = { project, ids: [...ids] };
+  clearTimeout(timer);
+  timer = setTimeout(flushShortlist, 2000);
+}
+window.addEventListener('pagehide', flushShortlist);
+
+// Resolves with the Analytics JSON, or null when the sheet is not connected or cannot be reached.
+export async function getAnalytics(project) {
+  if (!url()) return null;
   try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    return toUser(user);
-  } catch (e) { throw friendly(e); }
-}
-export async function login(email, password) {
-  try { return toUser((await signInWithEmailAndPassword(auth, email, password)).user); } catch (e) { throw friendly(e); }
-}
-export async function loginWithGoogle() {
-  try { return toUser((await signInWithPopup(auth, new GoogleAuthProvider())).user); } catch (e) { throw friendly(e); }
-}
-export const logout = () => signOut(auth);
-export async function resetPassword(email) {
-  try { await sendPasswordResetEmail(auth, email); } catch (e) { throw friendly(e); }
-}
-// Any Firebase user, signed in or anonymous. Creates an anonymous one when there's none yet.
-export async function ensureUser() {
-  await ready;
-  if (!auth.currentUser) await signInAnonymously(auth);
-  return auth.currentUser.uid;
-}
-export const hasUser = () => !!auth?.currentUser;
-export const idToken = async () => { await ensureUser(); return auth.currentUser.getIdToken(); };
-
-const key = project => `${auth.currentUser.uid}_${project}`;
-export async function loadList(project) {
-  if (!auth?.currentUser) return null;
-  const s = await getDoc(doc(db, 'submissions', key(project)));
-  return s.exists() ? s.data() : null;
-}
-export async function saveList(project, data) {
-  await ensureUser();
-  await setDoc(doc(db, 'submissions', key(project)), { ...data, uid: auth.currentUser.uid, project, updated_at: serverTimestamp() });
-}
-export async function loadFlags(project) {
-  const s = await getDoc(doc(db, 'flags', key(project)));
-  return s.exists() ? s.data().unit_ids || [] : [];
-}
-export async function saveFlags(project, unitIds) {
-  await setDoc(doc(db, 'flags', key(project)), { uid: auth.currentUser.uid, project, unit_ids: unitIds.slice(0, 500) });
+    const r = await fetch(`${url()}${url().includes('?') ? '&' : '?'}action=analytics&project=${encodeURIComponent(project)}`);
+    const data = await r.json();
+    return data && data.ok ? data : null;
+  } catch (err) {
+    console.warn('analytics not available:', err.message);
+    return null;
+  }
 }

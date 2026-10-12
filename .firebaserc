@@ -1,7 +1,5 @@
 {
   "projects": {
-    "default": "sgrealestate-5fbd4"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "mybto"
+  }
 }

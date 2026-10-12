@@ -1,11 +1,18 @@
 {
-  "firestore": {
-    "rules": "firestore.rules"
-  },
-  "auth": {
-    "providers": {
-      "anonymous": true,
-      "emailPassword": true
-    }
+  "hosting": {
+    "public": "public",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      { "source": "/analysis", "destination": "/analytics", "type": 301 },
+      { "source": "/account", "destination": "/", "type": 301 },
+      { "source": "/archive/account", "destination": "/", "type": 301 },
+      { "source": "/archive/dashboard", "destination": "/", "type": 301 }
+    ],
+    "headers": [
+      { "source": "/data/**", "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }] },
+      { "source": "/img/**", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, immutable" }] }
+    ]
   }
 }
