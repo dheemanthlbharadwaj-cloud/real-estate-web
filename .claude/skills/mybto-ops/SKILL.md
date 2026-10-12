@@ -89,7 +89,7 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 ## Dashboard and Excel export
 - Page: `/archive/dashboard` (hidden, `noindex`, unlinked). Enter the shared password, see rankings per project and the latest update, press "Download Excel".
 - `api/export.js`: POST JSON `{password, format}`. `ADMIN_PASSWORD` unset -> 503 "Dashboard not set up"; wrong password -> 401 after about 1 s (compared with `crypto.timingSafeEqual`); `FIREBASE_SERVICE_ACCOUNT` missing -> 503 with a clear message. `format: 'xlsx'` returns `mybto-rankings-YYYY-MM-DD.xlsx` (ExcelJS; sheets Rankings, Shortlists, Read me). Users appear as the first 10 hex chars of sha256(uid). Long full rankings are split over `full_ranking_part_N` columns (Excel cell limit).
-- Set the password: Vercel project > Settings > Environment Variables > add `ADMIN_PASSWORD` (Production and Preview), then redeploy. The human does this; never write the value in the repo or chat.
+- Set the password: Vercel project > Settings > Environment Variables > add `ADMIN_PASSWORD` (Production and Preview), then redeploy. The human does this; never write the value in the repo or chat. Status as of 2026-10-12: not set yet (the Vercel connector got 403 for this team; the human has the steps).
 - Local fake mode (`DEV_FAKE_FIREBASE=1`): password `test`, sample submissions.
 
 ## Keys and secrets
