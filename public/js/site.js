@@ -7,7 +7,7 @@
   header.innerHTML = `<div class="wrap bar">
       <a class="logo" href="/" aria-label="MyBTO home">${logo}</a>
       <nav class="tabs" aria-label="Main">
-        <a class="tab" id="tab-rank" href="/">Rank units</a>
+        <a class="tab" id="tab-rank" href="/?rank=1">Rank units</a>
         <a class="tab" id="tab-analytics" href="/analytics"><span id="tab-analytics-name"></span> Analytics</a>
       </nav>
     </div>`;

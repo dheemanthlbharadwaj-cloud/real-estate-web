@@ -36,6 +36,17 @@ function route() {
   if (PAGE === 'shortlist') renderShortlist();
   if (PAGE === 'analytics') openAnalytics();
   if (PAGE === 'rank' && new URLSearchParams(location.search).has('legend')) openLegend(new URLSearchParams(location.search).get('legend'));
+  // The header's "Rank units" tab ranks too: from another page it opens /?rank=1, on this page it acts like the button.
+  if (PAGE === 'rank' && new URLSearchParams(location.search).has('rank')) {
+    history.replaceState(null, '', location.pathname);
+    rankFromTab();
+  }
+  on('#tab-rank', 'click', e => { if (PAGE === 'rank') { e.preventDefault(); rankFromTab(); } });
+}
+
+async function rankFromTab() {
+  await onRankClick();
+  if (state.hasRanked) $('.results-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ---------------------------------------------------------------- init / project

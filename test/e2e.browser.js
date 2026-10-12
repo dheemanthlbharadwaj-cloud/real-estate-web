@@ -75,8 +75,9 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.getAttribute('#tab-analytics', 'href')) === '/analytics?project=berlayar-rise-7', 'Analytics tab follows the selected project live');
     check((await p.inputValue('#f-pref input:checked')) === 'higher', 'Prioritise floors defaults to Higher after choosing a project');
     await p.click('#f-pref label:has-text("No preference")');
-    await p.click('#btn-rank');
+    await p.click('#tab-rank');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('988'));
+    check(true, 'header Rank units tab ranks on the rank page');
     check(!(await p.$('.ad-panel')), 'ad pop-up only on the first Rank click of the session');
     check((await p.$$eval('#results tbody .rk', r => r.map(x => x.textContent))).every(x => x === '1'), 'all importances 0: every unit ranks 1');
     check((await p.$$eval('#floor-groups h3', h => h.map(x => x.textContent))).join() === 'Highest unit(s),Middlemost unit(s),Lowest unit(s)', 'highest, middlemost and lowest units shown');
@@ -155,6 +156,11 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await an.reload();
     await an.waitForSelector('#analysis-body:not([hidden])');
     check(!(await an.$('.ad-panel')), 'unlock is remembered for the browser session');
+    await an.click('#tab-rank');
+    await an.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 15000 }); // a new tab is a new session, so the pop-up shows again
+    await an.click('[data-ad-go]');
+    await an.waitForSelector('#results tbody .rk');
+    check(new URL(an.url()).search === '', 'Rank units tab on another page opens the ranking already ranked');
     await an.close();
     const fresh = await browser.newContext();
     await stubFirebase(fresh);
