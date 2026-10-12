@@ -1,0 +1,275 @@
+{
+ "berlayar-rise-7": [
+  {
+   "block": "201B",
+   "facility": "Residents' network centre",
+   "storey": 1,
+   "future": false,
+   "source": "berlayar-rise-7.pdf p12 (marker 10 at block 201B), p14 (unit distribution 201B, storey 01)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "berlayar-rise-7.pdf p12 (marker 9, standalone 3-storey Block 203, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Eating house",
+   "storey": 1,
+   "future": false,
+   "source": "berlayar-rise-7.pdf p12 (markers 11/14/15: eating house, restaurant, cafe at 1st storey of Block 201 MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Shops",
+   "storey": 1,
+   "future": false,
+   "source": "berlayar-rise-7.pdf p12 (marker 12, Block 201 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Supermarket",
+   "storey": 1,
+   "future": false,
+   "source": "berlayar-rise-7.pdf p12 (marker 13, Block 201 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "berlayar-rise-7.pdf p12 (marker 8 'space reserved for future community use' on Block 201 MSCP; storey not stated)"
+  }
+ ],
+ "kebun-baru_breeze-5": [
+  {
+   "block": "247A",
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "kebun-baru_breeze-5.pdf p9 (marker 8), p10 (unit distribution 247A, storey 01, two spots)"
+  },
+  {
+   "block": "248A",
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "kebun-baru_breeze-5.pdf p9 (marker 8), p10 (unit distribution 248A, storey 01, two spots)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "kebun-baru_breeze-5.pdf p9 (marker 7, ground level of Block 247 MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "kebun-baru_breeze-5.pdf p9 (marker 6 'space reserved for future community use' on Block 247 MSCP; storey not stated)"
+  }
+ ],
+ "kebun-baru_ridge-1": [
+  {
+   "block": "183A",
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 9), p9 (unit distribution 183A, storey 01)"
+  },
+  {
+   "block": "184A",
+   "facility": "Residents' network centre",
+   "storey": 2,
+   "future": false,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 8, 'at 2nd storey'), p9 (unit distribution 184A, storey 02)"
+  },
+  {
+   "block": "184B",
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 7, 1st storey with green roof on 2nd), p10 (unit distribution 184B, storey 01)"
+  },
+  {
+   "block": null,
+   "facility": "Mini-mart",
+   "storey": 1,
+   "future": false,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 10, Block 183 1st storey plan; Block 183 is the MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Shops",
+   "storey": 1,
+   "future": false,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 11, Block 183 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Eating house",
+   "storey": 1,
+   "future": false,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 12, Block 183 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "kebun-baru_ridge-1.pdf p8 (marker 6 'space reserved for future community use' on Block 183 MSCP; storey not stated)"
+  }
+ ],
+ "lakeview-cascadia-2": [
+  {
+   "block": "326B",
+   "facility": "Residents' network centre",
+   "storey": 1,
+   "future": false,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 9 at block 326B), p11 (unit distribution 326B, storey #01)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 8, Block 325 1st storey plan; Block 325 is the MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 10, Block 325 1st storey plan; use not named)"
+  },
+  {
+   "block": null,
+   "facility": "Eating house",
+   "storey": 1,
+   "future": false,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 11, Block 325 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Shops",
+   "storey": 1,
+   "future": false,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 12, Block 325 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Mini-mart",
+   "storey": 1,
+   "future": false,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 13, Block 325 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "lakeview-cascadia-2.pdf p9 (marker 7 'space reserved for future community use' on Block 325 roof garden; storey not stated)"
+  }
+ ],
+ "sembawang-brook-6": [
+  {
+   "block": "440A",
+   "facility": "Residents' network centre",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-brook-6.pdf p9 (marker 8 at block 440A), p11 (unit distribution 440A, storey #01)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-brook-6.pdf p9 (marker 9, Block 436 MSCP 1st and 2nd storey plans, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Future amenities/facilities",
+   "storey": 2,
+   "future": true,
+   "source": "sembawang-brook-6.pdf p9 (marker 10 'at 2nd storey', Block 436 MSCP 2nd storey plan; use not named)"
+  },
+  {
+   "block": null,
+   "facility": "Eating house",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-brook-6.pdf p9 (marker 11, low-rise Block 440 beside 440A, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Shops",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-brook-6.pdf p9 (marker 12, Block 440 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Mini-mart",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-brook-6.pdf p9 (marker 13, Block 440 1st storey)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "sembawang-brook-6.pdf p9 (marker 7 'space reserved for future community use', lawn near Block 436; storey not stated)"
+  }
+ ],
+ "sembawang-portico-4": [
+  {
+   "block": "434A",
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "sembawang-portico-4.pdf p9 (marker 8), p11 (unit distribution 434A, storey 01, two spots)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "sembawang-portico-4.pdf p9 (marker 7, ground level of Block 433 MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "sembawang-portico-4.pdf p9 (marker 6 'space reserved for future community use' on Block 433 roof garden; storey not stated)"
+  }
+ ],
+ "woodgrove-acres-3": [
+  {
+   "block": "447A",
+   "facility": "Future amenities/facilities",
+   "storey": 1,
+   "future": true,
+   "source": "woodgrove-acres-3.pdf p9 (marker 8, 1st storey with inaccessible green roof), p11 (unit distribution 447A, storey #01)"
+  },
+  {
+   "block": null,
+   "facility": "Preschool",
+   "storey": 1,
+   "future": false,
+   "source": "woodgrove-acres-3.pdf p9 (marker 7, Block 447 1st storey plan; Block 447 is the MSCP, not a residential block)"
+  },
+  {
+   "block": null,
+   "facility": "Community space",
+   "storey": null,
+   "future": true,
+   "source": "woodgrove-acres-3.pdf p9 (marker 6 'space reserved for future community use' on Block 447 roof garden; storey not stated)"
+  }
+ ]
+}

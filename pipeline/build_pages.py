@@ -188,7 +188,6 @@ PAGES = {
           <label class="chip"><input type="radio" name="queue_position" value="none"><span>Don’t have one or don’t know</span></label>
           <label class="chip"><input type="radio" name="queue_position" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
-        <label class="survey-queue"><span>Your queue number, if you have one</span><input name="queue_number" type="text" inputmode="numeric" maxlength="12" placeholder="e.g. 1234"></label>
         <p class="consent small">By selecting “I agree, show my ranking”, you confirm that you are 21 or older and agree to your answers and ranking being stored anonymously and used only for this NUS research project. Questions? Contact Lim Xin Quan (<a href="mailto:limxinquan@u.nus.edu">limxinquan@u.nus.edu</a>) (Student Researcher) or Dr. Grace Wong (<a href="mailto:bizgwong@nus.edu.sg">bizgwong@nus.edu.sg</a>) (Supervisor)</p>
         <p class="err small" id="survey-err"></p>
         <div class="modal-btns"><button type="button" class="btn ghost" data-close-survey>Not now</button><button type="submit" class="btn primary" id="survey-ok">I agree, show my ranking</button></div>
@@ -246,7 +245,7 @@ PAGES = {
           <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities, most to least wanted</h3><ol class="ranklist" id="r-facility"></ol></div>
           <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types searched</h3><canvas id="c-types"></canvas></div>
           <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Who ranked</h3><div class="who" id="r-who"></div></div>
-          <div class="panel w12"><span class="eyebrow">Figure 11</span><h3>Most shortlisted units</h3><ol class="ranklist" id="r-flagged"></ol><div class="stats-row" id="s-queue"></div></div>
+          <div class="panel w12"><span class="eyebrow">Figure 11</span><h3>Most shortlisted units</h3><ol class="ranklist" id="r-flagged"></ol></div>
         </div>
       </div>
     </div></section>

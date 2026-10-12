@@ -46,7 +46,7 @@ window.LEGEND = [
   {
     key: "facilities", title: "Facilities nearby",
     img: "lg-facilities.webp", alt: "Sembawang Portico site plan with 30 m circles around the children’s playground and the preschool",
-    text: "This is which facilities are in the unit’s block (has) or within 30 m of it (near).",
+    text: "This is which facilities are in the unit’s block (has) or within 30 m of it (near). Facilities at the 1st storey (void deck) come from the HDB brochure site plan. Future amenities/facilities: void deck space HDB has set aside for things like preschools, eldercare or a residents’ network centre.",
     rule: "Source: sembawang-portico-4.pdf, page 9 (site plan), measured with its scale bar.",
   },
   {

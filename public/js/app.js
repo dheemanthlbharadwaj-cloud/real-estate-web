@@ -14,6 +14,8 @@ const FACTOR_HELP = {
   mrt: 'Block within 100 m of an MRT station.',
 };
 const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
+const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has set aside for things like preschools, eldercare or a residents’ network centre.';
+const facilityHelp = name => (name === 'Future amenities/facilities' ? `${FUTURE_FAC_HELP} ${FACILITY_HELP}` : FACILITY_HELP);
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
 const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
 const SURVEY_KEY = 'mybto:survey';
@@ -167,7 +169,7 @@ function renderWeights() {
   const facs = Object.entries(Scoring.FACTORS).filter(([k]) => av[k]);
   Object.entries(Scoring.FACTORS).filter(([k]) => !av[k]).forEach(([, [l]]) => hidden.push(l.toLowerCase()));
   if (facs.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit &amp; site</span></span>${facs.map(([k, [label]]) => meter('factor', k, label, FACTOR_HELP[k])).join('')}</div>`;
-  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span></span>${av.facilities.map(f => meter('facility', f, f, FACILITY_HELP)).join('')}</div>`;
+  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span></span>${av.facilities.map(f => meter('facility', f, f, facilityHelp(f))).join('')}</div>`;
   else if (scope.length) hidden.push('facilities');
   $('#weights').innerHTML = h;
   $('#hidden-factors').textContent = hidden.length && scope.length ? `Not in your selection, so hidden: ${hidden.join(' · ')}.` : '';
@@ -309,7 +311,7 @@ async function saveRanking() {
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
-      project_type: state.project.project_type, queue_number: String(survey.queue_number || '').slice(0, 12), flat_types: f.flatTypes, blocks: f.blocks,
+      project_type: state.project.project_type, flat_types: f.flatTypes, blocks: f.blocks,
       min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
       survey: { ...Object.fromEntries(SURVEY_KEYS.map(k => [k, survey[k]])), consent: true, consented_at: survey.consented_at },
       ranking: state.ranked.map(u => u.id),
@@ -328,7 +330,6 @@ function openSurvey() {
   const prev = lsGet(SURVEY_KEY, null) || {};
   const form = $('#survey-form');
   for (const k of SURVEY_KEYS) $$(`#survey-form input[name=${k}]`).forEach(i => { i.checked = Array.isArray(prev[k]) ? prev[k].includes(i.value) : i.value === prev[k]; });
-  form.queue_number.value = prev.queue_number || '';
   $('#survey-err').textContent = '';
   m.hidden = false;
   document.body.classList.add('drawer-open');
@@ -353,7 +354,7 @@ on('#survey-form', 'submit', e => {
   for (const k of SURVEY_KEYS) ans[k] = k === 'household' ? fd.getAll(k) : fd.get(k);
   if (SURVEY_KEYS.some(k => k === 'household' ? !ans[k].length : !ans[k])) { $('#survey-err').textContent = 'Please answer every question.'; return; }
   lsSet(SURVEY_KEY, { v: SURVEY_VERSION, ...ans,
-    queue_number: String(fd.get('queue_number') || '').trim().slice(0, 12), consent: true, consented_at: new Date().toISOString() });
+    consent: true, consented_at: new Date().toISOString() });
   closeSurvey();
   runRank();
 });
@@ -529,7 +530,6 @@ async function loadAnalysis() {
     const [, block, storey, unit] = f.unit_id.split('-');
     return `<li><span>${String(i + 1).padStart(2, '0')}</span><span>Blk ${esc(block)} #${esc(storey)}-${esc(unit)}</span><span>${f.count}×</span></li>`;
   }).join('') : '<li><span></span><span class="muted">No flags yet</span><span></span></li>';
-  $('#s-queue').innerHTML = a.queue.count ? `<span><b>${a.queue.median}</b>median queue no. (${a.queue.count} users)</span>` : '';
 }
 on('#a-group', 'change', loadAnalysis);
 on('#a-value', 'change', loadAnalysis);

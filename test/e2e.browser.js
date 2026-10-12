@@ -59,7 +59,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.click('#survey-ok');
     check((await p.isVisible('#survey')) && (await p.textContent('#survey-err')) === 'Please answer every question.', 'one missing answer shows the error and keeps the survey open');
     await surveyAnswer();
-    await p.fill('#survey-form [name=queue_number]', '1234');
+    check(!(await p.$('#survey-form [name=queue_number]')), 'survey has no queue number box');
     await p.click('#survey-ok');
     await p.waitForSelector('#survey', { state: 'hidden' });
     await p.waitForSelector('#results tbody .rk');
@@ -73,7 +73,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     const tagText = await p.$$eval('#results .tags .tag', t => [...new Set(t.map(x => x.textContent.replace(/\d+/, 'N')))]);
     check(tagText.every(t => ['corner', 'corridor', 'near MRT', 'chute within N m'].includes(t)), `only corner/corridor, MRT and chute tags (${tagText.join(', ')})`);
     const saved = await p.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('fs:submissions/')).map(k => JSON.parse(localStorage.getItem(k))));
-    check(saved.length === 1 && saved[0].survey.consent && saved[0].queue_number === '1234' && saved[0].ranking.length > 50, `ranking saved with survey and every unit (${saved[0]?.ranking.length})`);
+    check(saved.length === 1 && saved[0].survey.consent && saved[0].queue_number === undefined && saved[0].survey.queue_number === undefined && saved[0].ranking.length > 50, `ranking saved with survey and every unit (${saved[0]?.ranking.length})`);
 
     await p.selectOption('#project', 'berlayar-rise-7');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
@@ -101,6 +101,16 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(true, '2-Room Flexi covers Type 1 and Type 2 (816 units)');
     const fac = await p.$$eval('#weights .meter-group', g => g.filter(x => /Facilities nearby/.test(x.textContent)).map(x => x.querySelectorAll('.meter').length));
     check(fac.length === 1 && fac[0] > 1, `one meter per facility type (${fac[0]})`);
+    await p.selectOption('#project', 'sembawang-brook-6');
+    await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
+    const brookMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
+    check(brookMeters.includes('Future amenities/facilities') && brookMeters.includes('Mini-mart'), 'Sembawang Brook shows Future amenities/facilities and Mini-mart meters (from the brochure)');
+    await p.click('#btn-rank');
+    await p.waitForSelector('#results tbody .rk');
+    check((await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''))).includes('Future amenities/facilities'), 'Future amenities/facilities has a tick column');
+    await p.selectOption('#project', 'berlayar-rise-7');
+    await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
+    await p.click('#f-types label:has-text("2-Room Flexi")');
     await p.click('[data-blocks=none]');
     await p.click('#f-blocks label:has-text("200B")');
     const meters = await p.$$eval('#weights .meter label', m => m.map(x => x.textContent));

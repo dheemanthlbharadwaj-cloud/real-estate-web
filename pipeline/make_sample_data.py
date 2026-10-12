@@ -23,6 +23,10 @@ COMPASS = ["NE", "SE", "SW", "NW"]  # facings are only ever these four quadrants
 FACILITIES = ["Children's playground", "Adult fitness station", "Elderly fitness station", "Hardcourt",
               "Precinct pavilion", "Drop-off porch", "Community space", "Preschool", "Residents' network centre",
               "Eating house", "Shops", "Supermarket", "Green roof"]
+# Random placeholders only come from FACILITIES_RANDOM. "Mini-mart" and "Future amenities/facilities" are
+# never random: they only appear where the HDB brochure shows them (pipeline/raw/facilities_1st_storey.json).
+FACILITIES_RANDOM = list(FACILITIES)
+FACILITIES = FACILITIES_RANDOM + ["Mini-mart", "Future amenities/facilities"]
 
 # key, name, town, type, code, {block: storeys}, flat types for sample stacks, nearest MRT
 PROJECTS = [
@@ -62,10 +66,34 @@ def stack_attrs(rng, block_idx, i, n_stacks):
         "neighbour_m": round(rng.uniform(18, 90), 1),
         "opposite_m": round(rng.uniform(15, 120), 1),
         "mrt_m": round(rng.uniform(150, 900)),
-        "facilities_has": rng.sample(FACILITIES, rng.choice([0, 0, 1, 2])),
-        "facilities_near": sorted(rng.sample(FACILITIES, rng.choice([0, 1, 2, 3, 4]))),
+        "facilities_has": rng.sample(FACILITIES_RANDOM, rng.choice([0, 0, 1, 2])),
+        "facilities_near": sorted(rng.sample(FACILITIES_RANDOM, rng.choice([0, 1, 2, 3, 4]))),
         "roof_floors": [2] if rng.random() < 0.25 else [],
     }
+
+
+def load_real_facilities():
+    """Facilities at the 1st storey (void deck) read off the HDB brochures, per project key."""
+    path = ROOT / "pipeline" / "raw" / "facilities_1st_storey.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+REAL_FAC = load_real_facilities()
+
+
+def overlay_real_facilities(a, key, block):
+    """Add the brochure facilities on top of the random draw (so the RNG sequence is unchanged).
+    Listed in this block -> has. Listed in another block of the project, or project level (block null,
+    e.g. a standalone MSCP block or an unplaced legend entry) -> near (a precinct is small)."""
+    entries = REAL_FAC.get(key) or []
+    if not entries:
+        return a
+    a = dict(a)
+    has = {e["facility"] for e in entries if e["block"] == block}
+    near = {e["facility"] for e in entries if e["block"] != block} - has
+    a["facilities_has"] = sorted(set(a["facilities_has"]) | has)
+    a["facilities_near"] = sorted((set(a["facilities_near"]) | near) - has)
+    return a
 
 
 def make_unit(code, name, key, town, ptype, block, storey, unit, flat_type, a, mrt_name, real_list):
@@ -104,6 +132,7 @@ def main():
                 entries.sort(key=lambda e: e["unit"])
                 for i, e in enumerate(entries):
                     a = stack_attrs(rng, bi, i, len(entries))
+                    a = overlay_real_facilities(a, key, block)
                     lo, hi = BERLAYAR_MRT_M.get(block, (150, 300))
                     a["mrt_m"] = round(rng.uniform(lo, hi))
                     for s in e["storeys"]:
@@ -115,6 +144,7 @@ def main():
                 for i in range(n_stacks):
                     unit = str(100 + bi * 20 + i * 2 + 1)
                     a = stack_attrs(rng, bi, i, n_stacks)
+                    a = overlay_real_facilities(a, key, block)
                     t = types[stack_no % len(types)]
                     stack_no += 1
                     for s in range(2, top + 1):

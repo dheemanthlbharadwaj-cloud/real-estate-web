@@ -27,7 +27,7 @@ async function loadAll() {
   const subs = subSnap.docs.map(d => d.data());
   const real = subs.map(s => ({
     user_id: s.uid, surveyed: !!(s.survey && s.survey.consent), survey: s.survey || null, is_sample: false, project: s.project, project_type: s.project_type,
-    queue_number: s.queue_number || null, flat_types: s.flat_types || [], blocks: s.blocks || [],
+    flat_types: s.flat_types || [], blocks: s.blocks || [],
     min_storey: s.min_storey ?? null, max_storey: s.max_storey ?? null, floor_pref: s.floor_pref || 'none',
     weights: s.weights || {},
   }));

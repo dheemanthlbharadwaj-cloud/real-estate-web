@@ -26,6 +26,9 @@ LIFT_NEAR_M = 15
 CHUTE_NEAR_M = 10
 MRT_NEAR_M = 400
 FACILITY_NEAR_M = 50
+# 1st-storey (void deck) facilities read off the brochures, incl. future ones: {project_key: [{block, facility, ...}]}
+FAC_1ST = RAW / "facilities_1st_storey.json"
+FAC_1ST_DATA = json.loads(FAC_1ST.read_text()) if FAC_1ST.exists() else {}
 CLEARANCE_M = 30
 
 PROJECTS = [
@@ -115,6 +118,14 @@ def build_project(key, name, town, ptype, code, errors):
         has = [f["name"] for f in site["facilities"] if f.get("located_in_block") and norm_block(f["located_in_block"]) == block]
         near = sorted({f["name"] for f in site["facilities"]
                        if not f.get("located_in_block") and dist_m(sp, f) <= FACILITY_NEAR_M})
+        # Merge brochure void-deck facilities: this block -> has; other blocks or project level (block null) -> near.
+        for f in FAC_1ST_DATA.get(key, []):
+            if f["block"] and norm_block(f["block"]) == block:
+                if f["facility"] not in has:
+                    has.append(f["facility"])
+            elif f["facility"] not in near:
+                near.append(f["facility"])
+        near = sorted(n for n in near if n not in has)
         if on_site_mrt:
             m = min(on_site_mrt, key=lambda m: dist_m(sp, m))
             mrt_name, mrt_m, mrt_est = m["name"], dist_m(sp, m), False

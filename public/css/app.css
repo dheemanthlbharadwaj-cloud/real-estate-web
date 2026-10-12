@@ -221,8 +221,6 @@ body.drawer-open { overflow: hidden; }
 .modal-panel p { margin: 0; }
 .modal-panel fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
 .modal-panel legend { font: 600 14px/1.3 var(--sans); color: var(--text); padding: 0; margin-bottom: 8px; }
-.survey-queue { display: grid; gap: 8px; font: 600 14px/1.3 var(--sans); }
-.survey-queue input { max-width: 200px; font-weight: 400; }
 .consent { color: var(--text-2); background: var(--bg-2); border-radius: 8px; padding: 10px 12px; }
 .modal-btns { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .who { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
