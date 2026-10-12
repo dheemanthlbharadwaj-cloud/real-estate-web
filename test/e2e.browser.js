@@ -16,7 +16,9 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
   const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
   const errors = [];
   try {
+    const stubFirebase = c => c.route(/gstatic\.com\/firebasejs\/.*\/firebase-app\.js$/, r => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', 'firebase-app.js'), 'utf8') }));
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    await stubFirebase(ctx);
     await ctx.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; }); // the 5 s Rank pop-up stays real; the 15 s video is shortened
     const p = await ctx.newPage();
     p.on('pageerror', e => errors.push(e.message));
@@ -155,6 +157,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(!(await an.$('.ad-panel')), 'unlock is remembered for the browser session');
     await an.close();
     const fresh = await browser.newContext();
+    await stubFirebase(fresh);
     const g = await fresh.newPage();
     await g.goto(`${base}/analytics?project=sembawang-brook-6`);
     await g.waitForSelector('.ad-panel');
@@ -207,6 +210,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     }
 
     const noSheet = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+    await stubFirebase(noSheet);
     await noSheet.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 1 }; });
     await noSheet.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { SHEETS_URL: '' };" }));
     const ns = await noSheet.newPage();
@@ -250,6 +254,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
 
     // Phone (390 px): header tabs, ad pop-up, Analytics gate and page, none of them scroll sideways.
     const pc = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await stubFirebase(pc);
     await pc.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; });
     const ph = await pc.newPage();
     const over = () => ph.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
