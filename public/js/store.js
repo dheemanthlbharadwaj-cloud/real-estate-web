@@ -43,7 +43,20 @@ export function saveShortlist(project, ids) {
 window.addEventListener('pagehide', flushShortlist);
 
 // Resolves with the Analytics JSON, or null when the sheet is not connected or cannot be reached.
+const loadScript = src => new Promise((ok, bad) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = bad; document.head.append(s); });
+// Before launch: the same maths the Sheet runs (analytics-core.js is a copy of apps-script/Analytics.js), over the sample rankings.
+async function sampleAnalytics(project) {
+  if (typeof analyse !== 'function') await loadScript('/js/analytics-core.js');
+  const [sample, index] = await Promise.all([fetch('/data/sample_submissions.json').then(r => r.json()), fetch('/data/units/index.json').then(r => r.json())]);
+  const p = index.projects.find(x => x.key === project);
+  const subs = sample.submissions.filter(s => s.project === project);
+  return { ok: true, ...analyse(subs, { [project]: { maxStorey: p ? p.max_storey : 0 } }, 'project', project) };
+}
+
 export async function getAnalytics(project) {
+  if ((window.MYBTO_CONFIG || {}).ANALYTICS_SOURCE === 'sample') {
+    try { return await sampleAnalytics(project); } catch (err) { console.warn('sample analytics not available:', err.message); return null; }
+  }
   if (!url()) return null;
   try {
     const r = await fetch(`${url()}${url().includes('?') ? '&' : '?'}action=analytics&project=${encodeURIComponent(project)}`);

@@ -29,6 +29,10 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - Score = sum of importance x feature (0..1). Factors in `public/js/scoring.js`: block, sun, design (2-Room Flexi Type 1/2), clearance (>30 m from nearest visible unit), corner, roof, chute (label "10 m away from rubbish chute"), mrt (label "Within 100 m from MRT"; `MRT_NEAR_M = 100` in both pipelines), mscp (label "Within 100 m from a multi-storey car park", `mscp_near`, `MSCP_NEAR_M = 100` in both pipelines and `Scoring`), wind_facing (label "Faces the prevailing wind (SE to E)": 1 for NE or SE facing, because both catch east wind; Singapore's wind is from SE to E, bearing 90 to 135), wind_open (label "Not blocked from the wind", unit field `wind_open`: no other block within 30 m on the SE to E side), facilities (has = 1, near = 0.5; one meter per facility, see Facilities below), floor (fixed weight 5). A meter shows only when some unit in scope has that feature.
 - localStorage keys: `project`, `flags:<project>` (shortlist), `mybto:flagcount`, `mybto:uid` (anonymous random user id, starts with `u`), `mybto:last:<project>` (last filters and weights, restored on return; also drives the rank shown on the shortlist page). Always wrapped in try/catch.
 
+## Pre-launch: Analytics shows SAMPLE data (until the user says "go live")
+- `public/js/config.js` has `ANALYTICS_SOURCE: 'sample'`. The Analytics page then builds its numbers in the browser from `public/data/sample_submissions.json` (420 made-up rankings) with `public/js/analytics-core.js`, a generated copy of `apps-script/Analytics.js` written by `python3 pipeline/build_pages.py` (never edit the copy). It never calls the Sheet for analytics. Rankings and shortlists are still saved to the Sheet.
+- Going live (only when the user says so): set `ANALYTICS_SOURCE: 'sheet'` in `public/js/config.js`, run the tests, commit, deploy. Analytics then reads the Sheet (`?action=analytics`), which counts only real rankings because the Sheet's Sample tab is empty.
+
 ## File map
 | Path | Purpose |
 |---|---|
@@ -50,6 +54,7 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 | `pipeline/raw/mscp_distance.json` | Hand estimates (from the 7 brochure site plans, scale bar) of metres from each block's centre to the nearest edge of its project's multi-storey car park: `{project: {block: m}}` plus `_method`, `_confidence`, `_edge_to_edge`, `_geometry` (pixel positions used). Keys starting `_` are not projects. Read by both pipelines (`mscp_m`, `mscp_near`, `mscp_estimated`) |
 | `pipeline/build_dataset.py` | Real-data build from `pipeline/raw/` extractions; also writes the Excel workbook |
 | `lib/make_sample_submissions.js` | `npm run sample` -> `public/data/sample_submissions.json` |
+| `public/js/analytics-core.js` | GENERATED copy of `apps-script/Analytics.js` for the pre-launch sample Analytics |
 | `firebase.json`, `.firebaserc` | Hosting config (static only, `target: site`) and project `mybto-ce84f` with hosting target `site` -> site `mybto` |
 | `dev.js` | Local server: serves `public/`, applies the `firebase.json` redirects, and with `DEV_FAKE_SHEETS=1` a fake Apps Script at `/fake-sheets` plus a `config.js` that points at it |
 | `test/scoring.test.js`, `test/e2e.browser.js` | Unit tests (scoring, Analytics.js), browser test against the fake sheet |

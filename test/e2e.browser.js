@@ -241,6 +241,22 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(nsErrors.length === 0, `and the console stays quiet${nsErrors.length ? `: ${nsErrors.join(' | ')}` : ''}`);
     await noSheet.close();
 
+    // Before launch (ANALYTICS_SOURCE 'sample'): Analytics is built in the browser from the sample rankings and never calls the Sheet.
+    const pre = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+    await stubFirebase(pre);
+    await pre.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 1 }; });
+    await pre.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { ANALYTICS_SOURCE: 'sample', SHEETS_URL: '/fake-sheets' };" }));
+    const pg = await pre.newPage();
+    const sheetCalls = [];
+    pg.on('request', r => { if (r.url().includes('/fake-sheets') && r.method() === 'GET') sheetCalls.push(r.url()); });
+    await pg.goto(`${base}/analytics?project=berlayar-rise-7`);
+    await pg.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await pg.click('[data-ad-go]');
+    await pg.waitForFunction(() => /Based on \d+ saved rankings/.test(document.querySelector('#a-basis').textContent));
+    const basis = await pg.textContent('#a-basis');
+    check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('#r-sun li', l => l.length)) === 4, `sample Analytics before launch (${basis.trim()})`);
+    await pre.close();
+
     const phone = await ctx.newPage();
     await phone.setViewportSize({ width: 390, height: 844 });
     await phone.goto(`${base}/archive/home`);
