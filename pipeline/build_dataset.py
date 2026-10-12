@@ -30,6 +30,14 @@ FACILITY_NEAR_M = 50
 FAC_1ST = RAW / "facilities_1st_storey.json"
 FAC_1ST_DATA = json.loads(FAC_1ST.read_text()) if FAC_1ST.exists() else {}
 CLEARANCE_M = 30
+MSCP_NEAR_M = 100
+# Wind: the prevailing wind comes from the south-east to east (bearing 90 to 135 degrees). A unit is "open" to the
+# wind when no stack of another block lies within WIND_OPEN_M on that side of it.
+WIND_OPEN_M = 30
+WIND_SECTOR_DEG = (90, 135)
+# Multi-storey car park distances, estimated by hand from the brochure site plans: {project: {block: metres}}
+MSCP_FILE = RAW / "mscp_distance.json"
+MSCP_DATA = json.loads(MSCP_FILE.read_text()) if MSCP_FILE.exists() else {}
 
 PROJECTS = [
     # key, name, town, type, short code
@@ -52,6 +60,8 @@ COLUMNS = [
     ("chute_m", "Rubbish chute distance (m)"), ("chute_near", "Rubbish chute within 10 m"),
     ("roof_access", "Access to roof"),
     ("neighbour_m", "Distance to nearest other block (m)"), ("gt30m", ">30 m from neighbouring blocks"),
+    ("wind_open", "Not blocked from the wind (SE to E, 30 m)"),
+    ("mscp_m", "Multi-storey car park distance (m, estimated)"), ("mscp_near", "Within 100 m from a multi-storey car park"),
     ("mrt_name", "Nearest MRT"), ("mrt_m", "MRT distance (m)"), ("mrt_near", "Within 100 m from MRT"), ("mrt_estimated", "MRT distance estimated"),
     ("fac_has_count", "Facilities in block (count)"), ("facilities_has", "Facilities in block"),
     ("fac_near_count", "Facilities nearby (count)"), ("facilities_near", "Facilities nearby (<=50 m)"),
@@ -91,6 +101,11 @@ def build_project(key, name, town, ptype, code, errors):
             errors.append(f"{key}: duplicate site stack {k}")
         pos[k] = s
 
+    def bearing_deg(a, b):
+        """Compass bearing from a to b on the site plan (plan up = north unless site['north_bearing_deg'] says otherwise)."""
+        north = site.get("north_bearing_deg", 0)
+        return (math.degrees(math.atan2(b["x"] - a["x"], -(b["y"] - a["y"]))) + north) % 360
+
     def dist_m(a, b):
         return math.hypot(a["x"] - b["x"], a["y"] - b["y"]) * mpp
 
@@ -126,6 +141,16 @@ def build_project(key, name, town, ptype, code, errors):
             elif f["facility"] not in near:
                 near.append(f["facility"])
         near = sorted(n for n in near if n not in has)
+        # Wind: explicit raw field wins; otherwise computed from the site plan stack positions. TODO: stack positions are
+        # points, not block footprints, so a long block that is close but whose centre-point is over 30 m away is missed.
+        # Replace with footprint polygons once the site extraction records them.
+        if "wind_open" in sp:
+            wind_open = bool(sp["wind_open"])
+        else:
+            wind_open = not any(
+                dist_m(sp, o) <= WIND_OPEN_M and WIND_SECTOR_DEG[0] <= bearing_deg(sp, o) <= WIND_SECTOR_DEG[1]
+                for o in others)
+        mscp_m = (MSCP_DATA.get(key) or {}).get(block)  # estimate, None when the project has no car park block measured
         if on_site_mrt:
             m = min(on_site_mrt, key=lambda m: dist_m(sp, m))
             mrt_name, mrt_m, mrt_est = m["name"], dist_m(sp, m), False
@@ -158,6 +183,8 @@ def build_project(key, name, town, ptype, code, errors):
                 "roof_access": st in f["roof_access_floors"],
                 "neighbour_m": round(neighbour, 1) if neighbour is not None else None,
                 "gt30m": neighbour is None or neighbour > CLEARANCE_M,
+                "wind_open": wind_open,
+                "mscp_m": mscp_m, "mscp_near": mscp_m is not None and mscp_m <= MSCP_NEAR_M, "mscp_estimated": mscp_m is not None,
                 "mrt_name": mrt_name, "mrt_m": round(mrt_m) if mrt_m is not None else None,
                 "mrt_near": mrt_m is not None and mrt_m <= MRT_NEAR_M, "mrt_estimated": mrt_est,
                 "fac_has_count": len(has), "facilities_has": has,
@@ -205,6 +232,8 @@ def write_excel(all_units, sites):
         "Access to roof: unit adjoins/overlooks a roof annotated on the floor plan (e.g. 'ROOF AT 2ND STOREY ONLY') on that storey.",
         f"> {CLEARANCE_M} m from neighbouring blocks: distance from the unit stack's centre to the nearest stack centre of any other block, measured on the site plan scale bar.",
         f"Facilities: 'in block' = facility located in/at/on the unit's own residential block; 'nearby' = facility not in any residential block whose site-plan marker is within {FACILITY_NEAR_M} m of the unit stack's centre.",
+        f"Wind: prevailing wind comes from the SE to E (bearing {WIND_SECTOR_DEG[0]} to {WIND_SECTOR_DEG[1]} degrees). 'Not blocked' = no stack of another block within {WIND_OPEN_M} m of the unit stack on that side, from site plan positions.",
+        f"Multi-storey car park: straight-line estimate in metres from the block centre to the nearest edge of the car park block, read off the site plan scale bar by eye (pipeline/raw/mscp_distance.json). Near <= {MSCP_NEAR_M} m.",
         f"MRT: straight-line distance from the stack centre to the station on the site plan (or from the site centre on the location plan when the station is off the site plan; flagged as estimated). Near <= {MRT_NEAR_M} m.",
     ]:
         ms.append([line])

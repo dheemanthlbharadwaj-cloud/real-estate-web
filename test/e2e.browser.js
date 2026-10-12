@@ -80,6 +80,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(true, 'changing project clears the ranking');
     check((await p.$$eval('#f-types input', i => i.map(x => x.type + ':' + x.value))).join() === 'radio:2-Room Flexi,radio:3-Room,radio:4-Room', 'one housing type at a time, 2-Room Flexi as one choice');
     check((await p.textContent('#analysis-name')) === 'Berlayar Rise', 'Analysis button names the project');
+    check((await p.inputValue('#f-pref input:checked')) === 'higher', 'Prioritise floors defaults to Higher after choosing a project');
+    await p.click('#f-pref label:has-text("No preference")');
     await p.click('#btn-rank');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('988'));
     check(await p.isHidden('#survey'), 'survey only asked once per browser');
@@ -103,6 +105,10 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(fac.length === 1 && fac[0] > 1, `one meter per facility type (${fac[0]})`);
     await p.selectOption('#project', 'sembawang-brook-6');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
+    check((await p.inputValue('#f-pref input:checked')) === 'higher', 'Higher is the default again for each project');
+    const newMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
+    check(['Faces the prevailing wind (SE to E)', 'Not blocked from the wind', 'Within 100 m from a multi-storey car park'].every(l => newMeters.includes(l)),
+      'wind and multi-storey car park meters appear for a project that has them (Sembawang Brook)');
     const brookMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
     check(brookMeters.includes('Future amenities/facilities') && brookMeters.includes('Mini-mart'), 'Sembawang Brook shows Future amenities/facilities and Mini-mart meters (from the brochure)');
     await p.click('#btn-rank');
@@ -187,12 +193,12 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#weights .help');
     await p.click('#weights .help >> nth=0');
     await p.waitForSelector('#legend-drawer.open #legend .lg');
-    check((await p.$$eval('#legend .lg', c => c.length)) === 9, 'legend drawer opens with all 9 factors');
-    check((await p.$$eval('#legend img', i => i.length)) === 9, 'legend has one picture per factor');
+    check((await p.$$eval('#legend .lg', c => c.length)) === 12, 'legend drawer opens with all 12 factors');
+    check((await p.$$eval('#legend img', i => i.length)) === 12, 'legend has one picture per factor');
     await p.click('.drawer-head [data-close-legend]');
     await p.waitForSelector('#legend-drawer', { state: 'hidden' });
     check(true, 'legend drawer closes');
-    for (const path of ['/rank?legend=mrt']) {
+    for (const path of ['/rank?legend=mrt', '/rank?legend=mscp', '/rank?legend=wind_open']) {
       await p.goto(`${base}${path}`);
       await p.waitForSelector('#legend-drawer.open');
       check(true, 'legend deep link opens the drawer');

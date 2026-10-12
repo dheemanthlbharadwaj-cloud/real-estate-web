@@ -12,6 +12,9 @@ const FACTOR_HELP = {
   roof: 'On the same floor as an accessible roof.',
   chute: 'The front door is more than 10 m from the nearest refuse chute.',
   mrt: 'Block within 100 m of an MRT station.',
+  mscp: 'Block within 100 m of a multi-storey car park (estimated from the brochure site plan).',
+  wind_facing: 'The unit faces NE or SE. Singapore’s prevailing wind comes from the south-east to east, and a NE or SE window both catch wind from the east side.',
+  wind_open: 'No other block stands within 30 m of the unit on its SE to E side, so the wind is not blocked.',
 };
 const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
 const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has set aside for things like preschools, eldercare or a residents’ network centre.';
@@ -110,7 +113,7 @@ async function loadProject(key) {
   const opt = Array.from({ length: hi - lo + 1 }, (_, i) => `<option value="${lo + i}">${String(lo + i).padStart(2, '0')}</option>`).join('');
   $('#f-min').innerHTML = opt; $('#f-max').innerHTML = opt;
   $('#f-min').value = lo; $('#f-max').value = hi;
-  $('#f-pref input[value=none]').checked = true;
+  $('#f-pref input[value=higher]').checked = true;
   state.weights = {};
   $('#analysis-name').textContent = p.name;
   $('#btn-analysis').href = `/analysis?project=${encodeURIComponent(key)}`;

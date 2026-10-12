@@ -13,6 +13,11 @@
   const FLOOR_PREF_WEIGHT = 5;
   const CHUTE_FAR_M = 10;
   const chuteFar = u => u.chute_m != null && u.chute_m > CHUTE_FAR_M;
+  // The prevailing wind comes from the south-east to east (bearing 90 to 135 degrees). Facings are only
+  // NE, SE, SW or NW, and a NE or SE window both catch wind from the east side, so both count.
+  const WIND_FACINGS = ['NE', 'SE'];
+  const windFacing = u => WIND_FACINGS.includes(u.facing);
+  const MSCP_NEAR_M = 100;
 
   // Single-meter factors: key -> [label, feature(unit, ctx) in 0..1]. Facilities get one meter
   // per facility type (weights.facility), scored separately in facilityScore.
@@ -22,6 +27,9 @@
     roof: ['Access to roof', u => (u.roof_access ? 1 : 0)],
     chute: ['10 m away from rubbish chute', u => (chuteFar(u) ? 1 : 0)],
     mrt: ['Within 100 m from MRT', u => (u.mrt_near ? 1 : 0)],
+    mscp: ['Within 100 m from a multi-storey car park', u => (u.mscp_near ? 1 : 0)],
+    wind_facing: ['Faces the prevailing wind (SE to E)', u => (windFacing(u) ? 1 : 0)],
+    wind_open: ['Not blocked from the wind', u => (u.wind_open ? 1 : 0)],
   };
 
   function norm(v, lo, hi) {
@@ -115,10 +123,13 @@
       roof: has(u => u.roof_access),
       chute: has(chuteFar),
       mrt: has(u => u.mrt_near),
+      mscp: has(u => u.mscp_near),
+      wind_facing: has(windFacing),
+      wind_open: has(u => u.wind_open),
       facilities: [...new Set(units.flatMap(u => [...(u.facilities_has || []), ...(u.facilities_near || [])]))].sort(),
     };
   }
 
-  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, CHUTE_FAR_M, context, floorFeature,
+  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, CHUTE_FAR_M, MSCP_NEAR_M, WIND_FACINGS, context, floorFeature,
     facilityFeature, filterUnits, scoreUnit, rank, floorGroups };
 });

@@ -20,6 +20,10 @@ that computes the aggregate analysis with the Firebase Admin SDK.
   and all units of the other six projects, are placeholders.
 - Facilities at the 1st storey (void deck), including future amenities/facilities, are real for all seven projects
   (`pipeline/raw/facilities_1st_storey.json`, read off the HDB brochures); other facility values are placeholders.
+- Multi-storey car park distance (`mscp_m`, `mscp_near` = within 100 m) uses the real car park blocks and block numbers from the
+  brochure site plans, but the distances are by-eye estimates (about 10 m, 20 m for Sembawang Brook), in
+  `pipeline/raw/mscp_distance.json` (with the pixel positions used). `wind_open` (no block within 30 m on the SE to E side) is a
+  placeholder correlated with facing in the sample data; `build_dataset.py` computes it from site-plan stack positions.
 - `lib/sample_submissions.json` (420 sample users, `npm run sample`) is mixed into Analysis so the charts have
   something to show. Turn off with `SAMPLE_ANALYSIS=0` in Vercel.
 - The real-data pipeline (`pipeline/build_dataset.py`) builds the same JSON plus the Excel workbook
@@ -34,7 +38,8 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
 - **Rank**: project, one housing type, blocks, storey range and floor priority (higher / lower / none).
   Facings are only NE, SE, SW or NW. Equal scores share a rank and the next score gets the next number; minus
   scores are shaded below a red line. Importance −5…+5 per selected block,
-  sun direction, 2-Room Flexi design and the other factors. Only factors that exist in the selected blocks are shown.
+  sun direction, 2-Room Flexi design and the other factors (including faces the prevailing wind SE to E, not blocked
+  from the wind, and within 100 m of a multi-storey car park). Floor priority defaults to Higher. Only factors that exist in the selected blocks are shown.
 - **Survey**: the first press of Rank units (once per browser) opens a consent note and ten questions (age,
   who you will live with, application status, current home, BTO tries so far, work or study area, car, plans for
   children, household income, queue position; each has "Prefer not to say") (there is no queue number box). Every ranking after that is saved
