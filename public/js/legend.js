@@ -20,7 +20,7 @@ window.LEGEND = [
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan).",
   },
   {
-    key: "chute", title: "More than 10 m from the nearest rubbish chute",
+    key: "chute", title: "10 m away from rubbish chute",
     img: "lg-chute.webp", alt: "Block 200A floor plan with the refuse chute ringed and a near and a far unit marked",
     text: "This is whether the unit’s front door is more than 10 m from the nearest refuse chute, measured in a straight line.",
     rule: "Source: berlayar-rise-7.pdf, page 17 (Block 200A floor plan), measured with its scale bar.",
@@ -38,7 +38,7 @@ window.LEGEND = [
     rule: "Source: berlayar-rise-7.pdf, page 31 (Block 204B floor plan).",
   },
   {
-    key: "mrt", title: "Near MRT",
+    key: "mrt", title: "Within 100 m from MRT",
     img: "lg-mrt.webp", alt: "Berlayar Rise site plan with a 100 m circle around Telok Blangah MRT station",
     text: "This is how far the unit’s block is from the nearest MRT station in a straight 100 m line.",
     rule: "Source: berlayar-rise-7.pdf, page 12 (site plan), measured with its scale bar.",

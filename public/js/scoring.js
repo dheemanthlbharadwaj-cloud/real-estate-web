@@ -20,8 +20,8 @@
     clearance: ['More than 30 m from the nearest visible unit', u => (u.gt30m ? 1 : 0)],
     corner: ['Corner unit', u => (u.position === 'Corner' ? 1 : 0)],
     roof: ['Access to roof', u => (u.roof_access ? 1 : 0)],
-    chute: ['More than 10 m from the nearest rubbish chute', u => (chuteFar(u) ? 1 : 0)],
-    mrt: ['Near MRT', u => (u.mrt_near ? 1 : 0)],
+    chute: ['10 m away from rubbish chute', u => (chuteFar(u) ? 1 : 0)],
+    mrt: ['Within 100 m from MRT', u => (u.mrt_near ? 1 : 0)],
   };
 
   function norm(v, lo, hi) {

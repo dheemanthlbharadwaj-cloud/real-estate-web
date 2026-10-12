@@ -25,7 +25,7 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - Ranks are dense: equal scores share a rank and the next score gets the next number (1, 1, 2). Ties break by higher storey then id. Rows with score below 0 are shaded below a red line.
 - Facings are only NE, SE, SW, NW. Sun direction means where the living room windows face.
 - Chute factor: unit is **more than 10 m** from the nearest refuse chute (`CHUTE_FAR_M = 10`, `chute_m > 10`).
-- Score = sum of importance x feature (0..1). Factors in `public/js/scoring.js`: block, sun, design (2-Room Flexi Type 1/2), clearance (>30 m from nearest visible unit), corner, roof, chute, mrt (<100 m), facilities (has = 1, near = 0.5; one meter per facility, see Facilities below), floor (fixed weight 5). A meter shows only when some unit in scope has that feature.
+- Score = sum of importance x feature (0..1). Factors in `public/js/scoring.js`: block, sun, design (2-Room Flexi Type 1/2), clearance (>30 m from nearest visible unit), corner, roof, chute (label "10 m away from rubbish chute"), mrt (label "Within 100 m from MRT"; `MRT_NEAR_M = 100` in both pipelines), facilities (has = 1, near = 0.5; one meter per facility, see Facilities below), floor (fixed weight 5). A meter shows only when some unit in scope has that feature.
 - Other localStorage key: `mybto:flagcount`. Always wrapped in try/catch.
 
 ## File map

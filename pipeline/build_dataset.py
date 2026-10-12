@@ -24,7 +24,7 @@ OUT_UNITS = ROOT / "public" / "data" / "units"
 # Thresholds (metres). Change here and rebuild.
 LIFT_NEAR_M = 15
 CHUTE_NEAR_M = 10
-MRT_NEAR_M = 400
+MRT_NEAR_M = 100
 FACILITY_NEAR_M = 50
 # 1st-storey (void deck) facilities read off the brochures, incl. future ones: {project_key: [{block, facility, ...}]}
 FAC_1ST = RAW / "facilities_1st_storey.json"
@@ -49,10 +49,10 @@ COLUMNS = [
     ("facing", "Sun direction (NE, SE, SW or NW)"), ("facing_bearing", "Facing bearing (deg)"),
     ("position", "Corridor / Corner"),
     ("lift_m", "Lift distance (m)"), ("lift_near", "Near lift (<=15 m)"),
-    ("chute_m", "Rubbish chute distance (m)"), ("chute_near", "Near rubbish chute (<=10 m)"),
+    ("chute_m", "Rubbish chute distance (m)"), ("chute_near", "Rubbish chute within 10 m"),
     ("roof_access", "Access to roof"),
     ("neighbour_m", "Distance to nearest other block (m)"), ("gt30m", ">30 m from neighbouring blocks"),
-    ("mrt_name", "Nearest MRT"), ("mrt_m", "MRT distance (m)"), ("mrt_near", "Near MRT (<=400 m)"), ("mrt_estimated", "MRT distance estimated"),
+    ("mrt_name", "Nearest MRT"), ("mrt_m", "MRT distance (m)"), ("mrt_near", "Within 100 m from MRT"), ("mrt_estimated", "MRT distance estimated"),
     ("fac_has_count", "Facilities in block (count)"), ("facilities_has", "Facilities in block"),
     ("fac_near_count", "Facilities nearby (count)"), ("facilities_near", "Facilities nearby (<=50 m)"),
     ("source", "Source pages"),
