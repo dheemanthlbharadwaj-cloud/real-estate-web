@@ -1,22 +1,13 @@
-// Shared site chrome for every page: header, footer and mobile menu.
+// Shared site chrome for every page: header and footer.
 (function () {
-  const page = document.body.dataset.page || 'home';
-  // Shortlist and Analysis are opened from the buttons above a ranking, so they're not in the menu.
-  const NAV = [['/', 'Rank units', 'rank']];
   const logo = '<em>My</em>BTO';
 
   const header = document.createElement('header');
   header.className = 'site-header';
   header.innerHTML = `<div class="wrap bar">
       <a class="logo" href="/" aria-label="MyBTO home">${logo}</a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
-      <nav class="nav" id="site-nav" aria-label="Main">
-        ${NAV.map(([href, label, key]) => `<a href="${href}"${key === page ? ' class="active" aria-current="page"' : ''}>${label}</a>`).join('')}
-      </nav>
     </div>`;
   document.body.prepend(header);
-  const btn = header.querySelector('.menu-btn'), nav = header.querySelector('.nav');
-  btn.addEventListener('click', () => { const open = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', open); btn.textContent = open ? 'Close' : 'Menu'; });
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';

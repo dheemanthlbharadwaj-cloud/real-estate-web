@@ -37,7 +37,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('#floor-groups .fg-card.blank', c => c.length)) === 3, 'highest, middlemost and lowest are blank before ranking');
     check(await p.isHidden('#after-rank'), 'Shortlisted and Analysis buttons hidden before ranking');
     check(!(await p.$('#btn-csv')) && !(await p.$('#btn-save')) && !(await p.$('#queue')), 'no CSV, Save list or queue box on the page');
-    check(!(await p.$('.nav a[href="/shortlist"]')) && !(await p.$('.nav a[href="/analysis"]')), 'Shortlist and Analysis not in the menu');
+    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header has no nav and no menu button');
 
     await p.click('#btn-rank');
     await p.waitForSelector('#survey:not([hidden])');
@@ -172,8 +172,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/`);
     await p.waitForSelector('#floor-groups .fg-card');
     check(true, 'the first page is the ranking page');
-    check(!(await p.$('.nav a[href="/#projects"]')), 'no Projects link in the menu');
-    check(!(await p.$('.nav a[href="/account"], .site-footer a[href="/account"]')), 'no account link in the menu or footer');
+    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header still has no nav and no menu button');
+    check(!(await p.$('.site-footer a[href="/account"]')), 'no account link in the footer');
     await p.goto(`${base}/archive/home`);
     check((await p.title()).startsWith('MyBTO'), 'archived home page is titled MyBTO');
     await p.waitForSelector('#project-grid .pcard');
