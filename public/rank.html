@@ -78,32 +78,90 @@
     </div></section>
     <div id="survey" class="modal" hidden>
       <div class="modal-scrim"></div>
-      <form id="survey-form" class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="survey-title">
+      <form id="survey-form" class="modal-panel" novalidate role="dialog" aria-modal="true" aria-labelledby="survey-title">
         <h2 class="h3" id="survey-title">Before we show your ranking</h2>
-        <p class="small muted">Four quick questions so the Analysis page can show what buyers like you want. We don’t ask for your name, and you only do this once.</p>
+        <p class="small muted">A few quick questions so the Analysis page can show what buyers like you want. We don’t ask for your name, and you only do this once.</p>
         <fieldset><legend>How old are you?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="age" value="under-25" required><span>Under 25</span></label>
+          <label class="chip"><input type="radio" name="age" value="21-24" required><span>21 to 24</span></label>
           <label class="chip"><input type="radio" name="age" value="25-29"><span>25 to 29</span></label>
           <label class="chip"><input type="radio" name="age" value="30-34"><span>30 to 34</span></label>
           <label class="chip"><input type="radio" name="age" value="35-39"><span>35 to 39</span></label>
-          <label class="chip"><input type="radio" name="age" value="40-plus"><span>40 and above</span></label>
+          <label class="chip"><input type="radio" name="age" value="40-44"><span>40 to 44</span></label>
+          <label class="chip"><input type="radio" name="age" value="45-49"><span>45 to 49</span></label>
+          <label class="chip"><input type="radio" name="age" value="50-54"><span>50 to 54</span></label>
+          <label class="chip"><input type="radio" name="age" value="55-plus"><span>55 and above</span></label>
+          <label class="chip"><input type="radio" name="age" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
-        <fieldset><legend>Who will you live with?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="household" value="alone" required><span>On my own</span></label>
-          <label class="chip"><input type="radio" name="household" value="partner"><span>My partner</span></label>
-          <label class="chip"><input type="radio" name="household" value="partner-kids"><span>My partner and kids</span></label>
-          <label class="chip"><input type="radio" name="household" value="parents"><span>Parents or grandparents too</span></label>
+        <fieldset><legend>Who will you live with in the new flat? (Select all that apply)</legend><div class="chips">
+          <label class="chip"><input type="checkbox" name="household" value="partner"><span>Partner or spouse</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="children"><span>Children</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="parents"><span>Parents</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="grandparents"><span>Grandparents</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="siblings"><span>Siblings</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="others"><span>Others</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="alone"><span>No one, I will live alone</span></label>
+          <label class="chip"><input type="checkbox" name="household" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
-        <fieldset><legend>Is this your first flat from HDB?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="timer" value="first" required><span>First-timer</span></label>
-          <label class="chip"><input type="radio" name="timer" value="second"><span>Second-timer</span></label>
-          <label class="chip"><input type="radio" name="timer" value="mixed"><span>One of each (as a couple)</span></label>
+        <fieldset><legend>What is your application status?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="application" value="single-first" required><span>Single applicant, first-timer</span></label>
+          <label class="chip"><input type="radio" name="application" value="single-second"><span>Single applicant, second-timer</span></label>
+          <label class="chip"><input type="radio" name="application" value="couple-first"><span>Couple, both first-timers</span></label>
+          <label class="chip"><input type="radio" name="application" value="couple-second"><span>Couple, both second-timers</span></label>
+          <label class="chip"><input type="radio" name="application" value="couple-mixed"><span>Couple, one first-timer and one second-timer</span></label>
+          <label class="chip"><input type="radio" name="application" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
         <fieldset><legend>Where do you live now?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="current_home" value="parents" required><span>With my parents</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="hdb-rental"><span>HDB rental flat</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="own-hdb"><span>My own HDB flat</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="private"><span>Private property</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="with-family" required><span>With family</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="rental"><span>Rental flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="owned"><span>Owned flat</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="others"><span>Others</span></label>
+          <label class="chip"><input type="radio" name="current_home" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>How many times have you applied for a BTO before?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="bto_attempts" value="never" required><span>Never</span></label>
+          <label class="chip"><input type="radio" name="bto_attempts" value="1-2"><span>1 to 2 times</span></label>
+          <label class="chip"><input type="radio" name="bto_attempts" value="3-5"><span>3 to 5 times</span></label>
+          <label class="chip"><input type="radio" name="bto_attempts" value="6-plus"><span>More than 5 times</span></label>
+          <label class="chip"><input type="radio" name="bto_attempts" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>Where do you mainly work or study?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="work_area" value="central" required><span>Central</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="north"><span>North</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="south"><span>South</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="east"><span>East</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="west"><span>West</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="varies"><span>Varies or works remotely</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="none"><span>Not working or studying</span></label>
+          <label class="chip"><input type="radio" name="work_area" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>Do you own or plan to own a car?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="car" value="yes" required><span>Yes</span></label>
+          <label class="chip"><input type="radio" name="car" value="no"><span>No</span></label>
+          <label class="chip"><input type="radio" name="car" value="undecided"><span>Undecided</span></label>
+          <label class="chip"><input type="radio" name="car" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>Do you plan to have children in the next 5 years?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="children_plan" value="yes" required><span>Yes</span></label>
+          <label class="chip"><input type="radio" name="children_plan" value="no"><span>No</span></label>
+          <label class="chip"><input type="radio" name="children_plan" value="already"><span>Already have children</span></label>
+          <label class="chip"><input type="radio" name="children_plan" value="unsure"><span>Unsure</span></label>
+          <label class="chip"><input type="radio" name="children_plan" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>What is your monthly household income?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="income" value="3000-below" required><span>$3,000 and below</span></label>
+          <label class="chip"><input type="radio" name="income" value="3001-4500"><span>$3,001 to $4,500</span></label>
+          <label class="chip"><input type="radio" name="income" value="4501-6000"><span>$4,501 to $6,000</span></label>
+          <label class="chip"><input type="radio" name="income" value="6001-7500"><span>$6,001 to $7,500</span></label>
+          <label class="chip"><input type="radio" name="income" value="7501-9000"><span>$7,501 to $9,000</span></label>
+          <label class="chip"><input type="radio" name="income" value="9000-above"><span>Above $9,000</span></label>
+          <label class="chip"><input type="radio" name="income" value="prefer-not"><span>Prefer not to say</span></label>
+        </div></fieldset>
+        <fieldset><legend>How would you rate your queue position (if you have one)?</legend><div class="chips">
+          <label class="chip"><input type="radio" name="queue_position" value="top-quarter" required><span>Top quarter of applicants</span></label>
+          <label class="chip"><input type="radio" name="queue_position" value="middle"><span>Middle</span></label>
+          <label class="chip"><input type="radio" name="queue_position" value="bottom-quarter"><span>Bottom quarter</span></label>
+          <label class="chip"><input type="radio" name="queue_position" value="none"><span>Don’t have one or don’t know</span></label>
+          <label class="chip"><input type="radio" name="queue_position" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
         <label class="survey-queue"><span>Your queue number, if you have one</span><input name="queue_number" type="text" inputmode="numeric" maxlength="12" placeholder="e.g. 1234"></label>
         <p class="consent small">By continuing, you agree that your answers and your ranking are saved without your name and used only for the combined results on the Analysis page.</p>

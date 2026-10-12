@@ -33,8 +33,9 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
   Facings are only NE, SE, SW or NW. Equal scores share a rank and the next score gets the next number; minus
   scores are shaded below a red line. Importance −5…+5 per selected block,
   sun direction, 2-Room Flexi design and the other factors. Only factors that exist in the selected blocks are shown.
-- **Survey**: the first press of Rank units (once per browser) opens a consent note and four questions (age,
-  household, first or second timer, current home) plus an optional queue number. Every ranking after that is saved
+- **Survey**: the first press of Rank units (once per browser) opens a consent note and ten questions (age,
+  who you will live with, application status, current home, BTO tries so far, work or study area, car, plans for
+  children, household income, queue position; each has "Prefer not to say") plus an optional queue number. Every ranking after that is saved
   automatically with the answers and the full order of all matching units; the page shows only the top 50.
 - **Shortlist**: ★ units into a separate list; reorder by drag or arrows. Synced to the account when signed in.
 - **Account**: optional, so a shortlist and rankings follow you across devices. No email verification.

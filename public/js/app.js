@@ -17,11 +17,21 @@ const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).'
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
 const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
 const SURVEY_KEY = 'mybto:survey';
+const SURVEY_VERSION = 2; // answers saved without v === 2 come from the old 4-question survey and are asked again
+const SURVEY_TITLES = { age: 'Age', household: 'Living with', application: 'Application status', current_home: 'Living now', bto_attempts: 'BTO tries so far',
+  work_area: 'Work or study area', car: 'Car', children_plan: 'Children in 5 years', income: 'Household income', queue_position: 'Queue position' };
+const SURVEY_KEYS = Object.keys(SURVEY_TITLES);
 const SURVEY_LABELS = {
-  age: { 'under-25': 'Under 25', '25-29': '25 to 29', '30-34': '30 to 34', '35-39': '35 to 39', '40-plus': '40 and above' },
-  household: { alone: 'On their own', partner: 'With a partner', 'partner-kids': 'With a partner and kids', parents: 'With parents or grandparents' },
-  timer: { first: 'First-timer', second: 'Second-timer', mixed: 'One of each' },
-  current_home: { parents: 'With parents', 'hdb-rental': 'HDB rental flat', 'own-hdb': 'Own HDB flat', private: 'Private property' },
+  age: { '21-24': '21 to 24', '25-29': '25 to 29', '30-34': '30 to 34', '35-39': '35 to 39', '40-44': '40 to 44', '45-49': '45 to 49', '50-54': '50 to 54', '55-plus': '55 and above', 'prefer-not': 'Prefer not to say' },
+  household: { partner: 'Partner or spouse', children: 'Children', parents: 'Parents', grandparents: 'Grandparents', siblings: 'Siblings', others: 'Others', alone: 'No one, I will live alone', 'prefer-not': 'Prefer not to say' },
+  application: { 'single-first': 'Single applicant, first-timer', 'single-second': 'Single applicant, second-timer', 'couple-first': 'Couple, both first-timers', 'couple-second': 'Couple, both second-timers', 'couple-mixed': 'Couple, one first-timer and one second-timer', 'prefer-not': 'Prefer not to say' },
+  current_home: { 'with-family': 'With family', rental: 'Rental flat', owned: 'Owned flat', others: 'Others', 'prefer-not': 'Prefer not to say' },
+  bto_attempts: { never: 'Never', '1-2': '1 to 2 times', '3-5': '3 to 5 times', '6-plus': 'More than 5 times', 'prefer-not': 'Prefer not to say' },
+  work_area: { central: 'Central', north: 'North', south: 'South', east: 'East', west: 'West', varies: 'Varies or works remotely', none: 'Not working or studying', 'prefer-not': 'Prefer not to say' },
+  car: { yes: 'Yes', no: 'No', undecided: 'Undecided', 'prefer-not': 'Prefer not to say' },
+  children_plan: { yes: 'Yes', no: 'No', already: 'Already have children', unsure: 'Unsure', 'prefer-not': 'Prefer not to say' },
+  income: { '3000-below': '$3,000 and below', '3001-4500': '$3,001 to $4,500', '4501-6000': '$4,501 to $6,000', '6001-7500': '$6,001 to $7,500', '7501-9000': '$7,501 to $9,000', '9000-above': 'Above $9,000', 'prefer-not': 'Prefer not to say' },
+  queue_position: { 'top-quarter': 'Top quarter of applicants', middle: 'Middle', 'bottom-quarter': 'Bottom quarter', none: 'Don’t have one or don’t know', 'prefer-not': 'Prefer not to say' },
 };
 
 const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, user: null, flags: [], charts: {}, weights: {} };
@@ -222,7 +232,7 @@ function showBlank() {
 }
 
 function onRankClick() {
-  if (lsGet(SURVEY_KEY, null)?.consent) runRank();
+  if (surveyDone()) runRank();
   else openSurvey();
 }
 
@@ -305,25 +315,29 @@ on('#results', 'click', e => {
 // Every ranking is saved (anonymously unless signed in) with the survey answers, so Analysis can use it.
 async function saveRanking() {
   const survey = lsGet(SURVEY_KEY, null);
-  if (!survey?.consent) return;
+  if (!surveyDone()) return;
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
       project_type: state.project.project_type, queue_number: String(survey.queue_number || '').slice(0, 12), flat_types: f.flatTypes, blocks: f.blocks,
       min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
-      survey: { age: survey.age, household: survey.household, timer: survey.timer, current_home: survey.current_home, consent: true, consented_at: survey.consented_at },
+      survey: { ...Object.fromEntries(SURVEY_KEYS.map(k => [k, survey[k]])), consent: true, consented_at: survey.consented_at },
       ranking: state.ranked.map(u => u.id),
     });
   } catch (err) { console.warn('ranking not saved:', err.message); }
 }
 
 // ---------------------------------------------------------------- survey (once per browser)
+function surveyDone() {
+  const sv = lsGet(SURVEY_KEY, null);
+  return !!(sv && sv.consent && sv.v === SURVEY_VERSION);
+}
 function openSurvey() {
   const m = $('#survey');
   if (!m) return;
   const prev = lsGet(SURVEY_KEY, null) || {};
   const form = $('#survey-form');
-  for (const k of ['age', 'household', 'timer', 'current_home']) $$(`#survey-form input[name=${k}]`).forEach(i => { i.checked = i.value === prev[k]; });
+  for (const k of SURVEY_KEYS) $$(`#survey-form input[name=${k}]`).forEach(i => { i.checked = Array.isArray(prev[k]) ? prev[k].includes(i.value) : i.value === prev[k]; });
   form.queue_number.value = prev.queue_number || '';
   $('#survey-err').textContent = '';
   m.hidden = false;
@@ -335,12 +349,20 @@ function closeSurvey() {
   $('#survey').hidden = true;
   document.body.classList.remove('drawer-open');
 }
+// "No one, I will live alone" and "Prefer not to say" stand alone; any other choice clears them.
+on('#survey-form', 'change', e => {
+  const i = e.target;
+  if (i.name !== 'household' || i.type !== 'checkbox' || !i.checked) return;
+  const solo = ['alone', 'prefer-not'];
+  $$('#survey-form input[name=household]').forEach(o => { if (o !== i && (solo.includes(i.value) || solo.includes(o.value))) o.checked = false; });
+});
 on('#survey-form', 'submit', e => {
   e.preventDefault();
   const fd = new FormData(e.target);
-  const missing = ['age', 'household', 'timer', 'current_home'].filter(k => !fd.get(k));
-  if (missing.length) { $('#survey-err').textContent = 'Please answer all four questions.'; return; }
-  lsSet(SURVEY_KEY, { age: fd.get('age'), household: fd.get('household'), timer: fd.get('timer'), current_home: fd.get('current_home'),
+  const ans = {};
+  for (const k of SURVEY_KEYS) ans[k] = k === 'household' ? fd.getAll(k) : fd.get(k);
+  if (SURVEY_KEYS.some(k => k === 'household' ? !ans[k].length : !ans[k])) { $('#survey-err').textContent = 'Please answer every question.'; return; }
+  lsSet(SURVEY_KEY, { v: SURVEY_VERSION, ...ans,
     queue_number: String(fd.get('queue_number') || '').trim().slice(0, 12), consent: true, consented_at: new Date().toISOString() });
   closeSurvey();
   runRank();
@@ -437,7 +459,7 @@ function ranklist(el, rows, fmtKey = k => k) {
 
 async function loadAnalysis() {
   const locked = $('#analysis-locked'), body = $('#analysis-body');
-  if (!lsGet(SURVEY_KEY, null)?.consent) { locked.hidden = false; body.hidden = true; return; }
+  if (!surveyDone()) { locked.hidden = false; body.hidden = true; return; }
   locked.hidden = true; body.hidden = false;
   // Opened from a ranking: start on that project.
   const urlKey = new URLSearchParams(location.search).get('project');
@@ -470,8 +492,8 @@ async function loadAnalysis() {
   $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'}`
     + (group === 'project' ? '.' : `: ${Object.entries(a.basis).map(([p, n]) => `${names[p] || p} ${n}`).join(' · ')}.`);
   if ($('#r-who')) $('#r-who').innerHTML = Object.entries(SURVEY_LABELS).map(([q, labels]) => {
-    const counts = a.demographics?.[q] || {}, total = Object.values(counts).reduce((x, y) => x + y, 0);
-    const title = { age: 'Age', household: 'Living with', timer: 'First or second timer', current_home: 'Living now' }[q];
+    const counts = a.demographics?.[q] || {}, total = q === 'household' ? a.users : Object.values(counts).reduce((x, y) => x + y, 0); // household: several answers each, so percent of rankings
+    const title = SURVEY_TITLES[q];
     return `<div><h4>${title}</h4><ol class="ranklist">${Object.entries(labels).map(([k, l]) => [l, counts[k] || 0]).sort((x, y) => y[1] - x[1])
       .map(([l, n]) => `<li><span></span><span>${esc(l)}</span><span>${total ? Math.round((n / total) * 100) : 0}%</span></li>`).join('')}</ol></div>`;
   }).join('');

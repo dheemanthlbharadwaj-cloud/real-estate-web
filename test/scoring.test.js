@@ -81,4 +81,7 @@ test('analysis ranks averages', () => {
   assert.strictEqual(a.factors[0].key, 'corner');
   assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
   assert.deepStrictEqual(a.demographics.age, { '30-34': 2 });
+  assert.deepStrictEqual(Object.keys(a.demographics).length, 10);
+  const h = analyse([sub({}, { survey: { household: ['partner', 'children'] } }), sub({}, { survey: { household: ['partner'] } })], { p: { maxStorey: 20 } }, [], 'all');
+  assert.deepStrictEqual(h.demographics.household, { partner: 2, children: 1 });
 });

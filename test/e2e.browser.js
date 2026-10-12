@@ -26,8 +26,10 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     p.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
 
     const rows = () => p.$$eval('#results tbody tr', r => r.filter(x => x.querySelector('.rk')).length);
-    const surveyAnswer = async () => {
-      for (const [k, v] of [['age', '30-34'], ['household', 'partner'], ['timer', 'first'], ['current_home', 'parents']]) await p.check(`#survey-form input[name=${k}][value="${v}"]`);
+    const SURVEY_ANSWERS = [['age', '30-34'], ['household', 'partner'], ['household', 'children'], ['application', 'couple-first'], ['current_home', 'with-family'],
+      ['bto_attempts', 'never'], ['work_area', 'west'], ['car', 'undecided'], ['children_plan', 'yes'], ['income', '6001-7500'], ['queue_position', 'middle']];
+    const surveyAnswer = async (skip) => {
+      for (const [k, v] of SURVEY_ANSWERS) if (k !== skip) await p.check(`#survey-form input[name=${k}][value="${v}"]`);
     };
     await p.goto(`${base}/rank`);
     await p.waitForSelector('#floor-groups .fg-card');
@@ -41,7 +43,21 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#survey:not([hidden])');
     check(true, 'Rank units opens the survey first');
     await p.click('#survey-ok');
-    check(await p.isVisible('#survey'), 'survey needs all four answers');
+    check(await p.isVisible('#survey'), 'survey needs every answer');
+    const hh = async v => p.isChecked(`#survey-form input[name=household][value="${v}"]`);
+    await p.check('#survey-form input[name=household][value="partner"]');
+    await p.check('#survey-form input[name=household][value="children"]');
+    check((await hh('partner')) && (await hh('children')), 'household allows several choices');
+    await p.check('#survey-form input[name=household][value="alone"]');
+    check(!(await hh('partner')) && !(await hh('children')) && (await hh('alone')), 'living alone unchecks the others');
+    await p.check('#survey-form input[name=household][value="prefer-not"]');
+    check(!(await hh('alone')) && (await hh('prefer-not')), 'prefer not to say unchecks living alone');
+    await p.check('#survey-form input[name=household][value="parents"]');
+    check(!(await hh('prefer-not')) && (await hh('parents')), 'another choice unchecks prefer not to say');
+    await p.uncheck('#survey-form input[name=household][value="parents"]');
+    await surveyAnswer('car');
+    await p.click('#survey-ok');
+    check((await p.isVisible('#survey')) && (await p.textContent('#survey-err')) === 'Please answer every question.', 'one missing answer shows the error and keeps the survey open');
     await surveyAnswer();
     await p.fill('#survey-form [name=queue_number]', '1234');
     await p.click('#survey-ok');
@@ -107,7 +123,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await an.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
     check((await an.inputValue('#a-value')) === 'berlayar-rise-7' && (await an.title()).startsWith('Berlayar Rise Analysis'), 'Analysis opens on the ranked project');
     check((await an.$$eval('#r-sun li', l => l.length)) === 4, 'analysis shows the 4 sun directions');
-    check((await an.$$eval('#r-who h4', h => h.length)) === 4, 'analysis shows who ranked');
+    check((await an.$$eval('#r-who h4', h => h.length)) === 10, 'analysis shows who ranked (10 questions)');
     await an.selectOption('#a-group', 'project_type');
     await an.waitForFunction(() => /Kebun Baru/.test(document.querySelector('#a-basis').textContent));
     check(true, 'analysis by project type (Plus)');
