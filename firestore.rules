@@ -14,7 +14,7 @@ service cloud.firestore {
         && request.resource.data.floor_pref in ['none', 'higher', 'lower']
         && request.resource.data.weights is map
         && request.resource.data.survey is map
-        && request.resource.data.survey.size() <= 6
+        && request.resource.data.survey.size() <= 14
         && request.resource.data.ranking is list
         && request.resource.data.ranking.size() <= 3000
         && request.resource.data.size() < 20;
