@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "mybto"
+    "default": "mybto-ce84f"
+  },
+  "targets": {
+    "mybto-ce84f": {
+      "hosting": {
+        "site": [
+          "mybto"
+        ]
+      }
+    }
   }
 }

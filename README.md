@@ -59,9 +59,9 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
 Follow [`apps-script/README.md`](apps-script/README.md). At the end you have an address ending in `/exec`. Put it in `public/js/config.js` as `SHEETS_URL`.
 
 ### 2. Firebase Hosting
-1. https://console.firebase.google.com > **Add project** (Google Analytics not needed). The project id goes in `.firebaserc` (currently the placeholder `mybto`).
+1. https://console.firebase.google.com > **Add project** (Google Analytics not needed). The project is `mybto-ce84f`, set in `.firebaserc`; Hosting uses the extra site `mybto` (mybto.web.app).
 2. **Build > Hosting > Get started**. The site name must be `mybto` so the address is https://mybto.web.app (otherwise change the name in the Apps Script `SAMPLE_URL`).
-3. Deploy (needs a person to approve): `npx firebase-tools login`, then `npx firebase-tools deploy --only hosting --project <project id>`.
+3. Deploy (needs a person to approve): `npx firebase-tools login`, then `npx firebase-tools hosting:sites:create mybto --project mybto-ce84f` (once), then `npx firebase-tools deploy --only hosting:site`.
 
 The old Vercel site and the old Firestore project are no longer used by the code.
 
