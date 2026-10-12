@@ -1,0 +1,114 @@
+---
+name: mybto-ops
+description: Operate the MyBTO website (BTO unit ranker, https://mybto.vercel.app) end to end. Use for ANY work on the MyBTO site, its unit data, scoring, page copy, Firestore or Firebase (rules, auth, submissions, flags), Vercel deploys and env vars, the Analysis page, the survey, local dev servers or tests. Works for any agent with a shell.
+---
+
+# MyBTO operations
+
+> **Maintenance rule: whenever you change the website or database, update this skill in the same commit.**
+> Stale facts here mislead the next agent. Also keep `AGENTS.md` and `CLAUDE.md` accurate.
+
+Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >= 20, Python 3. `README.md` has the long-form setup.
+
+## What the site is
+- Static site served from `public/` on Vercel (`vercel.json`: `outputDirectory: public`, `cleanUrls: true`), plus two functions in `api/`.
+- Production: https://mybto.vercel.app (target domain mybto.sg). Every push to the branch above deploys production within a minute or two (Vercel Git integration, set up in the Vercel dashboard, not in the repo).
+- Unit attributes are currently SAMPLE placeholders (no banner on the site any more). Only Berlayar Rise's unit list is real.
+- Pages: `/` (same as `/rank`, generated), `/shortlist`, `/analysis` (not in the menu, opened in a new tab from the buttons above a ranking, `noindex`), `/account` (optional sign-in), `/archive/home` (old home page).
+- Seven projects: Plus (Kebun Baru Breeze, Kebun Baru Ridge), Prime (Berlayar Rise, Lakeview Cascadia), Standard (Sembawang Brook, Sembawang Portico, Woodgrove Acres).
+
+## User flow (verify in `public/js/app.js`)
+1. Pick project, one housing type (`Scoring.HOUSING_TYPES`), blocks, storey range, floor priority (higher / lower / none), importance -5..+5 per factor.
+2. Press **Rank units**. First time in a browser a survey modal opens. Answers live in `localStorage` key `mybto:survey`: `age`, `household`, `timer`, `current_home`, `queue_number` (optional, max 12 chars), `consent`, `consented_at`. No consent, nothing is saved.
+3. Ranking shows the **top 50** (`SHOW_TOP`); the **full order** of matching units is saved (`ranking` = list of unit ids).
+4. Buttons above the ranking: **Shortlisted** (`/shortlist`, star units, drag or arrows to reorder) and **<Project> Analysis** (`/analysis`). Both open in a new tab.
+- Ranks are dense: equal scores share a rank and the next score gets the next number (1, 1, 2). Ties break by higher storey then id. Rows with score below 0 are shaded below a red line.
+- Facings are only NE, SE, SW, NW. Sun direction means where the living room windows face.
+- Chute factor: unit is **more than 10 m** from the nearest refuse chute (`CHUTE_FAR_M = 10`, `chute_m > 10`).
+- Score = sum of importance x feature (0..1). Factors in `public/js/scoring.js`: block, sun, design (2-Room Flexi Type 1/2), clearance (>30 m from nearest visible unit), corner, roof, chute, mrt (<100 m), facilities (has = 1, near = 0.5), floor (fixed weight 5). A meter shows only when some unit in scope has that feature.
+- Other localStorage keys: `mybto:user` (signed-in flag for the header), `mybto:flagcount`. Always wrapped in try/catch.
+
+## File map
+| Path | Purpose |
+|---|---|
+| `pipeline/build_pages.py` | Source of truth for `public/{index,rank,shortlist,analysis,account}.html`. Run `python3 pipeline/build_pages.py`. **Never hand-edit those html files.** |
+| `public/archive/home.html`, `public/css/*` | Hand-edited: old home page, styles |
+| `public/js/app.js` | Rank, shortlist, analysis, survey UI (one file, branches on `data-page`) |
+| `public/js/scoring.js` | Scoring and ranking; used by browser AND Node (tests, sample generator) |
+| `public/js/store.js` | Firebase Auth + Firestore client (anonymous sign-in, `saveList`, `loadList`, `saveFlags`) |
+| `public/js/site.js` | Header, footer, menu on every page. `legend.js`: factor legend entries and image captions. `home.js`: archive home |
+| `public/data/units/*.json` + `index.json` | Unit data per project. Generated, do not hand-edit |
+| `pipeline/make_sample_data.py` | Writes sample `public/data/units/*.json` (has the `PROJECTS` and `FACILITIES` lists) |
+| `pipeline/build_dataset.py` | Real-data build from `pipeline/raw/` extractions; also writes the Excel workbook |
+| `lib/make_sample_submissions.js` | `npm run sample` -> `lib/sample_submissions.json` (420 sample users, never written to Firestore) |
+| `api/analysis.js`, `lib/analysis.js` | `GET /api/analysis?group=all|flat_type|project|project_type&value=` (needs a Firebase ID token); aggregation maths |
+| `lib/firebase.js`, `lib/verify-token.js` | Admin SDK singleton; token check against Google public certs when no service account |
+| `api/config.js` | Serves public Firebase web config from env vars |
+| `firestore.rules`, `firebase.json`, `.firebaserc` | Rules, auth providers (anonymous + emailPassword), project `sgrealestate-5fbd4` |
+| `dev.js` | Local server: serves `public/` and `/api/*` |
+| `test/scoring.test.js`, `test/e2e.browser.js`, `test/fake-firebase/` | Unit tests, browser test with Firebase stubbed |
+| `.env.example` | Env var template (no values) |
+
+## Recipes
+**Change page copy.** Rank/shortlist/analysis/account/index text: edit `pipeline/build_pages.py`, run `python3 pipeline/build_pages.py`, commit both. Copy built in JS: `public/js/app.js` (`FACTOR_HELP` texts near the top), `site.js`, `legend.js`. Archive home: edit `public/archive/home.html`.
+
+**Change a factor or scoring.** Edit `public/js/scoring.js` (`FACTORS`, `scoreUnit`, `availability`), the matching text and meters in `app.js`, a legend entry in `legend.js`, then update `test/scoring.test.js` expectations (if you are allowed to touch tests). If analysis keys change, update `FACTOR_KEYS` in `lib/analysis.js`. Rerun `npm run sample` if sample weights depend on it. Run all tests.
+
+**Regenerate data.** Sample: `python3 pipeline/make_sample_data.py && npm run sample`. Real: `python3 pipeline/build_dataset.py` (exits non-zero and prints `BUILD FAILED` on missing positions). Commit `public/data/units/` and `lib/sample_submissions.json`. `vercel.json` ships `public/data/units/index.json` and `lib/sample_submissions.json` with the analysis function, so keep both paths.
+
+**Add a facility.** Sample data: add the name to `FACILITIES` in `pipeline/make_sample_data.py`. Real data: add it to the site-plan extraction in `pipeline/raw/` (`build_dataset.py` reads `site["facilities"]`, near = within 50 m). Regenerate data. Facility meters appear automatically; add a legend note if needed.
+
+**Add a project.** Add to `PROJECTS` in `pipeline/make_sample_data.py` and `build_dataset.py`, regenerate, check `public/data/units/index.json`, update README project table and this skill.
+
+**Run locally.**
+- `node dev.js` (real Firebase using `.env.local`), http://localhost:3000.
+- `DEV_FAKE_FIREBASE=1 PORT=3123 node dev.js` needs no keys: `/api/config` returns fake values, `/api/analysis` accepts any token starting `fake-` and uses sample data only. `npm run dev:fake` is the same on port 3000.
+
+**Tests.**
+- `npm test` (scoring + analysis unit tests, `node --test`).
+- `CHROMIUM=/opt/pw-browsers/chromium node test/e2e.browser.js` (starts its own dev server on 3123; loads Playwright from the global `npm root -g`). Do NOT run `playwright install`.
+- Browser test asserts: no SVG elements and no em dashes on any page.
+
+**Commit and push (deploys).** Run the tests, then `git add` specific files, commit, `git push origin claude/jolly-meitner-llfg6y`. Pushing deploys production, so run the tests first and follow the human's instructions on when to push. Never force-push this branch. Check status afterwards in the Vercel dashboard or with the Vercel MCP `list_deployments`.
+
+## Database (Firestore, project `sgrealestate-5fbd4`, region asia-southeast1)
+- `submissions/<uid>_<projectKey>`: one doc per user per project, overwritten on every ranking. Fields written by `store.saveList` + `app.js saveRanking`: `uid`, `project`, `project_type`, `queue_number`, `flat_types`, `blocks`, `min_storey`, `max_storey`, `floor_pref` (none|higher|lower), `weights` (map), `survey` (map: age, household, timer, current_home, consent, consented_at), `ranking` (list of unit ids, all matching units), `updated_at`.
+- `flags/<uid>_<projectKey>`: `uid`, `project`, `unit_ids` (shortlist order, max 500).
+- `firestore.rules`: a user may read, create, update, delete only docs whose id starts with their own uid (`owns`), with `request.resource.data.uid == auth.uid`. Submissions: `weights`, `survey` maps, `survey.size() <= 6`, `ranking` list <= 3000, doc < 20 fields. Flags: `unit_ids` list <= 500. Everything else denied. Aggregates are computed server-side only.
+- Analysis read path (`api/analysis.js`): with `FIREBASE_SERVICE_ACCOUNT` set, Admin SDK reads all `submissions` and `flags` (60 s cache) and mixes in sample users. Without it, tokens are verified against Google certs and ONLY sample data is shown. `SAMPLE_ANALYSIS=0` removes the sample users. Only submissions with `survey.consent` count.
+- Deploy rules and auth providers (human approval needed, see safety): `npx firebase-tools deploy --only auth,firestore:rules`. Console route: Authentication > Sign-in method > enable Anonymous (and Email/Password, Google); Firestore > Rules > paste `firestore.rules` > Publish. Authorized domains must include the Vercel domain.
+- **Status as of 2026-10-12:** anonymous sign-in and the current `firestore.rules` are NOT deployed yet (an agent's deploy was blocked; the human has the command). Until they are live the site degrades: rankings show but are not saved for visitors who are not signed in, and Analysis says "Analysis isn't switched on yet". Check live state before assuming (`firebase_get_security_rules` in the Firebase MCP, or the console). Update this note when done.
+- Never delete Firestore data. Read-only inspection is fine when credentials exist.
+
+## Keys and secrets
+Env vars the code reads (`grep -rn process.env api lib dev.js`):
+| Var | Read in | Secret? | Purpose |
+|---|---|---|---|
+| `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID` | `api/config.js` (`FIREBASE_PROJECT_ID` also `api/analysis.js`) | No, public web config by design; access is enforced by Auth + rules | Browser Firebase init |
+| `FIREBASE_SERVICE_ACCOUNT` | `lib/firebase.js`, `api/analysis.js` | **YES** | Whole service-account JSON, one line; enables real data in Analysis |
+| `SAMPLE_ANALYSIS` | `api/analysis.js` | No | `0` hides sample users |
+| `DEV_FAKE_FIREBASE`, `PORT` | `dev.js` | No | Local dev only |
+
+Where they live: Vercel project > Settings > Environment Variables (Production and Preview); locally `.env.local` (gitignored by `.env*`, only `.env.example` is tracked; `dev.js` loads it).
+- Never print, log, commit, paste into chat, or write into this skill any value of `FIREBASE_SERVICE_ACCOUNT` or any private key. Do not `cat .env.local` or echo env values; check presence only (`grep -c '^FIREBASE_SERVICE_ACCOUNT=' .env.local`).
+- The human adds the service account in Vercel (Firebase console > Project settings > Service accounts > Generate new private key). Do not ask for it in chat.
+
+## Sandbox and safety rules
+- Need explicit human approval: production Firebase deploys (rules, auth), Vercel production changes (env vars, promotes, rollbacks, domain changes), anything that discards data. Automated agents may be blocked from these. If blocked, STOP, do not look for a workaround, and hand the human the exact command or console steps.
+- No force-push on `claude/jolly-meitner-llfg6y`. Stage files by name.
+- Do not edit generated html by hand; edit `pipeline/build_pages.py`. If another agent is editing `build_pages.py`, `public/*.html` or tests, coordinate, do not overwrite.
+- Cloud sandboxes send outbound HTTPS through a proxy (`HTTPS_PROXY`, CA bundle `/root/.ccr/ca-bundle.crt`). On TLS or 403/407 errors read `/root/.ccr/README.md`; never disable TLS verification or unset the proxy. The site loads Firebase JS from `gstatic.com` and fonts from Google Fonts, which may not load in a sandbox, so browser tests use `test/fake-firebase/`.
+- Playwright Chromium is at `/opt/pw-browsers/chromium`; set `CHROMIUM=` to it. Do not run `playwright install`.
+
+## House style for site copy
+- No em dashes (U+2014) anywhere visible on the site. Use commas, colons or short sentences. The e2e test fails on them.
+- No SVG on the site: no `<svg>` elements, no inline icons. Use text characters (e.g. the star) or the webp images in `public/img/`. The e2e test counts `svg` nodes.
+- Plain, human wording; short sentences; address the reader as "you". No marketing filler.
+- Units: write "10 m", "30 m". Facings: NE, SE, SW, NW only.
+- Images in `public/img/` are HDB brochure drawings; keep the footer credit.
+
+## Before you finish
+1. `npm test` passes; e2e passes if you touched the UI.
+2. Regenerated html/data are committed with their sources.
+3. This skill (and `AGENTS.md` / `CLAUDE.md` if relevant) updated in the same commit.
+4. No secrets in the diff: `git diff --cached | grep -i "private_key\|service_account"` returns nothing.
