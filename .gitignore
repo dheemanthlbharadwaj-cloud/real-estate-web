@@ -6,3 +6,6 @@ __pycache__/
 
 # Firebase CLI deploy cache
 .firebase/
+
+# Review workbook (shared with the user directly)
+review/

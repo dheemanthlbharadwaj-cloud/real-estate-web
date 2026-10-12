@@ -1,0 +1,110 @@
+{
+ "project_key": "sembawang-brook-6",
+ "name": "Sembawang Brook",
+ "north_bearing_deg": 0,
+ "scale": {},
+ "totals_check": {
+  "brochure": {
+   "3-Room": 3,
+   "4-Room": 2
+  },
+  "counted": {
+   "3-Room": 3,
+   "4-Room": 2
+  },
+  "match": true
+ },
+ "stacks": [
+  {
+   "block": "437A",
+   "unit": "101",
+   "facing": "NE",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     1,
+     2
+    ],
+    "crop": "x.png",
+    "pass1": false,
+    "pass2": false
+   },
+   "position": "Corner",
+   "chute_m": 8.5,
+   "roof_floors": [
+    3
+   ],
+   "wind_open": true,
+   "mscp_m": 90,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Hardcourt"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437A",
+   "unit": "103",
+   "facing": "SW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     1,
+     2
+    ],
+    "crop": "x.png",
+    "pass1": true,
+    "pass2": true
+   },
+   "position": "Corridor",
+   "chute_m": 20.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 150,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Hardcourt"
+   ],
+   "confidence": "high",
+   "notes": ""
+  }
+ ],
+ "units": [
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "101",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "101",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "101",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "103",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "103",
+   "flat_type": "4-Room"
+  }
+ ],
+ "notes": [
+  "fixture"
+ ]
+}
