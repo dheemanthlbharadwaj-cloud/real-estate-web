@@ -398,7 +398,7 @@ if (window.Chart) {
     id: 'mybtoWatermark',
     afterDraw(chart) {
       const ca = chart.chartArea, ctx = chart.ctx;
-      if (!ca) return;
+      if (!ca || chart.width < 220) return; // tiny charts (the doughnut tile) carry it from CSS instead
       ctx.save();
       ctx.globalAlpha = 0.18;
       ctx.fillStyle = VIZ.ink;
@@ -475,17 +475,26 @@ async function loadAnalytics(proj) {
 
   // Lowest / highest storey: overlapping smooth areas
   const n = Math.max(a.min_storey.histogram.length, a.max_storey.histogram.length);
-  const area = (label, d, fill, line) => ({ label, data: d.histogram, fill: true, backgroundColor: fill, borderColor: line, borderWidth: 2, pointRadius: 0, tension: .35, cubicInterpolationMode: 'monotone' });
+  // Gaussian kernel smoothing over storeys (bandwidth 2), as a share of rankings in %
+  const smooth = d => {
+    const h = d.histogram, tot = d.count || 1, bw = 2;
+    return Array.from({ length: n }, (_, i) => {
+      let v = 0;
+      for (let j = 0; j < h.length; j++) v += (h[j] || 0) * Math.exp(-0.5 * ((i - j) / bw) ** 2);
+      return +(100 * v / (tot * bw * Math.sqrt(2 * Math.PI))).toFixed(2);
+    });
+  };
+  const area = (label, d, fill, line) => ({ label, data: smooth(d), fill: true, backgroundColor: fill, borderColor: line, borderWidth: 2, pointRadius: 0, tension: .4 });
   chart('c-storey', {
     type: 'line',
     data: { labels: Array.from({ length: n }, (_, i) => i), datasets: [
-      area('Lowest storey accepted', a.min_storey, 'rgba(10,135,160,.45)', VIZ.main),
-      area('Highest storey considered', a.max_storey, 'rgba(53,228,255,.4)', VIZ.main),
+      area('Lowest storey accepted', a.min_storey, 'rgba(10,135,160,.55)', VIZ.main),
+      area('Highest storey considered', a.max_storey, 'rgba(53,228,255,.55)', VIZ.main),
     ] },
     options: { plugins: { legend: { position: 'top', align: 'start', labels: { usePointStyle: true, pointStyle: 'rect', boxWidth: 10, boxHeight: 10, color: VIZ.ink } } },
       scales: {
         x: { grid: { display: false }, border: AXIS, title: { display: true, text: 'Storey' }, ticks: { maxTicksLimit: 10, maxRotation: 0 } },
-        y: { beginAtZero: true, grid: { display: false }, border: AXIS, title: { display: true, text: 'Rankings' }, ticks: { precision: 0 } },
+        y: { beginAtZero: true, grid: { display: false }, border: AXIS, title: { display: true, text: 'Share of rankings' }, ticks: { callback: v => `${v}%` } },
       } },
   });
 
