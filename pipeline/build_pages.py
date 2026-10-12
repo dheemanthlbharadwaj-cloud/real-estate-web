@@ -44,7 +44,7 @@ PAGES = {
     "rank": dict(
         title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
         h1="Unofficial HDB BTO Flat Unit Ranker",
-        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have).",
+        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 50 units and check out the Analysis page.",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
     <section class="tool"><div class="wrap">
@@ -57,7 +57,7 @@ PAGES = {
           </div>
           <div class="step">
             <div class="step-h"><h2>2. Filters</h2></div>
-            <div class="field"><span class="eyebrow">Housing type · pick one</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
+            <div class="field"><span class="eyebrow">Housing type</span><div id="f-types" class="chips" role="radiogroup" aria-label="Housing type"></div></div>
             <div class="field"><span class="eyebrow">Blocks</span>
               <div class="mini-links"><button type="button" data-blocks="all">Select all</button><button type="button" data-blocks="none">Clear</button></div>
               <div id="f-blocks" class="chips"></div>
@@ -74,8 +74,8 @@ PAGES = {
             </div>
           </div>
           <div class="step">
-            <div class="step-h"><h2>3. Importance</h2></div>
-            <p class="small muted" style="margin:-6px 0 0">Minus 5 means avoid and plus 5 means must have. Tap ? to see what a factor means.</p>
+            <div class="step-h"><h2>3. Importance of factors</h2></div>
+            <p class="small muted" style="margin:-6px 0 0">Use the slider to rate each factor from minus 5 (avoid) to plus 5 (must have). Rating every factor gives the best results. Tap ? to see what a factor means.</p>
             <div id="weights"></div>
             <p id="hidden-factors" class="hidden-note"></p>
           </div>
