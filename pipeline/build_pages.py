@@ -1,4 +1,4 @@
-"""Generate the inner pages (rank, shortlist, analysis, account) from one shared shell.
+"""Generate the inner pages (rank, shortlist, analysis) and the archived account page from one shared shell.
 
 Run after editing a page body below:  python3 pipeline/build_pages.py
 """
@@ -104,8 +104,8 @@ PAGES = {
     <div id="survey" class="modal" hidden>
       <div class="modal-scrim"></div>
       <form id="survey-form" class="modal-panel" novalidate role="dialog" aria-modal="true" aria-labelledby="survey-title">
-        <h2 class="h3" id="survey-title">Before we show your ranking</h2>
-        <p class="small muted">A few quick questions so the Analysis page can show what buyers like you want. We don’t ask for your name, and you only do this once.</p>
+        <h2 class="h3" id="survey-title">One last step to see your ranking</h2>
+        <p class="small muted">This tool is part of a final year research project at the National University of Singapore (NUS), built using data from the June 2026 BTO launch. Before showing your ranking, we’d like to ask 10 short questions (1-2 minutes).</p>
         <fieldset><legend>How old are you?</legend><div class="chips">
           <label class="chip"><input type="radio" name="age" value="21-24" required><span>21 to 24</span></label>
           <label class="chip"><input type="radio" name="age" value="25-29"><span>25 to 29</span></label>
@@ -189,7 +189,7 @@ PAGES = {
           <label class="chip"><input type="radio" name="queue_position" value="prefer-not"><span>Prefer not to say</span></label>
         </div></fieldset>
         <label class="survey-queue"><span>Your queue number, if you have one</span><input name="queue_number" type="text" inputmode="numeric" maxlength="12" placeholder="e.g. 1234"></label>
-        <p class="consent small">By continuing, you agree that your answers and your ranking are saved without your name and used only for the combined results on the Analysis page.</p>
+        <p class="consent small">By selecting “I agree, show my ranking”, you confirm that you are 21 or older and agree to your answers and ranking being stored anonymously and used only for this NUS research project. Questions? Contact Lim Xin Quan (<a href="mailto:limxinquan@u.nus.edu">limxinquan@u.nus.edu</a>) (Student Researcher) or Dr. Grace Wong (<a href="mailto:bizgwong@nus.edu.sg">bizgwong@nus.edu.sg</a>) (Supervisor)</p>
         <p class="err small" id="survey-err"></p>
         <div class="modal-btns"><button type="button" class="btn ghost" data-close-survey>Not now</button><button type="submit" class="btn primary" id="survey-ok">I agree, show my ranking</button></div>
       </form>
@@ -255,7 +255,7 @@ PAGES = {
         title="Account", img="berlayar-rise-7.webp", kicker="Account", color="sage",
         h1="Your <em>MyBTO</em> account.",
         lede="Signing in is optional. It keeps your shortlist and rankings with you on any device.",
-        desc="Sign in or create a MyBTO account.",
+        desc="Sign in or create a MyBTO account.", robots=True, out="archive/account.html",
         body="""
     <section class="tool"><div class="wrap">
       <p id="auth-error" class="err" hidden></p>
@@ -293,7 +293,9 @@ def main():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
         html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
-        (PUBLIC / f"{page}.html").write_text(html)
+        out = PUBLIC / p.get("out", f"{page}.html")  # the account page is archived at /archive/account
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home
             (PUBLIC / "index.html").write_text(html)

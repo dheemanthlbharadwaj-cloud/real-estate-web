@@ -24,7 +24,7 @@ that computes the aggregate analysis with the Firebase Admin SDK.
   (tabs Plus / Prime / Standard) from the reconciled brochure extractions in `pipeline/raw/`.
 
 ## Pages
-`/` ranking (same as `/rank`) · `/shortlist` and `/analysis` (not in the menu; opened in a new tab from the buttons above a ranking) · `/account` · `/archive/home` (old home page).
+`/` ranking (same as `/rank`) · `/shortlist` and `/analysis` (not in the menu; opened in a new tab from the buttons above a ranking) · `/archive/home` (old home page) · `/archive/account` (optional sign-in, archived, not linked).
 Inner pages are generated from one shell: edit `pipeline/build_pages.py`, then `python3 pipeline/build_pages.py`.
 Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochures (© HDB), credited in the footer.
 

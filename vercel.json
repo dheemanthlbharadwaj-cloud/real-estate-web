@@ -26,5 +26,12 @@
       ]
     }
   ],
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/account",
+      "destination": "/archive/account",
+      "permanent": false
+    }
+  ]
 }

@@ -139,7 +139,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(await g.waitForSelector('#analysis-locked:not([hidden])', { timeout: 5000 }).then(() => true, () => false), 'Analysis locked until the survey is done');
     await fresh.close();
 
-    await p.goto(`${base}/account`);
+    await p.goto(`${base}/archive/account`);
     await p.fill('#form-register [name=email]', 'buyer@example.com');
     await p.fill('#form-register [name=password]', 'password123');
     await p.click('#form-register button.primary');
@@ -148,7 +148,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/rank`);
     await p.waitForFunction(() => /last settings/.test(document.querySelector('#save-msg').textContent) || true);
     check((await p.textContent('#flag-count')) === '3', 'starred units carried into the new account');
-    await p.goto(`${base}/account`);
+    await p.goto(`${base}/archive/account`);
     await p.click('#btn-logout');
     await p.waitForSelector('#acct-out:not([hidden])');
     await p.fill('#form-login [name=email]', 'buyer@example.com');
@@ -163,6 +163,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#floor-groups .fg-card');
     check(true, 'the first page is the ranking page');
     check(!(await p.$('.nav a[href="/#projects"]')), 'no Projects link in the menu');
+    check(!(await p.$('.nav a[href="/account"], .site-footer a[href="/account"]')), 'no account link in the menu or footer');
     await p.goto(`${base}/archive/home`);
     check((await p.title()).startsWith('MyBTO'), 'archived home page is titled MyBTO');
     await p.waitForSelector('#project-grid .pcard');
@@ -189,7 +190,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/account', '/archive/home']) {
+    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/archive/account', '/archive/home']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);

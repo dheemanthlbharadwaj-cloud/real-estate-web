@@ -81,15 +81,7 @@ async function init() {
   on('#f-blocks', 'change', renderWeights);
   if (PAGE === 'rank' || PAGE === 'shortlist') await loadProject(key);
   else { state.project = state.index.projects.find(p => p.key === key); state.flags = await loadFlags(); }
-  renderTitleBlock();
   route();
-}
-
-// Hints the shared header reads on every page.
-function renderTitleBlock() {
-  lsSet('mybto:user', state.user ? { signedIn: true } : null);
-  const link = $('#account-link');
-  if (link) link.textContent = state.user ? 'My account' : 'Sign in';
 }
 
 async function loadProject(key) {
@@ -102,7 +94,6 @@ async function loadProject(key) {
     updateFlagCount();
     const list = await store.loadList(key).catch(() => null);
     state.ranked = list ? Scoring.rank(state.units, { flatTypes: list.flat_types, blocks: list.blocks, minStorey: list.min_storey, maxStorey: list.max_storey }, list.weights, list.floor_pref) : [];
-    renderTitleBlock();
     if (PAGE === 'shortlist') renderShortlist();
     return;
   }
@@ -125,7 +116,6 @@ async function loadProject(key) {
   state.flags = await loadFlags();
   updateFlagCount();
   renderWeights();
-  renderTitleBlock();
   $('#save-msg').textContent = '';
   const list = await store.loadList(key).catch(() => null);
   if (list) applySaved(list);
@@ -593,7 +583,6 @@ function note(msg) { if (!$('#acct-note')) return; $('#acct-note').hidden = !msg
 async function onAuthChange(user) {
   const was = state.user?.uid;
   state.user = user;
-  renderTitleBlock();
   renderAccount();
   if (!state.project) return;
   if (user && user.uid !== was) {
