@@ -154,7 +154,20 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await an.$$eval('canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
     check(await an.evaluate(() => !!window.Chart.registry.plugins.get('mybtoWatermark') && [...document.querySelectorAll('canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length)), 'watermark plugin is registered and every chart is non-interactive');
     check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::before').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
-    check(await an.evaluate(() => [...document.querySelectorAll('canvas')].every(c => { const ch = Chart.getChart(c); return c.width >= 300 ? ch.$wmCount >= 2 : ch.$wmCount === 1; })), 'watermark is tiled across wide charts (2 or more copies) and centred once in the doughnut');
+    check(await an.evaluate(() => [...document.querySelectorAll('canvas')].every(c => {
+      const ch = Chart.getChart(c), bx = ch.$wmBox, ca = ch.chartArea;
+      if (ch.$wmCount !== 1 || !bx) return false;
+      if (ch.config.type === 'doughnut') return true;
+      const cx = bx.x + bx.w / 2, cy = bx.y + bx.h / 2, w = ca.right - ca.left, h = ca.bottom - ca.top;
+      const middle = Math.abs(cx - (ca.left + w / 2)) <= 0.42 * w && Math.abs(cy - (ca.top + h / 2)) <= 0.42 * h;
+      const hitsBar = ch.config.type === 'bar' && ch.getDatasetMeta(0).data.some(el => {
+        const e = el.getProps(['x', 'y', 'base', 'width', 'height'], true), horiz = ch.options.indexAxis === 'y';
+        const x0 = horiz ? Math.min(e.x, e.base) : e.x - e.width / 2, x1 = horiz ? Math.max(e.x, e.base) : e.x + e.width / 2;
+        const y0 = horiz ? e.y - e.height / 2 : Math.min(e.y, e.base), y1 = horiz ? e.y + e.height / 2 : Math.max(e.y, e.base);
+        return bx.x < x1 && bx.x + bx.w > x0 && bx.y < y1 && bx.y + bx.h > y0;
+      });
+      return middle && !hitsBar;
+    })), 'watermark: exactly one copy per chart, near the middle of the plot, not over any bar');
     check((await an.$$eval('#r-sun, #r-factor', n => n.length)) === 0, 'old numbered rank lists are gone');
     check(/Based on \d+ saved/.test(await an.textContent('#a-basis')), 'Analytics says how many rankings it is based on');
     await an.reload();

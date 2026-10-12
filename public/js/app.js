@@ -392,36 +392,82 @@ const WATERMARK = 'mybto.web.app';
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const VIZ = { main: css('--accent-ink'), second: css('--accent'), pos: css('--pos'), neg: css('--neg'), neutral: css('--muted'),
   ink: css('--text'), mute: css('--text-2'), axis: css('--line-2') };
-// Draws "mybto.web.app" into every chart canvas, rotated and tiled across the whole plot area (hard to crop out),
-// behind the data (beforeDatasetsDraw) so values stay legible. Tiny charts (the doughnut tile) get one copy in the hole.
+// Draws one faint "mybto.web.app" per chart canvas, in the free space nearest the centre of the plot (not over bars, areas or
+// value labels, and not in a corner), so removing it means cropping the chart itself. It survives screenshots and saved images.
+// The doughnut tile gets one copy in its hole. chart.$wmCount and chart.$wmBox are kept for the tests.
+function watermarkOccupied(chart) {
+  const ca = chart.chartArea, boxes = [], pad = 6, horiz = chart.options.indexAxis === 'y';
+  const labels = (chart.config.plugins || []).some(p => p.id === 'mybtoValueLabels');
+  chart.data.datasets.forEach((_, di) => {
+    const meta = chart.getDatasetMeta(di);
+    if (meta.hidden) return;
+    const pts = meta.data;
+    pts.forEach((el, i) => {
+      if (meta.type === 'bar') {
+        const e = el.getProps(['x', 'y', 'base', 'width', 'height'], true);
+        let x0, x1, y0, y1;
+        if (horiz) { x0 = Math.min(e.x, e.base); x1 = Math.max(e.x, e.base); y0 = e.y - e.height / 2; y1 = e.y + e.height / 2; if (labels) { if (e.x >= e.base) x1 += 44; else x0 -= 44; } }
+        else { x0 = e.x - e.width / 2; x1 = e.x + e.width / 2; y0 = Math.min(e.y, e.base); y1 = Math.max(e.y, e.base); if (labels) y0 -= 20; }
+        boxes.push({ x0: x0 - pad, x1: x1 + pad, y0: y0 - pad, y1: y1 + pad });
+      } else if (meta.type === 'line') {
+        const prev = pts[i - 1] || el, next = pts[i + 1] || el;
+        const half = Math.max((next.x - prev.x) / 4, 2);
+        boxes.push({ x0: el.x - half - pad, x1: el.x + half + pad, y0: el.y - pad, y1: ca.bottom });
+      }
+    });
+  });
+  return boxes;
+}
 if (window.Chart) {
   Chart.register({
     id: 'mybtoWatermark',
     beforeDatasetsDraw(chart) {
       const ca = chart.chartArea, ctx = chart.ctx;
       if (!ca) return;
-      const w = ca.right - ca.left, h = ca.bottom - ca.top, cx = ca.left + w / 2, cy = ca.top + h / 2;
-      const small = chart.width < 220, ang = -20 * Math.PI / 180, cos = Math.cos(ang), sin = Math.sin(ang);
-      const size = small ? 8 : Math.max(12, Math.round(w * 0.08));
+      const w = ca.right - ca.left, h = ca.bottom - ca.top;
+      const small = chart.config.type === 'doughnut' && chart.width < 220;
       ctx.save();
-      ctx.beginPath(); ctx.rect(ca.left, ca.top, w, h); ctx.clip();
-      ctx.globalAlpha = small ? 0.3 : 0.08;
       ctx.fillStyle = VIZ.ink;
-      ctx.font = `600 ${size}px Inter, sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const tw = ctx.measureText(WATERMARK).width;
-      ctx.translate(cx, cy); ctx.rotate(ang);
-      let count = 0;
-      const dx = tw * 1.15, dy = size * 3.4;
-      for (let j = -4; j <= 4; j++) for (let i = -4; i <= 4; i++) {
-        const ox = (i + (j & 1 ? 0.5 : 0)) * dx, oy = j * dy;
-        if (small && (i || j)) continue;
-        const px = ox * cos - oy * sin, py = ox * sin + oy * cos; // position on the canvas, relative to the centre
-        if (Math.abs(px) > w * 0.5 || Math.abs(py) > h * 0.5) { if (!(i === 0 && j === 0)) continue; }
-        ctx.fillText(WATERMARK, ox, oy); count++;
+      let box;
+      if (small) {
+        const el = chart.getDatasetMeta(0).data[0], e = el.getProps(['x', 'y', 'innerRadius'], true);
+        let size = 8;
+        ctx.font = `600 ${size}px Inter, sans-serif`;
+        const tw = ctx.measureText(WATERMARK).width, maxW = e.innerRadius * 1.7;
+        if (tw > maxW) { size = Math.max(5, Math.floor(size * maxW / tw)); ctx.font = `600 ${size}px Inter, sans-serif`; }
+        const bw = ctx.measureText(WATERMARK).width;
+        ctx.globalAlpha = 0.3;
+        ctx.fillText(WATERMARK, e.x, e.y);
+        box = { x: e.x - bw / 2, y: e.y - size * 0.6, w: bw, h: size * 1.2 };
+      } else {
+        const size = Math.max(11, Math.round(w * 0.045));
+        ctx.font = `600 ${size}px Inter, sans-serif`;
+        const bw = ctx.measureText(WATERMARK).width, bh = size * 1.2, m = 8;
+        const occ = watermarkOccupied(chart);
+        const overlap = (cx, cy) => {
+          const x0 = cx - bw / 2, x1 = cx + bw / 2, y0 = cy - bh / 2, y1 = cy + bh / 2;
+          let area = 0;
+          for (const o of occ) { const ix = Math.min(x1, o.x1) - Math.max(x0, o.x0), iy = Math.min(y1, o.y1) - Math.max(y0, o.y0); if (ix > 0 && iy > 0) area += ix * iy; }
+          return area;
+        };
+        const midX = ca.left + w / 2, midY = ca.top + h / 2;
+        const minX = ca.left + m + bw / 2, maxX = ca.right - m - bw / 2, minY = ca.top + m + bh / 2, maxY = ca.bottom - m - bh / 2;
+        let best = null;
+        for (let gy = 0; gy < 12; gy++) for (let gx = 0; gx < 24; gx++) {
+          const cx = minX + (maxX - minX) * (gx / 23), cy = minY + (maxY - minY) * (gy / 11);
+          if (maxX < minX || maxY < minY) continue;
+          const ov = overlap(cx, cy), d = Math.hypot((cx - midX) / w, (cy - midY) / h);
+          if (!best || ov < best.ov || (ov === best.ov && d < best.d)) best = { cx, cy, ov, d };
+        }
+        if (!best) best = { cx: midX, cy: midY };
+        ctx.globalAlpha = 0.12;
+        ctx.fillText(WATERMARK, best.cx, best.cy);
+        box = { x: best.cx - bw / 2, y: best.cy - bh / 2, w: bw, h: bh };
       }
       ctx.restore();
-      chart.$wmCount = count;
+      chart.$wmCount = 1;
+      chart.$wmBox = box;
     },
   });
 }
