@@ -129,20 +129,41 @@ table.schedule { width: 100%; border-collapse: collapse; font-size: 14px; }
 .picker-row select { width: auto; min-width: 260px; }
 
 /* ---------- insights ---------- */
-.board { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-.panel { grid-column: span 6; padding: 22px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); min-width: 0; }
-.panel.w4 { grid-column: span 4; } .panel.w8 { grid-column: span 8; } .panel.w12 { grid-column: span 12; }
-.panel > .eyebrow { color: var(--accent-ink); }
-.panel h3 { font: 600 18px/1.3 var(--head); margin: 6px 0 14px; }
-.panel .stats-row { display: flex; flex-wrap: wrap; gap: 20px; font-size: 12px; color: var(--muted); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-.panel .stats-row b { display: block; font: 600 22px/1.1 var(--head); color: var(--text); }
-.panel canvas { max-height: 290px; }
-.ranklist { list-style: none; margin: 0; padding: 0; font-size: 14px; }
-.ranklist li { display: grid; grid-template-columns: 30px 1fr auto auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
-.ranklist li span:first-child { font-weight: 600; color: var(--accent-ink); }
-.ranklist li .sd { font-size: 12px; min-width: 52px; text-align: right; color: var(--muted); }
-.basis { font-size: 12px; color: var(--muted); margin: 0 0 22px; line-height: 1.6; }
-@media (max-width: 1000px) { .panel, .panel.w4, .panel.w8 { grid-column: span 12; } }
+/* ---- Analytics dashboard (BI style): soft blue-grey page, flat white cards ---- */
+body[data-page="analytics"] .tool { background: var(--card-2); }
+.basis { font-size: 13px; color: var(--text-2); margin: 0 0 22px; line-height: 1.6; }
+.dash { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+.half { display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+.card, .kpi { position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--r); min-width: 0; }
+.card { padding: 22px 24px 26px; flex: 1; }
+.card h3 { font: 400 16px/1.3 var(--sans); color: var(--text); margin: 0 0 14px; }
+.plot { position: relative; height: 260px; }
+.plot.tall { height: 320px; }
+.nodata { margin: 40px 0; text-align: center; }
+.kpi { padding: 18px 16px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 210px; }
+.kpi-title { font: 400 16px/1.3 var(--sans); color: var(--text); align-self: flex-start; text-align: left; }
+.kpi-num { font: 600 clamp(40px, 5vw, 60px)/1 var(--head); color: var(--text); margin: auto 0 6px; padding-top: 14px; }
+.kpi-sub { font-size: 14px; color: var(--accent-ink); min-height: 20px; }
+.kpi-pref .pref-body { display: flex; flex: 1; width: 100%; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.swatches { list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--text); text-align: left; display: grid; gap: 6px; }
+.swatches i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; }
+.swatches b { color: var(--text-2); font-weight: 600; }
+.pref-plot { position: relative; width: 96px; height: 96px; margin: 0 auto; }
+/* faint site mark on cards that have no canvas (charts carry it inside the canvas) */
+.card.nocanvas::after { content: 'mybto.web.app'; position: absolute; right: 12px; bottom: 8px; font: 600 11px var(--sans); color: var(--text); opacity: .18; pointer-events: none; }
+@media (max-width: 1100px) { .kpis, .dash, .half, .grid2 { gap: 20px; } .dash, .grid2 { gap: 20px; } }
+@media (max-width: 760px) {
+  .dash, .grid2 { grid-template-columns: 1fr; }
+  .kpis { gap: 12px; }
+  .kpi { min-height: 150px; padding: 14px 10px 16px; }
+  .kpi-title { font-size: 14px; }
+  .kpi-num { font-size: 44px; }
+  .kpi-sub { font-size: 12px; }
+  .kpi-pref .pref-body { flex-direction: column-reverse; justify-content: center; }
+  .card { padding: 18px 14px 22px; }
+}
 
 /* ---------- legend drawer ---------- */
 body.drawer-open { overflow: hidden; }
@@ -174,7 +195,7 @@ body.drawer-open { overflow: hidden; }
   .results-card { padding: 16px 12px 6px; }
   .shortlist li { grid-template-columns: 40px 1fr; }
   .shortlist li .ctrl { grid-column: 1 / -1; }
-  .panel, .lg { padding: 18px; }
+  .lg { padding: 18px; }
   .drawer-body { padding: 14px; } .drawer-head { padding: 12px 14px; }
 }
 

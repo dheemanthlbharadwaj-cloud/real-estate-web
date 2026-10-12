@@ -145,13 +145,16 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await an.waitForSelector('#analysis-body:not([hidden])');
     await an.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
     check((await an.title()).startsWith('Berlayar Rise Analytics') && (await an.textContent('h1')).includes('want'), 'Analytics opens on the ranked project');
-    check((await an.$$eval('#r-sun li', l => l.length)) === 4, 'analytics shows the 4 sun directions');
     check((await an.$$eval('#analysis-body select, #analysis-body input, #analysis-body button', n => n.length)) === 0 && !(await an.$('#a-group')), 'analytics has no filters or controls');
     const anText = await an.evaluate(() => document.body.innerText);
     check(!/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(anText) && !/Most shortlisted|Who ranked|Analysis/.test(anText), 'analytics page shows no unit ids, no shortlist list, no Who ranked');
     const apiJson = await an.evaluate(async () => (await fetch('/fake-sheets?action=analytics&project=berlayar-rise-7')).json());
     check(apiJson.ok && apiJson.users > 0 && !/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(JSON.stringify(apiJson)) && !('rows' in apiJson), 'analytics JSON from the sheet has aggregates only, no unit ids or rows');
-    check((await an.$$eval('#r-factor li', l => l.length)) === 8 && (await an.$$eval('canvas', c => c.length && c.every(x => x.width > 0))), 'Analytics renders the factor list and every chart from the sheet endpoint');
+    check((await an.$$eval('.kpi-num', k => k.length === 3 && k.every(x => /\d/.test(x.textContent)))), 'Analytics has 3 KPI number tiles with numbers');
+    check((await an.$$eval('canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
+    check(await an.evaluate(() => !!window.Chart.registry.plugins.get('mybtoWatermark') && [...document.querySelectorAll('canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length)), 'watermark plugin is registered and every chart is non-interactive');
+    check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::after').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
+    check((await an.$$eval('#r-sun, #r-factor', n => n.length)) === 0, 'old numbered rank lists are gone');
     check(/Based on \d+ saved/.test(await an.textContent('#a-basis')), 'Analytics says how many rankings it is based on');
     await an.reload();
     await an.waitForSelector('#analysis-body:not([hidden])');
@@ -254,7 +257,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await pg.click('[data-ad-go]');
     await pg.waitForFunction(() => /Based on \d+ saved rankings/.test(document.querySelector('#a-basis').textContent));
     const basis = await pg.textContent('#a-basis');
-    check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('#r-sun li', l => l.length)) === 4, `sample Analytics before launch (${basis.trim()})`);
+    check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('canvas', c => c.length)) === 7, `sample Analytics before launch (${basis.trim()})`);
     await pre.close();
 
     const phone = await ctx.newPage();
@@ -298,6 +301,9 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await ph.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
     await ph.waitForTimeout(400);
     check((await over()) <= 0, `phone: Analytics page does not scroll sideways (overflow ${await over()}px)`);
+    const box = sel => ph.$eval(sel, e => { const r = e.getBoundingClientRect(); return { top: r.top + scrollY, bottom: r.bottom + scrollY }; });
+    const [t1, t2, t3, cA] = [await box('#k-rankings'), await box('#k-min'), await box('#k-higher'), await box('#card-storey')];
+    check(t1.top === t2.top && t3.top > cA.bottom, 'phone: tiles 1 and 2 share a row, right half (tile 3) sits below chart A');
     if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics.png`, fullPage: true });
     await pc.close();
 

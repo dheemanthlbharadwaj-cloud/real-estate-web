@@ -48,8 +48,8 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
 - **Shortlist**: ★ units into a separate list; reorder by drag or arrows. Kept in the browser and sent to the sheet (about 2 seconds after the last change).
 - **No sign-in.** Nothing is tied to an account or device other than the anonymous id.
 - **Analytics** (one project, not interactive): a 15 second rewarded video placeholder comes first (remembered per project
-  for the browser session). Then min/max storey distributions with binomial fit and std, sun directions, blocks and
-  factors ranked, floor preference, facilities and housing types. No unit ids are shown or returned. Only rankings with consent count, and only each visitor's latest ranking per project. Until `SHEETS_URL` is set it says "Analytics will appear here soon."
+  for the browser session). Then lowest and highest storey distributions, sun directions, blocks and
+  factors ranked, floor preference, facilities and housing types, shown as a dashboard of KPI tiles and Chart.js charts (each carries a faint mybto.web.app watermark). No unit ids are shown or returned. Only rankings with consent count, and only each visitor's latest ranking per project. Until `SHEETS_URL` is set it says "Analytics will appear here soon."
 - **Data**: open the Google Sheet (tabs Rankings, Shortlists, Sample, Settings). File > Download > Microsoft Excel gives a spreadsheet.
 - **Legend**: diagram + explanation for each factor.
 

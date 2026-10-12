@@ -373,25 +373,6 @@ on('#flag-list', 'drop', e => {
 });
 
 // ---------------------------------------------------------------- analytics
-const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-function chart(id, config) {
-  state.charts[id]?.destroy();
-  Chart.defaults.font.family = "'Inter', sans-serif";
-  Chart.defaults.font.size = 12;
-  Chart.defaults.color = css('--text-2');
-  Chart.defaults.borderColor = css('--line');
-  state.charts[id] = new Chart(document.getElementById(id), config);
-}
-function statsHtml(d) {
-  if (!d.count) return '<span>No data yet.</span>';
-  return `<span><b>${d.mean.toFixed(1)}</b>mean storey</span><span><b>${d.std.toFixed(2)}</b>std</span>
-    <span><b>${d.binomial_std.toFixed(2)}</b>binomial std</span><span><b>B(${d.n}, ${d.p.toFixed(2)})</b>binomial fit</span><span><b>${d.count}</b>users</span>`;
-}
-function ranklist(el, rows, fmtKey = k => k) {
-  $(el).innerHTML = rows.length ? rows.map((r, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><span>${esc(fmtKey(r.key))}</span><span>${r.mean > 0 ? '+' : ''}${r.mean.toFixed(2)}</span><span class="sd">±${(r.std ?? 0).toFixed(2)}</span></li>`).join('')
-    : '<li><span></span><span class="muted">No data</span><span></span><span></span></li>';
-}
-
 // Analytics: one project (?project= or the last one used), read-only. A rewarded video comes first (public/js/ads.js).
 async function openAnalytics() {
   const urlKey = new URLSearchParams(location.search).get('project');
@@ -405,51 +386,148 @@ async function openAnalytics() {
   await loadAnalytics(proj);
 }
 
+// Dashboard colours come from the site tokens in site.css :root (checked with the dataviz validator).
+// Importance charts use pos/neg but never rely on colour: bars sit right/left of a zero line and carry signed labels.
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const VIZ = { main: css('--accent-ink'), second: css('--accent'), pos: css('--pos'), neg: css('--neg'), neutral: css('--muted'),
+  ink: css('--text'), mute: css('--text-2'), axis: css('--line-2') };
+const WATERMARK = 'mybto.web.app';
+// Draws "mybto.web.app" into every chart canvas (bottom-right of the plot) so it survives screenshots and saved images.
+if (window.Chart) {
+  Chart.register({
+    id: 'mybtoWatermark',
+    afterDraw(chart) {
+      const ca = chart.chartArea, ctx = chart.ctx;
+      if (!ca) return;
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = VIZ.ink;
+      ctx.font = `600 ${Math.max(8, Math.min(12, Math.round(chart.width / 40)))}px Inter, sans-serif`;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(WATERMARK, ca.right - 6, ca.bottom - 4);
+      ctx.restore();
+    },
+  });
+}
+// Signed value at the end of each horizontal bar (so positive and negative never rely on colour alone).
+const barValueLabels = {
+  id: 'mybtoValueLabels',
+  afterDatasetsDraw(chart) {
+    const meta = chart.getDatasetMeta(0), data = chart.data.datasets[0].data, ctx = chart.ctx, horiz = chart.options.indexAxis === 'y';
+    ctx.save();
+    ctx.fillStyle = VIZ.ink; ctx.font = '600 11px Inter, sans-serif';
+    meta.data.forEach((el, i) => {
+      const v = data[i];
+      const txt = horiz ? `${v > 0 ? '+' : ''}${v}` : String(v);
+      if (horiz) { ctx.textAlign = v >= 0 ? 'left' : 'right'; ctx.textBaseline = 'middle'; ctx.fillText(txt, el.x + (v >= 0 ? 5 : -5), el.y); }
+      else { ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(txt, el.x, el.y - 4); }
+    });
+    ctx.restore();
+  },
+};
+function wrapLabel(s, n = 24) {
+  const out = []; let line = '';
+  for (const w of String(s).split(' ')) {
+    if (line && (line + ' ' + w).length > n) { out.push(line); line = w; } else line = line ? line + ' ' + w : w;
+  }
+  if (line) out.push(line);
+  return out.length > 1 ? out : out[0];
+}
+function chart(id, config) {
+  state.charts[id]?.destroy();
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = VIZ.mute;
+  const o = config.options = config.options || {};
+  o.animation = false; o.responsive = true; o.maintainAspectRatio = false;
+  o.events = []; // not interactive: no hover, no tooltips
+  o.plugins = Object.assign({ tooltip: { enabled: false } }, o.plugins);
+  if (o.plugins.legend && o.plugins.legend.display !== false) o.plugins.legend.onClick = () => {};
+  state.charts[id] = new Chart(document.getElementById(id), config);
+}
+const AXIS = { color: VIZ.axis, width: 1 };
+
 async function loadAnalytics(proj) {
   $('#analysis-body').hidden = false;
   const a = await store.getAnalytics(proj.key);
   if (!a) { $('#a-basis').textContent = 'Analytics will appear here soon.'; return; }
   $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'} for ${proj.name}.`;
+  $('#analysis-body').classList.add('ready');
 
-  const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');
-  const prefOrder = ['higher', 'lower', 'none'];
-  for (const [k, d] of [['min', a.min_storey], ['max', a.max_storey]]) {
-    chart(`c-${k}`, {
-      data: { labels: d.histogram.map((_, i) => i), datasets: [
-        { type: 'bar', label: 'Users', data: d.histogram, backgroundColor: ink, barPercentage: 1, categoryPercentage: .9 },
-        { type: 'line', label: 'Binomial fit', data: d.binomial_expected.map(v => +v.toFixed(2)), borderColor: signal, borderWidth: 2, pointRadius: 0, tension: .3 },
-      ] },
-      options: { animation: false, plugins: { legend: { labels: { boxWidth: 10 } } }, scales: { x: { title: { display: true, text: 'Storey' }, grid: { display: false } }, y: { beginAtZero: true } } },
-    });
-    $(`#s-${k}`).innerHTML = statsHtml(d);
-  }
-  const fl = Object.fromEntries(Object.entries(Scoring.FACTORS).map(([k, [l]]) => [k, l]));
-  ranklist('#r-sun', a.sun_directions);
-  ranklist('#r-block', a.blocks, k => `Block ${k}`);
-  ranklist('#r-factor', a.factors, k => fl[k] || k);
-  chart('c-factor', {
-    type: 'bar',
-    data: { labels: a.factors.map(r => fl[r.key] || r.key), datasets: [
-      { label: 'Mean importance', data: a.factors.map(r => +r.mean.toFixed(2)), backgroundColor: a.factors.map(r => (r.mean >= 0 ? green : signal)) },
-    ] },
-    options: { indexAxis: 'y', animation: false, plugins: { legend: { display: false } },
-      scales: { x: { min: -5, max: 5 }, y: { grid: { display: false } } } },
-  });
-  const pref = a.floor_preference;
-  const prefLabels = { higher: 'Higher', lower: 'Lower', none: 'No preference' };
+  // KPI tiles
+  const pref = a.floor_preference || {};
+  const prefTotal = (pref.higher || 0) + (pref.lower || 0) + (pref.none || 0);
+  const pct = k => (prefTotal ? Math.round(100 * (pref[k] || 0) / prefTotal) : 0);
+  const kpi = (id, num, sub) => { $(`#${id} .kpi-num`).textContent = num; $(`#${id} .kpi-sub`).textContent = sub; };
+  kpi('k-rankings', String(a.users), `for ${proj.name}`);
+  kpi('k-min', a.min_storey.count ? String(Math.round(a.min_storey.mean)) : '-', a.min_storey.n ? `out of ${a.min_storey.n} storeys` : '');
+  kpi('k-higher', prefTotal ? `${pct('higher')}%` : '-', 'of rankings');
+
+  // Floor preference doughnut (tile) with a square-swatch legend
+  const prefDefs = [['higher', 'Higher', VIZ.main], ['lower', 'Lower', VIZ.second], ['none', 'No preference', VIZ.neutral]];
+  $('#pref-legend').innerHTML = prefDefs.map(([k, l, c]) => `<li><i style="background:${c}"></i>${l} <b>${pct(k)}%</b></li>`).join('');
   chart('c-pref', {
     type: 'doughnut',
-    data: { labels: prefOrder.map(k => prefLabels[k]), datasets: [{ data: prefOrder.map(k => pref[k] || 0), backgroundColor: [ink, signal, rule], borderWidth: 0 }] },
-    options: { animation: false, cutout: '62%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } },
+    data: { labels: prefDefs.map(d => d[1]), datasets: [{ data: prefDefs.map(d => pref[d[0]] || 0), backgroundColor: prefDefs.map(d => d[2]), borderWidth: 2, borderColor: css('--card') }] },
+    options: { cutout: '58%', plugins: { legend: { display: false } } },
   });
-  ranklist('#r-facility', a.facilities || []);
+
+  // Lowest / highest storey: overlapping smooth areas
+  const n = Math.max(a.min_storey.histogram.length, a.max_storey.histogram.length);
+  const area = (label, d, fill, line) => ({ label, data: d.histogram, fill: true, backgroundColor: fill, borderColor: line, borderWidth: 2, pointRadius: 0, tension: .35, cubicInterpolationMode: 'monotone' });
+  chart('c-storey', {
+    type: 'line',
+    data: { labels: Array.from({ length: n }, (_, i) => i), datasets: [
+      area('Lowest storey accepted', a.min_storey, 'rgba(10,135,160,.45)', VIZ.main),
+      area('Highest storey considered', a.max_storey, 'rgba(53,228,255,.4)', VIZ.main),
+    ] },
+    options: { plugins: { legend: { position: 'top', align: 'start', labels: { usePointStyle: true, pointStyle: 'rect', boxWidth: 10, boxHeight: 10, color: VIZ.ink } } },
+      scales: {
+        x: { grid: { display: false }, border: AXIS, title: { display: true, text: 'Storey' }, ticks: { maxTicksLimit: 10, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { display: false }, border: AXIS, title: { display: true, text: 'Rankings' }, ticks: { precision: 0 } },
+      } },
+  });
+
+  // Diverging horizontal bars: right of the zero line = wanted, left = avoided
+  const fl = Object.fromEntries(Object.entries(Scoring.FACTORS).map(([k, [l]]) => [k, l]));
+  const hbar = (id, rows, label, cardId, plotId) => {
+    if (!rows.length) {
+      $(`#${cardId}`).classList.add('nocanvas');
+      $(`#${cardId} .plot`).innerHTML = '<p class="muted nodata">No data yet.</p>';
+      return;
+    }
+    if (plotId) $(`#${plotId}`).style.height = `${rows.length * 34 + 64}px`;
+    chart(id, {
+      type: 'bar',
+      data: { labels: rows.map(r => wrapLabel(label(r.key))), datasets: [{ data: rows.map(r => +r.mean.toFixed(1)),
+        backgroundColor: rows.map(r => (r.mean >= 0 ? VIZ.pos : VIZ.neg)), borderRadius: 3, barPercentage: .7, categoryPercentage: .85 }] },
+      options: { indexAxis: 'y', layout: { padding: { right: 18 } }, plugins: { legend: { display: false } },
+        scales: {
+          x: { min: -5, max: 5, border: { display: false }, ticks: { stepSize: 5, callback: v => (v > 0 ? `+${v}` : v) },
+            grid: { color: c => (c.tick.value === 0 ? VIZ.ink : 'transparent'), lineWidth: 1 },
+            title: { display: true, text: 'Avoided  ←  average importance  →  Wanted' } },
+          y: { grid: { display: false }, border: AXIS, ticks: { color: VIZ.ink, autoSkip: false } },
+        } },
+      plugins: [barValueLabels],
+    });
+  };
+  hbar('c-sun', a.sun_directions, k => k, 'card-sun');
+  hbar('c-block', a.blocks, k => `Block ${k}`, 'card-block', 'p-block');
+  hbar('c-factor', a.factors, k => fl[k] || k, 'card-factor', 'p-factor');
+  hbar('c-facility', (a.facilities || []).slice(0, 10), k => k, 'card-facility', 'p-facility');
+
+  const types = Object.entries(a.flat_types || {});
+  if (!types.length) { $('#card-types').classList.add('nocanvas'); $('#card-types .plot').innerHTML = '<p class="muted nodata">No data yet.</p>'; return; }
   chart('c-types', {
     type: 'bar',
-    data: { labels: Object.keys(a.flat_types), datasets: [{ label: 'Lists', data: Object.values(a.flat_types), backgroundColor: ink }] },
-    options: { animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } },
+    data: { labels: types.map(t => wrapLabel(t[0], 14)), datasets: [{ data: types.map(t => t[1]), backgroundColor: VIZ.main, borderRadius: 3, barPercentage: .6 }] },
+    options: { layout: { padding: { top: 16 } }, plugins: { legend: { display: false } },
+      scales: { x: { grid: { display: false }, border: AXIS, ticks: { color: VIZ.ink } },
+        y: { beginAtZero: true, grid: { display: false }, border: AXIS, title: { display: true, text: 'Rankings' }, ticks: { precision: 0 } } } },
+    plugins: [barValueLabels],
   });
 }
-
 // ---------------------------------------------------------------- legend (drawer on the Rank page)
 function legendFigure(c) {
   return `<figure class="lg-fig"><img src="/img/legend/${c.img}" alt="${esc(c.alt)}" loading="lazy"></figure>`;

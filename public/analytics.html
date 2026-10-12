@@ -27,16 +27,27 @@
     <section class="tool"><div class="wrap">
       <div id="analysis-body" hidden>
         <p id="a-basis" class="basis"></p>
-        <div class="board">
-          <div class="panel"><span class="eyebrow">Figure 1</span><h3>Lowest storey people accept</h3><canvas id="c-min"></canvas><div class="stats-row" id="s-min"></div></div>
-          <div class="panel"><span class="eyebrow">Figure 2</span><h3>Highest storey people consider</h3><canvas id="c-max"></canvas><div class="stats-row" id="s-max"></div></div>
-          <div class="panel w4"><span class="eyebrow">Figure 3</span><h3>Sun direction</h3><ol class="ranklist" id="r-sun"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Figure 4</span><h3>Blocks</h3><ol class="ranklist" id="r-block"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Figure 5</span><h3>Factors, most to least important</h3><ol class="ranklist" id="r-factor"></ol></div>
-          <div class="panel w8"><span class="eyebrow">Figure 6</span><h3>Average importance by factor</h3><canvas id="c-factor"></canvas></div>
-          <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
-          <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities</h3><ol class="ranklist" id="r-facility"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types</h3><canvas id="c-types"></canvas></div>
+        <div class="dash">
+          <div class="half">
+            <div class="kpis">
+              <div class="kpi" id="k-rankings"><div class="kpi-title">Rankings</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+              <div class="kpi" id="k-min"><div class="kpi-title">Typical lowest storey</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+            </div>
+            <div class="card" id="card-storey"><h3>Lowest and highest storey</h3><div class="plot tall"><canvas id="c-storey"></canvas></div></div>
+          </div>
+          <div class="half">
+            <div class="kpis">
+              <div class="kpi" id="k-higher"><div class="kpi-title">Prefer higher floors</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+              <div class="kpi kpi-pref" id="k-pref"><div class="kpi-title">Floor preference</div><div class="pref-body"><ul class="swatches" id="pref-legend"></ul><div class="pref-plot"><canvas id="c-pref"></canvas></div></div></div>
+            </div>
+            <div class="card" id="card-sun"><h3>Most wanted sun direction</h3><div class="plot tall"><canvas id="c-sun"></canvas></div></div>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="card" id="card-block"><h3>Blocks</h3><div class="plot" id="p-block"><canvas id="c-block"></canvas></div></div>
+          <div class="card" id="card-factor"><h3>Factors, average importance</h3><div class="plot" id="p-factor"><canvas id="c-factor"></canvas></div></div>
+          <div class="card" id="card-facility"><h3>Facilities, top 10 most wanted</h3><div class="plot" id="p-facility"><canvas id="c-facility"></canvas></div></div>
+          <div class="card" id="card-types"><h3>Housing types</h3><div class="plot"><canvas id="c-types"></canvas></div></div>
         </div>
       </div>
     </div></section>
