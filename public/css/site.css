@@ -52,6 +52,15 @@ a { color: inherit; }
 .site-header .bar { display: flex; align-items: center; gap: 20px; height: 64px; }
 .logo { text-decoration: none; font: 700 22px/1 var(--head); color: var(--text); }
 .logo em { font-style: normal; color: var(--accent-ink); }
+.site-header .tabs { display: flex; gap: 6px; margin-left: auto; min-width: 0; }
+.tab { text-decoration: none; font: 600 14px/1.2 var(--sans); color: var(--text-2); padding: 9px 14px; border-radius: 8px; border: 1px solid transparent; text-align: center; }
+.tab:hover { color: var(--accent-ink); }
+.tab[aria-current="page"] { color: var(--accent-ink); background: var(--accent-soft); border-color: var(--accent); }
+@media (max-width: 640px) {
+  .site-header .bar { flex-wrap: wrap; height: auto; gap: 8px 12px; padding-top: 10px; padding-bottom: 10px; }
+  .site-header .tabs { width: 100%; margin-left: 0; }
+  .tab { flex: 1 1 0; padding: 8px 6px; font-size: 13px; }
+}
 
 /* ---------- buttons ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 14px/1 var(--sans); text-decoration: none; padding: 13px 20px; border: 1px solid var(--line-2); background: transparent; color: var(--text); cursor: pointer; border-radius: 8px; }

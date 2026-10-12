@@ -67,7 +67,7 @@ test('binomial pmf sums to 1 and fit matches mean', () => {
   assert.ok(Math.abs(d.binomial_expected.reduce((a, b) => a + b, 0) - 3) < 1e-9);
 });
 
-test('population counts only rankings with a finished survey', () => {
+test('population counts only rankings with consent', () => {
   const mk = (n, surveyed, project = 'p') => Array.from({ length: n }, (_, i) => ({ user_id: `${surveyed}${i}`, project, surveyed }));
   const { chosen, basis } = selectPopulation([...mk(30, true), ...mk(50, false), ...mk(5, true, 'q')]);
   assert.strictEqual(chosen.length, 35);
@@ -75,13 +75,10 @@ test('population counts only rankings with a finished survey', () => {
 });
 
 test('analysis ranks averages', () => {
-  const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', surveyed: true, survey: { age: '30-34' }, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
-  const a = analyse([sub({ sun: { NE: 5, SW: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { NE: 3, SW: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, [], 'all');
+  const sub = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', surveyed: true, survey: { consent: true }, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', weights: w, ...extra });
+  const a = analyse([sub({ sun: { NE: 5, SW: -2 }, corner: 4, mrt: 1, facility: { Shops: 2 } }), sub({ sun: { NE: 3, SW: 0 }, corner: 2, mrt: 3, facility: { Shops: 4 } })], { p: { maxStorey: 20 } }, 'all');
   assert.deepStrictEqual(a.sun_directions.map(r => r.key), ['NE', 'SW']);
   assert.strictEqual(a.factors[0].key, 'corner');
   assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
-  assert.deepStrictEqual(a.demographics.age, { '30-34': 2 });
-  assert.deepStrictEqual(Object.keys(a.demographics).length, 10);
-  const h = analyse([sub({}, { survey: { household: ['partner', 'children'] } }), sub({}, { survey: { household: ['partner'] } })], { p: { maxStorey: 20 } }, [], 'all');
-  assert.deepStrictEqual(h.demographics.household, { partner: 2, children: 1 });
+  assert.ok(!('demographics' in a) && !('most_flagged' in a), 'no demographics or unit ids in the result');
 });

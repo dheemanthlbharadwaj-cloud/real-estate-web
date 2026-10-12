@@ -18,25 +18,7 @@ const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has se
 const facilityHelp = name => (name === 'Future amenities/facilities' ? `${FUTURE_FAC_HELP} ${FACILITY_HELP}` : FACILITY_HELP);
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
 const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
-const SURVEY_KEY = 'mybto:survey';
-const SURVEY_VERSION = 2; // answers saved without v === 2 come from the old 4-question survey and are asked again
-const SURVEY_TITLES = { age: 'Age', household: 'Living with', application: 'Application status', current_home: 'Living now', bto_attempts: 'BTO tries so far',
-  work_area: 'Work or study area', car: 'Car', children_plan: 'Children in 5 years', income: 'Household income', queue_position: 'Queue position' };
-const SURVEY_KEYS = Object.keys(SURVEY_TITLES);
-const SURVEY_LABELS = {
-  age: { '21-24': '21 to 24', '25-29': '25 to 29', '30-34': '30 to 34', '35-39': '35 to 39', '40-44': '40 to 44', '45-49': '45 to 49', '50-54': '50 to 54', '55-plus': '55 and above', 'prefer-not': 'Prefer not to say' },
-  household: { partner: 'Partner or spouse', children: 'Children', parents: 'Parents', grandparents: 'Grandparents', siblings: 'Siblings', others: 'Others', alone: 'No one, I will live alone', 'prefer-not': 'Prefer not to say' },
-  application: { 'single-first': 'Single applicant, first-timer', 'single-second': 'Single applicant, second-timer', 'couple-first': 'Couple, both first-timers', 'couple-second': 'Couple, both second-timers', 'couple-mixed': 'Couple, one first-timer and one second-timer', 'prefer-not': 'Prefer not to say' },
-  current_home: { 'with-family': 'With family', rental: 'Rental flat', owned: 'Owned flat', others: 'Others', 'prefer-not': 'Prefer not to say' },
-  bto_attempts: { never: 'Never', '1-2': '1 to 2 times', '3-5': '3 to 5 times', '6-plus': 'More than 5 times', 'prefer-not': 'Prefer not to say' },
-  work_area: { central: 'Central', north: 'North', south: 'South', east: 'East', west: 'West', varies: 'Varies or works remotely', none: 'Not working or studying', 'prefer-not': 'Prefer not to say' },
-  car: { yes: 'Yes', no: 'No', undecided: 'Undecided', 'prefer-not': 'Prefer not to say' },
-  children_plan: { yes: 'Yes', no: 'No', already: 'Already have children', unsure: 'Unsure', 'prefer-not': 'Prefer not to say' },
-  income: { '3000-below': '$3,000 and below', '3001-4500': '$3,001 to $4,500', '4501-6000': '$4,501 to $6,000', '6001-7500': '$6,001 to $7,500', '7501-9000': '$7,501 to $9,000', '9000-above': 'Above $9,000', 'prefer-not': 'Prefer not to say' },
-  queue_position: { 'top-quarter': 'Top quarter of applicants', middle: 'Middle', 'bottom-quarter': 'Bottom quarter', none: 'Don’t have one or don’t know', 'prefer-not': 'Prefer not to say' },
-};
-
-const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, user: null, flags: [], charts: {}, weights: {} };
+const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, user: null, flags: [], charts: {}, weights: {}, consentedAt: null };
 
 async function api(path, opts = {}) {
   const r = await fetch(path, opts);
@@ -50,7 +32,7 @@ const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } ca
 // ---------------------------------------------------------------- page dispatch
 function route() {
   if (PAGE === 'shortlist') renderShortlist();
-  if (PAGE === 'analysis') loadAnalysis();
+  if (PAGE === 'analytics') openAnalytics();
   if (PAGE === 'rank' && new URLSearchParams(location.search).has('legend')) openLegend(new URLSearchParams(location.search).get('legend'));
   if (PAGE === 'account') renderAccount();
 }
@@ -89,6 +71,7 @@ async function init() {
 async function loadProject(key) {
   state.project = state.index.projects.find(p => p.key === key);
   lsSet('project', key);
+  window.dispatchEvent(new CustomEvent('mybto:project', { detail: key })); // the header's Analytics tab follows the project
   state.units = await api(`/data/units/${key}.json`);
   const p = state.project;
   if (PAGE !== 'rank') {
@@ -112,8 +95,8 @@ async function loadProject(key) {
   $('#f-min').value = lo; $('#f-max').value = hi;
   $('#f-pref input[value=none]').checked = true;
   state.weights = {};
-  $('#analysis-name').textContent = p.name;
-  $('#btn-analysis').href = `/analysis?project=${encodeURIComponent(key)}`;
+  $('#analytics-name').textContent = p.name;
+  $('#btn-analytics').href = `/analytics?project=${encodeURIComponent(key)}`;
   $('#btn-shortlisted').href = `/shortlist?project=${encodeURIComponent(key)}`;
   state.flags = await loadFlags();
   updateFlagCount();
@@ -212,7 +195,7 @@ function applySaved(list) {
 }
 
 // ---------------------------------------------------------------- schedule
-// Nothing is ranked until Rank units is pressed (and the survey is done).
+// Nothing is ranked until Rank units is pressed (and the ad and research notice have been seen).
 function showBlank() {
   state.ranked = [];
   state.hasRanked = false;
@@ -223,9 +206,12 @@ function showBlank() {
   renderFloorGroups();
 }
 
-function onRankClick() {
-  if (surveyDone()) runRank();
-  else openSurvey();
+// First press in a browser session: the ad pop-up with the research notice (public/js/ads.js). Later presses go straight through.
+async function onRankClick() {
+  const at = await window.MyBTOAds.interstitial();
+  if (!at) return;
+  state.consentedAt = at;
+  runRank();
 }
 
 function runRank() {
@@ -304,64 +290,19 @@ on('#results', 'click', e => {
   b.classList.toggle('on', state.flags.includes(b.dataset.id));
 });
 
-// Every ranking is saved (anonymously unless signed in) with the survey answers, so Analysis can use it.
+// Every ranking is saved (anonymously unless signed in). `survey` only holds the consent (firestore.rules requires the map).
 async function saveRanking() {
-  const survey = lsGet(SURVEY_KEY, null);
-  if (!surveyDone()) return;
+  if (!state.consentedAt) return;
   const f = readFilters();
   try {
     await store.saveList(state.project.key, {
       project_type: state.project.project_type, flat_types: f.flatTypes, blocks: f.blocks,
       min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights(),
-      survey: { ...Object.fromEntries(SURVEY_KEYS.map(k => [k, survey[k]])), consent: true, consented_at: survey.consented_at },
+      survey: { consent: true, consented_at: state.consentedAt },
       ranking: state.ranked.map(u => u.id),
     });
   } catch (err) { console.warn('ranking not saved:', err.message); }
 }
-
-// ---------------------------------------------------------------- survey (once per browser)
-function surveyDone() {
-  const sv = lsGet(SURVEY_KEY, null);
-  return !!(sv && sv.consent && sv.v === SURVEY_VERSION);
-}
-function openSurvey() {
-  const m = $('#survey');
-  if (!m) return;
-  const prev = lsGet(SURVEY_KEY, null) || {};
-  const form = $('#survey-form');
-  for (const k of SURVEY_KEYS) $$(`#survey-form input[name=${k}]`).forEach(i => { i.checked = Array.isArray(prev[k]) ? prev[k].includes(i.value) : i.value === prev[k]; });
-  $('#survey-err').textContent = '';
-  m.hidden = false;
-  document.body.classList.add('drawer-open');
-  form.querySelector('input').focus();
-}
-function closeSurvey() {
-  if (!$('#survey')) return;
-  $('#survey').hidden = true;
-  document.body.classList.remove('drawer-open');
-}
-// "No one, I will live alone" and "Prefer not to say" stand alone; any other choice clears them.
-on('#survey-form', 'change', e => {
-  const i = e.target;
-  if (i.name !== 'household' || i.type !== 'checkbox' || !i.checked) return;
-  const solo = ['alone', 'prefer-not'];
-  $$('#survey-form input[name=household]').forEach(o => { if (o !== i && (solo.includes(i.value) || solo.includes(o.value))) o.checked = false; });
-});
-on('#survey-form', 'submit', e => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const ans = {};
-  for (const k of SURVEY_KEYS) ans[k] = k === 'household' ? fd.getAll(k) : fd.get(k);
-  if (SURVEY_KEYS.some(k => k === 'household' ? !ans[k].length : !ans[k])) { $('#survey-err').textContent = 'Please answer every question.'; return; }
-  lsSet(SURVEY_KEY, { v: SURVEY_VERSION, ...ans,
-    consent: true, consented_at: new Date().toISOString() });
-  closeSurvey();
-  runRank();
-});
-document.addEventListener('click', e => {
-  if (e.target.closest('[data-close-survey]')) closeSurvey();
-  if (e.target.closest('#btn-edit-survey')) openSurvey();
-});
 
 // ---------------------------------------------------------------- shortlist
 async function loadFlags() {
@@ -428,7 +369,7 @@ on('#flag-list', 'drop', e => {
   moveFlag(from, to);
 });
 
-// ---------------------------------------------------------------- analysis
+// ---------------------------------------------------------------- analytics
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function chart(id, config) {
   state.charts[id]?.destroy();
@@ -448,46 +389,31 @@ function ranklist(el, rows, fmtKey = k => k) {
     : '<li><span></span><span class="muted">No data</span><span></span><span></span></li>';
 }
 
-async function loadAnalysis() {
-  const locked = $('#analysis-locked'), body = $('#analysis-body');
-  if (!surveyDone()) { locked.hidden = false; body.hidden = true; return; }
-  locked.hidden = true; body.hidden = false;
-  // Opened from a ranking: start on that project.
+// Analytics: one project (?project= or the last one used), read-only. A rewarded video comes first (public/js/ads.js).
+async function openAnalytics() {
   const urlKey = new URLSearchParams(location.search).get('project');
-  const fromUrl = state.index.projects.some(p => p.key === urlKey) ? urlKey : state.project?.key;
-  if (!state.analysisInit && fromUrl) {
-    $('#a-group').value = 'project';
-    $('#a-value').innerHTML = state.index.projects.map(p => `<option value="${esc(p.key)}">${esc(p.name)}</option>`).join('');
-    $('#a-value').value = fromUrl;
-  }
-  state.analysisInit = true;
-  const group = $('#a-group').value;
-  const sel = $('#a-value');
-  const values = group === 'project' ? state.index.projects.map(p => [p.key, p.name])
-    : group === 'project_type' ? ['Plus', 'Prime', 'Standard'].map(t => [t, t])
-    : group === 'flat_type' ? state.index.housing_types.map(t => [t, t]) : [];
-  $('#a-value-wrap').hidden = !values.length;
-  if (values.length && !values.some(([v]) => v === sel.value)) sel.innerHTML = values.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('');
+  const key = state.index.projects.some(p => p.key === urlKey) ? urlKey : state.project.key;
+  const proj = state.index.projects.find(p => p.key === key);
+  lsSet('project', key);
+  window.dispatchEvent(new CustomEvent('mybto:project', { detail: key }));
+  document.title = `${proj.name} Analytics · MyBTO`;
+  $('#analytics-name').textContent = proj.name;
+  if (!(await window.MyBTOAds.rewarded(key))) { location.href = '/'; return; }
+  await loadAnalytics(proj);
+}
+
+async function loadAnalytics(proj) {
+  $('#analysis-body').hidden = false;
   let a;
   try {
-    a = await api(`/api/analysis?${new URLSearchParams({ group, ...(values.length ? { value: sel.value } : {}) })}`,
+    a = await api(`/api/analysis?${new URLSearchParams({ group: 'project', value: proj.key })}`,
       { headers: { Authorization: `Bearer ${await store.idToken()}` } });
   } catch (err) {
     $('#a-basis').textContent = /operation-not-allowed|admin-restricted/.test(err.code || err.message)
-      ? 'Analysis isn’t switched on yet. Please check back soon.' : err.message;
+      ? 'Analytics isn’t switched on yet. Please check back soon.' : err.message;
     return;
   }
-  const names = Object.fromEntries(state.index.projects.map(p => [p.key, p.name]));
-  const projName = group === 'project' ? names[sel.value] : null;
-  if (projName) document.title = `${projName} Analysis · MyBTO`;
-  $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'}`
-    + (group === 'project' ? '.' : `: ${Object.entries(a.basis).map(([p, n]) => `${names[p] || p} ${n}`).join(' · ')}.`);
-  if ($('#r-who')) $('#r-who').innerHTML = Object.entries(SURVEY_LABELS).map(([q, labels]) => {
-    const counts = a.demographics?.[q] || {}, total = q === 'household' ? a.users : Object.values(counts).reduce((x, y) => x + y, 0); // household: several answers each, so percent of rankings
-    const title = SURVEY_TITLES[q];
-    return `<div><h4>${title}</h4><ol class="ranklist">${Object.entries(labels).map(([k, l]) => [l, counts[k] || 0]).sort((x, y) => y[1] - x[1])
-      .map(([l, n]) => `<li><span></span><span>${esc(l)}</span><span>${total ? Math.round((n / total) * 100) : 0}%</span></li>`).join('')}</ol></div>`;
-  }).join('');
+  $('#a-basis').textContent = `Based on ${a.users} saved ${a.users === 1 ? 'ranking' : 'rankings'} for ${proj.name}.`;
 
   const ink = css('--accent'), signal = css('--neg'), green = css('--pos'), rule = css('--muted');
   const prefOrder = ['higher', 'lower', 'none'];
@@ -526,13 +452,7 @@ async function loadAnalysis() {
     data: { labels: Object.keys(a.flat_types), datasets: [{ label: 'Lists', data: Object.values(a.flat_types), backgroundColor: ink }] },
     options: { animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } },
   });
-  $('#r-flagged').innerHTML = a.most_flagged.length ? a.most_flagged.slice(0, 10).map((f, i) => {
-    const [, block, storey, unit] = f.unit_id.split('-');
-    return `<li><span>${String(i + 1).padStart(2, '0')}</span><span>Blk ${esc(block)} #${esc(storey)}-${esc(unit)}</span><span>${f.count}×</span></li>`;
-  }).join('') : '<li><span></span><span class="muted">No flags yet</span><span></span></li>';
 }
-on('#a-group', 'change', loadAnalysis);
-on('#a-value', 'change', loadAnalysis);
 
 // ---------------------------------------------------------------- legend (drawer on the Rank page)
 function legendFigure(c) {
@@ -598,7 +518,6 @@ async function onAuthChange(user) {
     state.flags = lsGet(`flags:${state.project.key}`, []);
     updateFlagCount();
   }
-  if (PAGE === 'analysis') loadAnalysis();
 }
 
 on('#form-login', 'submit', async e => {

@@ -1,4 +1,4 @@
-"""Generate the inner pages (rank, shortlist, analysis) and the archived account page from one shared shell.
+"""Generate the inner pages (rank, shortlist, analytics) and the archived account page from one shared shell.
 
 Run after editing a page body below:  python3 pipeline/build_pages.py
 """
@@ -35,6 +35,7 @@ FOOT = """  </main>
   <script src="/js/site.js"></script>{extra}
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
+  <script src="/js/ads.js"></script>
   <script type="module" src="/js/app.js"></script>
 </body>
 </html>
@@ -44,7 +45,7 @@ PAGES = {
     "rank": dict(
         title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
         h1="Unofficial HDB BTO Flat Unit Ranker",
-        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 50 units and check out the Analysis page.",
+        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 50 units and check out the Analytics page.",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
     <section class="tool"><div class="wrap">
@@ -88,8 +89,7 @@ PAGES = {
             <div class="spacer"></div>
             <div id="after-rank" class="after-rank" hidden>
               <a id="btn-shortlisted" class="btn" href="/shortlist" target="_blank" rel="noopener"><span class="star-ico" aria-hidden="true">★</span> Shortlisted <span class="count" id="flag-count">0</span></a>
-              <a id="btn-analysis" class="btn primary" href="/analysis" target="_blank" rel="noopener"><span id="analysis-name">Project</span> Analysis</a>
-              <button type="button" class="linkbtn" id="btn-edit-survey">Edit survey answers</button>
+              <a id="btn-analytics" class="btn primary" href="/analytics" target="_blank" rel="noopener"><span id="analytics-name">Project</span> Analytics</a>
             </div>
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
@@ -101,98 +101,6 @@ PAGES = {
         </div>
       </div>
     </div></section>
-    <div id="survey" class="modal" hidden>
-      <div class="modal-scrim"></div>
-      <form id="survey-form" class="modal-panel" novalidate role="dialog" aria-modal="true" aria-labelledby="survey-title">
-        <h2 class="h3" id="survey-title">One last step to see your ranking</h2>
-        <p class="small muted">This tool is part of a final year research project at the National University of Singapore (NUS), built using data from the June 2026 BTO launch. Before showing your ranking, we’d like to ask 10 short questions (1-2 minutes).</p>
-        <fieldset><legend>How old are you?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="age" value="21-24" required><span>21 to 24</span></label>
-          <label class="chip"><input type="radio" name="age" value="25-29"><span>25 to 29</span></label>
-          <label class="chip"><input type="radio" name="age" value="30-34"><span>30 to 34</span></label>
-          <label class="chip"><input type="radio" name="age" value="35-39"><span>35 to 39</span></label>
-          <label class="chip"><input type="radio" name="age" value="40-44"><span>40 to 44</span></label>
-          <label class="chip"><input type="radio" name="age" value="45-49"><span>45 to 49</span></label>
-          <label class="chip"><input type="radio" name="age" value="50-54"><span>50 to 54</span></label>
-          <label class="chip"><input type="radio" name="age" value="55-plus"><span>55 and above</span></label>
-          <label class="chip"><input type="radio" name="age" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>Who will you live with in the new flat? (Select all that apply)</legend><div class="chips">
-          <label class="chip"><input type="checkbox" name="household" value="partner"><span>Partner or spouse</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="children"><span>Children</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="parents"><span>Parents</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="grandparents"><span>Grandparents</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="siblings"><span>Siblings</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="others"><span>Others</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="alone"><span>No one, I will live alone</span></label>
-          <label class="chip"><input type="checkbox" name="household" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>What is your application status?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="application" value="single-first" required><span>Single applicant, first-timer</span></label>
-          <label class="chip"><input type="radio" name="application" value="single-second"><span>Single applicant, second-timer</span></label>
-          <label class="chip"><input type="radio" name="application" value="couple-first"><span>Couple, both first-timers</span></label>
-          <label class="chip"><input type="radio" name="application" value="couple-second"><span>Couple, both second-timers</span></label>
-          <label class="chip"><input type="radio" name="application" value="couple-mixed"><span>Couple, one first-timer and one second-timer</span></label>
-          <label class="chip"><input type="radio" name="application" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>Where do you live now?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="current_home" value="with-family" required><span>With family</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="rental"><span>Rental flat</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="owned"><span>Owned flat</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="others"><span>Others</span></label>
-          <label class="chip"><input type="radio" name="current_home" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>How many times have you applied for a BTO before?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="bto_attempts" value="never" required><span>Never</span></label>
-          <label class="chip"><input type="radio" name="bto_attempts" value="1-2"><span>1 to 2 times</span></label>
-          <label class="chip"><input type="radio" name="bto_attempts" value="3-5"><span>3 to 5 times</span></label>
-          <label class="chip"><input type="radio" name="bto_attempts" value="6-plus"><span>More than 5 times</span></label>
-          <label class="chip"><input type="radio" name="bto_attempts" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>Where do you mainly work or study?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="work_area" value="central" required><span>Central</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="north"><span>North</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="south"><span>South</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="east"><span>East</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="west"><span>West</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="varies"><span>Varies or works remotely</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="none"><span>Not working or studying</span></label>
-          <label class="chip"><input type="radio" name="work_area" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>Do you own or plan to own a car?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="car" value="yes" required><span>Yes</span></label>
-          <label class="chip"><input type="radio" name="car" value="no"><span>No</span></label>
-          <label class="chip"><input type="radio" name="car" value="undecided"><span>Undecided</span></label>
-          <label class="chip"><input type="radio" name="car" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>Do you plan to have children in the next 5 years?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="children_plan" value="yes" required><span>Yes</span></label>
-          <label class="chip"><input type="radio" name="children_plan" value="no"><span>No</span></label>
-          <label class="chip"><input type="radio" name="children_plan" value="already"><span>Already have children</span></label>
-          <label class="chip"><input type="radio" name="children_plan" value="unsure"><span>Unsure</span></label>
-          <label class="chip"><input type="radio" name="children_plan" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>What is your monthly household income?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="income" value="3000-below" required><span>$3,000 and below</span></label>
-          <label class="chip"><input type="radio" name="income" value="3001-4500"><span>$3,001 to $4,500</span></label>
-          <label class="chip"><input type="radio" name="income" value="4501-6000"><span>$4,501 to $6,000</span></label>
-          <label class="chip"><input type="radio" name="income" value="6001-7500"><span>$6,001 to $7,500</span></label>
-          <label class="chip"><input type="radio" name="income" value="7501-9000"><span>$7,501 to $9,000</span></label>
-          <label class="chip"><input type="radio" name="income" value="9000-above"><span>Above $9,000</span></label>
-          <label class="chip"><input type="radio" name="income" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <fieldset><legend>How would you rate your queue position (if you have one)?</legend><div class="chips">
-          <label class="chip"><input type="radio" name="queue_position" value="top-quarter" required><span>Top quarter of applicants</span></label>
-          <label class="chip"><input type="radio" name="queue_position" value="middle"><span>Middle</span></label>
-          <label class="chip"><input type="radio" name="queue_position" value="bottom-quarter"><span>Bottom quarter</span></label>
-          <label class="chip"><input type="radio" name="queue_position" value="none"><span>Don’t have one or don’t know</span></label>
-          <label class="chip"><input type="radio" name="queue_position" value="prefer-not"><span>Prefer not to say</span></label>
-        </div></fieldset>
-        <p class="consent small">By selecting “I agree, show my ranking”, you confirm that you are 21 or older and agree to your answers and ranking being stored anonymously and used only for this NUS research project. Questions? Contact Lim Xin Quan (<a href="mailto:limxinquan@u.nus.edu">limxinquan@u.nus.edu</a>) (Student Researcher) or Dr. Grace Wong (<a href="mailto:bizgwong@nus.edu.sg">bizgwong@nus.edu.sg</a>) (Supervisor)</p>
-        <p class="err small" id="survey-err"></p>
-        <div class="modal-btns"><button type="button" class="btn ghost" data-close-survey>Not now</button><button type="submit" class="btn primary" id="survey-ok">I agree, show my ranking</button></div>
-      </form>
-    </div>
     <aside id="legend-drawer" class="drawer" hidden aria-label="What each factor means">
       <div class="drawer-scrim" data-close-legend></div>
       <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="legend-title">
@@ -212,40 +120,26 @@ PAGES = {
       <ol id="flag-list" class="shortlist"></ol>
     </div></section>
 """),
-    "analysis": dict(
-        title="Analysis", img="garden-brook.webp", kicker="Analysis", color="forest",
+    "analytics": dict(
+        title="Analytics", img="garden-brook.webp", kicker="Analytics", color="forest",
         h1="What other buyers <em>want.</em>",
-        lede="Built from everyone’s saved rankings for this project.", robots=True,
+        lede="Built from everyone’s saved rankings for <span id=\"analytics-name\"></span>.", robots=True,
         desc="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
         body="""
     <section class="tool"><div class="wrap">
-      <div id="analysis-locked" class="locked" hidden>
-        <span class="label">Rank first</span>
-        <h2>Rank a project to see this</h2>
-        <p id="locked-text">Rank units for any project and answer the four quick questions. Analysis opens right after.</p>
-        <a class="btn primary" href="/">Rank units <span class="arr">→</span></a>
-      </div>
       <div id="analysis-body" hidden>
-        <div class="filters-row">
-          <label><span class="eyebrow">View by</span><br><select id="a-group">
-            <option value="project">Project</option><option value="all">All projects</option><option value="project_type">Project type</option>
-            <option value="flat_type">Housing type</option></select></label>
-          <label id="a-value-wrap" hidden><span class="eyebrow">&nbsp;</span><br><select id="a-value"></select></label>
-        </div>
         <p id="a-basis" class="basis"></p>
         <div class="board">
-          <div class="panel"><span class="eyebrow">Figure 1</span><h3>Lowest storey people will accept</h3><canvas id="c-min"></canvas><div class="stats-row" id="s-min"></div></div>
+          <div class="panel"><span class="eyebrow">Figure 1</span><h3>Lowest storey people accept</h3><canvas id="c-min"></canvas><div class="stats-row" id="s-min"></div></div>
           <div class="panel"><span class="eyebrow">Figure 2</span><h3>Highest storey people consider</h3><canvas id="c-max"></canvas><div class="stats-row" id="s-max"></div></div>
-          <div class="panel w4"><span class="eyebrow">Figure 3</span><h3>Sun direction, most to least wanted</h3><ol class="ranklist" id="r-sun"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Figure 4</span><h3>Blocks, most to least wanted</h3><ol class="ranklist" id="r-block"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Figure 3</span><h3>Sun direction</h3><ol class="ranklist" id="r-sun"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Figure 4</span><h3>Blocks</h3><ol class="ranklist" id="r-block"></ol></div>
           <div class="panel w4"><span class="eyebrow">Figure 5</span><h3>Factors, most to least important</h3><ol class="ranklist" id="r-factor"></ol></div>
           <div class="panel w8"><span class="eyebrow">Figure 6</span><h3>Average importance by factor</h3><canvas id="c-factor"></canvas></div>
           <div class="panel w4"><span class="eyebrow">Figure 7</span><h3>Floor preference</h3><canvas id="c-pref"></canvas></div>
-          <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities, most to least wanted</h3><ol class="ranklist" id="r-facility"></ol></div>
-          <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types searched</h3><canvas id="c-types"></canvas></div>
-          <div class="panel w12"><span class="eyebrow">Figure 10</span><h3>Who ranked</h3><div class="who" id="r-who"></div></div>
-          <div class="panel w12"><span class="eyebrow">Figure 11</span><h3>Most shortlisted units</h3><ol class="ranklist" id="r-flagged"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Figure 8</span><h3>Facilities</h3><ol class="ranklist" id="r-facility"></ol></div>
+          <div class="panel w4"><span class="eyebrow">Figure 9</span><h3>Housing types</h3><canvas id="c-types"></canvas></div>
         </div>
       </div>
     </div></section>

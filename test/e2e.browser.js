@@ -4,6 +4,7 @@ const { spawn, execSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require(path.join(execSync('npm root -g').toString().trim(), 'playwright'));
+const ExcelJS = require('exceljs');
 
 const SHOTS = process.env.SHOTS_DIR;
 const PORT = 3123;
@@ -17,6 +18,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
   const errors = [];
   try {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    await ctx.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; }); // the 5 s Rank pop-up stays real; the 15 s video is shortened
     await ctx.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
       const name = route.request().url().split('/').pop();
       route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', name), 'utf8') });
@@ -26,46 +28,34 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     p.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
 
     const rows = () => p.$$eval('#results tbody tr', r => r.filter(x => x.querySelector('.rk')).length);
-    const SURVEY_ANSWERS = [['age', '30-34'], ['household', 'partner'], ['household', 'children'], ['application', 'couple-first'], ['current_home', 'with-family'],
-      ['bto_attempts', 'never'], ['work_area', 'west'], ['car', 'undecided'], ['children_plan', 'yes'], ['income', '6001-7500'], ['queue_position', 'middle']];
-    const surveyAnswer = async (skip) => {
-      for (const [k, v] of SURVEY_ANSWERS) if (k !== skip) await p.check(`#survey-form input[name=${k}][value="${v}"]`);
-    };
     await p.goto(`${base}/rank`);
     await p.waitForSelector('#floor-groups .fg-card');
     check((await p.textContent('#result-count')).startsWith('0') && (await rows()) === 0, 'nothing ranked before pressing Rank units');
     check((await p.$$eval('#floor-groups .fg-card.blank', c => c.length)) === 3, 'highest, middlemost and lowest are blank before ranking');
-    check(await p.isHidden('#after-rank'), 'Shortlisted and Analysis buttons hidden before ranking');
+    check(await p.isHidden('#after-rank'), 'Shortlisted and Analytics buttons hidden before ranking');
     check(!(await p.$('#btn-csv')) && !(await p.$('#btn-save')) && !(await p.$('#queue')), 'no CSV, Save list or queue box on the page');
-    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header has no nav and no menu button');
+    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header has no menu button');
+    await p.waitForFunction(() => document.querySelector('#tab-analytics-name').textContent === 'Kebun Baru Breeze');
+    check((await p.$$eval('.site-header .tab', t => t.map(x => x.textContent.trim()))).join() === 'Rank units,Kebun Baru Breeze Analytics', 'header tabs: Rank units and the project Analytics');
+    check((await p.getAttribute('#tab-rank', 'aria-current')) === 'page' && !(await p.getAttribute('#tab-analytics', 'aria-current')), 'Rank units tab is marked active');
 
     await p.click('#btn-rank');
-    await p.waitForSelector('#survey:not([hidden])');
-    check(true, 'Rank units opens the survey first');
-    await p.click('#survey-ok');
-    check(await p.isVisible('#survey'), 'survey needs every answer');
-    const hh = async v => p.isChecked(`#survey-form input[name=household][value="${v}"]`);
-    await p.check('#survey-form input[name=household][value="partner"]');
-    await p.check('#survey-form input[name=household][value="children"]');
-    check((await hh('partner')) && (await hh('children')), 'household allows several choices');
-    await p.check('#survey-form input[name=household][value="alone"]');
-    check(!(await hh('partner')) && !(await hh('children')) && (await hh('alone')), 'living alone unchecks the others');
-    await p.check('#survey-form input[name=household][value="prefer-not"]');
-    check(!(await hh('alone')) && (await hh('prefer-not')), 'prefer not to say unchecks living alone');
-    await p.check('#survey-form input[name=household][value="parents"]');
-    check(!(await hh('prefer-not')) && (await hh('parents')), 'another choice unchecks prefer not to say');
-    await p.uncheck('#survey-form input[name=household][value="parents"]');
-    await surveyAnswer('car');
-    await p.click('#survey-ok');
-    check((await p.isVisible('#survey')) && (await p.textContent('#survey-err')) === 'Please answer every question.', 'one missing answer shows the error and keeps the survey open');
-    await surveyAnswer();
-    check(!(await p.$('#survey-form [name=queue_number]')), 'survey has no queue number box');
-    await p.click('#survey-ok');
-    await p.waitForSelector('#survey', { state: 'hidden' });
+    await p.waitForSelector('.ad-panel');
+    check((await p.textContent('.ad-panel .ad-tag')) === 'Advertisement' && (await p.$$eval('.ad-panel iframe, .ad-panel script', n => n.length)) === 0, 'first Rank click opens the ad pop-up (placeholder, no iframe or ad script)');
+    check((await p.isDisabled('[data-ad-go]')) && /^Show my ranking in \d/.test(await p.textContent('[data-ad-go]')), 'Show my ranking is disabled during the countdown');
+    check((await p.textContent('.ad-panel .consent')).includes('21 or older') && (await p.$$eval('.ad-panel .consent a[href^="mailto:"]', a => a.length)) === 2, 'research notice with two mailto links under the ad');
+    check(!(await p.$('#survey')) && !(await p.$('#btn-edit-survey')) && !(await p.$('.ad-panel input')), 'no survey questions and no Edit survey link');
+    await p.click('[data-ad-cancel]');
+    check(!(await p.$('.ad-panel')) && (await rows()) === 0, 'Not now closes the pop-up and ranks nothing');
+    await p.click('#btn-rank');
+    await p.waitForSelector('[data-ad-go][disabled]');
+    await p.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    check((await p.textContent('[data-ad-go]')) === 'Show my ranking', 'button turns on after the 5 second countdown');
+    await p.click('[data-ad-go]');
     await p.waitForSelector('#results tbody .rk');
     check(Number((await p.textContent('#result-count')).replace(/\D/g, '')) > 0, 'ranking loads after agreeing');
     check((await rows()) === 50, 'only the top 50 units are shown');
-    check(await p.isVisible('#after-rank'), 'Shortlisted and Analysis buttons appear after ranking');
+    check(await p.isVisible('#after-rank'), 'Shortlisted and Analytics buttons appear after ranking');
     const head = await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''));
     check(head.slice(0, 7).join('|') === '#||Unit|Score|Type · facing|Chute|MRT' && head.length > 7, `chute, MRT and one column per facility (${head.length - 7} facilities)`);
     check((await p.$$eval('#results tbody tr td:nth-child(6) .nf', n => n.every(x => /^(Near|Far)$/.test(x.textContent)))), 'chute shows near or far');
@@ -73,16 +63,18 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     const tagText = await p.$$eval('#results .tags .tag', t => [...new Set(t.map(x => x.textContent.replace(/\d+/, 'N')))]);
     check(tagText.every(t => ['corner', 'corridor', 'near MRT', 'chute within N m'].includes(t)), `only corner/corridor, MRT and chute tags (${tagText.join(', ')})`);
     const saved = await p.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('fs:submissions/')).map(k => JSON.parse(localStorage.getItem(k))));
-    check(saved.length === 1 && saved[0].survey.consent && saved[0].queue_number === undefined && saved[0].survey.queue_number === undefined && saved[0].ranking.length > 50, `ranking saved with survey and every unit (${saved[0]?.ranking.length})`);
+    check(saved.length === 1 && saved[0].survey.consent === true && Object.keys(saved[0].survey).sort().join() === 'consent,consented_at' && saved[0].ranking.length > 50, `ranking saved with consent only and every unit (${saved[0]?.ranking.length})`);
 
     await p.selectOption('#project', 'berlayar-rise-7');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
     check(true, 'changing project clears the ranking');
     check((await p.$$eval('#f-types input', i => i.map(x => x.type + ':' + x.value))).join() === 'radio:2-Room Flexi,radio:3-Room,radio:4-Room', 'one housing type at a time, 2-Room Flexi as one choice');
-    check((await p.textContent('#analysis-name')) === 'Berlayar Rise', 'Analysis button names the project');
+    check((await p.textContent('#analytics-name')) === 'Berlayar Rise', 'Analytics button names the project');
+    await p.waitForFunction(() => document.querySelector('#tab-analytics').textContent.trim() === 'Berlayar Rise Analytics');
+    check((await p.getAttribute('#tab-analytics', 'href')) === '/analytics?project=berlayar-rise-7', 'Analytics tab follows the selected project live');
     await p.click('#btn-rank');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('988'));
-    check(await p.isHidden('#survey'), 'survey only asked once per browser');
+    check(!(await p.$('.ad-panel')), 'ad pop-up only on the first Rank click of the session');
     check((await p.$$eval('#results tbody .rk', r => r.map(x => x.textContent))).every(x => x === '1'), 'all importances 0: every unit ranks 1');
     check((await p.$$eval('#floor-groups h3', h => h.map(x => x.textContent))).join() === 'Highest unit(s),Middlemost unit(s),Lowest unit(s)', 'highest, middlemost and lowest units shown');
     await p.click('#f-pref label:has-text("Higher")');
@@ -121,33 +113,67 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
 
     await p.click('.star >> nth=0'); await p.click('.star >> nth=1'); await p.click('.star >> nth=2');
     check((await p.textContent('#flag-count')) === '3', 'Shortlisted button counts three starred units');
-    check((await p.getAttribute('#btn-shortlisted', 'target')) === '_blank' && (await p.getAttribute('#btn-analysis', 'target')) === '_blank', 'Shortlisted and Analysis open in a new tab');
+    check((await p.getAttribute('#btn-shortlisted', 'target')) === '_blank' && (await p.getAttribute('#btn-analytics', 'target')) === '_blank', 'Shortlisted and Analytics open in a new tab');
     const [sl] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-shortlisted')]);
     await sl.waitForSelector('#flag-list li .addr');
     const first = await sl.textContent('#flag-list li:nth-child(1) .addr');
     await sl.click('#flag-list li:nth-child(2) [data-act=up]');
     check((await sl.textContent('#flag-list li:nth-child(2) .addr')) === first, 'shortlist reorders');
     await sl.close();
-    const [an] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-analysis')]);
+    const [an] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-analytics')]);
+    await an.waitForSelector('.ad-panel');
+    check((await an.isHidden('#analysis-body')) && (await an.isDisabled('[data-ad-go]')) && /^Continue in \d/.test(await an.textContent('[data-ad-go]')), 'Analytics shows the rewarded video gate with a countdown before any content');
+    check((await an.textContent('.ad-panel .ad-tag')) === 'Advertisement', 'rewarded video placeholder is labelled Advertisement');
+    await an.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await an.click('[data-ad-go]');
     await an.waitForSelector('#analysis-body:not([hidden])');
     await an.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
-    check((await an.inputValue('#a-value')) === 'berlayar-rise-7' && (await an.title()).startsWith('Berlayar Rise Analysis'), 'Analysis opens on the ranked project');
-    check((await an.$$eval('#r-sun li', l => l.length)) === 4, 'analysis shows the 4 sun directions');
-    check((await an.$$eval('#r-who h4', h => h.length)) === 10, 'analysis shows who ranked (10 questions)');
-    await an.selectOption('#a-group', 'project_type');
-    await an.waitForFunction(() => /Kebun Baru/.test(document.querySelector('#a-basis').textContent));
-    check(true, 'analysis by project type (Plus)');
-    if (SHOTS) await an.screenshot({ path: `${SHOTS}/analysis.png`, fullPage: true });
+    check((await an.title()).startsWith('Berlayar Rise Analytics') && (await an.textContent('h1')).includes('want'), 'Analytics opens on the ranked project');
+    check((await an.$$eval('#r-sun li', l => l.length)) === 4, 'analytics shows the 4 sun directions');
+    check((await an.$$eval('#analysis-body select, #analysis-body input, #analysis-body button', n => n.length)) === 0 && !(await an.$('#a-group')), 'analytics has no filters or controls');
+    const anText = await an.evaluate(() => document.body.innerText);
+    check(!/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(anText) && !/Most shortlisted|Who ranked|Analysis/.test(anText), 'analytics page shows no unit ids, no shortlist list, no Who ranked');
+    const apiJson = await an.evaluate(async () => { const r = await fetch('/api/analysis?group=project&value=berlayar-rise-7', { headers: { Authorization: 'Bearer fake-x' } }); return r.json(); });
+    check(!('most_flagged' in apiJson) && !('demographics' in apiJson) && apiJson.users > 0, 'API response has no most_flagged or demographics');
+    await an.reload();
+    await an.waitForSelector('#analysis-body:not([hidden])');
+    check(!(await an.$('.ad-panel')), 'unlock is remembered for the browser session');
     await an.close();
+    const redirectOk = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8')).redirects.some(r => r.source === '/analysis' && r.destination === '/analytics');
+    check(redirectOk, 'vercel.json redirects /analysis to /analytics');
 
     const fresh = await browser.newContext();
     await fresh.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
       route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', route.request().url().split('/').pop()), 'utf8') });
     });
     const g = await fresh.newPage();
-    await g.goto(`${base}/analysis`);
-    check(await g.waitForSelector('#analysis-locked:not([hidden])', { timeout: 5000 }).then(() => true, () => false), 'Analysis locked until the survey is done');
+    await g.goto(`${base}/analytics?project=sembawang-brook-6`);
+    await g.waitForSelector('.ad-panel');
+    check((await g.isHidden('#analysis-body')) && (await g.textContent('#a-basis')) === '', 'a new browser session gets the video gate and nothing loads behind it');
     await fresh.close();
+
+    const dash = await ctx.newPage();
+    await dash.goto(`${base}/archive/dashboard`);
+    check((await dash.getAttribute('meta[name=robots]', 'content')).includes('noindex'), 'dashboard is noindex');
+    await dash.fill('#pw', 'wrong');
+    await dash.click('#login button');
+    await dash.waitForFunction(() => /Wrong password/.test(document.querySelector('#msg').textContent), null, { timeout: 8000 });
+    check(await dash.isHidden('#panel'), 'dashboard rejects a wrong password');
+    await dash.fill('#pw', 'test');
+    await dash.click('#login button');
+    await dash.waitForSelector('#panel:not([hidden])');
+    check((await dash.$$eval('#rows tr', r => r.length)) > 0 && /rankings saved/.test(await dash.textContent('#totals')), 'dashboard shows the summary after the right password');
+    const [dl] = await Promise.all([dash.waitForEvent('download'), dash.click('#dl')]);
+    check(/^mybto-rankings-\d{4}-\d{2}-\d{2}\.xlsx$/.test(dl.suggestedFilename()), `Excel download named ${dl.suggestedFilename()}`);
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.readFile(await dl.path());
+    check(['Rankings', 'Shortlists', 'Read me'].every(n => wb.getWorksheet(n)), 'workbook has Rankings, Shortlists and Read me sheets');
+    check(wb.getWorksheet('Rankings').rowCount > 1 && wb.getWorksheet('Shortlists').rowCount > 1, `Rankings has ${wb.getWorksheet('Rankings').rowCount - 1} rows`);
+    const headers = wb.getWorksheet('Rankings').getRow(1).values.filter(Boolean);
+    check(['project', 'anonymous_user', 'floor_pref', 'weight_corner', 'sun_weights', 'consent', 'survey_age', 'top_50_units'].every(h => headers.includes(h)), 'Rankings has the expected columns, including legacy survey answers');
+    const raw = await dash.evaluate(async () => { const r = await fetch('/api/export', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test', format: 'xlsx' }) }); return [r.headers.get('content-type'), r.headers.get('content-disposition')]; });
+    check(raw[0].includes('spreadsheetml') && raw[1].startsWith('attachment'), 'export returns the xlsx content type as an attachment');
+    await dash.close();
 
     await p.goto(`${base}/archive/account`);
     await p.fill('#form-register [name=email]', 'buyer@example.com');
@@ -172,7 +198,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/`);
     await p.waitForSelector('#floor-groups .fg-card');
     check(true, 'the first page is the ranking page');
-    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header still has no nav and no menu button');
+    check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header still has no menu button');
     check(!(await p.$('.site-footer a[href="/account"]')), 'no account link in the footer');
     await p.goto(`${base}/archive/home`);
     check((await p.title()).startsWith('MyBTO'), 'archived home page is titled MyBTO');
@@ -200,7 +226,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/analysis', '/archive/account', '/archive/home']) {
+    for (const path of ['/', '/rank', '/shortlist', '/analytics', '/archive/account', '/archive/home', '/archive/dashboard']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);
@@ -218,10 +244,41 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await phone.goto(`${base}/rank`);
     await phone.waitForSelector('#floor-groups .fg-card');
     await phone.click('#btn-rank');
+    await phone.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 }); // a new tab is a new browser session, so the ad shows again
+    await phone.click('[data-ad-go]');
     await phone.waitForSelector('#results tbody .rk');
     const overflow = await phone.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     check(overflow <= 0, `no horizontal page scroll on phone (overflow ${overflow}px)`);
     if (SHOTS) await phone.screenshot({ path: `${SHOTS}/phone.png` });
+
+    // Phone (390 px): header tabs, ad pop-up, Analytics gate and page, none of them scroll sideways.
+    const pc = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await pc.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; });
+    await pc.route(/gstatic\.com\/firebasejs\/.*\/(firebase-[a-z]+\.js)$/, (route) => {
+      route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', route.request().url().split('/').pop()), 'utf8') });
+    });
+    const ph = await pc.newPage();
+    const over = () => ph.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    await ph.goto(`${base}/rank`);
+    await ph.waitForFunction(() => document.querySelector('#tab-analytics-name').textContent === 'Kebun Baru Breeze');
+    check((await over()) <= 0, `phone: header with tabs does not scroll sideways (overflow ${await over()}px)`);
+    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-header.png`, clip: { x: 0, y: 0, width: 390, height: 260 } });
+    await ph.click('#btn-rank');
+    await ph.waitForSelector('.ad-panel');
+    check((await over()) <= 0 && (await ph.$eval('.ad-slot', e => e.getBoundingClientRect().width)) === 300, 'phone: ad pop-up fits, ad slot is 300 wide');
+    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-ad-modal.png` });
+    await ph.click('[data-ad-cancel]');
+    await ph.goto(`${base}/analytics?project=berlayar-rise-7`);
+    await ph.waitForSelector('.ad-panel');
+    check((await over()) <= 0, 'phone: Analytics gate fits');
+    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics-gate.png` });
+    await ph.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await ph.click('[data-ad-go]');
+    await ph.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
+    await ph.waitForTimeout(400);
+    check((await over()) <= 0, `phone: Analytics page does not scroll sideways (overflow ${await over()}px)`);
+    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics.png`, fullPage: true });
+    await pc.close();
 
     check(errors.length === 0, `no browser errors${errors.length ? `: ${errors.join(' | ')}` : ''}`);
     console.log('ALL BROWSER CHECKS PASSED');

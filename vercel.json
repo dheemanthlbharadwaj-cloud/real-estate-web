@@ -29,6 +29,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/analysis",
+      "destination": "/analytics",
+      "permanent": false
+    },
+    {
       "source": "/account",
       "destination": "/archive/account",
       "permanent": false

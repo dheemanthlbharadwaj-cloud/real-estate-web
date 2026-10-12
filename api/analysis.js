@@ -20,23 +20,17 @@ function sampleData() {
   return require('../lib/sample_submissions.json');
 }
 
-// All saved rankings + flags. A ranking counts once its owner has answered the survey.
+// All saved rankings. A ranking counts once its owner has agreed to the research consent note.
 async function loadAll() {
   if (cache.data && Date.now() - cache.at < CACHE_MS) return cache.data;
-  const [subSnap, flagSnap] = await Promise.all([db().collection('submissions').get(), db().collection('flags').get()]);
-  const subs = subSnap.docs.map(d => d.data());
-  const real = subs.map(s => ({
+  const subSnap = await db().collection('submissions').get();
+  const real = subSnap.docs.map(d => d.data()).map(s => ({
     user_id: s.uid, surveyed: !!(s.survey && s.survey.consent), survey: s.survey || null, is_sample: false, project: s.project, project_type: s.project_type,
     flat_types: s.flat_types || [], blocks: s.blocks || [],
     min_storey: s.min_storey ?? null, max_storey: s.max_storey ?? null, floor_pref: s.floor_pref || 'none',
     weights: s.weights || {},
   }));
-  const realFlags = flagSnap.docs.flatMap(d => {
-    const f = d.data();
-    return (f.unit_ids || []).map(unit_id => ({ user_id: f.uid, project: f.project, unit_id }));
-  });
-  const sample = sampleData();
-  cache = { at: Date.now(), data: { subs: [...real, ...sample.submissions], flags: [...realFlags, ...sample.flags] } };
+  cache = { at: Date.now(), data: { subs: [...real, ...sampleData().submissions] } };
   return cache.data;
 }
 
@@ -48,9 +42,9 @@ const makeHandler = ({ verifyToken, load }) => async (req, res) => {
   try { user = await verifyToken(token); } catch { return res.status(401).json({ error: 'Session expired, please sign in again' }); }
   const group = GROUPS.includes(req.query.group) ? req.query.group : 'all';
   try {
-    const { subs, flags } = await load();
+    const { subs } = await load();
     res.setHeader('Cache-Control', 'private, no-store');
-    res.status(200).json(analyse(subs, projectMeta(), flags, group, req.query.value || null));
+    res.status(200).json(analyse(subs, projectMeta(), group, req.query.value || null));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Could not compute analysis' });
@@ -60,7 +54,7 @@ const makeHandler = ({ verifyToken, load }) => async (req, res) => {
 // With a service account: real saved lists from Firestore plus the sample. Without one: tokens are
 // still verified (against Google's public certificates) and the sample data is shown on its own.
 const HAS_ADMIN = !!process.env.FIREBASE_SERVICE_ACCOUNT;
-const sampleOnly = async () => { const s = sampleData(); return { subs: s.submissions, flags: s.flags }; };
+const sampleOnly = async () => ({ subs: sampleData().submissions });
 module.exports = makeHandler({
   verifyToken: t => (HAS_ADMIN ? auth().verifyIdToken(t) : verifyIdToken(t, process.env.FIREBASE_PROJECT_ID)),
   load: HAS_ADMIN ? loadAll : sampleOnly,
