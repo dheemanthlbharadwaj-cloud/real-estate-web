@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "data" / "units"
 
 LIFT_NEAR_M, CHUTE_NEAR_M, MRT_NEAR_M, CLEARANCE_M = 15, 10, 100, 30
+MSCP_NEAR_M = 100
 # Berlayar Rise is the only project with a station on its site plan (Telok Blangah MRT). Rough
 # block-to-station distances measured off that plan; every other block is well over 100 m away.
 BERLAYAR_MRT_M = {"201A": (45, 70), "200B": (85, 110)}
@@ -53,7 +54,16 @@ def housing(flat_type):
 
 
 SAMPLE_FIELDS = ["facing", "position", "lift_m", "chute_m", "roof_access", "neighbour_m", "opposite_m",
-                 "mrt_m", "facilities_has", "facilities_near"]
+                 "mrt_m", "facilities_has", "facilities_near", "wind_open"]
+
+
+def load_mscp():
+    """Multi-storey car park distance per block (metres), estimated by hand from the brochure site plans."""
+    path = ROOT / "pipeline" / "raw" / "mscp_distance.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+MSCP = load_mscp()
 
 
 def stack_attrs(rng, block_idx, i, n_stacks):
@@ -70,6 +80,15 @@ def stack_attrs(rng, block_idx, i, n_stacks):
         "facilities_near": sorted(rng.sample(FACILITIES_RANDOM, rng.choice([0, 1, 2, 3, 4]))),
         "roof_floors": [2] if rng.random() < 0.25 else [],
     }
+
+
+def add_wind_open(a, wind_rng):
+    """Placeholder for "no block within 30 m on the SE to E side". Real site geometry is not available for most
+    projects, so NE/SE-facing stacks are mostly open and the rest are a coin flip. Uses its own seeded Random so
+    the other sample attributes do not reshuffle."""
+    a = dict(a)
+    a["wind_open"] = wind_rng.random() < (0.85 if a["facing"] in ("NE", "SE") else 0.5)
+    return a
 
 
 def load_real_facilities():
@@ -100,6 +119,7 @@ def make_unit(code, name, key, town, ptype, block, storey, unit, flat_type, a, m
     design = None
     if flat_type.startswith("2-Room Flexi"):
         design = "Type 1" if "Type 1" in flat_type else "Type 2"
+    mscp_m = (MSCP.get(key) or {}).get(block)  # hand estimate from the brochure, None when not measured
     return {
         "id": f"{code}-{block}-{storey:02d}-{unit}", "project": name, "project_key": key, "project_type": ptype, "town": town,
         "block": block, "storey": storey, "unit": unit, "address": f"Blk {block} #{storey:02d}-{unit}",
@@ -111,6 +131,8 @@ def make_unit(code, name, key, town, ptype, block, storey, unit, flat_type, a, m
         "neighbour_m": a["neighbour_m"], "gt30m": a["neighbour_m"] > CLEARANCE_M,
         "opposite_m": a["opposite_m"], "opposite_gt30m": a["opposite_m"] > CLEARANCE_M,
         "mrt_name": mrt_name, "mrt_m": a["mrt_m"], "mrt_near": a["mrt_m"] <= MRT_NEAR_M,
+        "wind_open": a["wind_open"],
+        "mscp_m": mscp_m, "mscp_near": mscp_m is not None and mscp_m <= MSCP_NEAR_M, "mscp_estimated": mscp_m is not None,
         "facilities_has": a["facilities_has"], "fac_has_count": len(a["facilities_has"]),
         "facilities_near": a["facilities_near"], "fac_near_count": len(a["facilities_near"]),
         "sample_fields": SAMPLE_FIELDS if real_list else SAMPLE_FIELDS + ["block_layout", "storey", "unit", "flat_type"],
@@ -122,6 +144,7 @@ def main():
     index, all_types = [], set()
     for n, (key, name, town, ptype, code, blocks, types, mrt) in enumerate(PROJECTS):
         rng = random.Random(f"bto-sample-{key}")
+        wind_rng = random.Random(f"bto-sample-wind-{key}")
         units = []
         if blocks is None:  # real unit list
             dist = json.loads((ROOT / "pipeline" / "raw" / f"{key}-dist.json").read_text())
@@ -133,6 +156,7 @@ def main():
                 for i, e in enumerate(entries):
                     a = stack_attrs(rng, bi, i, len(entries))
                     a = overlay_real_facilities(a, key, block)
+                    a = add_wind_open(a, wind_rng)
                     lo, hi = BERLAYAR_MRT_M.get(block, (150, 300))
                     a["mrt_m"] = round(rng.uniform(lo, hi))
                     for s in e["storeys"]:
@@ -145,6 +169,7 @@ def main():
                     unit = str(100 + bi * 20 + i * 2 + 1)
                     a = stack_attrs(rng, bi, i, n_stacks)
                     a = overlay_real_facilities(a, key, block)
+                    a = add_wind_open(a, wind_rng)
                     t = types[stack_no % len(types)]
                     stack_no += 1
                     for s in range(2, top + 1):

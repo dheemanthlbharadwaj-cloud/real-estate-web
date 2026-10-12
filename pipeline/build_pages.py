@@ -68,8 +68,8 @@ PAGES = {
             </div>
             <div class="field"><span class="eyebrow">Prioritise floors</span>
               <div class="chips" id="f-pref" role="radiogroup">
-                <label class="chip"><input type="radio" name="pref" value="none" checked><span>No preference</span></label>
-                <label class="chip"><input type="radio" name="pref" value="higher"><span>Higher</span></label>
+                <label class="chip"><input type="radio" name="pref" value="none"><span>No preference</span></label>
+                <label class="chip"><input type="radio" name="pref" value="higher" checked><span>Higher</span></label>
                 <label class="chip"><input type="radio" name="pref" value="lower"><span>Lower</span></label>
               </div>
             </div>

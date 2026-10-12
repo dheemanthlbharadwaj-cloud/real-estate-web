@@ -82,3 +82,44 @@ test('analysis ranks averages', () => {
   assert.deepStrictEqual(a.facilities.map(r => [r.key, r.mean]), [['Shops', 3]]);
   assert.ok(!('demographics' in a) && !('most_flagged' in a), 'no demographics or unit ids in the result');
 });
+
+test('wind and car park features', () => {
+  const units = [
+    U({ id: 'ne', facing: 'NE' }), U({ id: 'se', facing: 'SE' }), U({ id: 'sw', facing: 'SW' }), U({ id: 'nw', facing: 'NW' }),
+    U({ id: 'open', facing: 'SW', wind_open: true }), U({ id: 'shut', facing: 'SW', wind_open: false }),
+    U({ id: 'near', facing: 'SW', mscp_near: true, mscp_m: 60 }), U({ id: 'far', facing: 'SW', mscp_near: false, mscp_m: 140 }),
+  ];
+  const scoreOf = (w) => Object.fromEntries(S.rank(units, {}, w, 'none').map(u => [u.id, u.score]));
+  // NE and SE windows both catch wind from the east side; SW and NW do not.
+  const wf = scoreOf({ wind_facing: 4 });
+  assert.deepStrictEqual(['ne', 'se', 'sw', 'nw'].map(id => wf[id]), [4, 4, 0, 0]);
+  assert.deepStrictEqual(S.WIND_FACINGS, ['NE', 'SE']);
+  const wo = scoreOf({ wind_open: 3 });
+  assert.strictEqual(wo.open, 3);
+  assert.strictEqual(wo.shut, 0);
+  assert.strictEqual(wo.ne, 0, 'a unit with no wind_open field counts as blocked');
+  const mp = scoreOf({ mscp: -2 });
+  assert.strictEqual(mp.near, -2);
+  assert.strictEqual(mp.far, 0);
+  assert.strictEqual(S.MSCP_NEAR_M, 100);
+  assert.strictEqual(S.FACTORS.wind_facing[0], 'Faces the prevailing wind (SE to E)');
+  assert.strictEqual(S.FACTORS.wind_open[0], 'Not blocked from the wind');
+  assert.strictEqual(S.FACTORS.mscp[0], 'Within 100 m from a multi-storey car park');
+  const av = S.availability(units);
+  assert.ok(av.wind_facing && av.wind_open && av.mscp);
+  const none = S.availability([U({ id: 'x', facing: 'SW' })]);
+  assert.ok(!none.wind_facing && !none.wind_open && !none.mscp);
+});
+
+test('generated unit data carries the wind and car park fields', () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const dir = path.join(__dirname, '..', 'public', 'data', 'units');
+  const idx = JSON.parse(fs.readFileSync(path.join(dir, 'index.json'), 'utf8'));
+  for (const p of idx.projects) {
+    const units = JSON.parse(fs.readFileSync(path.join(dir, `${p.key}.json`), 'utf8'));
+    assert.ok(units.every(u => typeof u.wind_open === 'boolean'), `${p.key}: wind_open on every unit`);
+    assert.ok(units.every(u => typeof u.mscp_near === 'boolean' && (u.mscp_m === null || typeof u.mscp_m === 'number')), `${p.key}: mscp fields`);
+    assert.ok(units.every(u => u.mscp_near === (u.mscp_m !== null && u.mscp_m <= S.MSCP_NEAR_M)), `${p.key}: mscp_near matches mscp_m <= 100`);
+    assert.ok(units.every(u => u.sample_fields.includes('wind_open')), `${p.key}: wind_open marked as sample`);
+  }
+});
