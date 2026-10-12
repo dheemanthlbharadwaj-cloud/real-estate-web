@@ -388,25 +388,40 @@ async function openAnalytics() {
 
 // Dashboard colours come from the site tokens in site.css :root (checked with the dataviz validator).
 // Importance charts use pos/neg but never rely on colour: bars sit right/left of a zero line and carry signed labels.
+const WATERMARK = 'mybto.web.app';
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const VIZ = { main: css('--accent-ink'), second: css('--accent'), pos: css('--pos'), neg: css('--neg'), neutral: css('--muted'),
   ink: css('--text'), mute: css('--text-2'), axis: css('--line-2') };
-const WATERMARK = 'mybto.web.app';
-// Draws "mybto.web.app" into every chart canvas (bottom-right of the plot) so it survives screenshots and saved images.
+// Draws "mybto.web.app" into every chart canvas, rotated and tiled across the whole plot area (hard to crop out),
+// behind the data (beforeDatasetsDraw) so values stay legible. Tiny charts (the doughnut tile) get one copy in the hole.
 if (window.Chart) {
   Chart.register({
     id: 'mybtoWatermark',
-    afterDraw(chart) {
+    beforeDatasetsDraw(chart) {
       const ca = chart.chartArea, ctx = chart.ctx;
-      if (!ca || chart.width < 220) return; // tiny charts (the doughnut tile) carry it from CSS instead
+      if (!ca) return;
+      const w = ca.right - ca.left, h = ca.bottom - ca.top, cx = ca.left + w / 2, cy = ca.top + h / 2;
+      const small = chart.width < 220, ang = -20 * Math.PI / 180, cos = Math.cos(ang), sin = Math.sin(ang);
+      const size = small ? 8 : Math.max(12, Math.round(w * 0.08));
       ctx.save();
-      ctx.globalAlpha = 0.18;
+      ctx.beginPath(); ctx.rect(ca.left, ca.top, w, h); ctx.clip();
+      ctx.globalAlpha = small ? 0.3 : 0.08;
       ctx.fillStyle = VIZ.ink;
-      ctx.font = `600 ${Math.max(8, Math.min(12, Math.round(chart.width / 40)))}px Inter, sans-serif`;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(WATERMARK, ca.right - 6, ca.bottom - 4);
+      ctx.font = `600 ${size}px Inter, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const tw = ctx.measureText(WATERMARK).width;
+      ctx.translate(cx, cy); ctx.rotate(ang);
+      let count = 0;
+      const dx = tw * 1.15, dy = size * 3.4;
+      for (let j = -4; j <= 4; j++) for (let i = -4; i <= 4; i++) {
+        const ox = (i + (j & 1 ? 0.5 : 0)) * dx, oy = j * dy;
+        if (small && (i || j)) continue;
+        const px = ox * cos - oy * sin, py = ox * sin + oy * cos; // position on the canvas, relative to the centre
+        if (Math.abs(px) > w * 0.5 || Math.abs(py) > h * 0.5) { if (!(i === 0 && j === 0)) continue; }
+        ctx.fillText(WATERMARK, ox, oy); count++;
+      }
       ctx.restore();
+      chart.$wmCount = count;
     },
   });
 }

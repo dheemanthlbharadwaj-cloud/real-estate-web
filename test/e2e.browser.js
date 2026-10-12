@@ -153,7 +153,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await an.$$eval('.kpi-num', k => k.length === 3 && k.every(x => /\d/.test(x.textContent)))), 'Analytics has 3 KPI number tiles with numbers');
     check((await an.$$eval('canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
     check(await an.evaluate(() => !!window.Chart.registry.plugins.get('mybtoWatermark') && [...document.querySelectorAll('canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length)), 'watermark plugin is registered and every chart is non-interactive');
-    check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::after').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
+    check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::before').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
+    check(await an.evaluate(() => [...document.querySelectorAll('canvas')].every(c => { const ch = Chart.getChart(c); return c.width >= 300 ? ch.$wmCount >= 2 : ch.$wmCount === 1; })), 'watermark is tiled across wide charts (2 or more copies) and centred once in the doughnut');
     check((await an.$$eval('#r-sun, #r-factor', n => n.length)) === 0, 'old numbered rank lists are gone');
     check(/Based on \d+ saved/.test(await an.textContent('#a-basis')), 'Analytics says how many rankings it is based on');
     await an.reload();

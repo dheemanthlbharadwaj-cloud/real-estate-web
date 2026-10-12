@@ -160,9 +160,9 @@ body[data-page="analytics"] .tool { background: var(--card-2); }
   .pref-plot { width: 84px; height: 84px; flex: none; }
 }
 @media (min-width: 761px) and (max-width: 1050px) { .kpi-pref .pref-body { flex-direction: column-reverse; justify-content: center; } }
-.kpi-pref::after { content: 'mybto.web.app'; position: absolute; right: 8px; bottom: 5px; font: 600 9px var(--sans); color: var(--text); opacity: .18; pointer-events: none; }
-/* faint site mark on cards that have no canvas (charts carry it inside the canvas) */
-.card.nocanvas::after { content: 'mybto.web.app'; position: absolute; right: 12px; bottom: 8px; font: 600 11px var(--sans); color: var(--text); opacity: .18; pointer-events: none; }
+/* faint rotated site mark on cards that have no canvas (charts draw it inside the canvas) */
+.card.nocanvas { overflow: hidden; }
+.card.nocanvas::before { content: 'mybto.web.app'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-20deg); font: 600 34px var(--sans); color: var(--text); opacity: .08; pointer-events: none; white-space: nowrap; }
 @media (max-width: 1100px) { .kpis, .dash, .half, .grid2 { gap: 20px; } .dash, .grid2 { gap: 20px; } }
 @media (max-width: 760px) {
   .dash, .grid2 { grid-template-columns: 1fr; }
