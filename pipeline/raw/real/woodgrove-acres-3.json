@@ -115,15 +115,17 @@
      }
     ]
    },
-   "position": "Corridor",
+   "position": "Corner",
    "chute_m": 10.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 115,
+   "mscp_m": 90,
    "mscp_m_exact": 114.9,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
     "Precinct pavilion"
    ],
@@ -132,7 +134,7 @@
     282.1
    ],
    "confidence": "high",
-   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by 446B."
+   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by 446B. Review: mirrored pair at the lobby dead end, both Corner."
   },
   {
    "block": "446A",
@@ -167,11 +169,13 @@
    "chute_m": 6.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 125,
+   "mscp_m": 90,
    "mscp_m_exact": 125.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
     "Precinct pavilion"
    ],
@@ -215,11 +219,16 @@
    "chute_m": 8.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 140,
+   "mscp_m": 90,
    "mscp_m_exact": 141.5,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "door_floorplan_pt": [
     144.1,
     174.8
@@ -260,11 +269,16 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 135,
+   "mscp_m": 90,
    "mscp_m_exact": 135.8,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "door_floorplan_pt": [
     182.2,
     174.8
@@ -305,11 +319,13 @@
    "chute_m": 27.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 125,
+   "mscp_m": 90,
    "mscp_m_exact": 126.3,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
     "Precinct pavilion"
    ],
@@ -353,11 +369,14 @@
    "chute_m": 34.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 120,
+   "mscp_m": 90,
    "mscp_m_exact": 118.4,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -396,21 +415,26 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 58.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 110,
+   "mscp_m": 90,
    "mscp_m_exact": 109.4,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "door_floorplan_pt": [
     614.2,
     176.0
    ],
    "confidence": "high",
-   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by 447A. Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by 447A. Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "446A",
@@ -445,13 +469,15 @@
    "chute_m": 58.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
+   "mscp_m": 90,
    "mscp_m_exact": 98.3,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Children's playground"
+    "Children's playground",
+    "Drop-off porch",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     619.3,
@@ -493,12 +519,14 @@
    "chute_m": 53.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 105,
+   "mscp_m": 90,
    "mscp_m_exact": 103.1,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -540,20 +568,24 @@
    "position": "Corridor",
    "chute_m": 14.5,
    "roof_floors": [],
-   "wind_open": true,
-   "mscp_m": 100,
+   "wind_open": false,
+   "mscp_m": 40,
    "mscp_m_exact": 100.0,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     195.9,
     244.9
    ],
    "confidence": "high",
-   "notes": "Wind check borderline (within about 36 m): 448A. Borderline facility circles: Drop-off porch (+3.1 m from circle edge to unit centre)"
+   "notes": "Wind check borderline (within about 36 m): 448A. Borderline facility circles: Drop-off porch (+3.1 m from circle edge to unit centre) Review: another block within 30 m at 90-135 deg from the window wall (sector edges inclusive)."
   },
   {
    "block": "446B",
@@ -587,20 +619,24 @@
    "position": "Corner",
    "chute_m": 21.0,
    "roof_floors": [],
-   "wind_open": true,
-   "mscp_m": 95,
+   "wind_open": false,
+   "mscp_m": 40,
    "mscp_m_exact": 92.9,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     142.1,
     248.3
    ],
    "confidence": "high",
-   "notes": "Wind check borderline (within about 36 m): 448A. Borderline facility circles: Drop-off porch (+0.7 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Wind check borderline (within about 36 m): 448A. Borderline facility circles: Drop-off porch (+0.7 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: another block within 30 m at 90-135 deg from the window wall (sector edges inclusive)."
   },
   {
    "block": "446B",
@@ -631,23 +667,27 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 105,
+   "mscp_m": 40,
    "mscp_m_exact": 106.5,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     146.6,
     216.7
    ],
    "confidence": "high",
-   "notes": "Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area). Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area). Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "446B",
@@ -682,12 +722,15 @@
    "chute_m": 17.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
+   "mscp_m": 40,
    "mscp_m_exact": 98.1,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -730,12 +773,15 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
+   "mscp_m": 40,
    "mscp_m_exact": 90.7,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -778,13 +824,15 @@
    "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
+   "mscp_m": 40,
    "mscp_m_exact": 76.7,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -827,13 +875,15 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 70,
+   "mscp_m": 40,
    "mscp_m_exact": 71.4,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "door_floorplan_pt": [
@@ -876,13 +926,16 @@
    "chute_m": 43.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
+   "mscp_m": 40,
    "mscp_m_exact": 60.9,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Children's playground"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     647.9,
@@ -924,14 +977,16 @@
    "chute_m": 48.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 55,
+   "mscp_m": 40,
    "mscp_m_exact": 55.4,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     689.6,
@@ -969,24 +1024,27 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 37.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 40,
    "mscp_m_exact": 50.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Children's playground"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     606.1,
     252.1
    ],
    "confidence": "high",
-   "notes": "Borderline facility circles: Adult fitness station (+0.5 m from circle edge to unit centre); Children's playground (+0.7 m from circle edge to unit centre); Children's playground (+2.3 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Borderline facility circles: Adult fitness station (+0.5 m from circle edge to unit centre); Children's playground (+0.7 m from circle edge to unit centre); Children's playground (+2.3 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "446B",
@@ -1021,12 +1079,16 @@
    "chute_m": 29.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
+   "mscp_m": 40,
    "mscp_m_exact": 60.1,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Children's playground"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "door_floorplan_pt": [
     542.7,
@@ -1068,7 +1130,7 @@
    "chute_m": 53.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
+   "mscp_m": 85,
    "mscp_m_exact": 90.2,
    "mrt_m": null,
    "facilities_has": [
@@ -1076,8 +1138,9 @@
    ],
    "facilities_near": [
     "Adult fitness station",
-    "Elderly fitness station",
-    "Drop-off porch"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "door_floorplan_pt": [
     259.1,
@@ -1119,7 +1182,7 @@
    "chute_m": 58.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
+   "mscp_m": 85,
    "mscp_m_exact": 90.2,
    "mrt_m": null,
    "facilities_has": [
@@ -1128,6 +1191,7 @@
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station"
    ],
    "door_floorplan_pt": [
@@ -1166,17 +1230,20 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 58.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
+   "mscp_m": 85,
    "mscp_m_exact": 102.2,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station"
    ],
    "door_floorplan_pt": [
@@ -1184,7 +1251,7 @@
     185.0
    ],
    "confidence": "high",
-   "notes": "Borderline facility circles: Elderly fitness station (+2.0 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Borderline facility circles: Elderly fitness station (+2.0 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "447A",
@@ -1219,14 +1286,17 @@
    "chute_m": 34.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 105,
+   "mscp_m": 85,
    "mscp_m_exact": 103.8,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "door_floorplan_pt": [
     410.7,
@@ -1268,14 +1338,17 @@
    "chute_m": 27.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 110,
+   "mscp_m": 85,
    "mscp_m_exact": 108.6,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "door_floorplan_pt": [
     474.2,
@@ -1317,13 +1390,18 @@
    "chute_m": 9.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 115,
+   "mscp_m": 85,
    "mscp_m_exact": 114.7,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
    "door_floorplan_pt": [
     645.7,
     183.8
@@ -1364,13 +1442,18 @@
    "chute_m": 8.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 120,
+   "mscp_m": 85,
    "mscp_m_exact": 118.0,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
    "door_floorplan_pt": [
     683.8,
     183.8
@@ -1411,14 +1494,17 @@
    "chute_m": 6.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 100,
+   "mscp_m": 85,
    "mscp_m_exact": 98.1,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "door_floorplan_pt": [
     652.3,
@@ -1456,25 +1542,28 @@
      }
     ]
    },
-   "position": "Corridor",
+   "position": "Corner",
    "chute_m": 10.5,
    "roof_floors": [],
-   "wind_open": true,
-   "mscp_m": 95,
+   "wind_open": false,
+   "mscp_m": 85,
    "mscp_m_exact": 92.9,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "door_floorplan_pt": [
     609.7,
     291.1
    ],
    "confidence": "high",
-   "notes": "Wind check borderline (within about 36 m): 447B. Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area). Borderline facility circles: Future amenities/facilities (+2.3 m from circle edge to unit centre)"
+   "notes": "Wind check borderline (within about 36 m): 447B. Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area). Borderline facility circles: Future amenities/facilities (+2.3 m from circle edge to unit centre) Review: mirrored pair at the lobby dead end, both Corner. Review: another block within 30 m at 90-135 deg from the window wall (sector edges inclusive)."
   },
   {
    "block": "447B",
@@ -1509,13 +1598,16 @@
    "chute_m": 26.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 30,
    "mscp_m_exact": 41.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Elderly fitness station"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     258.9,
@@ -1553,24 +1645,27 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 31.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 30,
    "mscp_m_exact": 39.5,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Elderly fitness station"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     216.3,
     155.7
    ],
    "confidence": "high",
-   "notes": "Borderline facility circles: Adult fitness station (+0.3 m from circle edge to unit centre); Adult fitness station (-0.3 m from circle edge to unit centre); Elderly fitness station (+1.0 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Borderline facility circles: Adult fitness station (+0.3 m from circle edge to unit centre); Adult fitness station (-0.3 m from circle edge to unit centre); Elderly fitness station (+1.0 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "447B",
@@ -1605,15 +1700,16 @@
    "chute_m": 33.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 30,
    "mscp_m_exact": 51.2,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Future amenities/facilities",
     "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     193.6,
@@ -1655,15 +1751,16 @@
    "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 30,
    "mscp_m_exact": 53.2,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Future amenities/facilities",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     322.9,
@@ -1705,15 +1802,16 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 30,
    "mscp_m_exact": 56.4,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Future amenities/facilities",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     361.0,
@@ -1755,12 +1853,16 @@
    "chute_m": 21.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 65,
+   "mscp_m": 30,
    "mscp_m_exact": 67.0,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     621.0,
@@ -1808,11 +1910,17 @@
    "chute_m": 26.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
+   "mscp_m": 30,
    "mscp_m_exact": 73.2,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
+   ],
    "door_floorplan_pt": [
     663.6,
     124.0
@@ -1852,18 +1960,24 @@
    "position": "Corridor",
    "chute_m": 29.5,
    "roof_floors": [],
-   "wind_open": true,
-   "mscp_m": 65,
+   "wind_open": false,
+   "mscp_m": 30,
    "mscp_m_exact": 65.2,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
+   ],
    "door_floorplan_pt": [
     680.0,
     167.8
    ],
    "confidence": "high",
-   "notes": "Wind check borderline (within about 36 m): public housing (450A/450B area, U/C), public housing 452A (U/C). Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area)."
+   "notes": "Wind check borderline (within about 36 m): public housing (450A/450B area, U/C), public housing 452A (U/C). Neighbouring semicircles of the other colour overlap this one; decision taken from this unit's own semicircle (vector colour, confirmed on its non-overlapped area). Review: another block within 30 m at 90-135 deg from the window wall (sector edges inclusive)."
   },
   {
    "block": "447B",
@@ -1898,12 +2012,16 @@
    "chute_m": 40.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 55,
+   "mscp_m": 30,
    "mscp_m_exact": 52.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     680.3,
@@ -1941,23 +2059,27 @@
      }
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 46.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 40,
+   "mscp_m": 30,
    "mscp_m_exact": 39.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     680.3,
     389.6
    ],
    "confidence": "high",
-   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by public housing 452A (U/C). Borderline facility circles: Elderly fitness station (-4.8 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Wind side (bearing 90 to 135, 30 m) blocked by public housing 452A (U/C). Borderline facility circles: Elderly fitness station (-4.8 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: not the last door at the dead end, Corridor."
   },
   {
    "block": "447B",
@@ -1991,22 +2113,24 @@
    "position": "Corner",
    "chute_m": 45.0,
    "roof_floors": [],
-   "wind_open": true,
-   "mscp_m": 35,
+   "wind_open": false,
+   "mscp_m": 30,
    "mscp_m_exact": 33.1,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     650.7,
     397.3
    ],
    "confidence": "high",
-   "notes": "Wind check borderline (within about 36 m): public housing 452A (U/C). Borderline facility circles: Adult fitness station (+4.8 m from circle edge to unit centre); Children's playground (+4.6 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan."
+   "notes": "Wind check borderline (within about 36 m): public housing 452A (U/C). Borderline facility circles: Adult fitness station (+4.8 m from circle edge to unit centre); Children's playground (+4.6 m from circle edge to unit centre) Corner = end unit of its corridor/wing on the typical floor plan. Review: another block within 30 m at 90-135 deg from the window wall (sector edges inclusive)."
   },
   {
    "block": "447B",
@@ -2041,13 +2165,16 @@
    "chute_m": 9.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 30,
    "mscp_m_exact": 53.6,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Drop-off porch"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
    ],
    "door_floorplan_pt": [
     496.2,
@@ -6007,6 +6134,57 @@
   "roof_floors: no residential floor plan shows an accessible roof garden; ROOF AT 2ND/3RD STOREY ONLY are plain roofs over voids, 447A has a GREEN ROOF (INACCESSIBLE), 447B 16th to 18th shows ROOF (INACCESSIBLE). The accessible roof garden is on the MSCP (block 447) and is not reached from any flat, so roof_floors is [] for all stacks.",
   "wind_open: north is page up (north arrow on p9). From each unit centre, a 30 m wedge at bearing 90 to 135 was tested against other residential blocks (their unit centres buffered by 5 m, including rental block 448A) and the off-site public housing blocks 450A/450B/452A (U/C) outlines traced from the site plan (east_grid.png). Blocked: 446A 651/653/663, 446B 691, 447A 715, 447B 735/737. Borderline cases are noted per stack.",
   "mscp_m: unit centre to nearest edge of the MSCP outline (mscp_distance.json _geometry), rounded to 5 m; mscp_m_exact also given. Values differ from mscp_distance.json block-centre figures by more than 10 m for end stacks because they are per stack (e.g. 446A ranges 100 to 140 vs block 120; 446B 50 to 105 vs 80; 447B 35 to 75 vs 50).",
-  "mrt_m is null: no MRT station is on the site plan."
+  "mrt_m is null: no MRT station is on the site plan.",
+  "Independent review 2026-10-13: units 656/656, facing/gt30m 41/41 agree; position x8, wind x5 fixed; facilities and car park block-wide (user rule)."
+ ],
+ "blocks": [
+  {
+   "block": "446A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [],
+   "mscp_m": 90
+  },
+  {
+   "block": "446B",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [],
+   "mscp_m": 40
+  },
+  {
+   "block": "447A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
+   "facilities_has": [
+    "Future amenities/facilities"
+   ],
+   "mscp_m": 85
+  },
+  {
+   "block": "447B",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities"
+   ],
+   "facilities_has": [],
+   "mscp_m": 30
+  }
  ]
 }
