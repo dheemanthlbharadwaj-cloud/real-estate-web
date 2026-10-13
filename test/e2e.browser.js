@@ -41,7 +41,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('.ad-panel');
     check((await p.textContent('.ad-panel .ad-tag')) === 'Advertisement' && (await p.$$eval('.ad-panel iframe, .ad-panel script', n => n.length)) === 0, 'first Rank click opens the ad pop-up (placeholder, no iframe or ad script)');
     check((await p.isDisabled('[data-ad-go]')) && /^Show my ranking in \d/.test(await p.textContent('[data-ad-go]')), 'Show my ranking is disabled during the countdown');
-    check((await p.textContent('.ad-panel .consent')).includes('21 or older') && (await p.$$eval('.ad-panel .consent a[href^="mailto:"]', a => a.length)) === 2, 'research notice with two mailto links under the ad');
+    check((await p.$$eval('.ad-panel .consent, .ad-panel a[href^="mailto:"]', n => n.length)) === 0 && !/research project|National University|21 or older/.test(await p.textContent('.ad-panel')), 'no research notice in the pop-up');
+    check((await p.$$eval('.ad-panel .ad-slot', n => n.length)) === 1 && (await p.textContent('.ad-panel [data-ad-cancel]')) === 'Not now', 'pop-up keeps the ad slot and Not now');
     check(!(await p.$('#survey')) && !(await p.$('#btn-edit-survey')) && !(await p.$('.ad-panel input')), 'no survey questions and no Edit survey link');
     await p.click('[data-ad-cancel]');
     check(!(await p.$('.ad-panel')) && (await rows()) === 0, 'Not now closes the pop-up and ranks nothing');
@@ -100,9 +101,43 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.selectOption('#project', 'sembawang-brook-6');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
     check((await p.inputValue('#f-pref input:checked')) === 'higher', 'Higher is the default again for each project');
+    const groupsOf = () => p.$$eval('#weights .meter-group', g => g.map(x => [x.querySelector('.eyebrow').textContent.replace(/\?$/, '').trim(), [...x.querySelectorAll('.meter label')].map(l => l.childNodes[0].textContent)]));
+    const gs = await groupsOf();
+    check(gs.map(g => g[0]).join('|') === 'Blocks|Sun direction|Wind direction|Distance|Others|Facilities nearby (within 30 m)', `importance groups in order (${gs.map(g => g[0]).join(' | ')})`);
+    const gm = Object.fromEntries(gs);
+    check(gm['Wind direction'].join('|') === 'Faces the prevailing wind (SE to E)|Not blocked from the wind', 'Wind direction group, directly below Sun direction');
+    check(gm['Distance'].join('|') === ['More than 30 m from the nearest visible unit', '10 m away from rubbish chute', 'Within 100 m from MRT', 'Within 100 m from a multi-storey car park'].filter(l => gm['Distance'].includes(l)).join('|') && gm['Distance'].length >= 3, 'Distance group members');
+    check(gm['Others'].join('|') === 'Corner unit|Access to roof', 'Others group members');
+    check(await p.$eval('#weights .meter-group:last-child .help', b => b.dataset.legend === 'facilities'), 'Facilities nearby (within 30 m) keeps its ? help button');
+    check(!/Unit & site/.test(await p.textContent('#weights')), 'Unit & site heading is gone');
     const newMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
     check(['Faces the prevailing wind (SE to E)', 'Not blocked from the wind', 'Within 100 m from a multi-storey car park'].every(l => newMeters.includes(l)),
       'wind and multi-storey car park meters appear for a project that has them (Sembawang Brook)');
+    // Fresh visit: Higher is selected, even if an older visit left another choice behind, and Higher puts the highest storey first.
+    const floorCtx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    await stubFirebase(floorCtx);
+    await floorCtx.addInitScript(() => { window.MYBTO_AD_SECONDS = { interstitial: 1 }; });
+    const fp = await floorCtx.newPage();
+    fp.on('pageerror', e => errors.push(e.message));
+    await fp.goto(`${base}/rank`);
+    await fp.waitForSelector('#floor-groups .fg-card');
+    check((await fp.inputValue('#f-pref input:checked')) === 'higher', 'fresh visit: Prioritise floors shows Higher selected');
+    await fp.evaluate(() => { const k = 'mybto:last:' + JSON.parse(localStorage.getItem('project')); localStorage.setItem(k, JSON.stringify({ flat_types: [], blocks: [], floor_pref: 'lower', weights: {} })); });
+    await fp.reload();
+    await fp.waitForSelector('#floor-groups .fg-card');
+    check((await fp.inputValue('#f-pref input:checked')) === 'higher', 'an old saved Lower choice is not restored: still Higher');
+    await fp.click('#btn-rank');
+    await fp.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 5000 });
+    await fp.click('[data-ad-go]');
+    await fp.waitForSelector('#results tbody .rk');
+    const top = await fp.evaluate(async () => {
+      const key = JSON.parse(localStorage.getItem('project'));
+      const units = await (await fetch(`/data/units/${key}.json`)).json();
+      const pick = Scoring.filterUnits(units, { blocks: [...document.querySelectorAll('#f-blocks input:checked')].map(i => i.value), flatTypes: [...new Set(units.map(u => u.flat_type))].filter(t => Scoring.housingOf(t) === document.querySelector('#f-types input:checked').value) });
+      return { max: Math.max(...pick.map(u => u.storey)), shown: Number(document.querySelector('#results tbody .addr').textContent.match(/#(\d+)-/)[1]) };
+    });
+    check(top.shown === top.max, `Higher with all weights 0: top unit is on the highest storey (${top.shown} of ${top.max})`);
+    await floorCtx.close();
     const brookMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
     check(brookMeters.includes('Future amenities/facilities') && brookMeters.includes('Mini-mart'), 'Sembawang Brook shows Future amenities/facilities and Mini-mart meters (from the brochure)');
     await p.click('#btn-rank');

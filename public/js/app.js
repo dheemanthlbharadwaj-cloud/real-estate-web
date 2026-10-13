@@ -151,14 +151,19 @@ function renderWeights() {
   let h = '';
   h += `<div class="meter-group"><span class="eyebrow"><span>Blocks</span></span>${blocks.length
     ? blocks.map(b => meter('block', b, `Block ${b}`)).join('') : '<p class="small muted">Select at least one block.</p>'}</div>`;
+  const factorGroup = g => {
+    const facs = g.keys.filter(k => av[k]);
+    g.keys.filter(k => !av[k]).forEach(k => hidden.push(Scoring.FACTORS[k][0].toLowerCase()));
+    return facs.length ? `<div class="meter-group"><span class="eyebrow"><span>${esc(g.title)}</span></span>${facs.map(k => meter('factor', k, Scoring.FACTORS[k][0], FACTOR_HELP[k])).join('')}</div>` : '';
+  };
+  const group = id => factorGroup(Scoring.GROUPS.find(g => g.id === id));
   if (av.sun.length) h += `<div class="meter-group"><span class="eyebrow"><span>Sun direction</span></span>${av.sun.map(d => meter('sun', d, d, 'The direction the living room windows face')).join('')}</div>`;
   const missingSun = Scoring.SUN_DIRECTIONS.filter(d => !av.sun.includes(d));
   if (missingSun.length && scope.length) hidden.push(`facing ${missingSun.join(', ')}`);
+  h += group('wind');
   if (av.design.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit design · 2-Room Flexi</span></span>${av.design.map(d => meter('design', d, d)).join('')}</div>`;
-  const facs = Object.entries(Scoring.FACTORS).filter(([k]) => av[k]);
-  Object.entries(Scoring.FACTORS).filter(([k]) => !av[k]).forEach(([, [l]]) => hidden.push(l.toLowerCase()));
-  if (facs.length) h += `<div class="meter-group"><span class="eyebrow"><span>Unit &amp; site</span></span>${facs.map(([k, [label]]) => meter('factor', k, label, FACTOR_HELP[k])).join('')}</div>`;
-  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby${helpBtn('facilities')}</span></span>${av.facilities.map(f => meter('facility', f, f, facilityHelp(f))).join('')}</div>`;
+  h += group('distance') + group('others');
+  if (av.facilities.length) h += `<div class="meter-group"><span class="eyebrow"><span>Facilities nearby (within 30 m)${helpBtn('facilities')}</span></span>${av.facilities.map(f => meter('facility', f, f, facilityHelp(f))).join('')}</div>`;
   else if (scope.length) hidden.push('facilities');
   $('#weights').innerHTML = h;
   $('#hidden-factors').textContent = hidden.length && scope.length ? `Not in your selection, so hidden: ${hidden.join(' · ')}.` : '';
@@ -194,8 +199,7 @@ function restoreLast(list) {
   $$('#f-blocks input').forEach(i => { i.checked = !list.blocks.length || list.blocks.includes(i.value); });
   if (list.min_storey != null) $('#f-min').value = list.min_storey;
   if (list.max_storey != null) $('#f-max').value = list.max_storey;
-  const pref = Scoring.FLOOR_PREFS.includes(list.floor_pref) ? list.floor_pref : 'none';
-  $$('#f-pref input').forEach(i => { i.checked = i.value === pref; });
+  // Floor priority is not restored: it always starts at Higher (set in loadProject), so an old choice cannot surprise anyone.
   state.weights = { ...list.weights };
   renderWeights();
   $('#save-msg').textContent = 'Your last settings for this project are filled in. Press Rank units to see the ranking.';

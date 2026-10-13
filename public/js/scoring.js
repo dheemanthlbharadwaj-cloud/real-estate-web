@@ -32,6 +32,15 @@
     wind_open: ['Not blocked from the wind', u => (u.wind_open ? 1 : 0)],
   };
 
+  // Importance panel groups below Blocks / Sun direction (order = order on screen). Each lists FACTORS keys.
+  // Unit design (2-Room Flexi) and Facilities nearby are not single factors; app.js places them
+  // around these groups: Blocks, Sun direction, Wind direction, Unit design, Distance, Others, Facilities.
+  const GROUPS = [
+    { id: 'wind', title: 'Wind direction', keys: ['wind_facing', 'wind_open'] },
+    { id: 'distance', title: 'Distance', keys: ['clearance', 'chute', 'mrt', 'mscp'] },
+    { id: 'others', title: 'Others', keys: ['corner', 'roof'] },
+  ];
+
   function norm(v, lo, hi) {
     if (v == null || hi == null || lo == null) return 0;
     if (hi === lo) return 0;
@@ -130,6 +139,6 @@
     };
   }
 
-  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, FLOOR_PREF_WEIGHT, CHUTE_FAR_M, MSCP_NEAR_M, WIND_FACINGS, context, floorFeature,
+  return { availability, SUN_DIRECTIONS, UNIT_DESIGNS, FLOOR_PREFS, HOUSING_TYPES, housingOf, FACTORS, GROUPS, FLOOR_PREF_WEIGHT, CHUTE_FAR_M, MSCP_NEAR_M, WIND_FACINGS, context, floorFeature,
     facilityFeature, filterUnits, scoreUnit, rank, floorGroups };
 });

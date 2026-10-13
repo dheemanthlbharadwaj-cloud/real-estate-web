@@ -74,3 +74,9 @@ window.LEGEND = [
     rule: "Source: berlayar-rise-7.pdf, pages 17 and 31 (floor plans) and pages 13 to 15 (unit distribution).",
   },
 ];
+// Same order as the importance panel: sun, wind, floor, design, distance, others, facilities.
+(function () {
+  const order = ['sun', 'wind_facing', 'wind_open', 'floor', 'design', 'clearance', 'chute', 'mrt', 'mscp', 'corner', 'roof', 'facilities'];
+  const at = e => { const i = order.indexOf(e.key); return i < 0 ? order.length : i; };
+  window.LEGEND = window.LEGEND.map((e, i) => [e, i]).sort((a, b) => at(a[0]) - at(b[0]) || a[1] - b[1]).map(x => x[0]);
+})();

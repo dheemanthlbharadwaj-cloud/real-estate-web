@@ -16,11 +16,6 @@
     set(k, v) { try { sessionStorage.setItem(k, v); } catch { mem[k] = v; } },
   };
 
-  const NOTICE = 'This tool is part of a final year research project at the National University of Singapore (NUS), built using data from the June 2026 BTO launch. '
-    + 'By selecting “Show my ranking”, you confirm that you are 21 or older and agree to your ranking being stored anonymously and used only for this NUS research project. '
-    + 'Questions? Contact Lim Xin Quan (<a href="mailto:limxinquan@u.nus.edu">limxinquan@u.nus.edu</a>) (Student Researcher) '
-    + 'or Dr. Grace Wong (<a href="mailto:bizgwong@nus.edu.sg">bizgwong@nus.edu.sg</a>) (Supervisor)';
-
   // PLUG IN: the ad network goes here. Each provider fills `slot` (a 300x250 box, or a 16:9 box for video) and may call
   // unlock() to enable the button early (for example from a rewarded video "reward granted" callback).
   const PROVIDERS = {
@@ -32,7 +27,7 @@
     },
   };
 
-  function modal({ kind, title, intro, slotClass, go, cancel, notice }) {
+  function modal({ kind, title, intro, slotClass, go, cancel }) {
     return new Promise(resolve => {
       const el = document.createElement('div');
       el.className = 'modal';
@@ -41,7 +36,6 @@
           <h2 class="h3" id="ad-title">${title}</h2>
           <p class="small muted">${intro}</p>
           <div class="ad-slot ${slotClass}" data-ad="${kind}" aria-label="Advertisement"></div>
-          ${notice ? `<p class="consent small">${notice}</p>` : ''}
           <div class="modal-btns"><button type="button" class="btn ghost" data-ad-cancel>${cancel}</button><button type="button" class="btn primary" data-ad-go disabled>${go}</button></div>
         </div>`;
       document.body.append(el);
@@ -74,7 +68,7 @@
       if (seen) return seen;
       const ok = await modal({
         kind: 'interstitial', title: 'One moment before your ranking', intro: 'This free tool is supported by ads.',
-        slotClass: 'ad-300', go: 'Show my ranking', cancel: 'Not now', notice: NOTICE,
+        slotClass: 'ad-300', go: 'Show my ranking', cancel: 'Not now',
       });
       if (!ok) return null;
       const at = new Date().toISOString();
