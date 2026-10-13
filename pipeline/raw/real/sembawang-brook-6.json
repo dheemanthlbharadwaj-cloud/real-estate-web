@@ -339,7 +339,7 @@
    "position": "Corridor",
    "chute_m": 24.5,
    "roof_floors": [],
-   "wind_open": true,
+   "wind_open": false,
    "mscp_m": 40,
    "mrt_m": null,
    "facilities_has": [],
@@ -350,7 +350,7 @@
     "Elderly fitness station"
    ],
    "confidence": "medium",
-   "notes": ""
+   "notes": "Review 2026-10-13: wind_open corrected to false (another block within 30 m at 130-135 deg measured from the real window wall)."
   },
   {
    "block": "437A",
@@ -377,7 +377,7 @@
    "position": "Corner",
    "chute_m": 19.0,
    "roof_floors": [],
-   "wind_open": true,
+   "wind_open": false,
    "mscp_m": 30,
    "mrt_m": null,
    "facilities_has": [],
@@ -388,7 +388,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: wind_open corrected to false (another block within 30 m at 130-135 deg measured from the real window wall)."
   },
   {
    "block": "437B",
@@ -694,13 +694,13 @@
    "position": "Corridor",
    "chute_m": 13.5,
    "roof_floors": [],
-   "wind_open": true,
+   "wind_open": false,
    "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 25 m for the block centre."
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 25 m for the block centre. Review 2026-10-13: wind_open corrected to false (another block within 30 m at 130-135 deg measured from the real window wall)."
   },
   {
    "block": "439A",
@@ -792,7 +792,7 @@
      240.0
     ]
    },
-   "position": "Corridor",
+   "position": "Corner",
    "chute_m": 34.0,
    "roof_floors": [],
    "wind_open": true,
@@ -803,7 +803,7 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre. Review: symmetric T dead end, both 158 and 160 are Corner."
   },
   {
    "block": "439A",
@@ -8450,6 +8450,7 @@
   "wind_open: from each living-room window point (row3 semicircle centre) no unit footprint of another residential block (incl. rental 438A) lies within 30 m at bearing 90-135 deg; all 40 stacks are open. Off-site blocks are not drawn within 30 m.",
   "mscp_m: per stack, nearest unit-footprint pixel to the outline of Block 436 (8-storey MSCP with roof garden, L-shaped incl. the preschool wing and the round ramp), rounded to 5 m. Outline pts: (155.3,278.7),(209,265.2),(238,330),(302.9,299.4),(306,284),(316,277),(328,277),(337,286),(338,308.4),(199.4,375). Differs from mscp_distance.json (block centre) by design.",
   "mrt_m: null, no MRT station on the site plan.",
-  "Evidence (scratchpad/analysis/sembawang-brook-6/): sb_<block>_<unit>_opp.png 900 dpi board crops centred on each semicircle (centre_px is in that crop), ov5_*.png facing overlay, ov3_*.png semicircle overlay, foot_vis.png footprints, z12*/z14*/z16*/z18* floor plan grids, scripts *.py."
+  "Evidence (scratchpad/analysis/sembawang-brook-6/): sb_<block>_<unit>_opp.png 900 dpi board crops centred on each semicircle (centre_px is in that crop), ov5_*.png facing overlay, ov3_*.png semicircle overlay, foot_vis.png footprints, z12*/z14*/z16*/z18* floor plan grids, scripts *.py.",
+  "Independent review 2026-10-13: units 1160/1160, facing 40/40, gt30m 40/40 agree; corrected wind_open for 437A-116, 437A-118, 437B-136 and position for 439A-158."
  ]
 }
