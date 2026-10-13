@@ -513,6 +513,100 @@ function chart(id, config) {
 }
 const AXIS = { color: VIZ.axis, width: 1 };
 
+// ---- Insight boxes: eight small facts in four pairs between the big charts. Small canvases skip the canvas watermark
+// (the box carries the faint CSS one). A box whose data is missing (for example an older Sheet script without factor_shares)
+// is skipped and the next idea takes its place; a pair with one box stays tidy.
+const insLabels = fmt => ({
+  id: 'mybtoInsLabels',
+  afterDatasetsDraw(chart) {
+    const meta = chart.getDatasetMeta(0), data = chart.data.datasets[0].data, ctx = chart.ctx;
+    ctx.save(); ctx.fillStyle = VIZ.ink; ctx.font = '600 10px Inter, sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    meta.data.forEach((el, i) => ctx.fillText(fmt(data[i]), el.x + 4, el.y));
+    ctx.restore();
+  },
+});
+const insChart = (id, config) => { config.options = config.options || {}; config.options.plugins = Object.assign({ legend: { display: false }, mybtoWatermark: false }, config.options.plugins); chart(id, config); };
+const pctOf = (n, d) => (d ? Math.round(100 * n / d) : 0);
+
+function insightBuilders(a, av) {
+  const fs = a.factor_shares || {};
+  const shareBox = (key, title, sub, vis) => () => {
+    const sh = fs[key];
+    if (!sh || !sh.n || av[key] === false) return null;
+    return { title, fig: `${pctOf(sh.want, sh.n)}%`, sub: `of users ${sub}`, vis: vis || 'ring', want: sh.want, total: sh.n, sh };
+  };
+  const B = {
+    chute: shareBox('chute', 'Ew! The smell', 'want to live 10 m away from the rubbish chute'),
+    clearance: shareBox('clearance', 'Don\u2019t want to see your neighbours?', 'want a distance of 30 m from the nearest visible unit'),
+    wind_facing: shareBox('wind_facing', 'Catch the breeze', 'want to face the prevailing wind (SE to E)'),
+    wind_open: shareBox('wind_open', 'Room to breathe', 'want a unit not blocked from the wind'),
+    mscp: shareBox('mscp', 'Car owners', 'want a multi-storey car park within 100 m'),
+    mrt: shareBox('mrt', 'Train lovers', 'want to be within 100 m of an MRT'),
+    roof: shareBox('roof', 'Sky high', 'want access to the roof'),
+    corner: shareBox('corner', 'Corner seekers', 'want a corner unit', 'split'),
+    sun() {
+      const ss = a.sun_shares || {};
+      const rows = ['NE', 'SE', 'SW', 'NW'].filter(d => ss[d] && ss[d].n).map(d => ({ k: d, v: pctOf(ss[d].want, ss[d].n) }));
+      if (!rows.length) return null;
+      const top = rows.reduce((m, r) => (r.v > m.v ? r : m), rows[0]);
+      return { title: 'Sun chasers', fig: top.k, sub: `is the most wanted facing, ${top.v}% of users want it`, vis: 'bars', rows: rows.map(r => ({ label: r.k, v: r.v })), max: 100, fmt: v => `${v}%` };
+    },
+    block() {
+      const rows = (a.blocks || []).filter(r => r.n).slice(0, 3);
+      if (!rows.length) return null;
+      return { title: 'Most wanted block', fig: `Block ${rows[0].key}`, long: true, sub: `average importance ${rows[0].mean > 0 ? '+' : ''}${rows[0].mean.toFixed(1)}`, vis: 'bars', rows: rows.map(r => ({ label: r.key, v: +r.mean.toFixed(1) })), max: 5, fmt: v => `${v > 0 ? '+' : ''}${v}` };
+    },
+    facility() {
+      const rows = (a.facilities || []).filter(r => r.n).slice(0, 3);
+      if (!rows.length) return null;
+      return { title: 'The most popular facility is', fig: rows[0].key, long: true, sub: `average importance ${rows[0].mean > 0 ? '+' : ''}${rows[0].mean.toFixed(1)}`, vis: 'bars', rows: rows.map(r => ({ label: r.key, v: +r.mean.toFixed(1) })), max: 5, fmt: v => `${v > 0 ? '+' : ''}${v}` };
+    },
+  };
+  return B;
+}
+
+async function renderInsights(a, proj) {
+  let av = {};
+  try { av = Scoring.availability(await api(`/data/units/${proj.key}.json`)); } catch { av = {}; }
+  const B = insightBuilders(a, av);
+  const fixed = [['sun'], ['wind_facing'], ['block'], ['clearance'], ['chute'], ['corner'], ['facility'], ['mscp', 'mrt']];
+  const pool = ['roof', 'mrt', 'mscp', 'wind_open', 'chute', 'clearance', 'corner', 'wind_facing'];
+  const used = new Set(), boxes = [];
+  for (const cands of fixed) {
+    let box = null;
+    for (const id of [...cands, ...pool]) { if (used.has(id)) continue; const b = B[id] && B[id](); if (b) { box = b; used.add(id); break; } }
+    boxes.push(box);
+  }
+  boxes.forEach((b, i) => {
+    const pair = $(`#ins-${Math.floor(i / 2) + 1}`);
+    if (!b) return;
+    const el = document.createElement('div');
+    el.className = 'ins';
+    const cid = `c-ins-${i}`;
+    const vis = b.vis === 'ring' ? `<div class="ins-ring"><canvas id="${cid}"></canvas></div>` : '';
+    const under = b.vis === 'bars' ? `<div class="ins-bars"><canvas id="${cid}"></canvas></div>`
+      : b.vis === 'split' ? `<div class="ins-split"><canvas id="${cid}"></canvas></div><p class="ins-key">Want ${pctOf(b.sh.want, b.sh.n)}% · Don’t mind ${pctOf(b.sh.neutral, b.sh.n)}% · Avoid ${pctOf(b.sh.avoid, b.sh.n)}%</p>` : '';
+    el.innerHTML = `<div class="ins-title">${esc(b.title)}</div><div class="ins-main"><div class="ins-text"><b class="ins-fig${b.long ? ' long' : ''}">${esc(b.fig)}</b><span class="ins-sub">${esc(b.sub)}</span></div>${vis}</div>${under}`;
+    pair.append(el);
+  });
+  $$('.ins-pair').forEach(p => p.classList.toggle('one', p.childElementCount === 1));
+  boxes.forEach((b, i) => {
+    if (!b) return;
+    const id = `c-ins-${i}`;
+    if (b.vis === 'ring') {
+      insChart(id, { type: 'doughnut', data: { labels: ['Want', 'Others'], datasets: [{ data: [b.want, b.total - b.want], backgroundColor: [VIZ.main, VIZ.axis], borderWidth: 0 }] }, options: { cutout: '68%' } });
+    } else if (b.vis === 'split') {
+      const sh = b.sh;
+      insChart(id, { type: 'bar', data: { labels: [''], datasets: [[sh.want, VIZ.pos], [sh.neutral, VIZ.neutral], [sh.avoid, VIZ.neg]].map(([v, c]) => ({ data: [v], backgroundColor: c, borderWidth: 1, borderColor: '#fff' })) },
+        options: { indexAxis: 'y', layout: { padding: 0 }, scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } } } });
+    } else if (b.vis === 'bars') {
+      insChart(id, { type: 'bar', data: { labels: b.rows.map(r => r.label), datasets: [{ data: b.rows.map(r => r.v), backgroundColor: b.rows.map(r => (r.v >= 0 ? VIZ.main : VIZ.neg)), borderRadius: 3, barPercentage: .75, categoryPercentage: .9 }] },
+        options: { indexAxis: 'y', layout: { padding: { right: 34 } }, scales: { x: { display: false, min: b.max === 100 ? 0 : -5, max: b.max }, y: { grid: { display: false }, border: AXIS, ticks: { color: VIZ.ink, font: { size: 11 }, autoSkip: false, callback(v) { const t = this.getLabelForValue(v); return t.length > 8 && window.innerWidth < 761 ? `${t.slice(0, 6)}…` : t; } } } } },
+        plugins: [insLabels(b.fmt)] });
+    }
+  });
+}
+
 async function loadAnalytics(proj) {
   $('#analysis-body').hidden = false;
   const a = await store.getAnalytics(proj.key);
@@ -527,7 +621,7 @@ async function loadAnalytics(proj) {
   const kpi = (id, num, sub) => { $(`#${id} .kpi-num`).textContent = num; $(`#${id} .kpi-sub`).textContent = sub; };
   kpi('k-rankings', String(a.users), `for ${proj.name}`);
   kpi('k-min', a.min_storey.count ? String(Math.round(a.min_storey.mean)) : '-', a.min_storey.n ? `out of ${a.min_storey.n} storeys` : '');
-  kpi('k-higher', prefTotal ? `${pct('higher')}%` : '-', 'of rankings');
+  kpi('k-max', a.max_storey.count ? String(Math.round(a.max_storey.mean)) : '-', a.max_storey.n ? `out of ${a.max_storey.n} storeys` : '');
 
   // Floor preference doughnut (tile) with a square-swatch legend
   const prefDefs = [['higher', 'Higher', VIZ.main], ['lower', 'Lower', VIZ.second], ['none', 'No preference', VIZ.neutral]];
@@ -590,6 +684,8 @@ async function loadAnalytics(proj) {
   hbar('c-block', a.blocks, k => `Block ${k}`, 'card-block', 'p-block');
   hbar('c-factor', a.factors, k => fl[k] || k, 'card-factor', 'p-factor');
   hbar('c-facility', (a.facilities || []).slice(0, 10), k => k, 'card-facility', 'p-facility');
+
+  await renderInsights(a, proj);
 
   const types = Object.entries(a.flat_types || {});
   if (!types.length) { $('#card-types').classList.add('nocanvas'); $('#card-types .plot').innerHTML = '<p class="muted nodata">No data yet.</p>'; return; }

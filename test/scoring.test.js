@@ -188,3 +188,23 @@ test('sample users fit the row layout and count in analytics', () => {
   assert.ok(a.users > 10 && a.sample_users === a.users);
   assert.ok(a.min_storey.histogram.length > 0 && a.sun_directions.length === 4);
 });
+
+test('analyse() gives factor_shares, facility_shares and sun_shares', () => {
+  const A = require('../apps-script/Analytics.js');
+  const mk = (w, extra = {}) => ({ user_id: Math.random(), project: 'p', project_type: 'Prime', surveyed: true, flat_types: [], min_storey: 3, max_storey: 9, floor_pref: 'none', is_sample: false, weights: w, ...extra });
+  const subs = [
+    mk({ chute: 3, corner: -2, sun: { NE: 1, SE: 0 }, facility: { Shops: 4 } }),
+    mk({ chute: 0, corner: 0, sun: { NE: 2, SE: 5 }, facility: { Shops: 0, Preschool: 2 } }),
+    mk({ chute: 5, sun: { NE: -1 }, facility: {} }),
+    mk({ chute: 1, corner: 4, sun: { NE: 0 } }),
+  ];
+  const a = A.analyse(subs, {}, 'project', 'p');
+  assert.deepStrictEqual(a.factor_shares.chute, { want: 3, neutral: 1, avoid: 0, n: 4 });
+  assert.deepStrictEqual(a.factor_shares.corner, { want: 1, neutral: 1, avoid: 1, n: 3 });
+  assert.deepStrictEqual(a.factor_shares.mrt, { want: 0, neutral: 0, avoid: 0, n: 0 });
+  assert.deepStrictEqual(Object.keys(a.factor_shares).sort(), [...A.FACTOR_KEYS].sort());
+  assert.deepStrictEqual(a.facility_shares.Shops, { want: 1, neutral: 1, avoid: 0, n: 2 });
+  assert.deepStrictEqual(a.sun_shares.NE, { want: 2, neutral: 1, avoid: 1, n: 4 });
+  assert.deepStrictEqual(a.sun_shares.NW, { want: 0, neutral: 0, avoid: 0, n: 0 });
+  assert.ok(a.factors && a.facilities && a.floor_preference, 'existing output kept');
+});

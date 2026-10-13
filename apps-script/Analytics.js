@@ -188,6 +188,23 @@ function rankAverages(objs) {
     .sort((a, b) => b.mean - a.mean || (a.key < b.key ? -1 : 1));
 }
 
+// Share of users who want (weight > 0), are neutral (0) or avoid (< 0) each item. n counts users who set that item.
+function weightShares(objs, keys) {
+  const out = {};
+  const names = keys || [...new Set(objs.flatMap(o => Object.keys(o || {})))];
+  for (const k of names) {
+    const sh = { want: 0, neutral: 0, avoid: 0, n: 0 };
+    for (const o of objs) {
+      const v = o && o[k];
+      if (typeof v !== 'number') continue;
+      sh.n++;
+      if (v > 0) sh.want++; else if (v < 0) sh.avoid++; else sh.neutral++;
+    }
+    if (sh.n || keys) out[k] = sh;
+  }
+  return out;
+}
+
 function selectPopulation(subs) {
   const chosen = subs.filter(s => s.surveyed);
   const basis = {};
@@ -222,6 +239,9 @@ function analyse(subs, meta, group = 'all', value = null) {
     unit_designs: rankAverages(chosen.map(s => s.weights.design)),
     factors: rankAverages(chosen.map(s => Object.fromEntries(FACTOR_KEYS.map(k => [k, s.weights[k]]).filter(([, v]) => typeof v === 'number')))),
     facilities: rankAverages(chosen.map(s => s.weights.facility)),
+    factor_shares: weightShares(chosen.map(s => s.weights), FACTOR_KEYS),
+    facility_shares: weightShares(chosen.map(s => s.weights.facility)),
+    sun_shares: weightShares(chosen.map(s => s.weights.sun), ['NE', 'SE', 'SW', 'NW']),
     floor_preference: floorPref,
     flat_types: flatTypeCounts,
   };

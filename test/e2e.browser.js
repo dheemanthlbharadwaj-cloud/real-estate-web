@@ -185,11 +185,17 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(!/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(anText) && !/Most shortlisted|Who ranked|Analysis/.test(anText), 'analytics page shows no unit ids, no shortlist list, no Who ranked');
     const apiJson = await an.evaluate(async () => (await fetch('/fake-sheets?action=analytics&project=berlayar-rise-7')).json());
     check(apiJson.ok && apiJson.users > 0 && !/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(JSON.stringify(apiJson)) && !('rows' in apiJson), 'analytics JSON from the sheet has aggregates only, no unit ids or rows');
+    check((await an.$$eval('.kpi-title', t => t.map(x => x.textContent))).join('|') === 'Rankings|Typical lowest floor|Typical highest floor|Floor preference', 'KPI tiles: Rankings, Typical lowest floor, Typical highest floor, Floor preference');
+    const ins = await an.$$eval('.ins', b => b.map(x => ({ t: x.querySelector('.ins-title').textContent, f: x.querySelector('.ins-fig').textContent, c: !!x.querySelector('canvas'), s: x.querySelector('.ins-sub').textContent })));
+    check(ins.length === 8 && ins.every(i => i.t && i.f && i.s && i.c), `exactly 8 insight boxes, each with title, figure, line and a visual (${ins.map(i => i.t).join(' / ')})`);
+    check(ins.some(i => i.t === 'Ew! The smell' && /^\d+%$/.test(i.f) && /rubbish chute/.test(i.s)) && ins.some(i => /neighbours/.test(i.t)) && ins.some(i => i.t === 'The most popular facility is'), 'the chute, neighbours and most popular facility boxes are there');
+    check(await an.evaluate(() => [...document.querySelectorAll('.ins canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length && Chart.getChart(c).$wmCount === undefined)) && !/[\u2014]/.test(await an.evaluate(() => document.querySelector('.dash').parentElement.innerText)), 'insight charts are non-interactive and skip the canvas watermark; no em dashes');
+    check((await an.$$eval('.ins-pair', p => p.map(x => x.children.length))).join() === '2,2,2,2', 'four pairs of insight boxes');
     check((await an.$$eval('.kpi-num', k => k.length === 3 && k.every(x => /\d/.test(x.textContent)))), 'Analytics has 3 KPI number tiles with numbers');
-    check((await an.$$eval('canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
+    check((await an.$$eval('.card canvas, .kpi canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
     check(await an.evaluate(() => !!window.Chart.registry.plugins.get('mybtoWatermark') && [...document.querySelectorAll('canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length)), 'watermark plugin is registered and every chart is non-interactive');
     check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::before').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
-    check(await an.evaluate(() => [...document.querySelectorAll('canvas')].every(c => {
+    check(await an.evaluate(() => [...document.querySelectorAll('.card canvas, .kpi canvas')].every(c => {
       const ch = Chart.getChart(c), bx = ch.$wmBox, ca = ch.chartArea;
       if (ch.$wmCount !== 1 || !bx) return false;
       if (ch.config.type === 'doughnut') return true;
@@ -306,7 +312,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await pg.click('[data-ad-go]');
     await pg.waitForFunction(() => /Based on \d+ saved rankings/.test(document.querySelector('#a-basis').textContent));
     const basis = await pg.textContent('#a-basis');
-    check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('canvas', c => c.length)) === 7, `sample Analytics before launch (${basis.trim()})`);
+    check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('.card canvas, .kpi canvas', c => c.length)) === 7, `sample Analytics before launch (${basis.trim()})`);
     await pre.close();
 
     const phone = await ctx.newPage();
@@ -351,7 +357,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await ph.waitForTimeout(400);
     check((await over()) <= 0, `phone: Analytics page does not scroll sideways (overflow ${await over()}px)`);
     const box = sel => ph.$eval(sel, e => { const r = e.getBoundingClientRect(); return { top: r.top + scrollY, bottom: r.bottom + scrollY }; });
-    const [t1, t2, t3, cA] = [await box('#k-rankings'), await box('#k-min'), await box('#k-higher'), await box('#card-storey')];
+    const [t1, t2, t3, cA] = [await box('#k-rankings'), await box('#k-min'), await box('#k-max'), await box('#card-storey')];
     check(t1.top === t2.top && t3.top > cA.bottom, 'phone: tiles 1 and 2 share a row, right half (tile 3) sits below chart A');
     if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics.png`, fullPage: true });
     await pc.close();

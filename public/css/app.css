@@ -154,12 +154,31 @@ body[data-page="analytics"] .tool { background: var(--card-2); }
 @media (min-width: 761px) {
   .dash { grid-template-columns: repeat(4, 1fr); grid-template-rows: auto 1fr; }
   .half, .kpis { display: contents; }
-  #k-rankings { grid-area: 1 / 1; } #k-min { grid-area: 1 / 2; } #k-higher { grid-area: 1 / 3; } #k-pref { grid-area: 1 / 4; }
+  #k-rankings { grid-area: 1 / 1; } #k-min { grid-area: 1 / 2; } #k-max { grid-area: 1 / 3; } #k-pref { grid-area: 1 / 4; }
   #card-storey { grid-area: 2 / 1 / 3 / 3; } #card-sun { grid-area: 2 / 3 / 3 / 5; }
   .kpi-pref .pref-body { flex-wrap: nowrap; }
   .pref-plot { width: 84px; height: 84px; flex: none; }
 }
 @media (min-width: 761px) and (max-width: 1050px) { .kpi-pref .pref-body { flex-direction: column-reverse; justify-content: center; } }
+/* insight boxes: small facts in pairs between the big charts */
+.stack { display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+.ins-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+.stack .ins-pair { margin-top: 0; }
+.ins-pair:empty { display: none; }
+.ins-pair.one { grid-template-columns: 1fr; }
+.ins { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: var(--r); min-width: 0; padding: 14px 16px 16px; min-height: 160px; display: flex; flex-direction: column; gap: 8px; }
+.ins::before { content: 'mybto.web.app'; position: absolute; right: 12px; bottom: 6px; font: 600 10px var(--sans); color: var(--text); opacity: .12; pointer-events: none; white-space: nowrap; }
+.ins-title { font: 400 14px/1.3 var(--sans); color: var(--text); }
+.ins-main { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 1; }
+.ins-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ins-fig { font: 600 clamp(26px, 3.2vw, 40px)/1.05 var(--head); color: var(--text); overflow-wrap: anywhere; }
+.ins-fig.long { font-size: clamp(20px, 2.2vw, 28px); }
+.ins-sub { font-size: 13px; line-height: 1.35; color: var(--accent-ink); }
+.ins-ring { position: relative; width: 76px; height: 76px; flex: none; }
+.ins-bars { position: relative; height: 74px; width: 100%; }
+.ins-split { position: relative; height: 26px; width: 100%; }
+.ins-key { font-size: 11px; color: var(--text-2); margin: 0; }
+@media (max-width: 760px) { .stack, .ins-pair, .grid2 { gap: 12px; } .ins-pair { margin-top: 12px; } .stack .ins-pair { margin-top: 0; } .ins { padding: 10px 10px 12px; min-height: 150px; } .ins-title { font-size: 12.5px; } .ins-fig { font-size: 24px; } .ins-fig.long { font-size: 17px; } .ins-sub { font-size: 11.5px; } .ins-ring { width: 54px; height: 54px; } .ins-main { flex-wrap: wrap; } .ins-bars { height: 66px; } }
 /* faint centred site mark on cards that have no canvas (charts draw it inside the canvas) */
 .card.nocanvas { overflow: hidden; }
 .card.nocanvas::before { content: 'mybto.web.app'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 14px var(--sans); color: var(--text); opacity: .12; pointer-events: none; white-space: nowrap; }
