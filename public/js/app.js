@@ -526,6 +526,12 @@ const insLabels = fmt => ({
   },
 });
 const insChart = (id, config) => { config.options = config.options || {}; config.options.plugins = Object.assign({ legend: { display: false }, mybtoWatermark: false }, config.options.plugins); chart(id, config); };
+// Phone: wrap bar names to fit the narrow label column, splitting a single long word with a hyphen.
+const insBarLabel = t => {
+  if (window.innerWidth >= 761) return t;
+  const lines = [].concat(wrapLabel(t, 9));
+  return lines.flatMap(l => (l.length > 9 ? [`${l.slice(0, Math.ceil(l.length / 2))}-`, l.slice(Math.ceil(l.length / 2))] : [l]));
+};
 const pctOf = (n, d) => (d ? Math.round(100 * n / d) : 0);
 
 function insightBuilders(a, av) {
@@ -578,7 +584,7 @@ async function renderInsights(a, proj) {
     boxes.push(box);
   }
   boxes.forEach((b, i) => {
-    const pair = $(`#ins-${Math.floor(i / 2) + 1}`);
+    const pair = $(`#ins-${Math.floor(i / 4) + 1}`);
     if (!b) return;
     const el = document.createElement('div');
     el.className = 'ins';
@@ -589,7 +595,6 @@ async function renderInsights(a, proj) {
     el.innerHTML = `<div class="ins-title">${esc(b.title)}</div><div class="ins-main"><div class="ins-text"><b class="ins-fig${b.long ? ' long' : ''}">${esc(b.fig)}</b><span class="ins-sub">${esc(b.sub)}</span></div>${vis}</div>${under}`;
     pair.append(el);
   });
-  $$('.ins-pair').forEach(p => p.classList.toggle('one', p.childElementCount === 1));
   boxes.forEach((b, i) => {
     if (!b) return;
     const id = `c-ins-${i}`;
@@ -600,8 +605,8 @@ async function renderInsights(a, proj) {
       insChart(id, { type: 'bar', data: { labels: [''], datasets: [[sh.want, VIZ.pos], [sh.neutral, VIZ.neutral], [sh.avoid, VIZ.neg]].map(([v, c]) => ({ data: [v], backgroundColor: c, borderWidth: 1, borderColor: '#fff' })) },
         options: { indexAxis: 'y', layout: { padding: 0 }, scales: { x: { stacked: true, display: false }, y: { stacked: true, display: false } } } });
     } else if (b.vis === 'bars') {
-      insChart(id, { type: 'bar', data: { labels: b.rows.map(r => r.label), datasets: [{ data: b.rows.map(r => r.v), backgroundColor: b.rows.map(r => (r.v >= 0 ? VIZ.main : VIZ.neg)), borderRadius: 3, barPercentage: .75, categoryPercentage: .9 }] },
-        options: { indexAxis: 'y', layout: { padding: { right: 34 } }, scales: { x: { display: false, min: b.max === 100 ? 0 : -5, max: b.max }, y: { grid: { display: false }, border: AXIS, ticks: { color: VIZ.ink, font: { size: 11 }, autoSkip: false, callback(v) { const t = this.getLabelForValue(v); return t.length > 8 && window.innerWidth < 761 ? `${t.slice(0, 6)}…` : t; } } } } },
+      insChart(id, { type: 'bar', data: { labels: b.rows.map(r => insBarLabel(r.label)), datasets: [{ data: b.rows.map(r => r.v), backgroundColor: b.rows.map(r => (r.v >= 0 ? VIZ.main : VIZ.neg)), borderRadius: 3, barPercentage: .75, categoryPercentage: .9 }] },
+        options: { indexAxis: 'y', layout: { padding: { right: window.innerWidth < 761 ? 28 : 34 } }, scales: { x: { display: false, min: b.max === 100 ? 0 : -5, max: b.max }, y: { grid: { display: false }, border: AXIS, ticks: { color: VIZ.ink, font: { size: window.innerWidth < 761 ? 9 : 11 }, autoSkip: false } } } },
         plugins: [insLabels(b.fmt)] });
     }
   });
