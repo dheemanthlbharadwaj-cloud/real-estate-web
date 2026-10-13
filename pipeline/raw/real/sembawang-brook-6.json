@@ -1,0 +1,8455 @@
+{
+ "project_key": "sembawang-brook-6",
+ "name": "Sembawang Brook",
+ "north_bearing_deg": 0,
+ "scale": {
+  "site_plan_m_per_px": 0.7599,
+  "site_plan_unit": "brochure PDF point on p.16 site plan (pdf page index 8); 10 m = 13.16 pt on the scale bar (0-120 m ticks 13.16 pt apart). The embedded raster is 1618x932 px over 734.5x428.0 pt, i.e. 0.345 m per raster px.",
+  "floor_plan_m_per_px": {
+   "437A": 0.1248,
+   "437B": 0.1248,
+   "439A": 0.1248,
+   "440A": 0.1248,
+   "_unit": "brochure PDF point on the 3rd-30th storey plans (pdf pages 12,14,16,18); 0-14 m scale bar = 8.015 pt per metre"
+  },
+  "board_row3_semicircle_radius_m": 13.8,
+  "board_row2_circle_radius_m": 29.5
+ },
+ "totals_check": {
+  "brochure": {
+   "2-Room Flexi (Type 1)": 58,
+   "2-Room Flexi (Type 2)": 203,
+   "3-Room": 87,
+   "4-Room": 464,
+   "5-Room": 319,
+   "3Gen": 29
+  },
+  "counted": {
+   "4-Room": 464,
+   "2-Room Flexi (Type 1)": 58,
+   "5-Room": 319,
+   "3-Room": 87,
+   "2-Room Flexi (Type 2)": 203,
+   "3Gen": 29
+  },
+  "total_brochure": 1160,
+  "total_counted": 1160,
+  "match": true
+ },
+ "stacks": [
+  {
+   "block": "437A",
+   "unit": "100",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_100_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     257.835,
+     482.76
+    ],
+    "site_plan_centre_pt": [
+     184.6,
+     232.1
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 24.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 20,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Drop-off porch (0.9 m inside the circle edge). mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 35 m for the block centre."
+  },
+  {
+   "block": "437A",
+   "unit": "102",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_102_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     255.477,
+     483.874
+    ],
+    "site_plan_centre_pt": [
+     169.6,
+     239.2
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 29.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 20,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "medium",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 35 m for the block centre."
+  },
+  {
+   "block": "437A",
+   "unit": "104",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_104_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     254.004,
+     480.218
+    ],
+    "site_plan_centre_pt": [
+     160.2,
+     216.1
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 30.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 35,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "block": "437A",
+   "unit": "106",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_106_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     256.723,
+     479.263
+    ],
+    "site_plan_centre_pt": [
+     177.5,
+     210.0
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 25.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 40,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Precinct pavilion (1.2 m inside the circle edge)."
+  },
+  {
+   "block": "437A",
+   "unit": "108",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_108_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     258.475,
+     478.613
+    ],
+    "site_plan_centre_pt": [
+     188.7,
+     205.9
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 8.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 40,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437A",
+   "unit": "110",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_110_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     260.147,
+     478.03
+    ],
+    "site_plan_centre_pt": [
+     199.4,
+     202.2
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 5.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 40,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437A",
+   "unit": "112",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_112_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     262.577,
+     476.93
+    ],
+    "site_plan_centre_pt": [
+     214.9,
+     195.3
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 17.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 45,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Adult fitness station"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Adult fitness station (1.4 m inside the circle edge)."
+  },
+  {
+   "block": "437A",
+   "unit": "114",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_114_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     265.503,
+     475.83
+    ],
+    "site_plan_centre_pt": [
+     233.6,
+     188.3
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 22.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 55,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Adult fitness station"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 35 m for the block centre."
+  },
+  {
+   "block": "437A",
+   "unit": "116",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_116_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     266.408,
+     479.287
+    ],
+    "site_plan_centre_pt": [
+     239.4,
+     210.2
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 24.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 40,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "block": "437A",
+   "unit": "118",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437A_118_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     264.188,
+     480.343
+    ],
+    "site_plan_centre_pt": [
+     225.2,
+     216.8
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 19.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 30,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "120",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_120_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     273.013,
+     487.928
+    ],
+    "site_plan_centre_pt": [
+     281.5,
+     264.8
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 25.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 15,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "122",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_122_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     270.251,
+     489.098
+    ],
+    "site_plan_centre_pt": [
+     263.9,
+     272.1
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 31.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 25,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Drop-off porch"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "124",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_124_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     269.359,
+     485.394
+    ],
+    "site_plan_centre_pt": [
+     258.2,
+     248.8
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 31.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 30,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "126",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_126_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     271.958,
+     484.074
+    ],
+    "site_plan_centre_pt": [
+     274.8,
+     240.4
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 26.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 35,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "128",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_128_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     274.613,
+     484.752
+    ],
+    "site_plan_centre_pt": [
+     291.7,
+     244.7
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 8.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 25,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "130",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_130_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     276.144,
+     484.016
+    ],
+    "site_plan_centre_pt": [
+     301.5,
+     240.0
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 5.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 25,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Children's playground"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "132",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_132_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     278.487,
+     482.836
+    ],
+    "site_plan_centre_pt": [
+     316.5,
+     232.6
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 19.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 30,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "134",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_134_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     280.737,
+     481.538
+    ],
+    "site_plan_centre_pt": [
+     330.8,
+     224.4
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 24.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 35,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "437B",
+   "unit": "136",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_437B_136_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     279.89,
+     484.524
+    ],
+    "site_plan_centre_pt": [
+     325.4,
+     243.3
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 13.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 10,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 25 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "154",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_154_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     302.094,
+     486.035
+    ],
+    "site_plan_centre_pt": [
+     467.2,
+     252.8
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 23.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 95,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "156",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_156_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     299.612,
+     486.986
+    ],
+    "site_plan_centre_pt": [
+     451.3,
+     258.8
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 28.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 85,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "medium",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "158",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_158_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     297.502,
+     484.016
+    ],
+    "site_plan_centre_pt": [
+     437.9,
+     240.0
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 34.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 75,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "160",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_160_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     300.251,
+     482.762
+    ],
+    "site_plan_centre_pt": [
+     455.4,
+     232.1
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 28.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 90,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "162",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_162_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     302.997,
+     483.118
+    ],
+    "site_plan_centre_pt": [
+     472.9,
+     234.4
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 10.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 110,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "439A",
+   "unit": "164",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_164_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     304.505,
+     482.469
+    ],
+    "site_plan_centre_pt": [
+     482.6,
+     230.3
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 7.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 115,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "439A",
+   "unit": "166",
+   "facing": "NW",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_166_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     306.351,
+     481.538
+    ],
+    "site_plan_centre_pt": [
+     494.4,
+     224.4
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 13.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 125,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "439A",
+   "unit": "168",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_168_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     308.443,
+     480.657
+    ],
+    "site_plan_centre_pt": [
+     507.7,
+     218.8
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 18.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 135,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Drop-off porch (0.7 m inside the circle edge). mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "170",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_170_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     310.93,
+     483.541
+    ],
+    "site_plan_centre_pt": [
+     523.6,
+     237.0
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 21.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 140,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Eating house",
+    "Shops",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 115 m for the block centre."
+  },
+  {
+   "block": "439A",
+   "unit": "172",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_439A_172_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     308.323,
+     484.776
+    ],
+    "site_plan_centre_pt": [
+     507.0,
+     244.8
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 16.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 125,
+   "mrt_m": null,
+   "facilities_has": [],
+   "facilities_near": [
+    "Eating house"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "440A",
+   "unit": "174",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_174_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     326.629,
+     482.762
+    ],
+    "site_plan_centre_pt": [
+     623.8,
+     232.1
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 14.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 215,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Adult fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "440A",
+   "unit": "176",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_176_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     329.354,
+     481.538
+    ],
+    "site_plan_centre_pt": [
+     641.2,
+     224.4
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 19.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 230,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Hardcourt",
+    "Adult fitness station"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "178",
+   "facing": "NE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_178_opp_2965.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     331.079,
+     483.881
+    ],
+    "site_plan_centre_pt": [
+     652.2,
+     239.2
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 20.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 240,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Hardcourt",
+    "Adult fitness station"
+   ],
+   "confidence": "high",
+   "notes": "178 has two semicircles on the board (NE living-room side, seq 2965, and NW side, seq 2971); both green. Evidence uses the NE one. mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "180",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_180_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     331.275,
+     485.741
+    ],
+    "site_plan_centre_pt": [
+     653.5,
+     250.9
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 20.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 240,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Hardcourt",
+    "Adult fitness station",
+    "Children's playground"
+   ],
+   "confidence": "medium",
+   "notes": "First pixel-sampling try was ambiguous because neighbour 182's red semicircle overlaps part of this semicircle; resolved by sampling only the part not covered by any neighbour shape (pass2): own semicircle is fully green. mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "182",
+   "facing": "SE",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_182_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     329.316,
+     486.629
+    ],
+    "site_plan_centre_pt": [
+     641.0,
+     256.6
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 15.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 225,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Hardcourt",
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Hardcourt (0.8 m inside the circle edge), Elderly fitness station (0.8 m inside the circle edge)."
+  },
+  {
+   "block": "440A",
+   "unit": "184",
+   "facing": "SE",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_184_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     326.591,
+     487.87
+    ],
+    "site_plan_centre_pt": [
+     623.6,
+     264.4
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 6.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 215,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "440A",
+   "unit": "186",
+   "facing": "SE",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_186_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     325.473,
+     488.38
+    ],
+    "site_plan_centre_pt": [
+     616.4,
+     267.6
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 10.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 210,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": ""
+  },
+  {
+   "block": "440A",
+   "unit": "188",
+   "facing": "SE",
+   "gt30m": false,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_188_opp.png",
+    "pass1": false,
+    "pass2": false,
+    "board_centre_pt": [
+     324.862,
+     490.829
+    ],
+    "site_plan_centre_pt": [
+     612.5,
+     283.1
+    ]
+   },
+   "position": "Corner",
+   "chute_m": 26.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 200,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Mini-mart",
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "190",
+   "facing": "SE",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_190_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     321.783,
+     492.223
+    ],
+    "site_plan_centre_pt": [
+     592.9,
+     291.9
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 32.0,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 190,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Mini-mart",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "confidence": "high",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "192",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_192_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     320.305,
+     488.356
+    ],
+    "site_plan_centre_pt": [
+     583.4,
+     267.5
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 28.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 185,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Mini-mart",
+    "Shops",
+    "Children's playground"
+   ],
+   "confidence": "medium",
+   "notes": "mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  },
+  {
+   "block": "440A",
+   "unit": "194",
+   "facing": "NW",
+   "gt30m": true,
+   "gt30m_evidence": {
+    "centre_px": [
+     50,
+     50
+    ],
+    "crop": "sb_440A_194_opp.png",
+    "pass1": true,
+    "pass2": true,
+    "board_centre_pt": [
+     322.453,
+     487.372
+    ],
+    "site_plan_centre_pt": [
+     597.2,
+     261.2
+    ]
+   },
+   "position": "Corridor",
+   "chute_m": 22.5,
+   "roof_floors": [],
+   "wind_open": true,
+   "mscp_m": 195,
+   "mrt_m": null,
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "facilities_near": [
+    "Mini-mart",
+    "Shops",
+    "Children's playground"
+   ],
+   "confidence": "medium",
+   "notes": "Marginal facility overlap: Shops (1.2 m inside the circle edge). mscp_m measured per stack from the unit footprint to the nearest edge of Block 436 (MSCP incl. preschool wing and ramp); mscp_distance.json has 215 m for the block centre."
+  }
+ ],
+ "units": [
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "100",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "102",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "104",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "106",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "108",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "110",
+   "flat_type": "2-Room Flexi (Type 1)"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "112",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "114",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "116",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 2,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 3,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 4,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 5,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 6,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 7,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 8,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 9,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 10,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 11,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 12,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 13,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 14,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 15,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 16,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 17,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 18,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 19,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 20,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 21,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 22,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 23,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 24,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 25,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 26,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 27,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 28,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 29,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437A",
+   "storey": 30,
+   "unit": "118",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "120",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "122",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "124",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "126",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "128",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "130",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "132",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "134",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "437B",
+   "storey": 2,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 3,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 4,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 5,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 6,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 7,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 8,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 9,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 10,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 11,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 12,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 13,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 14,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 15,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 16,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 17,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 18,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 19,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 20,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 21,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 22,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 23,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 24,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 25,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 26,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 27,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 28,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 29,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "437B",
+   "storey": 30,
+   "unit": "136",
+   "flat_type": "3Gen"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "154",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "156",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "158",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "160",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "162",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "164",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "166",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "168",
+   "flat_type": "3-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "170",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 2,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 3,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 4,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 5,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 6,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 7,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 8,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 9,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 10,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 11,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 12,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 13,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 14,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 15,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 16,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 17,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 18,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 19,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 20,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 21,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 22,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 23,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 24,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 25,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 26,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 27,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 28,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 29,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "439A",
+   "storey": 30,
+   "unit": "172",
+   "flat_type": "5-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "174",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "176",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "178",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "180",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "182",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "184",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "186",
+   "flat_type": "2-Room Flexi (Type 2)"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "188",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "190",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "192",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 2,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 3,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 4,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 5,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 6,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 7,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 8,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 9,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 10,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 11,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 12,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 13,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 14,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 15,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 16,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 17,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 18,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 19,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 20,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 21,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 22,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 23,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 24,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 25,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 26,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 27,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 28,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 29,
+   "unit": "194",
+   "flat_type": "4-Room"
+  },
+  {
+   "block": "440A",
+   "storey": 30,
+   "unit": "194",
+   "flat_type": "4-Room"
+  }
+ ],
+ "notes": [
+  "Units: unit distribution pages (pdf pages 9-10) read by sampling every cell colour; every stack exists on storeys 2-30 (29 storeys), #01 is void deck (440A #01 of 188/190 is the Residents' Network Centre). No stack changes flat type. Block 438A (100 1-Room + 100 2-Room rental, 'not available for sale') is excluded.",
+  "Flat types also cross-checked against the site plan unit colours and the floor plan labels.",
+  "Facing: board row5 colour-coded arrows (magenta NW, purple SE, blue NE), 40 arrows for 40 stacks, mapped onto the brochure site plan (the board image is the same page raster, registration verified by correlation, offset 0 px). Cross-checked against each block's floor plan (W1 living/dining windows) and the outward direction of the row3 semicircles: all 40 agree. Only 178 faces NE; site plan north arrow points straight up.",
+  "gt30m: board row3 has one semicircle per living-room window (40 stacks, 178 has two). The user labelled their radius '15m' (measured 13.8 m with the scale bar), so the drawn semicircle spans 30 m. pass1 = vector fill colour of the stack's own semicircle; pass2 = fresh 900 dpi render, pixels sampled only inside the stack's own semicircle where no other semicircle overlaps. 0 disagreements. Edge units 104, 114, 124, 134, 158, 168, 180 have green semicircles partly overlapped by a neighbour's red semicircle; per the brief the neighbour's shape does not count, so they pass. Thin red ring outlines of 184/186 also cross 194's semicircle (neighbour shapes, ignored).",
+  "Facilities: board row2 circles (radius measured 29.5 m) mapped to the site plan; each circle identified by its board number and colour group (orange play, cyan communal, red social, green commercial) and matched to the brochure marker. A stack is 'near' when the circle reaches any pixel of the stack's unit footprint (segmented from the site plan unit colours). Marker 7 'space reserved for future community use' maps to Community space. Preschool (9) and Future amenities/facilities (10) are in MSCP Block 436; their circles do not reach any sale stack. Eating house, Shops and Mini-mart are in low-rise Block 440 (near only). facilities_has: only the Residents' network centre in 440A (1st storey), applied to all 440A stacks and then left out of their near list.",
+  "Position: 'Corner' = the last unit door along its corridor route from the lift lobby (no other unit door further along; legend picture lg-corner shows this convention). Corner: 437A 106, 118; 437B 122, 126, 134; 439A 160, 172; 440A 174, 188. Read from the 3rd-30th storey plans, corridors traced from the lobby; medium confidence because the corridors form short loops around voids.",
+  "chute_m: straight line from the main door (door leaf at the corridor) to the centre of the 'centralised refuse chute' box in the wash area beside the lobby (not the recyclable chute), on the 3rd-30th storey plan; 2nd storey plans have the same core and doors. Door positions read off 220-300 dpi renders, about +/-0.5 m.",
+  "roof_floors: all []. The floor plans only mark non-accessible 'roof at 2nd storey only' slabs and note that units from 15th (437A/B), 3rd (439A) or 4th (440A) storey are higher than the MSCP roof garden / Block 440 / Block 441 roofs. The accessible roof garden is on MSCP Block 436, with no direct access from any flat.",
+  "wind_open: from each living-room window point (row3 semicircle centre) no unit footprint of another residential block (incl. rental 438A) lies within 30 m at bearing 90-135 deg; all 40 stacks are open. Off-site blocks are not drawn within 30 m.",
+  "mscp_m: per stack, nearest unit-footprint pixel to the outline of Block 436 (8-storey MSCP with roof garden, L-shaped incl. the preschool wing and the round ramp), rounded to 5 m. Outline pts: (155.3,278.7),(209,265.2),(238,330),(302.9,299.4),(306,284),(316,277),(328,277),(337,286),(338,308.4),(199.4,375). Differs from mscp_distance.json (block centre) by design.",
+  "mrt_m: null, no MRT station on the site plan.",
+  "Evidence (scratchpad/analysis/sembawang-brook-6/): sb_<block>_<unit>_opp.png 900 dpi board crops centred on each semicircle (centre_px is in that crop), ov5_*.png facing overlay, ov3_*.png semicircle overlay, foot_vis.png footprints, z12*/z14*/z16*/z18* floor plan grids, scripts *.py."
+ ]
+}
