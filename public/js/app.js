@@ -233,6 +233,7 @@ function runRank() {
   $('#result-count').innerHTML = `${state.ranked.length.toLocaleString()}<small>units</small>`;
   $('#top-note').textContent = state.ranked.length > SHOW_TOP ? `Showing the top ${SHOW_TOP}.` : '';
   $('#after-rank').hidden = false;
+  if ($('#support')) $('#support').hidden = false;
   $('#save-msg').textContent = '';
   renderResults();
   renderFloorGroups();

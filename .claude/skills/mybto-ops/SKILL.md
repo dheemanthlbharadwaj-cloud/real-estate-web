@@ -41,6 +41,9 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - Roof access: "roof at 2nd storey only" on HDB plans is a non-accessible roof slab, so it is NOT roof access (`roof_floors` = []). Stacks beside such a roof may carry `roof_next_to_2nd_storey_roof` / `roof_note_2nd_storey`. Car-park roof gardens reached by shared link bridges do not count either. Result: no unit in the 7 projects has roof access, so the "Access to roof" meter hides itself once real data is published.
 - More than 30 m: a unit fails if any red is inside a board semicircle centred on that unit; a neighbour's red overlapping the unit's own green semicircle does not fail it.
 
+## Support link
+- Buy Me a Coffee: https://buymeacoffee.com/mybto. Shown as the `#support` card under the results after a ranking (build_pages.py rank body, unhidden in runRank) and as "Support MyBTO" in the footer More list (site.js). Plain link only, no third-party widget script.
+
 ## Ranking table conventions
 - Chute column: ✓ = more than 10 m from the chute, ✗ = within 10 m. MRT column: ✓ = within 100 m. Facilities: ✓/✗ per facility. No "Near/Far" words.
 - "By floor" boxes use only the shown top 100 (SHOW_TOP): storeys and units come from `state.ranked.slice(0, SHOW_TOP)`.

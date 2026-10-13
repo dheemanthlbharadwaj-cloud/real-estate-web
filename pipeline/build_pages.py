@@ -101,6 +101,10 @@ PAGES = {
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>
+          <div id="support" class="support-card" hidden>
+            <div><h3>Help keep MyBTO free</h3><p class="small muted">MyBTO is free to use. If it helped you choose, you can buy us a coffee to keep it running.</p></div>
+            <a class="btn primary" href="https://buymeacoffee.com/mybto" target="_blank" rel="noopener">Buy me a coffee ☕</a>
+          </div>
         </div>
       </div>
     </div></section>
