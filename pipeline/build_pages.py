@@ -97,7 +97,7 @@ PAGES = {
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
           <div class="fg-wrap">
-            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Every matching unit on the highest, middlemost and lowest storeys of your list (the middle two if there’s an even number).</p></div>
+            <div class="fg-intro"><span class="eyebrow">By floor</span><p class="small muted">Units from your top 100 on the highest, middlemost and lowest storeys among them (the middle two if there’s an even number).</p></div>
             <div id="floor-groups" class="floor-groups" hidden></div>
           </div>
           <div class="table-wrap"><table class="schedule" id="results"><thead></thead><tbody></tbody></table></div>

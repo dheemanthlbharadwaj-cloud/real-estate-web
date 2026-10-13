@@ -239,11 +239,11 @@ function runRank() {
   saveRanking();
 }
 
-// Highest, middlemost and lowest storeys among the matching units, with every ranked unit on them.
+// Highest, middlemost and lowest storeys among the shown top units (SHOW_TOP), with every one of those units on them.
 function renderFloorGroups() {
   const el = $('#floor-groups');
   if (!el) return;
-  const g = Scoring.floorGroups(state.ranked);
+  const g = Scoring.floorGroups(state.ranked.slice(0, SHOW_TOP));
   const card = (key, title) => {
     const ss = g.storeys[key], units = g[key];
     const label = ss.length ? `Storey ${ss.map(s => String(s).padStart(2, '0')).join(' and ')}` : '';
@@ -259,7 +259,6 @@ function renderFloorGroups() {
 const compass = d => `<span class="compass"><i style="transform:rotate(${BEARING[d] ?? 0}deg)" aria-hidden="true">↑</i>${esc(d)}</span>`;
 
 const yes = '<span class="yn yes" aria-label="Yes">✓</span>', no = '<span class="yn no" aria-label="No">✗</span>';
-const nearFar = near => `<span class="nf ${near ? 'near' : 'far'}">${near ? 'Near' : 'Far'}</span>`;
 
 // Under each unit: corner or corridor, near MRT, and a warning when the chute is within 10 m.
 function tags(u) {
@@ -290,8 +289,8 @@ function renderResults() {
       <td class="addr">#${String(u.storey).padStart(2, '0')}-${esc(u.unit)}<small>Blk ${esc(u.block)}</small>${tags(u)}</td>
       <td><span class="scorebar ${u.score < 0 ? 'neg' : ''}">${u.score > 0 ? '+' : ''}${u.score.toFixed(1)}<i><b style="width:${pct}%"></b></i></span></td>
       <td><span class="type">${esc(u.flat_type.replace('2-Room Flexi', '2RF'))}</span><div class="sub">${compass(u.facing)}</div></td>
-      <td>${u.chute_m == null ? '–' : nearFar(u.chute_m <= Scoring.CHUTE_FAR_M)}</td>
-      <td>${nearFar(u.mrt_near)}</td>
+      <td class="fac">${u.chute_m == null ? '–' : (u.chute_m > Scoring.CHUTE_FAR_M ? yes : no)}</td>
+      <td class="fac">${u.mrt_near ? yes : no}</td>
       ${facs.map(f => `<td class="fac">${near.has(f) ? yes : no}</td>`).join('')}</tr>`;
   }).join('');
 }

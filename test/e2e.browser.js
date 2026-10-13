@@ -48,7 +48,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(await p.isVisible('#after-rank') && !(await p.$('#btn-analytics')) && !/Analytics/.test(await p.textContent('#after-rank')), 'Shortlisted button appears after ranking; no Analytics button (archived)');
     const head = await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''));
     check(head.slice(0, 7).join('|') === '#||Unit|Score|Type · facing|Chute|MRT' && head.length > 7, `chute, MRT and one column per facility (${head.length - 7} facilities)`);
-    check((await p.$$eval('#results tbody tr td:nth-child(6) .nf', n => n.every(x => /^(Near|Far)$/.test(x.textContent)))), 'chute shows near or far');
+    check((await p.$$eval('#results tbody tr', r => r.every(x => /^[✓✗–]$/.test(x.children[5].textContent.trim()) && /^[✓✗]$/.test(x.children[6].textContent.trim())))), 'chute and MRT columns show ticks and crosses');
+    check(await p.evaluate(() => { const top = new Set([...document.querySelectorAll('#results tbody .rk')].map(x => x.closest('tr').querySelector('.addr').textContent)); return [...document.querySelectorAll('#floor-groups .fg-list .rk')].every(x => Number(x.textContent) <= Math.max(...[...document.querySelectorAll('#results tbody .rk')].map(y => Number(y.textContent)))); }), 'By floor shows only units from the top 100');
     check((await p.$$eval('#results tbody td.fac', n => n.every(x => /^[✓✗]$/.test(x.textContent.trim())))), 'facility columns are ticks and crosses');
     const tagText = await p.$$eval('#results .tags .tag', t => [...new Set(t.map(x => x.textContent.replace(/\d+/, 'N')))]);
     check(tagText.every(t => ['corner', 'corridor', 'near MRT', 'chute within N m'].includes(t)), `only corner/corridor, MRT and chute tags (${tagText.join(', ')})`);
