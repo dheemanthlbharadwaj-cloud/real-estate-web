@@ -84,13 +84,16 @@
    "chute_m": 6.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 40,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Community space",
+    "Drop-off porch",
+    "Eating house"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #6 red (opens toward 61 deg). Wind sector 90-135 deg blocked by: 184A #132 at 17.4 m, bearing 133. Living window bearing about 61 deg."
@@ -120,14 +123,16 @@
    "chute_m": 22.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Community space",
     "Drop-off porch",
-    "Future amenities/facilities"
+    "Eating house"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #4 green (opens toward 152 deg). Living window bearing about 151 deg."
@@ -153,11 +158,11 @@
      3
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 29.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 10,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
@@ -166,11 +171,10 @@
     "Adult fitness station",
     "Community space",
     "Drop-off porch",
-    "Eating house",
-    "Future amenities/facilities"
+    "Eating house"
    ],
    "confidence": "high",
-   "notes": "Opp-unit semicircles attributed: #3 green (opens toward 152 deg). Living window bearing about 151 deg."
+   "notes": "Opp-unit semicircles attributed: #3 green (opens toward 152 deg). Living window bearing about 151 deg. Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "183A",
@@ -197,16 +201,16 @@
    "chute_m": 36.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 10,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Community space",
     "Drop-off porch",
-    "Eating house",
-    "Future amenities/facilities"
+    "Eating house"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #2 green (opens toward 332 deg). Living window bearing about 331 deg."
@@ -237,14 +241,16 @@
    "chute_m": 31.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Community space",
     "Drop-off porch",
-    "Future amenities/facilities"
+    "Eating house"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #1 green (opens toward 332 deg), #31 red (opens toward 60 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 331 deg."
@@ -275,17 +281,19 @@
    "chute_m": 14.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Community space",
     "Drop-off porch",
-    "Future amenities/facilities"
+    "Eating house"
    ],
    "confidence": "high",
-   "notes": "Opp-unit semicircles attributed: #5 green (opens toward 43 deg), #32 red (opens toward 318 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 61 deg."
+   "notes": "Opp-unit semicircles attributed: #5 green (opens toward 43 deg), #32 red (opens toward 318 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 61 deg. Review: only door at the end of its passage, Corner."
   },
   {
    "block": "184A",
@@ -312,14 +320,18 @@
    "chute_m": 36.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 65,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Residents' network centre"
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #17 red (opens toward 15 deg). Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Children's playground (+0.1 m). Living window bearing about 17 deg."
@@ -350,13 +362,18 @@
    "chute_m": 41.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Residents' network centre"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #16 green (opens toward 15 deg), #34 red (opens toward 101 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Children's playground (+0.4 m). Living window bearing about 17 deg."
@@ -387,15 +404,18 @@
    "chute_m": 45.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Residents' network centre"
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #15 green (opens toward 194 deg), #35 red (opens toward 102 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 197 deg."
@@ -425,15 +445,18 @@
    "chute_m": 24.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Residents' network centre"
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #14 green (opens toward 196 deg). Living window bearing about 197 deg."
@@ -463,15 +486,18 @@
    "chute_m": 19.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Residents' network centre"
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #13 red (opens toward 196 deg). Living window bearing about 197 deg."
@@ -501,16 +527,18 @@
    "chute_m": 15.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 30,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
     "Precinct pavilion",
-    "Residents' network centre"
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #12 red (opens toward 152 deg). Living window bearing about 152 deg."
@@ -536,24 +564,25 @@
      11
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 19.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Drop-off porch",
     "Elderly fitness station",
     "Precinct pavilion",
-    "Residents' network centre"
+    "Preschool"
    ],
    "confidence": "medium",
-   "notes": "Opp-unit semicircles attributed: #11 green (opens toward 152 deg). Own semicircle fully green; the red inside it comes from the neighbouring stack's semicircle on the same facade (122 / 134), which the brief says not to count. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Preschool (+0.4 m). Living window bearing about 152 deg."
+   "notes": "Opp-unit semicircles attributed: #11 green (opens toward 152 deg). Own semicircle fully green; the red inside it comes from the neighbouring stack's semicircle on the same facade (122 / 134), which the brief says not to count. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Preschool (+0.4 m). Living window bearing about 152 deg. Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "184A",
@@ -587,8 +616,11 @@
    ],
    "facilities_near": [
     "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion"
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #9 green (opens toward 332 deg). Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Children's playground (+0.5 m). Living window bearing about 332 deg."
@@ -618,16 +650,18 @@
    "chute_m": 20.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion",
-    "Residents' network centre"
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #10 green (opens toward 332 deg). Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Drop-off porch (-0.3 m). Living window bearing about 332 deg."
@@ -657,14 +691,18 @@
    "chute_m": 13.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Residents' network centre"
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #7 red (opens toward 332 deg). Living window bearing about 332 deg."
@@ -695,13 +733,18 @@
    "chute_m": 18.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Residents' network centre"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #8 green (opens toward 332 deg), #33 red (opens toward 57 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 332 deg."
@@ -732,15 +775,17 @@
    "chute_m": 30.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion",
-    "Preschool"
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #21 red (opens toward 195 deg), #30 red (opens toward 109 deg). Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Drop-off porch (-0.2 m). Living window bearing about 195 deg."
@@ -766,22 +811,24 @@
      20
     ]
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 34.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 30,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion",
-    "Preschool"
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "Opp-unit semicircles attributed: #20 green (opens toward 195 deg). Own semicircle fully green; the red inside it comes from the neighbouring stack's semicircle on the same facade (122 / 134), which the brief says not to count. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Precinct pavilion (-0.7 m). Living window bearing about 195 deg."
+   "notes": "Opp-unit semicircles attributed: #20 green (opens toward 195 deg). Own semicircle fully green; the red inside it comes from the neighbouring stack's semicircle on the same facade (122 / 134), which the brief says not to count. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Precinct pavilion (-0.7 m). Living window bearing about 195 deg. Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "184B",
@@ -808,15 +855,17 @@
    "chute_m": 39.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion",
-    "Preschool"
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #24 green (opens toward 16 deg). Living window bearing about 15 deg."
@@ -846,16 +895,17 @@
    "chute_m": 20.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion",
-    "Preschool"
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #19 green (opens toward 15 deg). Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Children's playground (-0.9 m). Living window bearing about 15 deg."
@@ -886,15 +936,17 @@
    "chute_m": 16.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Precinct pavilion",
-    "Preschool"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #18 green (opens toward 15 deg), #28 red (opens toward 103 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Adult fitness station (+0.4 m). Living window bearing about 15 deg."
@@ -925,7 +977,7 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
@@ -933,8 +985,9 @@
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Preschool"
+    "Precinct pavilion"
    ],
    "confidence": "medium",
    "notes": "Opp-unit semicircles attributed: #23 green (opens toward 58 deg), #27 red (opens toward 328 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Precinct pavilion (+0.1 m). Living window bearing about 52 deg."
@@ -965,7 +1018,7 @@
    "chute_m": 20.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 65,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
@@ -973,8 +1026,9 @@
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Preschool"
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #22 green (opens toward 58 deg), #36 red (opens toward 155 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Wind sector 90-135 deg blocked by: existing blk 176 at 19.5 m, bearing 127. Living window bearing about 52 deg."
@@ -1004,18 +1058,21 @@
    "position": "Corridor",
    "chute_m": 5.5,
    "roof_floors": [],
-   "wind_open": false,
-   "mscp_m": 65,
+   "wind_open": true,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
     "Adult fitness station",
-    "Preschool"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "Opp-unit semicircles attributed: #26 green (opens toward 154 deg), #37 red (opens toward 62 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Adult fitness station (-0.6 m); Children's playground (+0.6 m). Wind sector 90-135 deg blocked by: existing blk 176 at 28.0 m, bearing 123. Living window bearing about 150 deg."
+   "notes": "Opp-unit semicircles attributed: #26 green (opens toward 154 deg), #37 red (opens toward 62 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Facility circle edge within 1 m of the footprint (margin: + outside, - inside): Adult fitness station (-0.6 m); Children's playground (+0.6 m). Wind sector 90-135 deg blocked by: existing blk 176 at 28.0 m, bearing 123. Living window bearing about 150 deg. Review: from the SE window wall, Blk 176 is 30.1 m+ away, open."
   },
   {
    "block": "184B",
@@ -1043,13 +1100,17 @@
    "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
     "Preschool"
    ],
    "facilities_near": [
-    "Preschool"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Opp-unit semicircles attributed: #25 green (opens toward 154 deg), #29 red (opens toward 241 deg). Corner unit with two semicircles sharing one centre; one is red, so it fails. Living window bearing about 150 deg."
@@ -3980,6 +4041,51 @@
   "wind_open: a stack fails if any other residential block's footprint (new blocks from segmented footprints; existing blocks 179/178/176 from outline polylines traced on the site plan) lies within 30 m of the stack footprint, at a bearing of 90-135 deg from the stack centre. Only 183A-100 (184A #132 at 17 m), 184B-146 (existing Blk 176 at 19.5 m) and 184B-148 (Blk 176 at 28 m, borderline) fail. Other wings of the same block are not counted.",
   "mscp_m: distance from the stack's footprint to the nearest edge of the Block 183 MSCP outline (roof-garden rectangle, corners at p8 pt (348,285), (398,337.5), (326.5,394), (258,354.5)), rounded to 5 m. This is per stack, so it differs from the per-block mscp_distance.json values (183A 30, 184A 50, 184B 55) by more than 10 m for many stacks. Those were one number per block; here the 183A stacks range from 10 m (104/106) to 45 m (100/110), 184A from 10 m (126) to 75-80 m (114/116), and 184B from 25 m (138) to 65 m (146/148).",
   "mrt_m: null. No MRT station appears on the site plan.",
-  "position: Corner = the last unit(s) at a dead end of the common corridor on the typical floor plan (183A: 104/106 west end, 110 north of lobby, 100 south end; 184A: 124/126 SW end, 132 north end, 116 east end; 184B: 136/138 west end, 144/146 NE end, 150 SW end). The rest are Corridor."
+  "position: Corner = the last unit(s) at a dead end of the common corridor on the typical floor plan (183A: 104/106 west end, 110 north of lobby, 100 south end; 184A: 124/126 SW end, 132 north end, 116 east end; 184B: 136/138 west end, 144/146 NE end, 150 SW end). The rest are Corridor.",
+  "Independent review 2026-10-13: units 485/485, facing/gt30m 26/26 agree; position x3, wind x1; facilities and car park block-wide (184A Preschool by a sliver touch, counted per the any-touch rule)."
+ ],
+ "blocks": [
+  {
+   "block": "183A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Community space",
+    "Drop-off porch",
+    "Eating house"
+   ],
+   "facilities_has": [
+    "Future amenities/facilities"
+   ],
+   "mscp_m": 5
+  },
+  {
+   "block": "184A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Preschool"
+   ],
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "mscp_m": 10
+  },
+  {
+   "block": "184B",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [
+    "Preschool"
+   ],
+   "mscp_m": 20
+  }
  ]
 }
