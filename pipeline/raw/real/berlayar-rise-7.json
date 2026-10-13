@@ -728,7 +728,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 29.0,
+   "chute_m": 32.0,
    "roof_floors": [],
    "wind_open": false,
    "mscp_m": 80,
@@ -738,7 +738,7 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135",
+   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135 Review 2026-10-13: chute_m corrected 29.0 -> 32.0 (door to nearest general refuse chute).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1056,7 +1056,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 29.0,
+   "chute_m": 32.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 10,
@@ -1066,7 +1066,7 @@
     "Shops"
    ],
    "confidence": "high",
-   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review 2026-10-13: chute_m corrected 29.0 -> 32.0 (door to nearest general refuse chute).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1553,14 +1553,14 @@
    "chute_m": 24.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
+   "mscp_m": 103,
    "mrt_m": 180,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": "",
+   "notes": "Review 2026-10-13: borderline car park distance, independent measurement 103 m (analyst 100 m); set 103, i.e. not within 100 m.",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1721,14 +1721,14 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
+   "mscp_m": 103,
    "mrt_m": 195,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": "",
+   "notes": "Review 2026-10-13: borderline car park distance, independent measurement 103 m (analyst 100 m); set 103, i.e. not within 100 m.",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -13982,6 +13982,7 @@
   "mscp_m: nearest distance from the stack footprint to the Block 201 building outline (the 6-storey MSCP with commercial 1st storey and its north podium), rounded to 5 m. Differs from mscp_distance.json (block centre to car-park strip) by more than 10 m for most stacks; see stack notes.",
   "mrt_m: Telok Blangah MRT is at the board row1b point (red 100 m circle centre, plan px 974,219, by the station label). Distance from that point to the nearest point of the stack footprint, rounded to 5 m. Within 100 m: all 201A stacks and 200B 131, 117, 119, 121, 123.",
   "Units: from pipeline/raw/berlayar-rise-7-dist.json (pages 13-15); re-checked against the p12 unit-mix table (1976 = 172 + 644 + 172 + 988) and p13 visually (200A sky terraces at 9 and 29, 200B at 20 and 40, 1st storey empty). No rental units are marked in the brochure.",
-  "Roof: 'roof at 2nd storey only' on the plans is a non-accessible roof slab, so roof_floors is [] (no flat opens onto an accessible roof garden). Stacks beside such a roof keep roof_next_to_2nd_storey_roof=true. Decided 2026-10-13 for consistency across projects."
+  "Roof: 'roof at 2nd storey only' on the plans is a non-accessible roof slab, so roof_floors is [] (no flat opens onto an accessible roof garden). Stacks beside such a roof keep roof_next_to_2nd_storey_roof=true. Decided 2026-10-13 for consistency across projects.",
+  "Independent review 2026-10-13: units 1976/1976 match; facing, gt30m, wind_open, facilities, roof agree on 48/48; chute_m fixed for 200B-121 and 201A-137; mscp_m set to 103 for 204A-108/114 (borderline); junction-side doors kept Corridor (last-door rule)."
  ]
 }
