@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /data/
+Disallow: /archive/
+Disallow: /shortlist
+
+Sitemap: https://mybto.web.app/sitemap.xml

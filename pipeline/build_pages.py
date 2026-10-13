@@ -15,7 +15,7 @@ HEAD = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
   <title>{title} · MyBTO</title>
-  <meta name="description" content="{desc}">{robots}
+  <meta name="description" content="{desc}">{robots}{seo}
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,6 @@ FOOT = """  </main>
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
   <script src="/js/ads.js"></script>
-  <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/app.js"></script>
 </body>
 </html>
@@ -49,7 +48,8 @@ PAGES = {
         title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
         h1="Unofficial HDB BTO Flat Unit Ranker",
         lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 100 units and check out the Analytics page.",
-        desc="Rank every unit of a BTO project by your own priorities.",
+        desc="Free, unofficial tool to rank every unit in a Singapore HDB BTO project by your own priorities: floor, facing, block, MRT distance and more. Shortlist your best units.",
+        seo=True,
         body="""
     <section class="tool"><div class="wrap">
       <div class="desk">
@@ -143,7 +143,7 @@ PAGES = {
         h1="<span id=\"analytics-name\"></span> Analytics",
         lede="", robots=True,
         desc="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.",
-        extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
+        extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>',
         body="""
     <section class="tool"><div class="wrap">
       <div id="analysis-body" hidden>
@@ -180,6 +180,22 @@ PAGES = {
 }
 
 
+SITE = "https://mybto.web.app"
+SEO = """
+  <link rel="canonical" href="{site}/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MyBTO">
+  <meta property="og:title" content="{title} · MyBTO">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:url" content="{site}/">
+  <meta property="og:image" content="{site}/img/og-mybto.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title} · MyBTO">
+  <meta name="twitter:description" content="{desc}">
+  <meta name="twitter:image" content="{site}/img/og-mybto.jpg">
+  <script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebApplication","name":"MyBTO","url":"{site}/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","description":"{desc}","offers":{{"@type":"Offer","price":"0","priceCurrency":"SGD"}}}}</script>"""
+
+
 def copy_analytics_core():
     """public/js/analytics-core.js is a generated copy of apps-script/Analytics.js (used by the pre-launch sample Analytics)."""
     src = (PUBLIC.parent / "apps-script" / "Analytics.js").read_text()
@@ -191,8 +207,9 @@ def main():
     for page, p in PAGES.items():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
+        seo = SEO.format(site=SITE, title=p["title"], desc=p["desc"]) if p.get("seo") else ""
         lede_html = f'        <p>{p["lede"]}</p>\n' if p["lede"] else ""
-        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, seo=seo, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
         (PUBLIC / p.get("out", f"{page}.html")).write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home

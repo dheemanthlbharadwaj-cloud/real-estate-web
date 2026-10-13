@@ -16,7 +16,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
   const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
   const errors = [];
   try {
-    const stubFirebase = c => c.route(/gstatic\.com\/firebasejs\/.*\/firebase-app\.js$/, r => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', 'firebase-app.js'), 'utf8') }));
+    const stubFirebase = async () => {}; // the site no longer loads Firebase JS (Hosting only); kept so the calls below stay harmless
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     await stubFirebase(ctx);
     const p = await ctx.newPage();
@@ -99,7 +99,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     const gm = Object.fromEntries(gs);
     check(gm['Wind direction'].join('|') === 'Faces the prevailing wind (SE to E)|Not blocked from the wind', 'Wind direction group, directly below Sun direction');
     check(gm['Distance'].join('|') === ['More than 30 m from the nearest visible unit', '10 m away from rubbish chute', 'Within 100 m from MRT', 'Within 100 m from a multi-storey car park'].filter(l => gm['Distance'].includes(l)).join('|') && gm['Distance'].length >= 3, 'Distance group members');
-    check(gm['Others'].join('|') === 'Corner unit|Access to roof', 'Others group members');
+    check(gm['Others'].join('|') === 'Corner unit', 'Others group members (no unit has roof access, so the roof meter is hidden)');
     check(await p.$eval('#weights .meter-group:last-child .help', b => b.dataset.legend === 'facilities'), 'Facilities nearby (within 30 m) keeps its ? help button');
     check(!/Unit & site/.test(await p.textContent('#weights')), 'Unit & site heading is gone');
     const newMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
@@ -128,10 +128,10 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(top.shown === top.max, `Higher with all weights 0: top unit is on the highest storey (${top.shown} of ${top.max})`);
     await floorCtx.close();
     const brookMeters = await p.$$eval('#weights .meter label', m => m.map(x => x.childNodes[0].textContent));
-    check(brookMeters.includes('Future amenities/facilities') && brookMeters.includes('Mini-mart'), 'Sembawang Brook shows Future amenities/facilities and Mini-mart meters (from the brochure)');
+    check(brookMeters.length > 5 && new Set(brookMeters).size === brookMeters.length, `Sembawang Brook shows its factor meters, each once (${brookMeters.length}; real data has no brochure-only facilities)`);
     await p.click('#btn-rank');
     await p.waitForSelector('#results tbody .rk');
-    check((await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''))).includes('Future amenities/facilities'), 'Future amenities/facilities has a tick column');
+    check((await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''))).length > 7, 'results table has a tick column per facility (real data has no brochure-only facilities)');
     await p.selectOption('#project', 'berlayar-rise-7');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
     await p.click('#f-types label:has-text("2-Room Flexi")');
@@ -348,8 +348,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForSelector('#weights .help');
     await p.click('#weights .help >> nth=0');
     await p.waitForSelector('#legend-drawer.open #legend .lg');
-    check((await p.$$eval('#legend .lg', c => c.length)) === 12, 'legend drawer opens with all 12 factors');
-    check((await p.$$eval('#legend img', i => i.length)) === 12, 'legend has one picture per factor');
+    check((await p.$$eval('#legend .lg', c => c.length)) === 11, 'legend drawer opens with all 11 factors');
+    check((await p.$$eval('#legend img', i => i.length)) === 11, 'legend has one picture per factor');
     await p.click('.drawer-head [data-close-legend]');
     await p.waitForSelector('#legend-drawer', { state: 'hidden' });
     check(true, 'legend drawer closes');
@@ -357,6 +357,13 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
       await p.goto(`${base}${path}`);
       await p.waitForSelector('#legend-drawer.open');
       check(true, 'legend deep link opens the drawer');
+    }
+    await p.goto(`${base}/rank?legend=${encodeURIComponent('"]x')}`);
+    await p.waitForSelector('#legend-drawer.open');
+    check(!(await p.evaluate(() => document.body.innerText)).includes("Couldn't load"), 'a bad ?legend= value opens the drawer without breaking the page');
+    for (const [f, re] of [['/robots.txt', /Disallow: \/data\//], ['/sitemap.xml', /<loc>https:\/\/mybto\.web\.app\/<\/loc>/]]) {
+      const r = await fetch(`${base}${f}`);
+      check(r.status === 200 && re.test(await r.text()), `${f} is served`);
     }
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);

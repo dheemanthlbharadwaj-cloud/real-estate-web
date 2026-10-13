@@ -139,7 +139,7 @@ function meter(group, key, label, help) {
   const id = `w-${group}-${key}`.replace(/[^a-z0-9-]/gi, '_');
   const lk = group === 'factor' ? key : LEGEND_KEY[group];
   return `<div class="meter"><label for="${id}" title="${esc(help || '')}">${esc(label)}${helpBtn(lk)}</label>
-    <input id="${id}" type="range" min="-5" max="5" step="1" value="${v}" data-group="${group}" data-key="${esc(key)}">
+    <input id="${id}" type="range" min="-5" max="5" step="1" value="${esc(v)}" data-group="${group}" data-key="${esc(key)}">
     <span class="val ${v > 0 ? 'pos' : v < 0 ? 'neg' : ''}">${v > 0 ? '+' : ''}${v}</span></div>`;
 }
 
@@ -371,10 +371,10 @@ function shortlistUrl() {
 function say(msg) { const el = $('#sl-msg'); if (el) el.textContent = msg; }
 
 function renderShortlist() {
-  const byId = Object.fromEntries(state.units.map(u => [u.id, u]));
+  const byId = new Map(state.units.map(u => [u.id, u]));
   const shared = !!state.shared;
   const list = $('#flag-list');
-  const items = (shared ? state.shared.ids : state.flags).filter(id => byId[id]);
+  const items = (shared ? state.shared.ids : state.flags).filter(id => byId.has(id));
   $('#shared-banner').hidden = !shared;
   $('#picker-row').hidden = shared;
   $('#sl-tools').hidden = shared || !items.length;
@@ -388,8 +388,8 @@ function renderShortlist() {
     return;
   }
   list.innerHTML = items.map((id, i) => {
-    const u = byId[id], now = rankOf(cur, id), was = cur?.prev ? rankOf(cur.prev, id) : null;
-    const rk = !cur ? '' : now ? ` · <span class="rk-now">Rank ${now.rank}${was && was.rank !== now.rank ? ` (was ${was.rank})` : ''} · score ${now.score > 0 ? '+' : ''}${now.score.toFixed(1)}</span>` : ' · not in your latest ranking';
+    const u = byId.get(id), now = rankOf(cur, id), was = cur?.prev ? rankOf(cur.prev, id) : null;
+    const rk = !cur ? '' : now ? ` · <span class="rk-now">Rank ${esc(String(now.rank))}${was && was.rank !== now.rank ? ` (was ${esc(String(was.rank))})` : ''} · score ${Number(now.score) > 0 ? "+" : ""}${Number(now.score).toFixed(1)}</span>` : ' · not in your latest ranking';
     return `<li${shared ? '' : ' draggable="true"'} data-id="${esc(id)}">
       <div><div class="addr">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}</div>
         <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${rk}</div></div>
@@ -817,7 +817,7 @@ function openLegend(key) {
   d.hidden = false;
   document.body.classList.add('drawer-open');
   requestAnimationFrame(() => d.classList.add('open'));
-  const target = key && $(`#lg-${key}`);
+  const target = key ? document.getElementById('lg-' + String(key)) : null;
   if (target) target.scrollIntoView({ block: 'start' });
   else d.querySelector('.drawer-body').scrollTop = 0;
 }
