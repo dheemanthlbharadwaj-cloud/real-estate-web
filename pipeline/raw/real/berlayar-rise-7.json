@@ -110,11 +110,10 @@
    "mrt_m": 155,
    "facilities_has": [],
    "facilities_near": [
-    "Precinct pavilion",
     "Drop-off porch"
    ],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; wind blocked: another block's unit lies 27.5 m away at bearing 90-135",
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; wind blocked: another block's unit lies 27.5 m away at bearing 90-135 Review: Precinct pavilion circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -374,11 +373,9 @@
    "mscp_m": 130,
    "mrt_m": 155,
    "facilities_has": [],
-   "facilities_near": [
-    "Drop-off porch"
-   ],
+   "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "notes": "mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review: Drop-off porch circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1243,11 +1240,10 @@
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Children's playground"
+    "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 40 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 40 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review: Children's playground circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1515,11 +1511,10 @@
    "mrt_m": 185,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station",
-    "Children's playground"
+    "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": "",
+   "notes": "Review: Children's playground circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
@@ -1638,11 +1633,9 @@
    "mscp_m": 125,
    "mrt_m": 215,
    "facilities_has": [],
-   "facilities_near": [
-    "Hardcourt"
-   ],
+   "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 125 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "notes": "mscp_m 125 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review: Hardcourt circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
   },
   {
