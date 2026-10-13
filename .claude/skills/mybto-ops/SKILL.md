@@ -35,6 +35,10 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - `public/js/config.js` has `ANALYTICS_SOURCE: 'sample'`. The Analytics page then builds its numbers in the browser from `public/data/sample_submissions.json` (420 made-up rankings) with `public/js/analytics-core.js`, a generated copy of `apps-script/Analytics.js` written by `python3 pipeline/build_pages.py` (never edit the copy). It never calls the Sheet for analytics. Rankings and shortlists are still saved to the Sheet.
 - Going live (only when the user says so): set `ANALYTICS_SOURCE: 'sheet'` in `public/js/config.js`, run the tests, commit, deploy. Analytics then reads the Sheet (`?action=analytics`), which counts only real rankings because the Sheet's Sample tab is empty.
 
+## Real-data decisions (agreed with the user)
+- Roof access: "roof at 2nd storey only" on HDB plans is a non-accessible roof slab, so it is NOT roof access (`roof_floors` = []). Stacks beside such a roof may carry `roof_next_to_2nd_storey_roof` / `roof_note_2nd_storey`. Car-park roof gardens reached by shared link bridges do not count either. Result: no unit in the 7 projects has roof access, so the "Access to roof" meter hides itself once real data is published.
+- More than 30 m: a unit fails if any red is inside a board semicircle centred on that unit; a neighbour's red overlapping the unit's own green semicircle does not fail it.
+
 ## File map
 | Path | Purpose |
 |---|---|

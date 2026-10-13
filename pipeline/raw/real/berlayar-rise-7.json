@@ -57,9 +57,7 @@
    },
    "position": "Corner",
    "chute_m": 8.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 165,
    "mrt_m": 165,
@@ -68,7 +66,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -105,9 +104,7 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": false,
    "mscp_m": 155,
    "mrt_m": 155,
@@ -117,7 +114,8 @@
     "Drop-off porch"
    ],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; wind blocked: another block's unit lies 27.5 m away at bearing 90-135"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; wind blocked: another block's unit lies 27.5 m away at bearing 90-135",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -148,9 +146,7 @@
    },
    "position": "Corridor",
    "chute_m": 26.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 140,
    "mrt_m": 150,
@@ -159,7 +155,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "mscp_m 140 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 140 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -196,9 +193,7 @@
    },
    "position": "Corner",
    "chute_m": 31.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 130,
    "mrt_m": 145,
@@ -207,7 +202,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -238,9 +234,7 @@
    },
    "position": "Corner",
    "chute_m": 12.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 160,
    "mrt_m": 180,
@@ -249,7 +243,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -286,9 +281,7 @@
    },
    "position": "Corridor",
    "chute_m": 13.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 150,
    "mrt_m": 170,
@@ -297,7 +290,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red"
+   "notes": "two board semicircles on this unit (window face + side face): red/red",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -334,9 +328,7 @@
    },
    "position": "Corridor",
    "chute_m": 27.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 135,
    "mrt_m": 160,
@@ -345,7 +337,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 135 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 135 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200A",
@@ -376,9 +369,7 @@
    },
    "position": "Corner",
    "chute_m": 33.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 130,
    "mrt_m": 155,
@@ -387,7 +378,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -424,9 +416,7 @@
    },
    "position": "Corner",
    "chute_m": 8.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 115,
    "mrt_m": 105,
@@ -435,7 +425,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): green/green"
+   "notes": "two board semicircles on this unit (window face + side face): green/green",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -472,16 +463,15 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 100,
    "mrt_m": 95,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 100 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 100 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -518,9 +508,7 @@
    },
    "position": "Corridor",
    "chute_m": 25.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 90,
    "mrt_m": 90,
@@ -529,7 +517,8 @@
     "Drop-off porch"
    ],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 90 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 90 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -560,9 +549,7 @@
    },
    "position": "Corner",
    "chute_m": 30.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": false,
    "mscp_m": 80,
    "mrt_m": 85,
@@ -571,7 +558,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135"
+   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -608,9 +596,7 @@
    },
    "position": "Corner",
    "chute_m": 12.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 115,
    "mrt_m": 120,
@@ -619,7 +605,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red"
+   "notes": "two board semicircles on this unit (window face + side face): red/red",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -656,9 +643,7 @@
    },
    "position": "Corridor",
    "chute_m": 13.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 100,
    "mrt_m": 110,
@@ -667,7 +652,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 100 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 100 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -704,16 +690,15 @@
    },
    "position": "Corridor",
    "chute_m": 26.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 90,
    "mrt_m": 100,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 90 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 90 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "200B",
@@ -744,9 +729,7 @@
    },
    "position": "Corner",
    "chute_m": 29.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": false,
    "mscp_m": 80,
    "mrt_m": 95,
@@ -755,7 +738,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135"
+   "notes": "mscp_m 80 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline); wind blocked: another block's unit lies 24.9 m away at bearing 90-135",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -786,9 +770,7 @@
    },
    "position": "Corner",
    "chute_m": 8.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
    "mrt_m": 50,
@@ -797,7 +779,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -834,9 +817,7 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 30,
    "mrt_m": 45,
@@ -845,7 +826,8 @@
     "Drop-off porch"
    ],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -876,16 +858,15 @@
    },
    "position": "Corridor",
    "chute_m": 25.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
    "mrt_m": 55,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -916,9 +897,7 @@
    },
    "position": "Corner",
    "chute_m": 30.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 10,
    "mrt_m": 55,
@@ -927,7 +906,8 @@
     "Shops"
    ],
    "confidence": "high",
-   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -958,9 +938,7 @@
    },
    "position": "Corner",
    "chute_m": 12.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
    "mrt_m": 75,
@@ -969,7 +947,8 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -1000,16 +979,15 @@
    },
    "position": "Corridor",
    "chute_m": 13.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 30,
    "mrt_m": 70,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -1040,16 +1018,15 @@
    },
    "position": "Corridor",
    "chute_m": 26.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
    "mrt_m": 70,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201A",
@@ -1080,9 +1057,7 @@
    },
    "position": "Corner",
    "chute_m": 29.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 10,
    "mrt_m": 70,
@@ -1091,7 +1066,8 @@
     "Shops"
    ],
    "confidence": "high",
-   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 10 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1128,9 +1104,7 @@
    },
    "position": "Corner",
    "chute_m": 12.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 75,
    "mrt_m": 120,
@@ -1139,7 +1113,8 @@
    ],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): green/green"
+   "notes": "two board semicircles on this unit (window face + side face): green/green",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1170,9 +1145,7 @@
    },
    "position": "Corridor",
    "chute_m": 13.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 60,
    "mrt_m": 110,
@@ -1181,7 +1154,8 @@
    ],
    "facilities_near": [],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1212,9 +1186,7 @@
    },
    "position": "Corridor",
    "chute_m": 27.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 50,
    "mrt_m": 110,
@@ -1225,7 +1197,8 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 50 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 50 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1262,9 +1235,7 @@
    },
    "position": "Corner",
    "chute_m": 33.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 40,
    "mrt_m": 105,
@@ -1276,7 +1247,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 40 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 40 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1307,9 +1279,7 @@
    },
    "position": "Corner",
    "chute_m": 7.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 75,
    "mrt_m": 145,
@@ -1321,7 +1291,8 @@
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1358,9 +1329,7 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 60,
    "mrt_m": 135,
@@ -1372,7 +1341,8 @@
     "Adult fitness station"
    ],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1403,9 +1373,7 @@
    },
    "position": "Corridor",
    "chute_m": 26.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
    "mrt_m": 120,
@@ -1417,7 +1385,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 45 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 45 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "201B",
@@ -1454,9 +1423,7 @@
    },
    "position": "Corner",
    "chute_m": 31.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 35,
    "mrt_m": 115,
@@ -1468,7 +1435,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 35 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 35 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1499,9 +1467,7 @@
    },
    "position": "Corner",
    "chute_m": 12.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 120,
    "mrt_m": 195,
@@ -1511,7 +1477,8 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1542,9 +1509,7 @@
    },
    "position": "Corridor",
    "chute_m": 13.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 110,
    "mrt_m": 185,
@@ -1554,7 +1519,8 @@
     "Children's playground"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1585,9 +1551,7 @@
    },
    "position": "Corridor",
    "chute_m": 24.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 100,
    "mrt_m": 180,
@@ -1596,7 +1560,8 @@
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1627,9 +1592,7 @@
    },
    "position": "Corner",
    "chute_m": 31.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 90,
    "mrt_m": 180,
@@ -1638,7 +1601,8 @@
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1669,9 +1633,7 @@
    },
    "position": "Corner",
    "chute_m": 7.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 125,
    "mrt_m": 215,
@@ -1680,7 +1642,8 @@
     "Hardcourt"
    ],
    "confidence": "high",
-   "notes": "mscp_m 125 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 125 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1717,16 +1680,15 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 115,
    "mrt_m": 210,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1757,9 +1719,7 @@
    },
    "position": "Corridor",
    "chute_m": 25.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 100,
    "mrt_m": 195,
@@ -1768,7 +1728,8 @@
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204A",
@@ -1799,9 +1760,7 @@
    },
    "position": "Corner",
    "chute_m": 30.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 90,
    "mrt_m": 190,
@@ -1810,7 +1769,8 @@
     "Adult fitness station"
    ],
    "confidence": "high",
-   "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -1841,16 +1801,15 @@
    },
    "position": "Corner",
    "chute_m": 12.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 190,
    "mrt_m": 275,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": ""
+   "notes": "",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -1887,16 +1846,15 @@
    },
    "position": "Corridor",
    "chute_m": 13.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 180,
    "mrt_m": 265,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red"
+   "notes": "two board semicircles on this unit (window face + side face): red/red",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -1933,16 +1891,15 @@
    },
    "position": "Corridor",
    "chute_m": 24.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 170,
    "mrt_m": 260,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red; raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 170 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "two board semicircles on this unit (window face + side face): red/red; raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 170 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -1973,16 +1930,15 @@
    },
    "position": "Corner",
    "chute_m": 31.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 160,
    "mrt_m": 255,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 160 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 160 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -2013,9 +1969,7 @@
    },
    "position": "Corner",
    "chute_m": 7.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 200,
    "mrt_m": 295,
@@ -2024,7 +1978,8 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "mscp_m 200 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 200 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -2061,16 +2016,15 @@
    },
    "position": "Corner",
    "chute_m": 9.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 190,
    "mrt_m": 285,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "medium",
-   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide"
+   "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -2107,16 +2061,15 @@
    },
    "position": "Corridor",
    "chute_m": 25.5,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 175,
    "mrt_m": 270,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "two board semicircles on this unit (window face + side face): red/red"
+   "notes": "two board semicircles on this unit (window face + side face): red/red",
+   "roof_next_to_2nd_storey_roof": true
   },
   {
    "block": "204B",
@@ -2147,16 +2100,15 @@
    },
    "position": "Corner",
    "chute_m": 30.0,
-   "roof_floors": [
-    2
-   ],
+   "roof_floors": [],
    "wind_open": true,
    "mscp_m": 165,
    "mrt_m": 265,
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": "mscp_m 165 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)"
+   "notes": "mscp_m 165 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
+   "roof_next_to_2nd_storey_roof": true
   }
  ],
  "units": [
@@ -14029,6 +13981,7 @@
   "wind_open: footprint rays at bearings 90-135 deg (plan north up), 30 m, against footprints of the other residential blocks. Blocked: 200A-115 (200B 127 at about 27 m), 200B-119 and 200B-121 (201A 143 at about 25 m).",
   "mscp_m: nearest distance from the stack footprint to the Block 201 building outline (the 6-storey MSCP with commercial 1st storey and its north podium), rounded to 5 m. Differs from mscp_distance.json (block centre to car-park strip) by more than 10 m for most stacks; see stack notes.",
   "mrt_m: Telok Blangah MRT is at the board row1b point (red 100 m circle centre, plan px 974,219, by the station label). Distance from that point to the nearest point of the stack footprint, rounded to 5 m. Within 100 m: all 201A stacks and 200B 131, 117, 119, 121, 123.",
-  "Units: from pipeline/raw/berlayar-rise-7-dist.json (pages 13-15); re-checked against the p12 unit-mix table (1976 = 172 + 644 + 172 + 988) and p13 visually (200A sky terraces at 9 and 29, 200B at 20 and 40, 1st storey empty). No rental units are marked in the brochure."
+  "Units: from pipeline/raw/berlayar-rise-7-dist.json (pages 13-15); re-checked against the p12 unit-mix table (1976 = 172 + 644 + 172 + 988) and p13 visually (200A sky terraces at 9 and 29, 200B at 20 and 40, 1st storey empty). No rental units are marked in the brochure.",
+  "Roof: 'roof at 2nd storey only' on the plans is a non-accessible roof slab, so roof_floors is [] (no flat opens onto an accessible roof garden). Stacks beside such a roof keep roof_next_to_2nd_storey_roof=true. Decided 2026-10-13 for consistency across projects."
  ]
 }
