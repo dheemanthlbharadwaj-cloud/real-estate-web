@@ -68,7 +68,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 26.5,
+   "chute_m": 29.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 35,
@@ -80,7 +80,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "325A",
@@ -110,7 +110,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 31.5,
+   "chute_m": 34.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 40,
@@ -122,7 +122,7 @@
     "Elderly fitness station"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "325A",
@@ -152,7 +152,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 20.0,
+   "chute_m": 23.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
@@ -163,7 +163,7 @@
     "Elderly fitness station"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "325A",
@@ -202,7 +202,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 16.0,
+   "chute_m": 18.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
@@ -210,7 +210,7 @@
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "325A",
@@ -392,7 +392,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 12.0,
+   "chute_m": 14.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
@@ -403,7 +403,7 @@
     "Drop-off porch"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -489,7 +489,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 17.0,
+   "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 70,
@@ -499,7 +499,7 @@
     "Elderly fitness station"
    ],
    "confidence": "medium",
-   "notes": "position: 319 and 321 share the dead-end tip of the NW corridor; 321 is the last door, 319 marked Corridor"
+   "notes": "position: 319 and 321 share the dead-end tip of the NW corridor; 321 is the last door, 319 marked Corridor Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -538,7 +538,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 18.5,
+   "chute_m": 23.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 60,
@@ -548,7 +548,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -587,7 +587,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 12.0,
+   "chute_m": 18.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 55,
@@ -598,7 +598,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -628,7 +628,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 13.0,
+   "chute_m": 19.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 45,
@@ -639,7 +639,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -669,7 +669,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 25.0,
+   "chute_m": 29.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 35,
@@ -681,7 +681,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute). Review: Precinct pavilion circle grazes the unit by <0.5 m, not counted (borderline rule)."
   },
   {
    "block": "326A",
@@ -719,10 +719,10 @@
      "red"
     ]
    },
-   "position": "Corridor",
-   "chute_m": 30.0,
+   "position": "Corner",
+   "chute_m": 33.0,
    "roof_floors": [],
-   "wind_open": false,
+   "wind_open": true,
    "mscp_m": 25,
    "mrt_m": null,
    "facilities_has": [],
@@ -734,7 +734,7 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "wind blocked: other block within 29.7 m at SE/E bearing"
+   "notes": "wind blocked: other block within 29.7 m at SE/E bearing Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute). Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg. Review: last door at a dead end, Corner."
   },
   {
    "block": "326A",
@@ -773,7 +773,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 23.0,
+   "chute_m": 26.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 35,
@@ -785,7 +785,7 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326A",
@@ -876,7 +876,7 @@
    "position": "Corner",
    "chute_m": 26.5,
    "roof_floors": [],
-   "wind_open": false,
+   "wind_open": true,
    "mscp_m": 55,
    "mrt_m": null,
    "facilities_has": [],
@@ -885,7 +885,7 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "wind blocked: other block within 30.0 m at SE/E bearing"
+   "notes": "wind blocked: other block within 30.0 m at SE/E bearing Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg."
   },
   {
    "block": "326A",
@@ -956,7 +956,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 17.0,
+   "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 25,
@@ -970,7 +970,7 @@
     "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326B",
@@ -1009,7 +1009,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 14.5,
+   "chute_m": 20.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
@@ -1022,7 +1022,7 @@
     "Future amenities/facilities"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326B",
@@ -1061,9 +1061,9 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 20.0,
+   "chute_m": 22.5,
    "roof_floors": [],
-   "wind_open": false,
+   "wind_open": true,
    "mscp_m": 25,
    "mrt_m": null,
    "facilities_has": [
@@ -1071,11 +1071,10 @@
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station",
-    "Residents' network centre"
+    "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": "wind blocked: other block within 29.8 m at SE/E bearing"
+   "notes": "wind blocked: other block within 29.8 m at SE/E bearing Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute). Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg."
   },
   {
    "block": "326B",
@@ -1125,7 +1124,7 @@
    "position": "Corner",
    "chute_m": 25.5,
    "roof_floors": [],
-   "wind_open": false,
+   "wind_open": true,
    "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [
@@ -1133,11 +1132,10 @@
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station",
-    "Residents' network centre"
+    "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": "wind blocked: other block within 29.6 m at SE/E bearing"
+   "notes": "wind blocked: other block within 29.6 m at SE/E bearing Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg."
   },
   {
    "block": "326B",
@@ -1186,8 +1184,7 @@
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station",
-    "Residents' network centre"
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 28.8 m at SE/E bearing"
@@ -1238,8 +1235,7 @@
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Residents' network centre"
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 25.0 m at SE/E bearing"
@@ -1271,21 +1267,18 @@
      "green"
     ]
    },
-   "position": "Corridor",
+   "position": "Corner",
    "chute_m": 24.0,
    "roof_floors": [],
-   "wind_open": false,
+   "wind_open": true,
    "mscp_m": 50,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [
-    "Elderly fitness station",
-    "Residents' network centre"
-   ],
+   "facilities_near": [],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it); wind blocked: other block within 28.7 m at SE/E bearing"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it); wind blocked: other block within 28.7 m at SE/E bearing Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg. Review: last door at a dead end, Corner. Review: Elderly fitness circle only grazes the unit (<1 m disagreement), not counted (borderline rule)."
   },
   {
    "block": "326B",
@@ -1315,7 +1308,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 4.0,
+   "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 40,
@@ -1323,11 +1316,9 @@
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [
-    "Residents' network centre"
-   ],
+   "facilities_near": [],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326B",
@@ -1366,7 +1357,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 8.5,
+   "chute_m": 10.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 40,
@@ -1376,11 +1367,10 @@
    ],
    "facilities_near": [
     "Drop-off porch",
-    "Precinct pavilion",
-    "Residents' network centre"
+    "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "326B",
@@ -1574,7 +1564,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 14.5,
+   "chute_m": 17.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 25,
@@ -1585,7 +1575,7 @@
     "Elderly fitness station"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "327A",
@@ -1615,7 +1605,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 14.5,
+   "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
@@ -1626,7 +1616,7 @@
     "Elderly fitness station"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "327A",
@@ -1873,7 +1863,7 @@
     ]
    },
    "position": "Corridor",
-   "chute_m": 13.5,
+   "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 35,
@@ -1883,7 +1873,7 @@
     "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "328A",
@@ -1913,7 +1903,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 12.0,
+   "chute_m": 16.0,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 20,
@@ -1923,7 +1913,7 @@
     "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
   {
    "block": "328A",
@@ -2037,7 +2027,7 @@
    "facilities_has": [],
    "facilities_near": [],
    "confidence": "high",
-   "notes": ""
+   "notes": "Review: Precinct pavilion circle grazes the unit by <0.5 m, not counted (borderline rule)."
   },
   {
    "block": "328A",
@@ -2165,7 +2155,7 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 42.0,
+   "chute_m": 44.5,
    "roof_floors": [],
    "wind_open": true,
    "mscp_m": 65,
@@ -2176,7 +2166,7 @@
     "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
+   "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   }
  ],
  "units": [
@@ -9520,6 +9510,7 @@
   "roof_floors: all []. Floor plans only show 'ROOF AT 2ND/3RD STOREY ONLY' and 'ROOF (INACCESSIBLE)'; the only accessible roof garden is on the Blk 325 MSCP, which no unit opens onto.",
   "wind_open: false if any footprint pixel of another residential block (other block number) lies within 30 m at bearing 90-135 deg from any footprint pixel of the stack. Same-block wings are not counted.",
   "mscp_m: per stack, nearest footprint pixel to the Blk 325 car park outline from mscp_distance.json _geometry (brochure pt), at 1.697 pt/m, rounded to 5 m. Differs from the block-centre values in mscp_distance.json by more than 10 m for end stacks because this is per-stack nearest-edge (e.g. 326A 317 is 70 vs block 50; 328A 383 is 15 vs block 45).",
-  "mrt_m null: no MRT station on the site plan."
+  "mrt_m null: no MRT station on the site plan.",
+  "Independent review 2026-10-13: units 1221/1221, facing 47/47, gt30m 47/47 agree; fixed chute_m x22 (general refuse chute), wind_open x5 (window wall), facilities has/near duplicates x7, position x2; borderline facility circles (<1 m disagreement) not counted."
  ]
 }
