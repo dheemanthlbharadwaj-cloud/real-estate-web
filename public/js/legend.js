@@ -44,12 +44,6 @@ window.LEGEND = [
     rule: "Source: sembawang-portico-4.pdf, page 9 (site plan), measured with its scale bar.",
   },
   {
-    key: "roof", title: "Access to roof",
-    img: "lg-roof.webp", alt: "Block 204B floor plan with the roof at 2nd storey note highlighted",
-    text: "This is whether the unit is on the same floor as an accessible roof (marked on the plan, e.g. “roof at 2nd storey only”).",
-    rule: "Source: berlayar-rise-7.pdf, page 31 (Block 204B floor plan).",
-  },
-  {
     key: "mrt", title: "Within 100 m from MRT",
     img: "lg-mrt.webp", alt: "Berlayar Rise site plan with a 100 m circle around Telok Blangah MRT station",
     text: "This is how far the unit’s block is from the nearest MRT station in a straight 100 m line.",

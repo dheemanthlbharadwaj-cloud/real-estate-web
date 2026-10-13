@@ -59,10 +59,11 @@
    "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 165,
-   "mrt_m": 165,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch"
    ],
    "confidence": "high",
@@ -106,10 +107,11 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 155,
-   "mrt_m": 155,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch"
    ],
    "confidence": "medium",
@@ -147,10 +149,11 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 140,
-   "mrt_m": 150,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch"
    ],
    "confidence": "high",
@@ -194,10 +197,11 @@
    "chute_m": 31.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 130,
-   "mrt_m": 145,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch"
    ],
    "confidence": "high",
@@ -235,11 +239,12 @@
    "chute_m": 12.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 160,
-   "mrt_m": 180,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
-    "Children's playground"
+    "Children's playground",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "",
@@ -282,11 +287,12 @@
    "chute_m": 13.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 150,
-   "mrt_m": 170,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
-    "Children's playground"
+    "Children's playground",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): red/red",
@@ -329,10 +335,11 @@
    "chute_m": 27.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 135,
-   "mrt_m": 160,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch"
    ],
    "confidence": "high",
@@ -370,10 +377,13 @@
    "chute_m": 33.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 130,
-   "mrt_m": 155,
+   "mscp_m": 129,
+   "mrt_m": 146,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Children's playground",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "mscp_m 130 vs 160 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review: Drop-off porch circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
@@ -415,8 +425,8 @@
    "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 115,
-   "mrt_m": 105,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -462,10 +472,12 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
-   "mrt_m": 95,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch"
+   ],
    "confidence": "medium",
    "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 100 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -507,8 +519,8 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
-   "mrt_m": 90,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -548,8 +560,8 @@
    "chute_m": 30.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 80,
-   "mrt_m": 85,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -595,8 +607,8 @@
    "chute_m": 12.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 115,
-   "mrt_m": 120,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -642,8 +654,8 @@
    "chute_m": 13.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 100,
-   "mrt_m": 110,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -689,10 +701,12 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
-   "mrt_m": 100,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): red/red; mscp_m 90 vs 120 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -728,8 +742,8 @@
    "chute_m": 32.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 80,
-   "mrt_m": 95,
+   "mscp_m": 81,
+   "mrt_m": 88,
    "facilities_has": [],
    "facilities_near": [
     "Drop-off porch"
@@ -769,11 +783,12 @@
    "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
-   "mrt_m": 50,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Drop-off porch",
+    "Shops"
    ],
    "confidence": "high",
    "notes": "",
@@ -816,11 +831,12 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 30,
-   "mrt_m": 45,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Drop-off porch",
+    "Shops"
    ],
    "confidence": "medium",
    "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide; mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
@@ -857,10 +873,13 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
-   "mrt_m": 55,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Shops"
+   ],
    "confidence": "high",
    "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -896,10 +915,11 @@
    "chute_m": 30.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 10,
-   "mrt_m": 55,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Shops"
    ],
    "confidence": "high",
@@ -937,11 +957,12 @@
    "chute_m": 12.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
-   "mrt_m": 75,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Drop-off porch",
+    "Shops"
    ],
    "confidence": "high",
    "notes": "",
@@ -978,10 +999,13 @@
    "chute_m": 13.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 30,
-   "mrt_m": 70,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Shops"
+   ],
    "confidence": "high",
    "notes": "mscp_m 30 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -1017,10 +1041,13 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
-   "mrt_m": 70,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Shops"
+   ],
    "confidence": "high",
    "notes": "mscp_m 20 vs 50 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -1056,10 +1083,11 @@
    "chute_m": 32.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 10,
-   "mrt_m": 70,
+   "mscp_m": 11,
+   "mrt_m": 49,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Shops"
    ],
    "confidence": "high",
@@ -1103,12 +1131,16 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
-   "mrt_m": 120,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): green/green",
    "roof_next_to_2nd_storey_roof": true
@@ -1144,12 +1176,16 @@
    "chute_m": 13.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
-   "mrt_m": 110,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": "",
    "roof_next_to_2nd_storey_roof": true
@@ -1185,12 +1221,14 @@
    "chute_m": 27.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
-   "mrt_m": 110,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Elderly fitness station"
    ],
    "confidence": "high",
@@ -1234,12 +1272,14 @@
    "chute_m": 33.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
-   "mrt_m": 105,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Elderly fitness station"
    ],
    "confidence": "high",
@@ -1277,14 +1317,15 @@
    "chute_m": 7.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 75,
-   "mrt_m": 145,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "",
@@ -1327,14 +1368,15 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
-   "mrt_m": 135,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "medium",
    "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
@@ -1371,14 +1413,15 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
-   "mrt_m": 120,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Children's playground"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 45 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
@@ -1421,14 +1464,15 @@
    "chute_m": 31.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
-   "mrt_m": 115,
+   "mscp_m": 36,
+   "mrt_m": 111,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station",
-    "Children's playground"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): green/green; mscp_m 35 vs 70 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
@@ -1465,10 +1509,11 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 120,
-   "mrt_m": 195,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
     "Elderly fitness station"
    ],
@@ -1507,11 +1552,13 @@
    "chute_m": 13.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 110,
-   "mrt_m": 185,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "Review: Children's playground circle reaches < 1 m, not counted (borderline rule).",
@@ -1548,11 +1595,13 @@
    "chute_m": 24.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 103,
-   "mrt_m": 180,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: borderline car park distance, independent measurement 103 m (analyst 100 m); set 103, i.e. not within 100 m.",
@@ -1589,11 +1638,13 @@
    "chute_m": 31.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
-   "mrt_m": 180,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
@@ -1630,10 +1681,14 @@
    "chute_m": 7.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 125,
-   "mrt_m": 215,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": "mscp_m 125 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline) Review: Hardcourt circle reaches < 1 m, not counted (borderline rule).",
    "roof_next_to_2nd_storey_roof": true
@@ -1675,10 +1730,14 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 115,
-   "mrt_m": 210,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
    "confidence": "medium",
    "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
    "roof_next_to_2nd_storey_roof": true
@@ -1714,11 +1773,13 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 103,
-   "mrt_m": 195,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: borderline car park distance, independent measurement 103 m (analyst 100 m); set 103, i.e. not within 100 m.",
@@ -1755,11 +1816,13 @@
    "chute_m": 30.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 90,
-   "mrt_m": 190,
+   "mscp_m": 87,
+   "mrt_m": 182,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "mscp_m 90 vs 110 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
@@ -1796,10 +1859,12 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 190,
-   "mrt_m": 275,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "",
    "roof_next_to_2nd_storey_roof": true
@@ -1841,10 +1906,12 @@
    "chute_m": 13.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 180,
-   "mrt_m": 265,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): red/red",
    "roof_next_to_2nd_storey_roof": true
@@ -1886,10 +1953,12 @@
    "chute_m": 24.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 170,
-   "mrt_m": 260,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): red/red; raster pass2 read green near apex because a neighbour green semicircle is drawn on top; zoom crop shows own red semicircle, kept red; mscp_m 170 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -1925,10 +1994,12 @@
    "chute_m": 31.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 160,
-   "mrt_m": 255,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "mscp_m 160 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -1964,8 +2035,8 @@
    "chute_m": 7.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 200,
-   "mrt_m": 295,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
    "facilities_near": [
     "Precinct pavilion"
@@ -2011,10 +2082,12 @@
    "chute_m": 9.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 190,
-   "mrt_m": 285,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "medium",
    "notes": "two board semicircles on this unit (window face + side face): green/red; mixed colours: failed under the any-red rule, user may decide",
    "roof_next_to_2nd_storey_roof": true
@@ -2056,10 +2129,12 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 175,
-   "mrt_m": 270,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "two board semicircles on this unit (window face + side face): red/red",
    "roof_next_to_2nd_storey_roof": true
@@ -2095,10 +2170,12 @@
    "chute_m": 30.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 165,
-   "mrt_m": 265,
+   "mscp_m": 154,
+   "mrt_m": 259,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "mscp_m 165 vs 185 in mscp_distance.json (that file measures from block centre to the car-park strip; here nearest point of this stack's footprint to the Block 201 building outline)",
    "roof_next_to_2nd_storey_roof": true
@@ -13976,6 +14053,71 @@
   "mrt_m: Telok Blangah MRT is at the board row1b point (red 100 m circle centre, plan px 974,219, by the station label). Distance from that point to the nearest point of the stack footprint, rounded to 5 m. Within 100 m: all 201A stacks and 200B 131, 117, 119, 121, 123.",
   "Units: from pipeline/raw/berlayar-rise-7-dist.json (pages 13-15); re-checked against the p12 unit-mix table (1976 = 172 + 644 + 172 + 988) and p13 visually (200A sky terraces at 9 and 29, 200B at 20 and 40, 1st storey empty). No rental units are marked in the brochure.",
   "Roof: 'roof at 2nd storey only' on the plans is a non-accessible roof slab, so roof_floors is [] (no flat opens onto an accessible roof garden). Stacks beside such a roof keep roof_next_to_2nd_storey_roof=true. Decided 2026-10-13 for consistency across projects.",
-  "Independent review 2026-10-13: units 1976/1976 match; facing, gt30m, wind_open, facilities, roof agree on 48/48; chute_m fixed for 200B-121 and 201A-137; mscp_m set to 103 for 204A-108/114 (borderline); junction-side doors kept Corridor (last-door rule)."
+  "Independent review 2026-10-13: units 1976/1976 match; facing, gt30m, wind_open, facilities, roof agree on 48/48; chute_m fixed for 200B-121 and 201A-137; mscp_m set to 103 for 204A-108/114 (borderline); junction-side doors kept Corridor (last-door rule).",
+  "2026-10-13 block-wide rule: facilities_near, mscp_m and mrt_m are per block (any touch of a 30 m circle on the block outline counts); see blocks."
+ ],
+ "blocks": [
+  {
+   "block": "200A",
+   "facilities_near": [
+    "Children's playground",
+    "Drop-off porch"
+   ],
+   "facilities_has": [],
+   "mscp_m": 129,
+   "mrt_m": 146
+  },
+  {
+   "block": "200B",
+   "facilities_near": [
+    "Drop-off porch"
+   ],
+   "facilities_has": [],
+   "mscp_m": 81,
+   "mrt_m": 88
+  },
+  {
+   "block": "201A",
+   "facilities_near": [
+    "Drop-off porch",
+    "Shops"
+   ],
+   "facilities_has": [],
+   "mscp_m": 11,
+   "mrt_m": 49
+  },
+  {
+   "block": "201B",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "mscp_m": 36,
+   "mrt_m": 111
+  },
+  {
+   "block": "204A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Elderly fitness station"
+   ],
+   "facilities_has": [],
+   "mscp_m": 87,
+   "mrt_m": 182
+  },
+  {
+   "block": "204B",
+   "facilities_near": [
+    "Precinct pavilion"
+   ],
+   "facilities_has": [],
+   "mscp_m": 154,
+   "mrt_m": 259
+  }
  ]
 }

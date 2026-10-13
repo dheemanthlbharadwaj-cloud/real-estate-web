@@ -71,7 +71,7 @@
    "chute_m": 29.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
@@ -113,7 +113,7 @@
    "chute_m": 34.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
@@ -155,11 +155,12 @@
    "chute_m": 23.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
+    "Drop-off porch",
     "Elderly fitness station"
    ],
    "confidence": "medium",
@@ -205,10 +206,14 @@
    "chute_m": 18.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
@@ -252,10 +257,14 @@
    "chute_m": 5.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": ""
   },
@@ -299,10 +308,14 @@
    "chute_m": 5.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 20,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
    "confidence": "high",
    "notes": ""
   },
@@ -350,7 +363,9 @@
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": ""
@@ -400,7 +415,8 @@
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Drop-off porch"
+    "Drop-off porch",
+    "Elderly fitness station"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -445,10 +461,16 @@
    "chute_m": 8.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 70,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": ""
   },
@@ -492,11 +514,15 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 70,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
    "notes": "position: 319 and 321 share the dead-end tip of the NW corridor; 321 is the last door, 319 marked Corridor Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -541,11 +567,15 @@
    "chute_m": 23.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -590,12 +620,15 @@
    "chute_m": 18.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Elderly fitness station"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -631,12 +664,15 @@
    "chute_m": 19.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
-    "Elderly fitness station"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -672,13 +708,15 @@
    "chute_m": 29.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Elderly fitness station"
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute). Review: Precinct pavilion circle grazes the unit by <0.5 m, not counted (borderline rule)."
@@ -723,7 +761,7 @@
    "chute_m": 33.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
@@ -776,12 +814,14 @@
    "chute_m": 26.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -827,11 +867,14 @@
    "chute_m": 22.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -877,11 +920,14 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -918,11 +964,14 @@
    "chute_m": 22.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 22,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -959,7 +1008,7 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
@@ -967,6 +1016,8 @@
    "facilities_near": [
     "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -1012,14 +1063,17 @@
    "chute_m": 20.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
     "Children's playground",
-    "Future amenities/facilities"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -1064,14 +1118,17 @@
    "chute_m": 22.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 29.8 m at SE/E bearing Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute). Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg."
@@ -1125,14 +1182,17 @@
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 29.6 m at SE/E bearing Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg."
@@ -1177,14 +1237,17 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 30,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 28.8 m at SE/E bearing"
@@ -1229,13 +1292,17 @@
    "chute_m": 28.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 50,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
-    "Elderly fitness station"
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 25.0 m at SE/E bearing"
@@ -1271,12 +1338,18 @@
    "chute_m": 24.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
+   ],
    "confidence": "medium",
    "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it); wind blocked: other block within 28.7 m at SE/E bearing Review: wind measured from the living-room window wall: no other block within 30 m at 90-135 deg. Review: last door at a dead end, Corner. Review: Elderly fitness circle only grazes the unit (<1 m disagreement), not counted (borderline rule)."
   },
@@ -1311,12 +1384,18 @@
    "chute_m": 8.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
-   "facilities_near": [],
+   "facilities_near": [
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
   },
@@ -1360,13 +1439,16 @@
    "chute_m": 10.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -1403,13 +1485,16 @@
    "chute_m": 13.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [
     "Residents' network centre"
    ],
    "facilities_near": [
+    "Children's playground",
     "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -1446,11 +1531,16 @@
    "chute_m": 5.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": ""
@@ -1486,11 +1576,16 @@
    "chute_m": 8.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "medium",
    "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
@@ -1526,11 +1621,15 @@
    "chute_m": 13.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 45,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
+    "Precinct pavilion",
     "Residents' network centre"
    ],
    "confidence": "high",
@@ -1567,12 +1666,16 @@
    "chute_m": 17.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "medium",
    "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it) Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -1608,12 +1711,16 @@
    "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": "Review 2026-10-13: chute_m measured to the general refuse chute (not the recyclable chute)."
@@ -1649,11 +1756,16 @@
    "chute_m": 21.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 20,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Elderly fitness station"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 29.5 m at SE/E bearing"
@@ -1698,11 +1810,16 @@
    "chute_m": 24.5,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 20,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Precinct pavilion"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": "wind blocked: other block within 23.3 m at SE/E bearing"
@@ -1738,11 +1855,16 @@
    "chute_m": 22.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Precinct pavilion"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": ""
@@ -1787,12 +1909,16 @@
    "chute_m": 27.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Precinct pavilion"
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
    ],
    "confidence": "high",
    "notes": ""
@@ -1828,10 +1954,17 @@
    "chute_m": 21.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 14,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
+   ],
    "confidence": "high",
    "notes": ""
   },
@@ -1866,10 +1999,11 @@
    "chute_m": 17.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -1906,10 +2040,11 @@
    "chute_m": 16.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -1946,10 +2081,13 @@
    "chute_m": 5.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "confidence": "medium",
    "notes": "a neighbour's red semicircle overlaps this stack's own green semicircle (does not fail it)"
   },
@@ -1984,10 +2122,13 @@
    "chute_m": 7.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": ""
   },
@@ -2022,10 +2163,13 @@
    "chute_m": 26.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
    "confidence": "high",
    "notes": "Review: Precinct pavilion circle grazes the unit by <0.5 m, not counted (borderline rule)."
   },
@@ -2069,10 +2213,11 @@
    "chute_m": 30.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -2118,10 +2263,11 @@
    "chute_m": 39.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 60,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Drop-off porch",
     "Precinct pavilion"
    ],
    "confidence": "high",
@@ -2158,7 +2304,7 @@
    "chute_m": 44.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 65,
+   "mscp_m": 18,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
@@ -9511,6 +9657,72 @@
   "wind_open: false if any footprint pixel of another residential block (other block number) lies within 30 m at bearing 90-135 deg from any footprint pixel of the stack. Same-block wings are not counted.",
   "mscp_m: per stack, nearest footprint pixel to the Blk 325 car park outline from mscp_distance.json _geometry (brochure pt), at 1.697 pt/m, rounded to 5 m. Differs from the block-centre values in mscp_distance.json by more than 10 m for end stacks because this is per-stack nearest-edge (e.g. 326A 317 is 70 vs block 50; 328A 383 is 15 vs block 45).",
   "mrt_m null: no MRT station on the site plan.",
-  "Independent review 2026-10-13: units 1221/1221, facing 47/47, gt30m 47/47 agree; fixed chute_m x22 (general refuse chute), wind_open x5 (window wall), facilities has/near duplicates x7, position x2; borderline facility circles (<1 m disagreement) not counted."
+  "Independent review 2026-10-13: units 1221/1221, facing 47/47, gt30m 47/47 agree; fixed chute_m x22 (general refuse chute), wind_open x5 (window wall), facilities has/near duplicates x7, position x2; borderline facility circles (<1 m disagreement) not counted.",
+  "2026-10-13 block-wide rule: facilities_near, mscp_m and mrt_m are per block (any touch of a 30 m circle on the block outline counts); see blocks."
+ ],
+ "blocks": [
+  {
+   "block": "325A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Drop-off porch",
+    "Elderly fitness station"
+   ],
+   "facilities_has": [],
+   "mscp_m": 20,
+   "mrt_m": null
+  },
+  {
+   "block": "326A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [],
+   "mscp_m": 22,
+   "mrt_m": null
+  },
+  {
+   "block": "326B",
+   "facilities_near": [
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Future amenities/facilities",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [
+    "Residents' network centre"
+   ],
+   "mscp_m": 18,
+   "mrt_m": null
+  },
+  {
+   "block": "327A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Residents' network centre"
+   ],
+   "facilities_has": [],
+   "mscp_m": 14,
+   "mrt_m": null
+  },
+  {
+   "block": "328A",
+   "facilities_near": [
+    "Drop-off porch",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [],
+   "mscp_m": 18,
+   "mrt_m": null
+  }
  ]
 }

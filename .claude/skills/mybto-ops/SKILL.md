@@ -40,6 +40,8 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 ## Real-data decisions (agreed with the user)
 - Roof access: "roof at 2nd storey only" on HDB plans is a non-accessible roof slab, so it is NOT roof access (`roof_floors` = []). Stacks beside such a roof may carry `roof_next_to_2nd_storey_roof` / `roof_note_2nd_storey`. Car-park roof gardens reached by shared link bridges do not count either. Result: no unit in the 7 projects has roof access, so the "Access to roof" meter hides itself once real data is published.
 - More than 30 m: a unit fails if any red is inside a board semicircle centred on that unit; a neighbour's red overlapping the unit's own green semicircle does not fail it.
+- Block-wide (user rule 2026-10-13): facilities_near, MRT within 100 m (`mrt_m`) and car park (`mscp_m`) are per BLOCK. A facility's 30 m circle touching any part of the block outline gives it to every unit in the block (any touch counts). `facilities_has` wins over near. Per-unit only: gt30m, facing, position, chute_m (to the general chute, within 10 m means <= 10), wind_open (from the living-room window wall, 90 to 135 deg inclusive). Each `pipeline/raw/real/<key>.json` keeps a `blocks` list.
+- Real data is live for all 7 projects (6,952 units). After editing `pipeline/raw/real/*.json`: `python3 pipeline/build_real_data.py` (review sheet in `review/`, gitignored), then `--publish`. The roof legend entry was removed (no unit has roof access).
 
 ## Support link
 - Buy Me a Coffee: https://buymeacoffee.com/mybto. Shown as the `#support` card under the results after a ranking (build_pages.py rank body, unhidden in runRank) and as "Support MyBTO" in the footer More list (site.js). Plain link only, no third-party widget script.

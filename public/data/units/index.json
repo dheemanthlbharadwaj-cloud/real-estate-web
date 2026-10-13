@@ -1,12 +1,12 @@
 {
- "sample": true,
+ "sample": false,
  "projects": [
   {
    "key": "kebun-baru_breeze-5",
    "name": "Kebun Baru Breeze",
    "town": "Ang Mo Kio",
    "project_type": "Plus",
-   "units": 406,
+   "units": 579,
    "blocks": [
     "247A",
     "248A"
@@ -21,14 +21,14 @@
     "2-Room Flexi",
     "4-Room"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   },
   {
    "key": "kebun-baru_ridge-1",
    "name": "Kebun Baru Ridge",
    "town": "Ang Mo Kio",
    "project_type": "Plus",
-   "units": 440,
+   "units": 485,
    "blocks": [
     "183A",
     "184A",
@@ -43,7 +43,7 @@
     "3-Room",
     "4-Room"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   },
   {
    "key": "berlayar-rise-7",
@@ -71,14 +71,14 @@
     "3-Room",
     "4-Room"
    ],
-   "data_status": "real unit list, sample attributes"
+   "data_status": "real data"
   },
   {
    "key": "lakeview-cascadia-2",
    "name": "Lakeview Cascadia",
    "town": "Bishan",
    "project_type": "Prime",
-   "units": 1118,
+   "units": 1221,
    "blocks": [
     "325A",
     "326A",
@@ -96,14 +96,14 @@
     "2-Room Flexi",
     "4-Room"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   },
   {
    "key": "sembawang-brook-6",
    "name": "Sembawang Brook",
    "town": "Sembawang",
    "project_type": "Standard",
-   "units": 870,
+   "units": 1160,
    "blocks": [
     "437A",
     "437B",
@@ -126,14 +126,14 @@
     "5-Room",
     "3Gen"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   },
   {
    "key": "sembawang-portico-4",
    "name": "Sembawang Portico",
    "town": "Sembawang",
    "project_type": "Standard",
-   "units": 500,
+   "units": 875,
    "blocks": [
     "433A",
     "433B",
@@ -153,14 +153,14 @@
     "4-Room",
     "5-Room"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   },
   {
    "key": "woodgrove-acres-3",
    "name": "Woodgrove Acres",
    "town": "Woodlands",
    "project_type": "Standard",
-   "units": 570,
+   "units": 656,
    "blocks": [
     "446A",
     "446B",
@@ -181,7 +181,7 @@
     "4-Room",
     "5-Room"
    ],
-   "data_status": "sample data"
+   "data_status": "real data"
   }
  ],
  "flat_types": [
