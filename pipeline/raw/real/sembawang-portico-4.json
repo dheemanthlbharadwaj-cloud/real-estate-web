@@ -65,10 +65,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) green. nearest other-block unit on bearing 90-135 deg: 37.9 m. facility circles within 3 m of footprint edge (m inside>0/outside<0): Drop-off porch -2.8."
   },
@@ -106,10 +111,13 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": false,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
     "Drop-off porch"
    ],
    "confidence": "high",
@@ -149,11 +157,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Adult fitness station"
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red; side semicircle SW (255 deg) red. nearest other-block unit on bearing 90-135 deg: 75.6 m. facility circles within 3 m of footprint edge (m inside>0/outside<0): Preschool -0.6, Drop-off porch -2.6."
@@ -188,12 +199,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Preschool",
     "Adult fitness station",
-    "Preschool"
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red. nearest other-block unit on bearing 90-135 deg: 80.2 m."
@@ -232,12 +245,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Preschool",
     "Adult fitness station",
-    "Preschool"
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red; side semicircle NE (78 deg) red. nearest other-block unit on bearing 90-135 deg: 79.3 m. facility circles within 3 m of footprint edge (m inside>0/outside<0): Adult fitness station 1.3, Precinct pavilion -0.5."
@@ -272,12 +287,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 10,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
     "Precinct pavilion",
-    "Preschool"
+    "Drop-off porch"
    ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) green. pass1/pass2 disagreed, resolved by attribution (see top-level notes). nearest other-block unit on bearing 90-135 deg: 77.4 m."
@@ -312,10 +329,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) green. nearest other-block unit on bearing 90-135 deg: 95.1 m."
   },
@@ -353,10 +375,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) red; side semicircle NE (75 deg) red. nearest other-block unit on bearing 90-135 deg: 70.6 m."
   },
@@ -394,10 +421,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (348 deg) red; side semicircle SW (254 deg) red. nearest other-block unit on bearing 90-135 deg: 60.0 m."
   },
@@ -431,10 +463,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle NW (348 deg) green. pass1/pass2 disagreed, resolved by attribution (see top-level notes). nearest other-block unit on bearing 90-135 deg: 50.1 m."
   },
@@ -472,10 +509,13 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
     "Drop-off porch"
    ],
    "confidence": "medium",
@@ -510,17 +550,22 @@
      }
     ]
    },
-   "position": "Corridor",
+   "position": "Corner",
    "chute_m": 9.5,
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "medium",
-   "notes": "row3 own semicircles: front semicircle NW (349 deg) green; side semicircle NE (74 deg) red. Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along. facility circles within 3 m of footprint edge (m inside>0/outside<0): Drop-off porch -0.9."
+   "notes": "row3 own semicircles: front semicircle NW (349 deg) green; side semicircle NE (74 deg) red. Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along. facility circles within 3 m of footprint edge (m inside>0/outside<0): Drop-off porch -0.9. Review: symmetric dead end with 425, Corner."
   },
   {
    "block": "433B",
@@ -556,10 +601,15 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
-   "facilities_near": [],
+   "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NE (18 deg) green; side semicircle NW (285 deg) red."
   },
@@ -597,11 +647,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Precinct pavilion"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NE (18 deg) red; side semicircle SE (103 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Children's playground -0.9, Precinct pavilion 2.0."
@@ -640,11 +693,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 50,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Children's playground"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NE (18 deg) red; side semicircle NW (290 deg) red."
@@ -679,11 +735,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Children's playground"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NE (18 deg) green. facility circles within 3 m of footprint edge (m inside>0/outside<0): Elderly fitness station -0.4."
@@ -722,12 +781,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Children's playground",
-    "Elderly fitness station"
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (108 deg) green; side semicircle SW (200 deg) red."
@@ -766,13 +827,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Children's playground",
     "Elderly fitness station",
-    "Precinct pavilion"
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SW (195 deg) green; side semicircle SE (106 deg) red."
@@ -811,12 +873,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 30,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
     "Children's playground",
-    "Precinct pavilion"
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SW (195 deg) green; side semicircle NW (281 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Elderly fitness station -2.9."
@@ -855,11 +919,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Precinct pavilion"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red; side semicircle NE (74 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Children's playground -1.3."
@@ -894,12 +961,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch",
-    "Precinct pavilion"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Drop-off porch 0.6."
@@ -934,12 +1003,14 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
-    "Drop-off porch",
-    "Precinct pavilion"
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
    ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle SE (165 deg) red. Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along."
@@ -974,18 +1045,21 @@
     ]
    },
    "position": "Corner",
-   "chute_m": 10.0,
+   "chute_m": 10.2,
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 11,
    "mrt_m": null,
    "facilities_has": [],
    "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
     "Drop-off porch"
    ],
    "confidence": "medium",
-   "notes": "row3 own semicircles: front semicircle SE (165 deg) green; side semicircle SW (253 deg) green. pass1/pass2 disagreed, resolved by attribution (see top-level notes). Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along. nearest other-block unit on bearing 90-135 deg: 81.0 m. facility circles within 3 m of footprint edge (m inside>0/outside<0): Precinct pavilion -0.1."
+   "notes": "row3 own semicircles: front semicircle SE (165 deg) green; side semicircle SW (253 deg) green. pass1/pass2 disagreed, resolved by attribution (see top-level notes). Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along. nearest other-block unit on bearing 90-135 deg: 81.0 m. facility circles within 3 m of footprint edge (m inside>0/outside<0): Precinct pavilion -0.1. Review: vector chute box gives 10.18 m, just over 10 m."
   },
   {
    "block": "434A",
@@ -1027,8 +1101,10 @@
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Community space",
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) green; side semicircle SW (259 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Future amenities/facilities -0.3."
@@ -1074,7 +1150,9 @@
    ],
    "facilities_near": [
     "Adult fitness station",
-    "Future amenities/facilities"
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) red; side semicircle NE (73 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Community space -0.8."
@@ -1113,7 +1191,7 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
@@ -1121,7 +1199,8 @@
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
-    "Future amenities/facilities"
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) red; side semicircle SW (258 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Future amenities/facilities -2.2, Children's playground 2.4."
@@ -1156,7 +1235,7 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
@@ -1164,7 +1243,8 @@
    "facilities_near": [
     "Adult fitness station",
     "Children's playground",
-    "Future amenities/facilities"
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle NW (349 deg) green. pass1/pass2 disagreed, resolved by attribution (see top-level notes)."
@@ -1203,13 +1283,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle NE (77 deg) green; side semicircle SE (167 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Adult fitness station -1.7."
@@ -1248,13 +1331,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 30,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (167 deg) green; side semicircle NE (74 deg) red."
@@ -1293,13 +1379,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (167 deg) green; side semicircle SW (253 deg) red."
@@ -1338,13 +1427,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (167 deg) green; side semicircle NE (74 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Future amenities/facilities 0.3."
@@ -1383,13 +1475,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": false,
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SE (167 deg) green; side semicircle SW (255 deg) red. facility circles within 3 m of footprint edge (m inside>0/outside<0): Drop-off porch -2.4."
@@ -1432,13 +1527,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "high",
    "notes": "row3 own semicircles: front semicircle SW (207 deg) green; side semicircle SE (114 deg) red; side semicircle NW (295 deg) red."
@@ -1477,14 +1575,16 @@
    "roof_floors": [],
    "roof_note_2nd_storey": true,
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
     "Drop-off porch",
-    "Future amenities/facilities"
+    "Community space"
    ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle NW (346 deg) green; side semicircle SW (259 deg) red. Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along. facility circles within 3 m of footprint edge (m inside>0/outside<0): Community space -0.4."
@@ -1529,8 +1629,10 @@
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Community space",
-    "Future amenities/facilities"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
    ],
    "confidence": "medium",
    "notes": "row3 own semicircles: front semicircle NW (346 deg) green; side semicircle NE (76 deg) red. Corner/Corridor call: two unit doors open off the same short lobby stub; judged by which door is farther along."
@@ -6803,6 +6905,39 @@
   "roof_floors is [] for all stacks: no unit opens directly onto an accessible roof garden (the MSCP roof garden is a separate building). roof_note_2nd_storey is true where a 'ROOF AT 2ND STOREY ONLY' label points to a roof right next to the stack on the floor plan (433A: 401, 417, 419; 433B: 429, 431, 437, 449; 434A: 451, 453, 455, 457, 459, 469, 471, 473). Labels next to the lift lobby/wash area or the rental flats were not assigned to any sale stack.",
   "wind_open: checks whether any other residential block's unit footprint lies within 30 m on a bearing of 90-135 deg, from anywhere on the unit's footprint (whole unit, not only the window). Only 433A #403 fails (433B #425 about 12 m away); the rental stack 405 would also fail.",
   "mscp_m: shortest distance from the unit footprint to the MSCP (Block 433) building outline (the green roof-garden deck, without the brown linkway frame), rounded to 5 m. Per block, the values bracket mscp_distance.json (433A 25, 433B 35, 434A 25, measured from the block centre): the near stacks are 10-15 m and the far stacks up to 55 m.",
-  "mrt_m: null; there is no MRT station on the site plan."
+  "mrt_m: null; there is no MRT station on the site plan.",
+  "Independent review 2026-10-13: units 875/875, facing/gt30m/wind 35/35 agree; facilities and car park now block-wide (user rule); 427 Corner; 449 chute 10.2 m."
+ ],
+ "blocks": [
+  {
+   "block": "433A",
+   "facilities_near": [
+    "Preschool",
+    "Adult fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
+   "mscp_m": 11
+  },
+  {
+   "block": "433B",
+   "facilities_near": [
+    "Children's playground",
+    "Elderly fitness station",
+    "Precinct pavilion",
+    "Drop-off porch"
+   ],
+   "mscp_m": 11
+  },
+  {
+   "block": "434A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Community space"
+   ],
+   "mscp_m": 10
+  }
  ]
 }
