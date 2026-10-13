@@ -25,15 +25,26 @@
     </section>
 
     <section class="tool"><div class="wrap">
-      <div class="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/">Add more units <span class="arr">→</span></a></div>
+      <div id="shared-banner" class="shared-banner" hidden>
+        <p class="shared-title">Shared shortlist for <span id="shared-name"></span></p>
+        <p class="small muted">You are looking at someone else’s list. Your own shortlist is not changed unless you save this one.</p>
+        <div class="shared-btns"><button type="button" class="btn primary" id="btn-save-shared">Save as my shortlist</button><button type="button" class="btn ghost" id="btn-back-mine">Back to my shortlist</button></div>
+      </div>
+      <div class="picker-row" id="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/">Add more units <span class="arr">→</span></a></div>
+      <div class="sl-tools" id="sl-tools" hidden>
+        <button type="button" class="btn" id="btn-share">Share shortlist</button>
+        <button type="button" class="btn ghost" id="btn-clear">Clear all</button>
+        <span id="sl-msg" class="small muted" aria-live="polite"></span>
+      </div>
+      <p id="rank-note" class="small muted rank-note"></p>
       <ol id="flag-list" class="shortlist"></ol>
     </div></section>
   </main>
+  <script src="/js/config.js"></script>
   <script src="/js/site.js"></script>
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
   <script src="/js/ads.js"></script>
-  <script src="/js/config.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/app.js"></script>
 </body>

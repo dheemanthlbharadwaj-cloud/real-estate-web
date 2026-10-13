@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Analytics · MyBTO</title>
+  <meta name="description" content="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-page="analytics">
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <h1 class="h1"><span id="analytics-name"></span> Analytics</h1>
+      </div>
+    </section>
+
+    <section class="tool"><div class="wrap">
+      <div id="analysis-body" hidden>
+        <p id="a-basis" class="basis"></p>
+        <div class="dash">
+          <div class="half">
+            <div class="kpis">
+              <div class="kpi" id="k-rankings"><div class="kpi-title">Rankings</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+              <div class="kpi" id="k-min"><div class="kpi-title">Typical lowest floor</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+            </div>
+            <div class="card" id="card-storey"><h3>Lowest and highest storey</h3><div class="plot tall"><canvas id="c-storey"></canvas></div></div>
+          </div>
+          <div class="half">
+            <div class="kpis">
+              <div class="kpi" id="k-max"><div class="kpi-title">Typical highest floor</div><b class="kpi-num">-</b><span class="kpi-sub"></span></div>
+              <div class="kpi kpi-pref" id="k-pref"><div class="kpi-title">Floor preference</div><div class="pref-body"><ul class="swatches" id="pref-legend"></ul><div class="pref-plot"><canvas id="c-pref"></canvas></div></div></div>
+            </div>
+            <div class="card" id="card-sun"><h3>Most wanted sun direction</h3><div class="plot tall"><canvas id="c-sun"></canvas></div></div>
+          </div>
+        </div>
+        <div class="ins-row" id="ins-1"></div>
+        <div class="grid2">
+          <div class="card" id="card-block"><h3>Blocks</h3><div class="plot" id="p-block"><canvas id="c-block"></canvas></div></div>
+          <div class="card" id="card-factor"><h3>Factors, average importance</h3><div class="plot" id="p-factor"><canvas id="c-factor"></canvas></div></div>
+        </div>
+        <div class="ins-row" id="ins-2"></div>
+        <div class="grid2">
+          <div class="card" id="card-facility"><h3>Facilities, top 10 most wanted</h3><div class="plot" id="p-facility"><canvas id="c-facility"></canvas></div></div>
+          <div class="card" id="card-types"><h3>Housing types</h3><div class="plot"><canvas id="c-types"></canvas></div></div>
+        </div>
+      </div>
+    </div></section>
+  </main>
+  <script src="/js/config.js"></script>
+  <script src="/js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/js/scoring.js"></script>
+  <script src="/js/legend.js"></script>
+  <script src="/js/ads.js"></script>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

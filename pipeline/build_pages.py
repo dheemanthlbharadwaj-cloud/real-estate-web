@@ -1,5 +1,7 @@
 """Generate the inner pages (rank, shortlist, analytics) from one shared shell.
 
+Analytics is archived: it is written to public/archive/analytics.html (see ANALYTICS_ENABLED in public/js/config.js).
+
 Run after editing a page body below:  python3 pipeline/build_pages.py
 """
 from pathlib import Path
@@ -26,17 +28,16 @@ HEAD = """<!doctype html>
     <section class="page-hero">
       <div class="wrap">
 {kicker_html}        <h1 class="h1">{h1}</h1>
-        <p>{lede}</p>
-      </div>
+{lede_html}      </div>
     </section>
 """
 
 FOOT = """  </main>
+  <script src="/js/config.js"></script>
   <script src="/js/site.js"></script>{extra}
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
   <script src="/js/ads.js"></script>
-  <script src="/js/config.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/app.js"></script>
 </body>
@@ -47,7 +48,7 @@ PAGES = {
     "rank": dict(
         title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
         h1="Unofficial HDB BTO Flat Unit Ranker",
-        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 50 units and check out the Analytics page.",
+        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 100 units and check out the Analytics page.",
         desc="Rank every unit of a BTO project by your own priorities.",
         body="""
     <section class="tool"><div class="wrap">
@@ -91,7 +92,7 @@ PAGES = {
             <div class="spacer"></div>
             <div id="after-rank" class="after-rank" hidden>
               <a id="btn-shortlisted" class="btn" href="/shortlist" target="_blank" rel="noopener"><span class="star-ico" aria-hidden="true">★</span> Shortlisted <span class="count" id="flag-count">0</span></a>
-              <a id="btn-analytics" class="btn primary" href="/analytics" target="_blank" rel="noopener"><span id="analytics-name">Project</span> Analytics</a>
+              <a id="btn-analytics" class="btn primary" href="/archive/analytics" target="_blank" rel="noopener"><span id="analytics-name">Project</span> Analytics</a>
             </div>
           </div>
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
@@ -118,14 +119,25 @@ PAGES = {
         desc="Your ordered shortlist of BTO units.",
         body="""
     <section class="tool"><div class="wrap">
-      <div class="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/">Add more units <span class="arr">→</span></a></div>
+      <div id="shared-banner" class="shared-banner" hidden>
+        <p class="shared-title">Shared shortlist for <span id="shared-name"></span></p>
+        <p class="small muted">You are looking at someone else’s list. Your own shortlist is not changed unless you save this one.</p>
+        <div class="shared-btns"><button type="button" class="btn primary" id="btn-save-shared">Save as my shortlist</button><button type="button" class="btn ghost" id="btn-back-mine">Back to my shortlist</button></div>
+      </div>
+      <div class="picker-row" id="picker-row"><span class="eyebrow">Project</span><select id="project" aria-label="Project"></select><a class="btn ghost" href="/">Add more units <span class="arr">→</span></a></div>
+      <div class="sl-tools" id="sl-tools" hidden>
+        <button type="button" class="btn" id="btn-share">Share shortlist</button>
+        <button type="button" class="btn ghost" id="btn-clear">Clear all</button>
+        <span id="sl-msg" class="small muted" aria-live="polite"></span>
+      </div>
+      <p id="rank-note" class="small muted rank-note"></p>
       <ol id="flag-list" class="shortlist"></ol>
     </div></section>
 """),
     "analytics": dict(
-        title="Analytics", img="garden-brook.webp", kicker="Analytics", color="forest",
-        h1="What other buyers <em>want.</em>",
-        lede="Built from everyone’s saved rankings for <span id=\"analytics-name\"></span>.", robots=True,
+        out="archive/analytics.html",         title="Analytics", img="garden-brook.webp", kicker="", color="forest",
+        h1="<span id=\"analytics-name\"></span> Analytics",
+        lede="", robots=True,
         desc="Combined results from MyBTO rankings: preferred floors, facings, blocks and factors.",
         extra='\n  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
         body="""
@@ -175,8 +187,9 @@ def main():
     for page, p in PAGES.items():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
-        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, **{k: p[k] for k in ("title", "desc", "img", "h1", "lede", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
-        (PUBLIC / f"{page}.html").write_text(html)
+        lede_html = f'        <p>{p["lede"]}</p>\n' if p["lede"] else ""
+        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        (PUBLIC / p.get("out", f"{page}.html")).write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home
             (PUBLIC / "index.html").write_text(html)

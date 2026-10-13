@@ -3,6 +3,8 @@
 //                               Resolves with the consent time (ISO) once the person taps "Show my ranking", or null for "Not now".
 //   MyBTOAds.rewarded(key)   -> Promise<boolean>        Analytics gate, once per project per browser session.
 //                               Resolves true after the countdown and "Continue", false for "Back to Rank units".
+// ONE SWITCH: window.MYBTO_CONFIG.ADS_ENABLED (js/config.js). Not true = ads are archived: interstitial() resolves at once with the
+// consent time (rankings still save with consent) and rewarded() resolves true at once. All the ad code below is kept for later.
 // To plug in a real ad network, replace the two functions in PROVIDERS below (search "PLUG IN").
 // Countdowns are 5 s and 15 s; tests may shorten them with window.MYBTO_AD_SECONDS = { interstitial: 1, rewarded: 1 }.
 (function () {
@@ -62,10 +64,13 @@
     });
   }
 
+  const adsOn = () => (window.MYBTO_CONFIG || {}).ADS_ENABLED === true;
+
   window.MyBTOAds = {
     async interstitial() {
       const seen = ss.get('mybto:ad-consent');
       if (seen) return seen;
+      if (!adsOn()) { const now = new Date().toISOString(); ss.set('mybto:ad-consent', now); return now; }
       const ok = await modal({
         kind: 'interstitial', title: 'One moment before your ranking', intro: 'This free tool is supported by ads.',
         slotClass: 'ad-300', go: 'Show my ranking', cancel: 'Not now',
@@ -76,6 +81,7 @@
       return at;
     },
     async rewarded(projectKey) {
+      if (!adsOn()) return true;
       const key = `mybto:unlocked:${projectKey}`;
       if (ss.get(key)) return true;
       const ok = await modal({

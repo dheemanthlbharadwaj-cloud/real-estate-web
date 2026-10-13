@@ -20,8 +20,9 @@ const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).'
 const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has set aside for things like preschools, eldercare or a residents’ network centre.';
 const facilityHelp = name => (name === 'Future amenities/facilities' ? `${FUTURE_FAC_HELP} ${FACILITY_HELP}` : FACILITY_HELP);
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
-const SHOW_TOP = 50; // the full ranking is saved, only the top 50 are shown
-const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, flags: [], charts: {}, weights: {}, consentedAt: null };
+const SHOW_TOP = 100; // the full ranking is saved, only the top 100 are shown
+const MAX_SHARE = 100; // most units in a shared shortlist link
+const state = { index: null, project: null, units: [], ranked: [], hasRanked: false, flags: [], shared: null, charts: {}, weights: {}, consentedAt: null };
 
 async function api(path) {
   const r = await fetch(path);
@@ -83,9 +84,7 @@ async function loadProject(key) {
   if (PAGE !== 'rank') {
     state.flags = loadFlags();
     updateFlagCount();
-    const last = lsGet(`mybto:last:${key}`, null);
-    state.ranked = last ? Scoring.rank(state.units, { flatTypes: last.flat_types, blocks: last.blocks, minStorey: last.min_storey, maxStorey: last.max_storey }, last.weights, last.floor_pref) : [];
-    if (PAGE === 'shortlist') renderShortlist();
+    if (PAGE === 'shortlist') { readSharedLink(); renderShortlist(); }
     return;
   }
   $('#project-meta').textContent = `This is a ${p.project_type} project in ${p.town}, with ${p.units.toLocaleString()} flat units and ${p.blocks.length} ${p.blocks.length === 1 ? 'block' : 'blocks'}.`;
@@ -101,8 +100,11 @@ async function loadProject(key) {
   $('#f-min').value = lo; $('#f-max').value = hi;
   $('#f-pref input[value=higher]').checked = true;
   state.weights = {};
-  $('#analytics-name').textContent = p.name;
-  $('#btn-analytics').href = `/analytics?project=${encodeURIComponent(key)}`;
+  // Analytics is archived: its button shows only when ANALYTICS_ENABLED is true in config.js.
+  if ((window.MYBTO_CONFIG || {}).ANALYTICS_ENABLED === true) {
+    $('#analytics-name').textContent = p.name;
+    $('#btn-analytics').href = `/archive/analytics?project=${encodeURIComponent(key)}`;
+  } else $('#btn-analytics')?.remove();
   $('#btn-shortlisted').href = `/shortlist?project=${encodeURIComponent(key)}`;
   state.flags = loadFlags();
   updateFlagCount();
@@ -306,6 +308,7 @@ function saveRanking() {
   const f = readFilters();
   const last = { flat_types: f.flatTypes, blocks: f.blocks, min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: readPref(), weights: readWeights() };
   lsSet(`mybto:last:${state.project.key}`, last);
+  rememberRanking(f, last);
   if (!state.consentedAt) return;
   store.saveRanking({
     project: state.project.key, project_type: state.project.project_type, housing_type: $('#f-types input:checked')?.value || 'Any', blocks: f.blocks,
@@ -313,6 +316,27 @@ function saveRanking() {
     consent: true, consented_at: state.consentedAt, ranking: state.ranked.map(u => u.id),
   });
 }
+
+// The latest ranking per project (ordered ids, dense ranks, scores, a short description and the time) plus the one before it,
+// so the shortlist page can show where each starred unit is now and where it was. Kept in this browser only.
+function describeRanking(f, last) {
+  const p = state.project;
+  const housing = $('#f-types input:checked')?.value || 'Any';
+  const blocks = f.blocks.length === p.blocks.length ? 'all blocks' : `${f.blocks.length} of ${p.blocks.length} blocks`;
+  const pref = { higher: 'higher floors first', lower: 'lower floors first', none: 'no floor preference' }[last.floor_pref] || '';
+  const set = Object.values(last.weights).flatMap(v => (typeof v === 'object' ? Object.values(v) : [v])).filter(v => v !== 0).length;
+  return `${housing}, ${blocks}, storeys ${String(f.minStorey).padStart(2, '0')} to ${String(f.maxStorey).padStart(2, '0')}, ${pref}, ${set} factor${set === 1 ? '' : 's'} rated`;
+}
+function rememberRanking(f, last) {
+  const key = `mybto:lastrank:${state.project.key}`;
+  const old = lsGet(key, null);
+  const cur = { at: new Date().toISOString(), desc: describeRanking(f, last), ids: state.ranked.map(u => u.id), ranks: state.ranked.map(u => u.rank), scores: state.ranked.map(u => +u.score.toFixed(2)) };
+  const same = old && old.ids.join() === cur.ids.join() && old.scores.join() === cur.scores.join();
+  const rec = same ? { ...old, at: cur.at, desc: cur.desc } : { ...cur, prev: old ? { at: old.at, desc: old.desc, ids: old.ids, ranks: old.ranks, scores: old.scores } : null };
+  lsSet(key, rec);
+}
+const rankOf = (r, id) => { const i = r ? r.ids.indexOf(id) : -1; return i < 0 ? null : { rank: r.ranks[i], score: r.scores[i] }; };
+const whenText = iso => { const d = new Date(iso); return Number.isNaN(+d) ? '' : d.toLocaleString('en-SG', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
 
 // ---------------------------------------------------------------- shortlist
 const loadFlags = () => lsGet(`flags:${state.project.key}`, []);
@@ -330,21 +354,94 @@ function updateFlagCount() {
   try { localStorage.setItem('mybto:flagcount', String(state.flags.length)); } catch { /* storage unavailable */ }
 }
 
+// A shared link is /shortlist?project=<key>&units=<id,id,...>. It is shown read-only and never touches the visitor's own list
+// unless they press Save. Unknown ids are ignored and at most MAX_SHARE units are used.
+function readSharedLink() {
+  const q = new URLSearchParams(location.search);
+  state.shared = null;
+  if (!q.has('units') || q.get('project') !== state.project.key) return;
+  const known = new Set(state.units.map(u => u.id));
+  const ids = [...new Set(q.get('units').split(',').map(x => x.trim()).filter(x => known.has(x)))].slice(0, MAX_SHARE);
+  state.shared = { ids };
+}
+
+function shortlistUrl() {
+  return `${location.origin}/shortlist?project=${encodeURIComponent(state.project.key)}&units=${state.flags.slice(0, MAX_SHARE).map(encodeURIComponent).join(',')}`;
+}
+function say(msg) { const el = $('#sl-msg'); if (el) el.textContent = msg; }
+
 function renderShortlist() {
   const byId = Object.fromEntries(state.units.map(u => [u.id, u]));
-  const ranked = Object.fromEntries(state.ranked.map(u => [u.id, u]));
+  const shared = !!state.shared;
   const list = $('#flag-list');
-  const items = state.flags.filter(id => byId[id]);
-  if (!items.length) { list.innerHTML = '<div class="empty">Nothing here yet. Tap the ★ next to a unit in your ranking to shortlist it.</div>'; return; }
+  const items = (shared ? state.shared.ids : state.flags).filter(id => byId[id]);
+  $('#shared-banner').hidden = !shared;
+  $('#picker-row').hidden = shared;
+  $('#sl-tools').hidden = shared || !items.length;
+  if (shared) $('#shared-name').textContent = state.project.name;
+  list.classList.toggle('readonly', shared);
+  const cur = shared ? null : lsGet(`mybto:lastrank:${state.project.key}`, null);
+  const note = $('#rank-note');
+  note.textContent = cur ? `Rank and score are from your latest ranking (${cur.desc}, ${whenText(cur.at)}).${cur.prev ? ` The “was” number is from the one before (${cur.prev.desc}, ${whenText(cur.prev.at)}).` : ''}` : '';
+  if (!items.length) {
+    list.innerHTML = `<div class="empty">${shared ? 'This link has no units for this project.' : 'Nothing here yet. Tap the ★ next to a unit in your ranking to shortlist it.'}</div>`;
+    return;
+  }
   list.innerHTML = items.map((id, i) => {
-    const u = byId[id], r = ranked[id];
-    return `<li draggable="true" data-id="${esc(id)}">
+    const u = byId[id], now = rankOf(cur, id), was = cur?.prev ? rankOf(cur.prev, id) : null;
+    const rk = !cur ? '' : now ? ` · <span class="rk-now">Rank ${now.rank}${was && was.rank !== now.rank ? ` (was ${was.rank})` : ''} · score ${now.score > 0 ? '+' : ''}${now.score.toFixed(1)}</span>` : ' · not in your latest ranking';
+    return `<li${shared ? '' : ' draggable="true"'} data-id="${esc(id)}">
       <div><div class="addr">Blk ${esc(u.block)} #${String(u.storey).padStart(2, '0')}-${esc(u.unit)}</div>
-        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${r ? ` · rank ${r.rank} in your last ranking` : ''}</div></div>
+        <div class="meta">${esc(u.flat_type)} · faces ${esc(u.facing)} · ${esc(u.position.toLowerCase())}${rk}</div></div>
       <div></div>
-      <div class="ctrl"><button data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button data-act="down" ${i === items.length - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button data-act="rm" aria-label="Remove">✕</button></div></li>`;
+      ${shared ? '' : `<div class="ctrl"><button data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button data-act="down" ${i === items.length - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button data-act="rm" aria-label="Remove">✕</button></div>`}</li>`;
   }).join('');
 }
+
+// Another tab changed the shortlist: pick it up, so every open page shows the same starred units.
+window.addEventListener('storage', e => {
+  if (!state.project || e.key !== `flags:${state.project.key}`) return;
+  state.flags = loadFlags();
+  updateFlagCount();
+  if (PAGE === 'shortlist') renderShortlist();
+  if (PAGE === 'rank') $$('#results .star').forEach(b => b.classList.toggle('on', state.flags.includes(b.dataset.id)));
+});
+
+on('#btn-clear', 'click', () => {
+  if (!state.flags.length || !window.confirm(`Are you sure you want to clear your whole shortlist for ${state.project.name}?`)) return;
+  state.flags = [];
+  persistFlags();
+  say('');
+  renderShortlist();
+});
+on('#btn-share', 'click', async () => {
+  const url = shortlistUrl();
+  if (navigator.share) {
+    try { await navigator.share({ title: `${state.project.name} shortlist`, text: `My shortlist for ${state.project.name}`, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  let ok = false;
+  try { await navigator.clipboard.writeText(url); ok = true; } catch { /* try the old way */ }
+  if (!ok) {
+    const t = document.createElement('textarea');
+    t.value = url; t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.append(t); t.select();
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    t.remove();
+  }
+  if (ok) say('Link copied');
+  else window.prompt('Copy this link to share your shortlist', url);
+});
+on('#btn-back-mine', 'click', () => { location.href = `/shortlist?project=${encodeURIComponent(state.project.key)}`; });
+on('#btn-save-shared', 'click', () => {
+  if (!state.shared) return;
+  const mine = loadFlags();
+  if (mine.length && !window.confirm(`Replace your shortlist for ${state.project.name} with this shared one?`)) return;
+  state.flags = [...state.shared.ids];
+  persistFlags();
+  state.shared = null; // stay on the page (no reload) so the Sheet send is not cut off
+  history.replaceState(null, '', `/shortlist?project=${encodeURIComponent(state.project.key)}`);
+  renderShortlist();
+});
 function moveFlag(from, to) {
   const f = [...state.flags];
   const [m] = f.splice(from, 1);
@@ -354,6 +451,7 @@ function moveFlag(from, to) {
   renderShortlist();
 }
 on('#flag-list', 'click', e => {
+  if (state.shared) return;
   const b = e.target.closest('button');
   if (!b) return;
   const i = state.flags.indexOf(b.closest('li').dataset.id);

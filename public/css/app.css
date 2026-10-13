@@ -257,3 +257,15 @@ body.drawer-open { overflow: hidden; }
 .ad-fill span { font-size: 13px; color: var(--muted); }
 .ad-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--line); }
 .ad-bar b { display: block; height: 100%; width: 0; background: var(--accent); transition: width 1s linear; }
+
+/* Shortlist page: shared view banner, Share / Clear all row, rank note */
+.shared-banner { max-width: 900px; margin: 0 0 20px; padding: 16px 18px; background: var(--card); border: 1px solid var(--accent); border-radius: var(--r); }
+.shared-banner .shared-title { margin: 0 0 4px; font: 700 18px/1.3 var(--head); }
+.shared-banner p { margin: 0 0 8px; }
+.shared-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.sl-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; max-width: 900px; margin: 0 0 14px; }
+.rank-note { max-width: 900px; margin: 0 0 14px; }
+.rank-note:empty { display: none; }
+.shortlist.readonly li { cursor: default; grid-template-columns: 48px 1fr; }
+.shortlist .rk-now { color: var(--accent-ink); font-weight: 600; }
+.shared-banner[hidden], .sl-tools[hidden], .picker-row[hidden] { display: none; }

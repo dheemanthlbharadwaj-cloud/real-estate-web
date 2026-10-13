@@ -12,7 +12,12 @@
     "redirects": [
       {
         "source": "/analysis",
-        "destination": "/analytics",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/analytics",
+        "destination": "/",
         "type": 301
       },
       {

@@ -19,13 +19,13 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     const stubFirebase = c => c.route(/gstatic\.com\/firebasejs\/.*\/firebase-app\.js$/, r => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(__dirname, 'fake-firebase', 'firebase-app.js'), 'utf8') }));
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     await stubFirebase(ctx);
-    await ctx.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; }); // the 5 s Rank pop-up stays real; the 15 s video is shortened
     const p = await ctx.newPage();
     p.on('pageerror', e => errors.push(e.message));
     p.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
 
     const dump = async () => (await fetch(`${base}/fake-sheets?action=dump`)).json(); // what the fake sheet holds (tests only)
-    const rows = () => p.$$eval('#results tbody tr', r => r.filter(x => x.querySelector('.rk')).length);
+    const rows_ = pg_ => pg_.$$eval('#results tbody tr', r => r.filter(x => x.querySelector('.rk')).length);
+    const rows = () => rows_(p);
     await p.goto(`${base}/rank`);
     await p.waitForSelector('#floor-groups .fg-card');
     check((await p.textContent('#result-count')).startsWith('0') && (await rows()) === 0, 'nothing ranked before pressing Rank units');
@@ -33,28 +33,19 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(await p.isHidden('#after-rank'), 'Shortlisted and Analytics buttons hidden before ranking');
     check(!(await p.$('#btn-csv')) && !(await p.$('#btn-save')) && !(await p.$('#queue')), 'no CSV, Save list or queue box on the page');
     check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header has no menu button');
-    await p.waitForFunction(() => document.querySelector('#tab-analytics-name').textContent === 'Kebun Baru Breeze');
-    check((await p.$$eval('.site-header .tab', t => t.map(x => x.textContent.trim()))).join() === 'Rank units,Kebun Baru Breeze Analytics', 'header tabs: Rank units and the project Analytics');
-    check((await p.getAttribute('#tab-rank', 'aria-current')) === 'page' && !(await p.getAttribute('#tab-analytics', 'aria-current')), 'Rank units tab is marked active');
+    await p.waitForSelector('.site-header .tab');
+    check((await p.$$eval('.site-header .tab', t => t.map(x => x.textContent.trim()))).join() === 'Rank units' && !(await p.$('#tab-analytics')), 'Analytics is archived: the header has only the Rank units tab');
+    check((await p.getAttribute('#tab-rank', 'aria-current')) === 'page', 'Rank units tab is marked active');
 
+    // Ads are archived (ADS_ENABLED false in config.js): Rank shows results straight away, no pop-up.
     await p.click('#btn-rank');
-    await p.waitForSelector('.ad-panel');
-    check((await p.textContent('.ad-panel .ad-tag')) === 'Advertisement' && (await p.$$eval('.ad-panel iframe, .ad-panel script', n => n.length)) === 0, 'first Rank click opens the ad pop-up (placeholder, no iframe or ad script)');
-    check((await p.isDisabled('[data-ad-go]')) && /^Show my ranking in \d/.test(await p.textContent('[data-ad-go]')), 'Show my ranking is disabled during the countdown');
-    check((await p.$$eval('.ad-panel .consent, .ad-panel a[href^="mailto:"]', n => n.length)) === 0 && !/research project|National University|21 or older/.test(await p.textContent('.ad-panel')), 'no research notice in the pop-up');
-    check((await p.$$eval('.ad-panel .ad-slot', n => n.length)) === 1 && (await p.textContent('.ad-panel [data-ad-cancel]')) === 'Not now', 'pop-up keeps the ad slot and Not now');
-    check(!(await p.$('#survey')) && !(await p.$('#btn-edit-survey')) && !(await p.$('.ad-panel input')), 'no survey questions and no Edit survey link');
-    await p.click('[data-ad-cancel]');
-    check(!(await p.$('.ad-panel')) && (await rows()) === 0, 'Not now closes the pop-up and ranks nothing');
-    await p.click('#btn-rank');
-    await p.waitForSelector('[data-ad-go][disabled]');
-    await p.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    check((await p.textContent('[data-ad-go]')) === 'Show my ranking', 'button turns on after the 5 second countdown');
-    await p.click('[data-ad-go]');
     await p.waitForSelector('#results tbody .rk');
-    check(Number((await p.textContent('#result-count')).replace(/\D/g, '')) > 0, 'ranking loads after agreeing');
-    check((await rows()) === 50, 'only the top 50 units are shown');
-    check(await p.isVisible('#after-rank'), 'Shortlisted and Analytics buttons appear after ranking');
+    check(!(await p.$('.ad-panel')) && !(await p.$('.modal')), 'ads are archived: Rank shows results directly, no ad pop-up');
+    check(!(await p.$('#survey')) && !(await p.$('#btn-edit-survey')), 'no survey questions and no Edit survey link');
+    check(Number((await p.textContent('#result-count')).replace(/\D/g, '')) > 0, 'ranking loads');
+    check((await rows()) === 100, 'only the top 100 units are shown');
+    check((await p.textContent('#top-note')) === 'Showing the top 100.' && /top 100 units/.test(await p.textContent('.page-hero')), 'text says the top 100');
+    check(await p.isVisible('#after-rank') && !(await p.$('#btn-analytics')) && !/Analytics/.test(await p.textContent('#after-rank')), 'Shortlisted button appears after ranking; no Analytics button (archived)');
     const head = await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''));
     check(head.slice(0, 7).join('|') === '#||Unit|Score|Type · facing|Chute|MRT' && head.length > 7, `chute, MRT and one column per facility (${head.length - 7} facilities)`);
     check((await p.$$eval('#results tbody tr td:nth-child(6) .nf', n => n.every(x => /^(Near|Far)$/.test(x.textContent)))), 'chute shows near or far');
@@ -63,23 +54,21 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(tagText.every(t => ['corner', 'corridor', 'near MRT', 'chute within N m'].includes(t)), `only corner/corridor, MRT and chute tags (${tagText.join(', ')})`);
     const sheetNow = await dump();
     const sent = sheetNow.rankings;
-    check(sent.length === 1 && sent[0].consent === true && sent[0].project === 'kebun-baru_breeze-5' && sent[0].units_ranked > 50 && sent[0].full_ranking.split(', ').length === sent[0].units_ranked, `the fake sheet got one ranking row with consent and the full ranking (${sent[0]?.units_ranked} units)`);
-    check(sent[0].top50.split(', ').length === 50 && /^u[0-9a-f]{24}$/.test(sent[0].user) && !Object.keys(sent[0]).some(k => /queue|survey|email|age/.test(k)), 'row has the top 50, an anonymous user id and no queue number or survey answers');
+    check(sent.length === 1 && sent[0].consent === true && !!sent[0].consented_at && sent[0].project === 'kebun-baru_breeze-5' && sent[0].units_ranked > 100 && sent[0].full_ranking.split(', ').length === sent[0].units_ranked, `the fake sheet got one ranking row with consent and the full ranking (${sent[0]?.units_ranked} units)`);
+    check(sent[0].top50.split(', ').length === 50 && // the Sheet column keeps its name and size
+       /^u[0-9a-f]{24}$/.test(sent[0].user) && !Object.keys(sent[0]).some(k => /queue|survey|email|age/.test(k)), 'row has the Sheet top50 column, an anonymous user id and no queue number or survey answers');
     check((await p.evaluate(() => localStorage.getItem('mybto:uid'))) === sent[0].user && !!(await p.evaluate(() => localStorage.getItem('mybto:last:kebun-baru_breeze-5'))), 'user id and last settings are kept in this browser');
 
     await p.selectOption('#project', 'berlayar-rise-7');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('0'));
     check(true, 'changing project clears the ranking');
     check((await p.$$eval('#f-types input', i => i.map(x => x.type + ':' + x.value))).join() === 'radio:2-Room Flexi,radio:3-Room,radio:4-Room', 'one housing type at a time, 2-Room Flexi as one choice');
-    check((await p.textContent('#analytics-name')) === 'Berlayar Rise', 'Analytics button names the project');
-    await p.waitForFunction(() => document.querySelector('#tab-analytics').textContent.trim() === 'Berlayar Rise Analytics');
-    check((await p.getAttribute('#tab-analytics', 'href')) === '/analytics?project=berlayar-rise-7', 'Analytics tab follows the selected project live');
     check((await p.inputValue('#f-pref input:checked')) === 'higher', 'Prioritise floors defaults to Higher after choosing a project');
     await p.click('#f-pref label:has-text("No preference")');
     await p.click('#tab-rank');
     await p.waitForFunction(() => document.querySelector('#result-count').textContent.startsWith('988'));
     check(true, 'header Rank units tab ranks on the rank page');
-    check(!(await p.$('.ad-panel')), 'ad pop-up only on the first Rank click of the session');
+    check(!(await p.$('.ad-panel')), 'no ad pop-up on later Rank clicks either');
     check((await p.$$eval('#results tbody .rk', r => r.map(x => x.textContent))).every(x => x === '1'), 'all importances 0: every unit ranks 1');
     check((await p.$$eval('#floor-groups h3', h => h.map(x => x.textContent))).join() === 'Highest unit(s),Middlemost unit(s),Lowest unit(s)', 'highest, middlemost and lowest units shown');
     await p.click('#f-pref label:has-text("Higher")');
@@ -116,7 +105,6 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     // Fresh visit: Higher is selected, even if an older visit left another choice behind, and Higher puts the highest storey first.
     const floorCtx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     await stubFirebase(floorCtx);
-    await floorCtx.addInitScript(() => { window.MYBTO_AD_SECONDS = { interstitial: 1 }; });
     const fp = await floorCtx.newPage();
     fp.on('pageerror', e => errors.push(e.message));
     await fp.goto(`${base}/rank`);
@@ -127,8 +115,6 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await fp.waitForSelector('#floor-groups .fg-card');
     check((await fp.inputValue('#f-pref input:checked')) === 'higher', 'an old saved Lower choice is not restored: still Higher');
     await fp.click('#btn-rank');
-    await fp.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 5000 });
-    await fp.click('[data-ad-go]');
     await fp.waitForSelector('#results tbody .rk');
     const top = await fp.evaluate(async () => {
       const key = JSON.parse(localStorage.getItem('project'));
@@ -159,7 +145,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.waitForTimeout(2600);
     const starred = (await dump()).shortlists.filter(r => r.project === 'berlayar-rise-7');
     check(starred.length === 1 && starred[0].unit_ids.split(', ').length === 3, 'starring units sends a shortlist to the fake sheet (3 units, debounced into one send)');
-    check((await p.getAttribute('#btn-shortlisted', 'target')) === '_blank' && (await p.getAttribute('#btn-analytics', 'target')) === '_blank', 'Shortlisted and Analytics open in a new tab');
+    check((await p.getAttribute('#btn-shortlisted', 'target')) === '_blank', 'Shortlisted opens in a new tab');
     const [sl] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-shortlisted')]);
     await sl.waitForSelector('#flag-list li .addr');
     const first = await sl.textContent('#flag-list li:nth-child(1) .addr');
@@ -171,15 +157,125 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(after[0].unit_ids !== starred[0].unit_ids && [...after[0].unit_ids.split(', ')].sort().join() === [...starred[0].unit_ids.split(', ')].sort().join(), 'the new order replaced the old one');
     check(after.length === 1 && after[0].user === (await dump()).rankings[0].user && after[0].unit_ids.split(', ').length === 3, 'reordering sent the shortlist: one row per user and project, 3 units');
     await sl.close();
-    const [an] = await Promise.all([ctx.waitForEvent('page'), p.click('#btn-analytics')]);
-    await an.waitForSelector('.ad-panel');
-    check((await an.isHidden('#analysis-body')) && (await an.isDisabled('[data-ad-go]')) && /^Continue in \d/.test(await an.textContent('[data-ad-go]')), 'Analytics shows the rewarded video gate with a countdown before any content');
-    check((await an.textContent('.ad-panel .ad-tag')) === 'Advertisement', 'rewarded video placeholder is labelled Advertisement');
-    await an.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    await an.click('[data-ad-go]');
+
+    // ---- Shortlist: persistence, latest rank and "was", clear all, share link round trip.
+    const KEY = 'berlayar-rise-7';
+    const flagsLs = pg_ => pg_.evaluate(k => JSON.parse(localStorage.getItem(k)), `flags:${KEY}`);
+    const savedOrder = await flagsLs(p);
+    await p.reload();
+    await p.waitForSelector('#floor-groups .fg-card');
+    check((await p.textContent('#flag-count')) === '3', 'after reopening the rank page the Shortlisted count is still 3');
+    check((await p.inputValue('#project')) === KEY && (await p.$$eval('#f-blocks input:checked', i => i.map(x => x.value))).join() === '200B' && /last settings/.test(await p.textContent('#save-msg')), 'rank page restores the project, blocks and filters of the last ranking');
+    await p.click('#btn-rank');
+    await p.waitForSelector('#results tbody .rk');
+    const on1 = await p.$$eval('#results .star.on', b => b.map(x => x.dataset.id));
+    check(on1.length === 3 && on1.every(id => savedOrder.includes(id)), 'the same units are starred after reopening the rank page');
+    const sl2 = await ctx.newPage();
+    sl2.on('pageerror', e => errors.push(e.message));
+    await sl2.goto(`${base}/shortlist`);
+    await sl2.waitForSelector('#flag-list li .addr');
+    const idsOnPage = pg_ => pg_.$$eval('#flag-list li', l => l.map(x => x.dataset.id));
+    check((await idsOnPage(sl2)).join() === savedOrder.join(), 'the shortlist page shows the same starred units in the same order after reopening');
+    const meta1 = await sl2.$$eval('#flag-list .meta', m => m.map(x => x.textContent));
+    check(meta1.every(t => /Rank \d+ · score [+-]?\d/.test(t) && !/was/.test(t)), `each shortlisted unit shows its rank and score under the latest ranking (${meta1[0].split(' · ').slice(-2).join(' · ')})`);
+    check(/Rank and score are from your latest ranking \(2-Room Flexi, 1 of \d+ blocks/.test(await sl2.textContent('#rank-note')), 'the shortlist page says which parameters the ranking used');
+    if (SHOTS) { await sl2.setViewportSize({ width: 390, height: 844 }); await sl2.screenshot({ path: `${SHOTS}/shortlist-rank-1.png`, fullPage: true }); await sl2.setViewportSize({ width: 1440, height: 1000 }); }
+    // Change a parameter and rank again: the shortlist page shows the new rank and the old one.
+    await p.click('#f-pref label:has-text("Lower")');
+    await p.click('#btn-rank');
+    await p.waitForSelector('#results tbody .rk');
+    const lr = await p.evaluate(k => JSON.parse(localStorage.getItem(k)), `mybto:lastrank:${KEY}`);
+    check(lr.ids.length === Number((await p.textContent('#result-count')).replace(/\D/g, '')) && !!lr.prev && lr.prev.ids.length === lr.ids.length && /lower floors first/.test(lr.desc) && /higher floors first/.test(lr.prev.desc), 'mybto:lastrank keeps the full latest ranking and the one before it');
+    await sl2.reload();
+    await sl2.waitForSelector('#flag-list li .addr');
+    const meta2 = await sl2.$$eval('#flag-list .meta', m => m.map(x => x.textContent));
+    check(meta2.some(t => /Rank \d+ \(was \d+\)/.test(t)) && /lower floors first/.test(await sl2.textContent('#rank-note')) && /higher floors first/.test(await sl2.textContent('#rank-note')), `after re-ranking the list shows where units moved (${meta2.map(t => (t.match(/Rank \d+( \(was \d+\))?/) || [''])[0]).join(' | ')})`);
+    // Clear all: asks first, syncs to the Sheet, and other open tabs follow.
+    let dialogMsg = '';
+    sl2.once('dialog', d => { dialogMsg = d.message(); d.dismiss(); });
+    await sl2.click('#btn-clear');
+    check(dialogMsg === 'Are you sure you want to clear your whole shortlist for Berlayar Rise?' && (await idsOnPage(sl2)).length === 3, 'Clear all asks "Are you sure..." and Cancel keeps the shortlist');
+    sl2.once('dialog', d => d.accept());
+    await sl2.click('#btn-clear');
+    await sl2.waitForSelector('#flag-list .empty');
+    check((await flagsLs(sl2)).length === 0 && await sl2.isHidden('#sl-tools'), 'Clear all empties the shortlist');
+    await p.waitForFunction(() => document.querySelector('#flag-count').textContent === '0');
+    check((await p.$$eval('#results .star.on', b => b.length)) === 0, 'the rank page in another tab follows: no units starred');
+    await sl2.waitForTimeout(2600);
+    const clearedRow = (await dump()).shortlists.filter(r => r.project === KEY);
+    check(clearedRow.length === 1 && clearedRow[0].unit_ids === '', 'Clear all is synced to the Sheet like any shortlist change');
+    await sl2.reload();
+    await sl2.waitForSelector('#flag-list .empty');
+    check(true, 'the shortlist stays empty after reopening');
+    for (const n of [0, 1, 2]) await p.click(`.star >> nth=${n}`);
+    const mine = await flagsLs(p);
+    check(mine.length === 3, 'three units starred again');
+    // Share link
+    await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: base });
+    await sl2.reload();
+    await sl2.waitForSelector('#flag-list li .addr');
+    const expectUrl = `${base}/shortlist?project=${KEY}&units=${mine.join(',')}`;
+    await sl2.click('#btn-share');
+    await sl2.waitForFunction(() => document.querySelector('#sl-msg').textContent === 'Link copied');
+    check((await sl2.evaluate(() => navigator.clipboard.readText())) === expectUrl, 'Share shortlist copies the link when sharing is not available ("Link copied")');
+    const shareCtx = await browser.newContext({ viewport: { width: 1000, height: 800 } });
+    await stubFirebase(shareCtx);
+    await shareCtx.addInitScript(() => { navigator.share = async d => { window.__shared = d; }; });
+    const sh = await shareCtx.newPage();
+    await sh.goto(`${base}/shortlist?project=${KEY}`);
+    await sh.evaluate(([k, ids]) => localStorage.setItem(k, JSON.stringify(ids)), [`flags:${KEY}`, mine]);
+    await sh.reload();
+    await sh.waitForSelector('#flag-list li .addr');
+    await sh.click('#btn-share');
+    await sh.waitForFunction(() => !!window.__shared);
+    check((await sh.evaluate(() => window.__shared.url)) === expectUrl, 'Share shortlist uses the Web Share API when the browser has it');
+    await shareCtx.close();
+    // Open the link as someone else
+    const friend = await browser.newContext({ viewport: { width: 1000, height: 800 } });
+    await stubFirebase(friend);
+    const fr = await friend.newPage();
+    fr.on('pageerror', e => errors.push(e.message));
+    await fr.goto(`${base}/shortlist?project=${KEY}`);
+    const ownId = (await fr.evaluate(async k => (await (await fetch(`/data/units/${k}.json`)).json())[5].id, KEY));
+    await fr.evaluate(([k, ids]) => localStorage.setItem(k, JSON.stringify(ids)), [`flags:${KEY}`, [ownId]]);
+    await fr.goto(`${expectUrl},NOT-A-UNIT`);
+    await fr.waitForSelector('#shared-banner:not([hidden])');
+    await fr.waitForSelector('#flag-list li .addr');
+    check((await fr.textContent('.shared-title')).trim() === 'Shared shortlist for Berlayar Rise' && (await fr.textContent('#btn-save-shared')) === 'Save as my shortlist' && (await fr.textContent('#btn-back-mine')) === 'Back to my shortlist', 'a shared link opens a banner with Save as my shortlist and Back to my shortlist');
+    check((await idsOnPage(fr)).join() === mine.join() && (await fr.$$('#flag-list .ctrl, #flag-list [draggable]')).length === 0 && await fr.isHidden('#sl-tools'), 'the shared list is read-only, in order, and an unknown unit id is ignored');
+    check((await flagsLs(fr)).join() === ownId, 'looking at a shared list does not change the visitor\'s own shortlist');
+    if (SHOTS) { await fr.setViewportSize({ width: 390, height: 844 }); await fr.screenshot({ path: `${SHOTS}/shortlist-shared.png`, fullPage: true }); await fr.setViewportSize({ width: 1000, height: 800 }); }
+    await fr.click('#btn-back-mine');
+    await fr.waitForSelector('#flag-list li .addr');
+    check(new URL(fr.url()).search === `?project=${KEY}` && (await idsOnPage(fr)).join() === ownId && await fr.isHidden('#shared-banner'), 'Back to my shortlist shows their own list');
+    await fr.goto(expectUrl);
+    await fr.waitForSelector('#shared-banner:not([hidden])');
+    let saveMsg = '';
+    fr.once('dialog', d => { saveMsg = d.message(); d.dismiss(); });
+    await fr.click('#btn-save-shared');
+    check(/Replace your shortlist for Berlayar Rise/.test(saveMsg) && (await flagsLs(fr)).join() === ownId, 'Save as my shortlist asks first; Cancel changes nothing');
+    fr.once('dialog', d => d.accept());
+    await fr.click('#btn-save-shared');
+    await fr.waitForFunction(() => !location.search.includes('units='));
+    await fr.waitForSelector('#flag-list li .addr');
+    check((await flagsLs(fr)).join() === mine.join() && (await idsOnPage(fr)).join() === mine.join() && await fr.isHidden('#shared-banner'), 'Save as my shortlist replaces their list with the shared one');
+    await fr.waitForTimeout(2600);
+    const friendRows = (await dump()).shortlists.filter(r => r.project === KEY);
+    check(friendRows.length === 2 && friendRows.some(r => r.unit_ids === mine.join(', ')), `saving a shared list is synced to the Sheet (${friendRows.length} rows)`);
+    const many = await fr.evaluate(async k => (await (await fetch(`/data/units/${k}.json`)).json()).slice(0, 150).map(u => u.id).join(','), KEY);
+    await fr.goto(`${base}/shortlist?project=${KEY}&units=${many}`);
+    await fr.waitForSelector('#flag-list li .addr');
+    check((await idsOnPage(fr)).length === 100, 'a shared link shows at most 100 units');
+    await friend.close();
+    const an = await ctx.newPage();
+    await an.goto(`${base}/archive/analytics?project=berlayar-rise-7`);
     await an.waitForSelector('#analysis-body:not([hidden])');
+    check(!(await an.$('.ad-panel')), 'Analytics opens without the video gate (ads archived)');
     await an.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
-    check((await an.title()).startsWith('Berlayar Rise Analytics') && (await an.textContent('h1')).includes('want'), 'Analytics opens on the ranked project');
+    check((await an.title()) === 'Berlayar Rise Analytics · MyBTO' && (await an.textContent('h1')).trim() === 'Berlayar Rise Analytics', 'Analytics heading is just "<Project> Analytics"');
+    const heroText = (await an.textContent('.page-hero')).replace(/\s+/g, ' ').trim();
+    if (SHOTS) { await an.setViewportSize({ width: 390, height: 844 }); await an.screenshot({ path: `${SHOTS}/analytics-header.png`, clip: { x: 0, y: 0, width: 390, height: 360 } }); await an.setViewportSize({ width: 1440, height: 1000 }); }
+    check(heroText === 'Berlayar Rise Analytics' && !(await an.$('.page-hero .label')) && !/want|Built from/.test(heroText), 'no eyebrow, no headline and no subtitle above the dashboard');
     check((await an.$$eval('#analysis-body select, #analysis-body input, #analysis-body button', n => n.length)) === 0 && !(await an.$('#a-group')), 'analytics has no filters or controls');
     const anText = await an.evaluate(() => document.body.innerText);
     check(!/[A-Z]{2}-\d{3}[A-Z]?-\d{2}-\d{3}/.test(anText) && !/Most shortlisted|Who ranked|Analysis/.test(anText), 'analytics page shows no unit ids, no shortlist list, no Who ranked');
@@ -213,22 +309,19 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(/Based on \d+ saved/.test(await an.textContent('#a-basis')), 'Analytics says how many rankings it is based on');
     await an.reload();
     await an.waitForSelector('#analysis-body:not([hidden])');
-    check(!(await an.$('.ad-panel')), 'unlock is remembered for the browser session');
     await an.click('#tab-rank');
-    await an.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 15000 }); // a new tab is a new session, so the pop-up shows again
-    await an.click('[data-ad-go]');
     await an.waitForSelector('#results tbody .rk');
     check(new URL(an.url()).search === '', 'Rank units tab on another page opens the ranking already ranked');
     await an.close();
     const fresh = await browser.newContext();
     await stubFirebase(fresh);
     const g = await fresh.newPage();
-    await g.goto(`${base}/analytics?project=sembawang-brook-6`);
-    await g.waitForSelector('.ad-panel');
-    check((await g.isHidden('#analysis-body')) && (await g.textContent('#a-basis')) === '', 'a new browser session gets the video gate and nothing loads behind it');
+    await g.goto(`${base}/archive/analytics?project=sembawang-brook-6`);
+    await g.waitForSelector('#analysis-body:not([hidden])');
+    check(!(await g.$('.ad-panel')), 'a new browser session opens Analytics with no video gate');
     await fresh.close();
 
-    for (const [from, to, code] of [['/analysis', '/analytics', 301], ['/account', '/', 301], ['/archive/account', '/', 301], ['/archive/dashboard', '/', 301]]) {
+    for (const [from, to, code] of [['/analysis', '/', 301], ['/analytics', '/', 301], ['/account', '/', 301], ['/archive/account', '/', 301], ['/archive/dashboard', '/', 301]]) {
       const r = await fetch(`${base}${from}`, { redirect: 'manual' });
       check(r.status === code && new URL(r.headers.get('location'), base).pathname === to, `${from} redirects to ${to} (firebase.json)`);
     }
@@ -265,7 +358,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/analytics', '/archive/home']) {
+    for (const path of ['/', '/rank', '/shortlist', '/archive/analytics', '/archive/home']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);
@@ -273,27 +366,67 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
       check((await p.$$eval('svg', s => s.length)) === 0, `${path}: no SVG`);
     }
 
+    // Analytics switched back on (ANALYTICS_ENABLED true): the tab and the button return and point at /archive/analytics.
+    const anCtx = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+    await stubFirebase(anCtx);
+    await anCtx.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { ANALYTICS_ENABLED: true, ANALYTICS_SOURCE: 'sheet', SHEETS_URL: '/fake-sheets' };" }));
+    const ae = await anCtx.newPage();
+    await ae.goto(`${base}/rank`);
+    await ae.waitForFunction(() => document.querySelector('#tab-analytics-name')?.textContent === 'Kebun Baru Breeze');
+    check((await ae.getAttribute('#tab-analytics', 'href')) === '/archive/analytics?project=kebun-baru_breeze-5', 'ANALYTICS_ENABLED true: the Analytics tab returns');
+    await ae.click('#btn-rank');
+    await ae.waitForSelector('#results tbody .rk');
+    check((await ae.getAttribute('#btn-analytics', 'href')) === '/archive/analytics?project=kebun-baru_breeze-5' && (await ae.textContent('#btn-analytics')).trim() === 'Kebun Baru Breeze Analytics', 'ANALYTICS_ENABLED true: the Analytics button returns');
+    await ae.goto(`${base}/archive/analytics`);
+    check((await ae.getAttribute('#tab-analytics', 'aria-current')) === 'page', 'ANALYTICS_ENABLED true: the tab is active on the archived page');
+    await anCtx.close();
+
+    // Ads switched back on (ADS_ENABLED true): the old flow still works, so ads can return later.
+    const adsCtx = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+    await stubFirebase(adsCtx);
+    await adsCtx.addInitScript(() => { window.MYBTO_AD_SECONDS = { interstitial: 1, rewarded: 1 }; });
+    await adsCtx.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { ADS_ENABLED: true, ANALYTICS_SOURCE: 'sheet', SHEETS_URL: '/fake-sheets' };" }));
+    const ap = await adsCtx.newPage();
+    ap.on('pageerror', e => errors.push(e.message));
+    const rankingsBefore = (await dump()).rankings.length;
+    await ap.goto(`${base}/rank`);
+    await ap.waitForSelector('#floor-groups .fg-card');
+    await ap.click('#btn-rank');
+    await ap.waitForSelector('.ad-panel');
+    check((await ap.textContent('.ad-panel .ad-tag')) === 'Advertisement' && (await ap.textContent('.ad-panel [data-ad-cancel]')) === 'Not now' && (await ap.$$eval('.ad-panel iframe, .ad-panel script', n => n.length)) === 0, 'ADS_ENABLED true: first Rank click opens the ad pop-up');
+    await ap.click('[data-ad-cancel]');
+    check(!(await ap.$('.ad-panel')) && (await rows_(ap)) === 0, 'ADS_ENABLED true: Not now ranks nothing');
+    await ap.click('#btn-rank');
+    await ap.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await ap.click('[data-ad-go]');
+    await ap.waitForSelector('#results tbody .rk');
+    const adRows = (await dump()).rankings;
+    check(adRows.length === rankingsBefore + 1 && adRows[adRows.length - 1].consent === true && !!adRows[adRows.length - 1].consented_at, 'ADS_ENABLED true: the ranking saves with consent after the pop-up');
+    await ap.goto(`${base}/archive/analytics?project=berlayar-rise-7`);
+    await ap.waitForSelector('.ad-panel');
+    check((await ap.isHidden('#analysis-body')) && (await ap.isDisabled('[data-ad-go]')) && /^Continue in \d/.test(await ap.textContent('[data-ad-go]')), 'ADS_ENABLED true: Analytics shows the rewarded video gate first');
+    await ap.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
+    await ap.click('[data-ad-go]');
+    await ap.waitForSelector('#analysis-body:not([hidden])');
+    check(true, 'ADS_ENABLED true: Analytics opens after the video');
+    await adsCtx.close();
+
     const noSheet = await browser.newContext({ viewport: { width: 1200, height: 900 } });
     await stubFirebase(noSheet);
-    await noSheet.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 1 }; });
     await noSheet.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { SHEETS_URL: '' };" }));
     const ns = await noSheet.newPage();
     const nsErrors = [];
     ns.on('pageerror', e => nsErrors.push(e.message));
     ns.on('console', m => { if (['error', 'warning'].includes(m.type())) nsErrors.push(m.text()); });
-    const before = (await dump()).rankings.length;
+    const before = (await dump()).rankings.length, beforeSl = (await dump()).shortlists.length;
     await ns.goto(`${base}/rank`);
     await ns.waitForSelector('#floor-groups .fg-card');
     await ns.click('#btn-rank');
-    await ns.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    await ns.click('[data-ad-go]');
     await ns.waitForSelector('#results tbody .rk');
     await ns.click('.star >> nth=0');
     await ns.waitForTimeout(2500);
-    check((await dump()).rankings.length === before && (await dump()).shortlists.length === 1, 'with SHEETS_URL empty nothing is sent');
-    await ns.goto(`${base}/analytics?project=berlayar-rise-7`);
-    await ns.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    await ns.click('[data-ad-go]');
+    check((await dump()).rankings.length === before && (await dump()).shortlists.length === beforeSl, 'with SHEETS_URL empty nothing is sent');
+    await ns.goto(`${base}/archive/analytics?project=berlayar-rise-7`);
     await ns.waitForFunction(() => document.querySelector('#a-basis').textContent !== '');
     check((await ns.textContent('#a-basis')) === 'Analytics will appear here soon.', 'with SHEETS_URL empty Analytics says it will appear soon');
     check(nsErrors.length === 0, `and the console stays quiet${nsErrors.length ? `: ${nsErrors.join(' | ')}` : ''}`);
@@ -302,14 +435,11 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     // Before launch (ANALYTICS_SOURCE 'sample'): Analytics is built in the browser from the sample rankings and never calls the Sheet.
     const pre = await browser.newContext({ viewport: { width: 1200, height: 900 } });
     await stubFirebase(pre);
-    await pre.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 1 }; });
     await pre.route('**/js/config.js', route => route.fulfill({ contentType: 'text/javascript', body: "window.MYBTO_CONFIG = { ANALYTICS_SOURCE: 'sample', SHEETS_URL: '/fake-sheets' };" }));
     const pg = await pre.newPage();
     const sheetCalls = [];
     pg.on('request', r => { if (r.url().includes('/fake-sheets') && r.method() === 'GET') sheetCalls.push(r.url()); });
-    await pg.goto(`${base}/analytics?project=berlayar-rise-7`);
-    await pg.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    await pg.click('[data-ad-go]');
+    await pg.goto(`${base}/archive/analytics?project=berlayar-rise-7`);
     await pg.waitForFunction(() => /Based on \d+ saved rankings/.test(document.querySelector('#a-basis').textContent));
     const basis = await pg.textContent('#a-basis');
     check(/Based on 71 saved rankings/.test(basis) && sheetCalls.length === 0 && (await pg.$$eval('.card canvas, .kpi canvas', c => c.length)) === 7, `sample Analytics before launch (${basis.trim()})`);
@@ -325,8 +455,6 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await phone.goto(`${base}/rank`);
     await phone.waitForSelector('#floor-groups .fg-card');
     await phone.click('#btn-rank');
-    await phone.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 }); // a new tab is a new browser session, so the ad shows again
-    await phone.click('[data-ad-go]');
     await phone.waitForSelector('#results tbody .rk');
     const overflow = await phone.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     check(overflow <= 0, `no horizontal page scroll on phone (overflow ${overflow}px)`);
@@ -335,24 +463,13 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     // Phone (390 px): header tabs, ad pop-up, Analytics gate and page, none of them scroll sideways.
     const pc = await browser.newContext({ viewport: { width: 390, height: 844 } });
     await stubFirebase(pc);
-    await pc.addInitScript(() => { window.MYBTO_AD_SECONDS = { rewarded: 2 }; });
     const ph = await pc.newPage();
     const over = () => ph.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     await ph.goto(`${base}/rank`);
-    await ph.waitForFunction(() => document.querySelector('#tab-analytics-name').textContent === 'Kebun Baru Breeze');
+    await ph.waitForSelector('.site-header .tab');
     check((await over()) <= 0, `phone: header with tabs does not scroll sideways (overflow ${await over()}px)`);
     if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-header.png`, clip: { x: 0, y: 0, width: 390, height: 260 } });
-    await ph.click('#btn-rank');
-    await ph.waitForSelector('.ad-panel');
-    check((await over()) <= 0 && (await ph.$eval('.ad-slot', e => e.getBoundingClientRect().width)) === 300, 'phone: ad pop-up fits, ad slot is 300 wide');
-    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-ad-modal.png` });
-    await ph.click('[data-ad-cancel]');
-    await ph.goto(`${base}/analytics?project=berlayar-rise-7`);
-    await ph.waitForSelector('.ad-panel');
-    check((await over()) <= 0, 'phone: Analytics gate fits');
-    if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics-gate.png` });
-    await ph.waitForSelector('[data-ad-go]:not([disabled])', { timeout: 8000 });
-    await ph.click('[data-ad-go]');
+    await ph.goto(`${base}/archive/analytics?project=berlayar-rise-7`);
     await ph.waitForFunction(() => /Based on/.test(document.querySelector('#a-basis').textContent));
     await ph.waitForTimeout(400);
     check((await over()) <= 0, `phone: Analytics page does not scroll sideways (overflow ${await over()}px)`);
@@ -360,6 +477,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     const [t1, t2, t3, cA] = [await box('#k-rankings'), await box('#k-min'), await box('#k-max'), await box('#card-storey')];
     check(t1.top === t2.top && t3.top > cA.bottom, 'phone: tiles 1 and 2 share a row, right half (tile 3) sits below chart A');
     if (SHOTS) await ph.screenshot({ path: `${SHOTS}/phone-analytics.png`, fullPage: true });
+    check((await ph.textContent('h1')).trim() === 'Berlayar Rise Analytics', 'phone: Analytics heading');
     await pc.close();
 
     check(errors.length === 0, `no browser errors${errors.length ? `: ${errors.join(' | ')}` : ''}`);

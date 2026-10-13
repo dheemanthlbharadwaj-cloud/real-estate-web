@@ -30,7 +30,7 @@ reads combined results from the same web app. The browser knows the web app's ad
   (tabs Plus / Prime / Standard) from the reconciled brochure extractions in `pipeline/raw/`.
 
 ## Pages
-`/` ranking (same as `/rank`) · `/shortlist` and `/analytics` (`/analysis` redirects there; opened in a new tab from the buttons above a ranking; the header has two tabs, Rank units and the current project's Analytics) · `/archive/home` (old home page). `/account`, `/archive/account` and `/archive/dashboard` redirect to `/` (see `firebase.json`).
+`/` ranking (same as `/rank`) · `/shortlist` · `/archive/analytics` (Analytics is archived: `/analytics` and `/analysis` redirect to `/`, the tab and button come back with `ANALYTICS_ENABLED: true` in `public/js/config.js`; ads are off with `ADS_ENABLED: false`) · `/archive/home` (old home page). `/account`, `/archive/account` and `/archive/dashboard` redirect to `/` (see `firebase.json`).
 Inner pages are generated from one shell: edit `pipeline/build_pages.py`, then `python3 pipeline/build_pages.py`.
 Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochures (© HDB), credited in the footer.
 
@@ -42,7 +42,7 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
   from the wind, and within 100 m of a multi-storey car park). Floor priority defaults to Higher. Only factors that exist in the selected blocks are shown.
 - **Ad pop-up**: the first press of Rank units in a browser session opens a placeholder ad (300x250) and the NUS research
   notice. "Show my ranking" turns on after 5 seconds; agreeing is the consent.
-  Every ranking is then sent to the sheet with the full order of all matching units; the page shows only the top 50.
+  Every ranking is then sent to the sheet with the full order of all matching units; the page shows only the top 100.
   The visitor is only an anonymous random id kept in the browser (`mybto:uid`). The last filters and weights per project stay in the browser (`mybto:last:<project>`).
   The ad and the rewarded video are placeholders in `public/js/ads.js` (one place to plug in a real ad network).
 - **Shortlist**: ★ units into a separate list; reorder by drag or arrows. Kept in the browser and sent to the sheet (about 2 seconds after the last change).
