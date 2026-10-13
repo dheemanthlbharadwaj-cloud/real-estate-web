@@ -12,8 +12,11 @@ const CELL_LIMIT = 49000;
 const MAX_BODY_BYTES = 200 * 1024;
 const MAX_UNITS = 5000;
 const PROJECT_RE = /^[a-z0-9][a-z0-9_-]{1,60}$/;
+// The only projects the site has (keys of public/data/units/index.json). Anything else is rejected before any sheet is touched.
+const PROJECT_KEYS = ['kebun-baru_breeze-5', 'kebun-baru_ridge-1', 'berlayar-rise-7', 'lakeview-cascadia-2', 'sembawang-brook-6', 'sembawang-portico-4', 'woodgrove-acres-3'];
+const MIN_ANALYTICS_USERS = 5; // below this the Analytics page would show one person's choices, so it gets nothing
 const USER_RE = /^[A-Za-z][A-Za-z0-9_-]{7,63}$/; // starts with a letter so Sheets never turns it into a number
-const UNIT_RE = /^[A-Za-z0-9._-]{1,40}$/;
+const UNIT_RE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,39}$/; // starts with an alphanumeric, like the PROJECT and USER checks
 const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9 '\/&().-]{0,59}$/; // block, direction, design and facility names
 const FLOOR_PREFS = ['none', 'higher', 'lower'];
 
@@ -22,18 +25,40 @@ const RANKING_COLUMNS = ['received_at', 'user', 'project', 'project_type', 'hous
   .concat(['sun_weights', 'design_weights', 'block_weights', 'facility_weights', 'consent', 'consented_at', 'units_ranked', 'top50'])
   .concat(Array.from({ length: FULL_RANKING_COLUMNS }, (_, i) => (i ? `full_ranking_${i + 1}` : 'full_ranking')));
 const SHORTLIST_COLUMNS = ['user', 'project', 'updated_at', 'unit_ids'];
+// Analytics reads only these Rankings columns (everything up to "consent"), never top50 / full_ranking.
+const ANALYTICS_COLUMNS = RANKING_COLUMNS.slice(0, RANKING_COLUMNS.indexOf('consent') + 1);
 
 // ---------------------------------------------------------------- input checks
 // A cell that starts with = + - @ could be read as a formula, so such text gets a leading apostrophe.
 function safeText(s) { s = String(s == null ? '' : s); return /^[=+\-@]/.test(s) ? `'${s}` : s; }
 function fail(msg) { return { ok: false, error: msg }; }
 function intIn(v, lo, hi) { return Number.isInteger(v) && v >= lo && v <= hi ? v : null; }
+// Largest value of a list (never spreads the list into arguments, which breaks on very large arrays). Empty list gives `floor`.
+function maxOf(xs, floor = 0) { return xs.reduce((m, x) => (x > m ? x : m), floor); }
+// Size of a string once encoded as UTF-8 (what actually crosses the wire), without Buffer or Utilities.
+function utf8Bytes(s) {
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    if (c < 0x80) n += 1;
+    else if (c < 0x800) n += 2;
+    else if (c >= 0xd800 && c <= 0xdbff && i + 1 < s.length) { n += 4; i++; }
+    else n += 3;
+  }
+  return n;
+}
+// Checks shared by rankings and shortlists. Returns {user, project} (both real strings) or {error}.
+function userAndProject(b) {
+  if (typeof b.project !== 'string' || !PROJECT_KEYS.includes(b.project)) return { error: 'bad project' };
+  if (typeof b.user !== 'string' || !USER_RE.test(b.user)) return { error: 'bad user' };
+  return { user: b.user, project: b.project };
+}
 
 // Returns {ok:true, row:{column: value}} or {ok:false, error}. `now` is an ISO string chosen by the server.
 function rankingToRow(b, now) {
   if (!b || typeof b !== 'object') return fail('bad body');
-  if (!PROJECT_RE.test(String(b.project || ''))) return fail('bad project');
-  if (!USER_RE.test(String(b.user || ''))) return fail('bad user');
+  const up = userAndProject(b);
+  if (up.error) return fail(up.error);
   if (b.consent !== true) return fail('consent required');
   const type = String(b.project_type || '');
   if (!['Prime', 'Plus', 'Standard'].includes(type)) return fail('bad project_type');
@@ -50,7 +75,7 @@ function rankingToRow(b, now) {
   if (!ids || ids.length > MAX_UNITS || !ids.every(x => UNIT_RE.test(String(x)))) return fail('bad ranking');
   const consentedAt = Date.parse(b.consented_at);
 
-  const row = { received_at: now, user: b.user, project: b.project, project_type: type, housing_type: safeText(housing), blocks: blocks.map(safeText).join(', '),
+  const row = { received_at: now, user: up.user, project: up.project, project_type: type, housing_type: safeText(housing), blocks: blocks.map(safeText).join(', '),
     min_storey: minS, max_storey: maxS, floor_pref: b.floor_pref };
   for (const k of FACTOR_KEYS) {
     const v = w[k] == null ? '' : intIn(w[k], -5, 5);
@@ -80,17 +105,17 @@ function rankingToRow(b, now) {
 
 function shortlistToRow(b, now) {
   if (!b || typeof b !== 'object') return fail('bad body');
-  if (!PROJECT_RE.test(String(b.project || ''))) return fail('bad project');
-  if (!USER_RE.test(String(b.user || ''))) return fail('bad user');
+  const up = userAndProject(b);
+  if (up.error) return fail(up.error);
   const ids = Array.isArray(b.unit_ids) ? b.unit_ids : null;
   if (!ids || ids.length > 500 || !ids.every(x => UNIT_RE.test(String(x)))) return fail('bad unit_ids');
-  return { ok: true, row: { user: b.user, project: b.project, updated_at: now, unit_ids: ids.join(', ') } };
+  return { ok: true, row: { user: up.user, project: up.project, updated_at: now, unit_ids: ids.join(', ') } };
 }
 
 // Parses a raw request body string. Returns {ok:true, kind:'ranking'|'shortlist', row} or {ok:false, error}.
 function parseSubmission(text, now) {
   if (typeof text !== 'string' || !text.length) return fail('empty body');
-  if (text.length > MAX_BODY_BYTES) return fail('body too large');
+  if (text.length > MAX_BODY_BYTES || utf8Bytes(text) > MAX_BODY_BYTES) return fail('body too large');
   let b;
   try { b = JSON.parse(text); } catch (e) { return fail('bad json'); }
   if (!b || typeof b !== 'object') return fail('bad body');
@@ -222,8 +247,8 @@ function analyse(subs, meta, group = 'all', value = null) {
   else if (group === 'flat_type') scoped = subs.filter(s => !s.flat_types.length || housingOfList(s).includes(value));
   const { chosen, basis } = selectPopulation(scoped);
   const maxVals = chosen.map(s => s.max_storey).filter(v => v != null);
-  const fromMeta = Math.max(0, ...chosen.map(s => (meta && meta[s.project] && meta[s.project].maxStorey) || 0));
-  const n = fromMeta || Math.max(0, ...maxVals);
+  const fromMeta = maxOf(chosen.map(s => (meta && meta[s.project] && meta[s.project].maxStorey) || 0));
+  const n = fromMeta || maxOf(maxVals);
 
   const minVals = chosen.map(s => s.min_storey).filter(v => v != null);
   const floorPref = {};
@@ -250,14 +275,16 @@ function analyse(subs, meta, group = 'all', value = null) {
 
 // What the Analytics page gets for one project: rows are the real rankings, sampleRows the optional sample users.
 function analyseProject(rows, sampleRows, project) {
+  if (!PROJECT_KEYS.includes(project)) return fail('bad project');
   const real = latestPerUser(rows.map(rowToSub).filter(s => s.project === project));
   const sample = (sampleRows || []).map(rowToSub).filter(s => s.project === project).map(s => ({ ...s, is_sample: true }));
+  if (real.length + sample.length < MIN_ANALYTICS_USERS) return fail('not enough data yet');
   const a = analyse(real.concat(sample), {}, 'project', project);
   return { ok: true, ...a };
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { FACTOR_KEYS, LIST_FIELDS, RANKING_COLUMNS, SHORTLIST_COLUMNS, FULL_RANKING_COLUMNS, MAX_BODY_BYTES, PROJECT_RE, safeText,
+  module.exports = { FACTOR_KEYS, LIST_FIELDS, RANKING_COLUMNS, SHORTLIST_COLUMNS, FULL_RANKING_COLUMNS, MAX_BODY_BYTES, PROJECT_RE, PROJECT_KEYS, MIN_ANALYTICS_USERS, UNIT_RE, ANALYTICS_COLUMNS, maxOf, utf8Bytes, safeText,
     rankingToRow, shortlistToRow, parseSubmission, sampleToRow, parseList, rowToSub, latestPerUser,
     analyse, analyseProject, storeyDistribution, binomPmf, rankAverages, selectPopulation };
 }

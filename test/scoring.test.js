@@ -121,7 +121,7 @@ test('generated unit data carries the wind and car park fields', () => {
     assert.ok(units.every(u => typeof u.wind_open === 'boolean'), `${p.key}: wind_open on every unit`);
     assert.ok(units.every(u => typeof u.mscp_near === 'boolean' && (u.mscp_m === null || typeof u.mscp_m === 'number')), `${p.key}: mscp fields`);
     assert.ok(units.every(u => u.mscp_near === (u.mscp_m !== null && u.mscp_m <= S.MSCP_NEAR_M)), `${p.key}: mscp_near matches mscp_m <= 100`);
-    assert.ok(units.every(u => u.sample_fields.includes('wind_open')), `${p.key}: wind_open marked as sample`);
+    assert.ok(units.every(u => Array.isArray(u.sample_fields) && (idx.sample ? u.sample_fields.includes('wind_open') : u.sample_fields.length === 0)), `${p.key}: sample_fields match the data status`);
   }
 });
 
@@ -170,12 +170,76 @@ test('bad submissions are rejected', () => {
 
 test('analytics uses the latest ranking per user and returns no unit ids', () => {
   const row = (user, corner, at) => A.rankingToRow(body({ user, weights: { ...body().weights, corner } }), at).row;
-  const rows = [row('uaaaaaaaa1', -5, 't1'), row('uaaaaaaaa1', 4, 't2'), row('ubbbbbbbb2', 2, 't3')];
+  const rows = [row('uaaaaaaaa1', -5, 't1'), row('uaaaaaaaa1', 4, 't2'), row('ubbbbbbbb2', 2, 't3'), row('ucccccccc3', 3, 't4'), row('udddddddd4', 3, 't5'), row('ueeeeeeee5', 3, 't6')];
   const a = A.analyseProject(rows, [], 'berlayar-rise-7');
-  assert.strictEqual(a.users, 2);
+  assert.strictEqual(a.users, 5);
   assert.strictEqual(a.factors.find(f => f.key === 'corner').mean, 3);
   assert.ok(!/BR-\d/.test(JSON.stringify(a)));
-  assert.strictEqual(A.analyseProject(rows, [], 'other-project-1').users, 0);
+  assert.deepStrictEqual(A.analyseProject(rows, [], 'other-project-1'), { ok: false, error: 'bad project' });
+});
+
+test('analyseProject refuses to report fewer than 5 users (real + sample)', () => {
+  const row = user => A.rankingToRow(body({ user }), 't').row;
+  const four = ['uaaaaaaaa1', 'ubbbbbbbb2', 'ucccccccc3', 'udddddddd4'].map(row);
+  assert.deepStrictEqual(A.analyseProject(four, [], 'berlayar-rise-7'), { ok: false, error: 'not enough data yet' });
+  // a user's earlier rankings do not count twice
+  assert.strictEqual(A.analyseProject(four.concat(four), [], 'berlayar-rise-7').ok, false);
+  // sample users count towards the 5
+  assert.strictEqual(A.analyseProject(four, [row('ueeeeeeee5')], 'berlayar-rise-7').ok, true);
+  assert.strictEqual(A.analyseProject(four.concat(row('ueeeeeeee5')), [], 'berlayar-rise-7').ok, true);
+});
+
+test('only the 7 known project keys are accepted', () => {
+  const index = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'public', 'data', 'units', 'index.json'), 'utf8'));
+  assert.deepStrictEqual([...A.PROJECT_KEYS].sort(), index.projects.map(p => p.key).sort());
+  for (const key of A.PROJECT_KEYS) {
+    assert.ok(A.rankingToRow(body({ project: key }), 'now').ok, key);
+    assert.ok(A.shortlistToRow({ user: 'u0123456789ab', project: key, unit_ids: ['a1'] }, 'now').ok, key);
+  }
+  for (const project of ['other-project-1', 'berlayar-rise-8', 'BERLAYAR-RISE-7', '', 'p-1']) {
+    assert.deepStrictEqual(A.rankingToRow(body({ project }), 'now'), { ok: false, error: 'bad project' }, project);
+    assert.deepStrictEqual(A.shortlistToRow({ user: 'u0123456789ab', project, unit_ids: [] }, 'now'), { ok: false, error: 'bad project' }, project);
+  }
+});
+
+test('user and project must be strings, not arrays or objects that print like one', () => {
+  for (const bad of [['berlayar-rise-7'], { toString: () => 'berlayar-rise-7' }, 7, null, true]) {
+    assert.strictEqual(A.rankingToRow(body({ project: bad }), 'now').error, 'bad project');
+    assert.strictEqual(A.shortlistToRow({ user: 'u0123456789ab', project: bad, unit_ids: [] }, 'now').error, 'bad project');
+  }
+  for (const bad of [['u0123456789ab'], { toString: () => 'u0123456789ab' }, 123456789012, null]) {
+    assert.strictEqual(A.rankingToRow(body({ user: bad }), 'now').error, 'bad user');
+    assert.strictEqual(A.shortlistToRow({ user: bad, project: 'berlayar-rise-7', unit_ids: [] }, 'now').error, 'bad user');
+  }
+  const r = A.rankingToRow(body(), 'now').row, s = A.shortlistToRow({ user: 'u0123456789ab', project: 'berlayar-rise-7', unit_ids: ['a1'] }, 'now').row;
+  assert.ok(typeof r.user === 'string' && typeof r.project === 'string' && typeof s.user === 'string' && typeof s.project === 'string');
+});
+
+test('unit ids must start with a letter or digit', () => {
+  for (const ok of ['BR-200A-02-101', 'a', '9', 'A.b_c-d']) assert.ok(A.UNIT_RE.test(ok), ok);
+  for (const bad of ['-x', '.x', '_x', '', 'a'.repeat(41), 'a b', "a'b", '=1+1']) assert.ok(!A.UNIT_RE.test(bad), bad);
+  assert.strictEqual(A.rankingToRow(body({ ranking: ['BR-1', '-bad'] }), 'now').error, 'bad ranking');
+  assert.strictEqual(A.shortlistToRow({ user: 'u0123456789ab', project: 'berlayar-rise-7', unit_ids: ['.bad'] }, 'now').error, 'bad unit_ids');
+  const fs = require('node:fs'), path = require('node:path');
+  for (const key of A.PROJECT_KEYS) {
+    const units = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'units', `${key}.json`), 'utf8'));
+    assert.ok(units.every(u => A.UNIT_RE.test(u.id)), `${key}: every real unit id passes`);
+  }
+});
+
+test('large lists do not overflow the stack and the body limit counts bytes', () => {
+  assert.strictEqual(A.maxOf([]), 0);
+  assert.strictEqual(A.maxOf([3, 9, 4]), 9);
+  assert.strictEqual(A.maxOf(Array.from({ length: 500000 }, (_, i) => i)), 499999);
+  assert.strictEqual(A.utf8Bytes('abc'), 3);
+  assert.strictEqual(A.utf8Bytes('\u00e9'), 2);
+  assert.strictEqual(A.utf8Bytes('\u20ac'), 3);
+  assert.strictEqual(A.utf8Bytes('\ud83d\ude00'), 4);
+  // 70,000 three-byte characters are under 200,000 characters but over 200 KB
+  const wide = JSON.stringify({ type: 'shortlist', pad: '\u20ac'.repeat(70000) });
+  assert.ok(wide.length < A.MAX_BODY_BYTES);
+  assert.deepStrictEqual(A.parseSubmission(wide, 'now'), { ok: false, error: 'body too large' });
+  assert.ok(A.ANALYTICS_COLUMNS.includes('consent') && !A.ANALYTICS_COLUMNS.includes('full_ranking') && !A.ANALYTICS_COLUMNS.includes('top50'));
 });
 
 test('sample users fit the row layout and count in analytics', () => {

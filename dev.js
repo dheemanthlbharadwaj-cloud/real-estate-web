@@ -33,7 +33,7 @@ function fakeSheets(req, res, url, body) {
     return res.end(JSON.stringify({ ok: true }));
   }
   if (url.searchParams.get('action') === 'dump') return res.end(JSON.stringify(sheet)); // tests only
-  if (url.searchParams.get('action') !== 'analytics' || !A.PROJECT_RE.test(url.searchParams.get('project') || '')) return res.end(JSON.stringify({ ok: false, error: 'unknown action' }));
+  if (url.searchParams.get('action') !== 'analytics' || !A.PROJECT_KEYS.includes(url.searchParams.get('project') || '')) return res.end(JSON.stringify({ ok: false, error: 'unknown action' }));
   res.end(JSON.stringify(A.analyseProject(sheet.rankings, sheet.sample, url.searchParams.get('project'))));
 }
 

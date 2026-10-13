@@ -13,8 +13,15 @@ const SHORTLISTS = 'Shortlists';
 const SAMPLE = 'Sample';
 const SETTINGS = 'Settings';
 const SAMPLE_URL = 'https://mybto.web.app/data/sample_submissions.json';
-const MAX_RANKING_ROWS = 100000; // stops one visitor from filling the sheet
+// Safety caps on sheet size (a Google Sheet holds 10 million cells; a ranking row is about 30). These are a last resort:
+// the hourly ceilings below are the real flood control, so a burst of junk can never lock the site out for good.
+// If a cap is ever reached, archive or delete old rows in the sheet and writes resume at once.
+const MAX_RANKING_ROWS = 200000;
 const MAX_SHORTLIST_ROWS = 100000;
+// Rate limits (CacheService, shared by all visitors). A throttled write answers {ok:false,error:'slow down'}; the website
+// sends with no-cors and ignores the answer, so a throttled visitor sees nothing different.
+const USER_GAP_SECONDS = { ranking: 5, shortlist: 2 }; // at most one write per user per type in this many seconds
+const HOURLY_CEILING = { ranking: 2000, shortlist: 5000 }; // writes accepted per clock hour across all users
 const CACHE_SECONDS = 300;
 
 function json_(obj) {
@@ -66,11 +73,23 @@ function importSample() {
 
 function doPost(e) {
   const text = e && e.postData ? e.postData.contents : '';
+  if (text && Utilities.newBlob(text).getBytes().length > MAX_BODY_BYTES) return json_({ ok: false, error: 'body too large' }); // bytes, not characters
   const parsed = parseSubmission(text, new Date().toISOString());
   if (!parsed.ok) return json_({ ok: false, error: parsed.error });
+  const cache = CacheService.getScriptCache();
+  const type = parsed.kind;
+  // per-user throttle: the first write in the window sets the marker, later ones are refused
+  const userKey = 'rl:' + type + ':' + parsed.row.user;
+  if (cache.get(userKey)) return json_({ ok: false, error: 'slow down' });
+  cache.put(userKey, '1', Math.max(1, USER_GAP_SECONDS[type]));
   const lock = LockService.getScriptLock();
   try { lock.waitLock(20000); } catch (err) { return json_({ ok: false, error: 'busy, try again' }); }
   try {
+    // global hourly ceiling, counted inside the lock so concurrent requests cannot overshoot it
+    const hourKey = 'hr:' + type + ':' + Math.floor(Date.now() / 3600000);
+    const used = Number(cache.get(hourKey)) || 0;
+    if (used >= HOURLY_CEILING[type]) return json_({ ok: false, error: 'slow down' });
+    cache.put(hourKey, String(used + 1), 3700);
     if (parsed.kind === 'ranking') {
       const sh = sheet_(RANKINGS, RANKING_COLUMNS);
       if (sh.getLastRow() >= MAX_RANKING_ROWS) return json_({ ok: false, error: 'full' });
@@ -92,16 +111,22 @@ function doPost(e) {
   }
 }
 
-function readRows_(name) {
+// Reads only the columns Analytics needs (not top50 / full_ranking) and only the rows of one project.
+function readRows_(name, project) {
   const sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
   if (!sh || sh.getLastRow() < 2) return [];
-  const values = sh.getRange(1, 1, sh.getLastRow(), RANKING_COLUMNS.length).getValues();
+  const values = sh.getRange(1, 1, sh.getLastRow(), ANALYTICS_COLUMNS.length).getValues();
   const head = values[0];
-  return values.slice(1).map(function (v) {
+  const pi = head.indexOf('project');
+  const out = [];
+  for (let r = 1; r < values.length; r++) {
+    const v = values[r];
+    if (v[pi] !== project) continue;
     const o = {};
     head.forEach(function (h, i) { o[h] = v[i]; });
-    return o;
-  });
+    out.push(o);
+  }
+  return out;
 }
 
 function includeSample_() {
@@ -114,12 +139,12 @@ function includeSample_() {
 function doGet(e) {
   const p = (e && e.parameter) || {};
   if (p.action !== 'analytics') return json_({ ok: false, error: 'unknown action' });
-  if (!PROJECT_RE.test(String(p.project || ''))) return json_({ ok: false, error: 'bad project' });
+  if (typeof p.project !== 'string' || PROJECT_KEYS.indexOf(p.project) < 0) return json_({ ok: false, error: 'bad project' });
   const key = 'an:' + p.project;
   const cache = CacheService.getScriptCache();
   const hit = cache.get(key);
   if (hit) return ContentService.createTextOutput(hit).setMimeType(ContentService.MimeType.JSON);
-  const result = analyseProject(readRows_(RANKINGS), includeSample_() ? readRows_(SAMPLE) : [], p.project);
+  const result = analyseProject(readRows_(RANKINGS, p.project), includeSample_() ? readRows_(SAMPLE, p.project) : [], p.project);
   const out = JSON.stringify(result);
   try { cache.put(key, out, CACHE_SECONDS); } catch (err) { /* too big to cache: skip */ }
   return ContentService.createTextOutput(out).setMimeType(ContentService.MimeType.JSON);
