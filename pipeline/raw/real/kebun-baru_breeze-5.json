@@ -67,13 +67,17 @@
    "chute_m": 18.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2907, 2917, 2922] overlap own green semicircle; not counted; chute: 17.9 m to recyclable chute (door (587.5, 222), floor plan 8.007 pt/m)"
@@ -113,13 +117,17 @@
    "chute_m": 23.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "neighbour red semicircle(s) [2912, 2922] overlap own green semicircle; not counted; chute: 23.2 m to recyclable chute (door (632, 222), floor plan 8.007 pt/m)"
@@ -159,13 +167,17 @@
    "chute_m": 21.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "neighbour red semicircle(s) [2253, 2258, 2912, 2917, 2922] overlap own green semicircle; not counted; chute: 21.5 m to recyclable chute (door (623, 244.5), floor plan 8.007 pt/m)"
@@ -211,13 +223,17 @@
    "chute_m": 16.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; pass2 pixel sample fully overlapped for semicircle(s) [2258, 2922]; resolved by visual check of fresh render, vector fill colour used; chute: 15.9 m to recyclable chute (door (577, 244.5), floor plan 8.007 pt/m)"
@@ -263,13 +279,17 @@
    "chute_m": 7.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Drop-off porch"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; chute: 7.0 m to recyclable chute (door (397.5, 260), floor plan 8.007 pt/m)"
@@ -309,14 +329,17 @@
    "chute_m": 22.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Preschool"
    ],
    "confidence": "high",
    "notes": "chute: 22.0 m to recyclable chute (door (277, 260), floor plan 8.007 pt/m)"
@@ -362,15 +385,17 @@
    "chute_m": 30.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Preschool"
    ],
    "confidence": "medium",
    "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2248, 2253, 2907] overlap own green semicircle; not counted; chute: 30.6 m to recyclable chute (door (207.5, 260.5), floor plan 8.007 pt/m)"
@@ -412,23 +437,24 @@
    "facing_evidence": {
     "board_row5_arrow_id": 3555
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station",
     "Drop-off porch",
+    "Elderly fitness station",
     "Preschool"
    ],
    "confidence": "medium",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2248, 2907, 2917] overlap own green semicircle; not counted; corner/corridor judgement on irregular corridor end is uncertain; chute: 25.3 m to recyclable chute (door (252.5, 236.5), floor plan 8.007 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2248, 2907, 2917] overlap own green semicircle; not counted; corner/corridor judgement on irregular corridor end is uncertain; chute: 25.3 m to recyclable chute (door (252.5, 236.5), floor plan 8.007 pt/m) Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "247A",
@@ -471,15 +497,16 @@
    "chute_m": 20.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 10,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Elderly fitness station",
     "Drop-off porch",
+    "Elderly fitness station",
     "Preschool"
    ],
    "confidence": "high",
@@ -520,14 +547,17 @@
    "chute_m": 16.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Adult fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "chute: 16.4 m to recyclable chute (door (328, 156), floor plan 7.926 pt/m)"
@@ -563,21 +593,24 @@
    "facing_evidence": {
     "board_row5_arrow_id": 3583
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 25.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Adult fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "chute: 25.6 m to recyclable chute (door (334, 83), floor plan 7.926 pt/m)"
+   "notes": "chute: 25.6 m to recyclable chute (door (334, 83), floor plan 7.926 pt/m) Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "248A",
@@ -620,14 +653,17 @@
    "chute_m": 26.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 30,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
-    "Adult fitness station"
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
    "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2163, 2198, 2872] overlap own green semicircle; not counted; chute: 26.3 m to recyclable chute (door (378, 85), floor plan 7.926 pt/m)"
@@ -669,20 +705,24 @@
    "facing_evidence": {
     "board_row5_arrow_id": 3581
    },
-   "position": "Corner",
+   "position": "Corridor",
    "chute_m": 28.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 15,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; corner/corridor judgement on irregular corridor end is uncertain; pass2 pixel sample fully overlapped for semicircle(s) [2208]; resolved by visual check of fresh render, vector fill colour used; chute: 28.1 m to recyclable chute (door (466, 116), floor plan 7.926 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; corner/corridor judgement on irregular corridor end is uncertain; pass2 pixel sample fully overlapped for semicircle(s) [2208]; resolved by visual check of fresh render, vector fill colour used; chute: 28.1 m to recyclable chute (door (466, 116), floor plan 7.926 pt/m) Review: not the last door at a dead end, Corridor."
   },
   {
    "block": "248A",
@@ -722,19 +762,23 @@
     "board_row5_arrow_id": 3579
    },
    "position": "Corridor",
-   "chute_m": 8.5,
+   "chute_m": 10.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 35,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground"
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; chute: 8.4 m to recyclable chute (door (359, 341), floor plan 7.926 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; chute: 8.4 m to recyclable chute (door (359, 341), floor plan 7.926 pt/m) Review: measured to the general (centralised) refuse chute."
   },
   {
    "block": "248A",
@@ -774,21 +818,23 @@
     "board_row5_arrow_id": 3589
    },
    "position": "Corridor",
-   "chute_m": 32.0,
+   "chute_m": 34.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 20,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; pass2 pixel sample fully overlapped for semicircle(s) [2213]; resolved by visual check of fresh render, vector fill colour used; chute: 31.8 m to recyclable chute (door (552, 388), floor plan 7.926 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; pass2 pixel sample fully overlapped for semicircle(s) [2213]; resolved by visual check of fresh render, vector fill colour used; chute: 31.8 m to recyclable chute (door (552, 388), floor plan 7.926 pt/m) Review: measured to the general (centralised) refuse chute."
   },
   {
    "block": "248A",
@@ -822,22 +868,23 @@
     "board_row5_arrow_id": 3569
    },
    "position": "Corner",
-   "chute_m": 36.5,
+   "chute_m": 39.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 10,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "neighbour red semicircle(s) [2213, 2887, 2892] overlap own green semicircle; not counted; chute: 36.3 m to recyclable chute (door (587, 397), floor plan 7.926 pt/m)"
+   "notes": "neighbour red semicircle(s) [2213, 2887, 2892] overlap own green semicircle; not counted; chute: 36.3 m to recyclable chute (door (587, 397), floor plan 7.926 pt/m) Review: measured to the general (centralised) refuse chute."
   },
   {
    "block": "248A",
@@ -877,22 +924,23 @@
     "board_row5_arrow_id": 3573
    },
    "position": "Corner",
-   "chute_m": 38.5,
+   "chute_m": 41.0,
    "roof_floors": [],
    "wind_open": false,
-   "mscp_m": 20,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Precinct pavilion"
    ],
    "confidence": "medium",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2213, 2228, 2887, 2892] overlap own green semicircle; not counted; chute: 38.5 m to recyclable chute (door (587, 436), floor plan 7.926 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; neighbour red semicircle(s) [2213, 2228, 2887, 2892] overlap own green semicircle; not counted; chute: 38.5 m to recyclable chute (door (587, 436), floor plan 7.926 pt/m) Review: measured to the general (centralised) refuse chute."
   },
   {
    "block": "248A",
@@ -932,22 +980,23 @@
     "board_row5_arrow_id": 3585
    },
    "position": "Corridor",
-   "chute_m": 33.5,
+   "chute_m": 36.0,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 25,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
     "Elderly fitness station",
-    "Drop-off porch"
+    "Precinct pavilion"
    ],
    "confidence": "high",
-   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; pass2 pixel sample fully overlapped for semicircle(s) [2892]; resolved by visual check of fresh render, vector fill colour used; chute: 33.3 m to recyclable chute (door (548, 422), floor plan 7.926 pt/m)"
+   "notes": "2 own semicircles (main facade + side/end windows); pass only if all green; pass2 pixel sample fully overlapped for semicircle(s) [2892]; resolved by visual check of fresh render, vector fill colour used; chute: 33.3 m to recyclable chute (door (548, 422), floor plan 7.926 pt/m) Review: measured to the general (centralised) refuse chute."
   },
   {
    "block": "248A",
@@ -990,13 +1039,16 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 40,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
+    "Adult fitness station",
     "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -1037,14 +1089,16 @@
    "chute_m": 12.5,
    "roof_floors": [],
    "wind_open": true,
-   "mscp_m": 55,
+   "mscp_m": 5,
    "mrt_m": null,
    "facilities_has": [
     "Future amenities/facilities"
    ],
    "facilities_near": [
-    "Children's playground",
     "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
     "Precinct pavilion"
    ],
    "confidence": "medium",
@@ -4543,6 +4597,37 @@
   "wind_open: false when any unit footprint pixel of the other residential block lies within 30 m at a bearing of 90 to 135 degrees from any footprint pixel of the stack. Only 248A 235 and 237 are blocked, by 247A to their south-east. Off-site existing housing (246C/246D, 259) is more than 30 m away.",
   "mscp_m: straight line from the stack's footprint centroid to the nearest edge of the Block 247 MSCP outline (mscp_distance.json _geometry polygon, checked against the plan), at 2.4954 pt/m, rounded to 5 m. This differs from the block-level mscp_distance.json values (247A 20, 248A 25) by more than 10 m for 248A 219/221/231/241 (35 to 40), 223 (30) and 243 (55), and for 235 (10), because those use the block centre. Per-stack values are the better estimate.",
   "mrt_m: null. No MRT station is shown on the site plan.",
-  "Evidence (scratchpad/analysis/kebun-baru_breeze-5/): board_row3_2400.png (centre_px coordinates refer to this render), sb_<block>_<unit>_opp.png crops, opp_*_pass1/pass2.png, ov_248A_*.png (semicircles overlaid on the brochure), facing_247A.png, facing_248A.png, fac_overlay.png, fac_board_zoom.png, footprints.png, fp247_*.png, fp248_*.png (gridded floor plans used for door and chute points), scalebar.png."
+  "Evidence (scratchpad/analysis/kebun-baru_breeze-5/): board_row3_2400.png (centre_px coordinates refer to this render), sb_<block>_<unit>_opp.png crops, opp_*_pass1/pass2.png, ov_248A_*.png (semicircles overlaid on the brochure), facing_247A.png, facing_248A.png, fac_overlay.png, fac_board_zoom.png, footprints.png, fp247_*.png, fp248_*.png (gridded floor plans used for door and chute points), scalebar.png.",
+  "Independent review 2026-10-13: units 579/579, facing/gt30m/wind 20/20 agree; chute x5 (general chute), position x3; facilities and car park block-wide; the \"unnumbered\" red circle is the 8 (Future amenities) circle, mis-positioned by the analyst."
+ ],
+ "blocks": [
+  {
+   "block": "247A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Preschool"
+   ],
+   "facilities_has": [
+    "Future amenities/facilities"
+   ],
+   "mscp_m": 10
+  },
+  {
+   "block": "248A",
+   "facilities_near": [
+    "Adult fitness station",
+    "Children's playground",
+    "Drop-off porch",
+    "Elderly fitness station",
+    "Precinct pavilion"
+   ],
+   "facilities_has": [
+    "Future amenities/facilities"
+   ],
+   "mscp_m": 5
+  }
  ]
 }
