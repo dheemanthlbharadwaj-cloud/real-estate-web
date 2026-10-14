@@ -118,9 +118,9 @@ PAGES = {
     </aside>
 """),
     "shortlist": dict(
-        title="Shortlist", img="garden-portico.webp", kicker="Your shortlist", color="butter",
-        h1="The homes you’d <em>pick first.</em>",
-        lede="The units you starred, in the order you’d pick them. Drag to reorder.", robots=True,
+        title="Shortlist", img="garden-portico.webp", kicker="", color="butter",
+        h1="Your Shortlist",
+        lede="Drag to reorder your shortlisted units", robots=True,
         desc="Your ordered shortlist of BTO units.",
         body="""
     <section class="tool"><div class="wrap">
