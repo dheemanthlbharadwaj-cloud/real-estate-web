@@ -44,7 +44,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(!(await p.$('#survey')) && !(await p.$('#btn-edit-survey')), 'no survey questions and no Edit survey link');
     check(Number((await p.textContent('#result-count')).replace(/\D/g, '')) > 0, 'ranking loads');
     check((await rows()) === 100, 'only the top 100 units are shown');
-    check((await p.textContent('#top-note')) === 'Showing the top 100.' && /top 100 units/.test(await p.textContent('.page-hero')), 'text says the top 100');
+    check((await p.textContent('#top-note')) === 'Showing the top 100.' && !(await p.$('.page-hero p')), 'text says the top 100; no intro paragraph under the title');
     check(await p.isVisible('#after-rank') && !(await p.$('#btn-analytics')) && !/Analytics/.test(await p.textContent('#after-rank')), 'Shortlisted button appears after ranking; no Analytics button (archived)');
     const head = await p.$$eval('#results thead th', h => h.map(x => x.childNodes[0]?.textContent || ''));
     check(head.slice(0, 7).join('|') === '#||Unit|Score|Type · facing|Chute|MRT' && head.length > 7, `chute, MRT and one column per facility (${head.length - 7} facilities)`);

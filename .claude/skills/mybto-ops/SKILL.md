@@ -44,7 +44,7 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - Real data is live for all 7 projects (6,952 units). After editing `pipeline/raw/real/*.json`: `python3 pipeline/build_real_data.py` (review sheet in `review/`, gitignored), then `--publish`. The roof legend entry was removed (no unit has roof access).
 
 ## Legend copy (live data, 2026-10-14)
-- Legend sources are only a link to the HDB sales brochure (https://homes.hdb.gov.sg) plus "measured with its scale bar" where something was measured: `rule: "scale"` or `rule: "plain"` in `public/js/legend.js`, rendered in `app.js`. No pdf names, page numbers, placeholder or estimate wording. The rank page lede does not mention the Analytics page.
+- Legend sources are only a link to the HDB sales brochure (https://homes.hdb.gov.sg) plus "measured with its scale bar" where something was measured: `rule: "scale"` or `rule: "plain"` in `public/js/legend.js`, rendered in `app.js`. No pdf names, page numbers, placeholder or estimate wording. The rank page has no intro paragraph under the title (user removed it 2026-10-14; `lede=""` in build_pages.py).
 
 ## Crawling and SEO
 - `public/robots.txt` allows `/`, disallows `/data/`, `/archive/` and `/shortlist`; `public/sitemap.xml` lists only `/`. `/` and `/rank` carry canonical `https://mybto.web.app/`, description, Open Graph and Twitter tags (image `img/og-mybto.jpg`) and JSON-LD. `/data/**` sends `X-Robots-Tag: noindex`. The unit JSON must stay public for the ranker to work, so it can still be downloaded by a determined scraper; the Sheet (rankings, shortlists) is private.
