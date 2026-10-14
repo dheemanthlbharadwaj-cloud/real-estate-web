@@ -162,15 +162,8 @@ a { color: inherit; }
 .cta-final .actions { justify-content: center; }
 
 /* ---------- footer ---------- */
-.site-footer { background: var(--bg); color: var(--muted); padding: 48px 0 32px; font-size: 14px; }
-.site-footer .top { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
-.site-footer .about { max-width: 38ch; margin: 14px 0 0; }
-.site-footer h4 { font: 600 14px/1 var(--head); color: var(--text); margin: 4px 0 14px; }
-.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.site-footer a { text-decoration: none; } .site-footer a:hover { color: var(--accent-ink); }
-.site-footer .fine { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; font-size: 13px; }
-.site-footer .credits { font-size: 12px; line-height: 1.6; margin-top: 10px; max-width: 90ch; opacity: .8; }
-@media (max-width: 760px) { .site-footer .top { grid-template-columns: 1fr 1fr; } .site-footer .top > div:first-child { grid-column: 1 / -1; } }
+.site-footer { background: var(--bg); color: var(--muted); padding: 24px 0 28px; }
+.site-footer .credits { font-size: 12px; line-height: 1.6; margin: 0; max-width: 90ch; opacity: .8; }
 
 /* ---------- inner page header ---------- */
 .page-hero { padding: clamp(36px, 5vw, 56px) 0 clamp(24px, 3vw, 36px); border-bottom: 1px solid var(--line); }

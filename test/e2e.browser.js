@@ -50,7 +50,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(head.slice(0, 7).join('|') === '#||Unit|Score|Type · facing|Chute|MRT' && head.length > 7, `chute, MRT and one column per facility (${head.length - 7} facilities)`);
     check((await p.$$eval('#results tbody tr', r => r.every(x => /^[✓✗–]$/.test(x.children[5].textContent.trim()) && /^[✓✗]$/.test(x.children[6].textContent.trim())))), 'chute and MRT columns show ticks and crosses');
     check((await p.getAttribute('#support a', 'href')) === 'https://buymeacoffee.com/mybto' && await p.isVisible('#support'), 'support card shows after ranking');
-    check(await p.$$eval('.site-footer a[href="https://buymeacoffee.com/mybto"]', a => a.length) === 1, 'support link in the footer');
+    check(!(await p.$('.site-footer .logo, .site-footer a')) && /not affiliated with HDB/.test(await p.textContent('.site-footer')), 'footer is only the HDB credit line (no logo or links)');
     check(await p.evaluate(() => { const top = new Set([...document.querySelectorAll('#results tbody .rk')].map(x => x.closest('tr').querySelector('.addr').textContent)); return [...document.querySelectorAll('#floor-groups .fg-list .rk')].every(x => Number(x.textContent) <= Math.max(...[...document.querySelectorAll('#results tbody .rk')].map(y => Number(y.textContent)))); }), 'By floor shows only units from the top 100');
     check((await p.$$eval('#results tbody td.fac', n => n.every(x => /^[✓✗]$/.test(x.textContent.trim())))), 'facility columns are ticks and crosses');
     const tagText = await p.$$eval('#results .tags .tag', t => [...new Set(t.map(x => x.textContent.replace(/\d+/, 'N')))]);
