@@ -14,6 +14,7 @@ HEAD = """<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
+  <meta name="google-adsense-account" content="ca-pub-6178711736030963">
   <title>{title} · MyBTO</title>
   <meta name="description" content="{desc}">{robots}{seo}
   <link rel="icon" href="/favicon.png" type="image/png">
@@ -32,9 +33,19 @@ HEAD = """<!doctype html>
     </section>
 """
 
+FOOT_PLAIN = """  </main>
+  <script src="/js/config.js"></script>
+  <script src="/js/ga.js"></script>
+  <script src="/js/adsense.js"></script>
+  <script src="/js/site.js"></script>
+</body>
+</html>
+"""
+
 FOOT = """  </main>
   <script src="/js/config.js"></script>
   <script src="/js/ga.js"></script>
+  <script src="/js/adsense.js"></script>
   <script src="/js/site.js"></script>{extra}
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>
@@ -139,6 +150,35 @@ PAGES = {
       <ol id="flag-list" class="shortlist"></ol>
     </div></section>
 """),
+    "privacy": dict(
+        title="Privacy policy", img="garden-ridge.webp", kicker="", color="sky",
+        h1="Privacy policy",
+        lede="Last updated 14 October 2026",
+        desc="How MyBTO handles your data: anonymous rankings, Google Analytics and Google AdSense.",
+        plain=True,
+        body="""
+    <section class="tool"><div class="wrap prose">
+      <h2>Who we are</h2>
+      <p>MyBTO (mybto.web.app) is a free, independent student project that ranks units in HDB BTO projects. It is not affiliated with HDB.</p>
+      <h2>What we collect</h2>
+      <p>There are no accounts and we never ask for your name, email, NRIC or phone number.</p>
+      <ul>
+        <li><b>Your rankings.</b> When you press Rank units, we save the project, flat type, filters, the importance you gave each factor and the resulting order of units. This is stored in a private Google Sheet with a random id made by your browser, so it cannot be linked to you.</li>
+        <li><b>Your shortlist.</b> The units you star are saved in your browser and, with the same random id, in the private Google Sheet.</li>
+        <li><b>Settings in your browser.</b> Your last filters and slider values are kept in your browser (local storage) so they are there next time. You can clear them by clearing your browser's site data.</li>
+      </ul>
+      <p>We use the combined, anonymous results to understand what home buyers care about. We do not sell this data.</p>
+      <h2>Google Analytics</h2>
+      <p>We use Google Analytics to count visits and see which features are used (for example how many people rank units or share a shortlist). Google Analytics uses cookies. Google signals and ad personalisation are switched off for our Analytics. You can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out add-on</a>.</p>
+      <h2>Advertising (Google AdSense)</h2>
+      <p>We show ads from Google AdSense to keep MyBTO free. Third-party vendors, including Google, use cookies to serve ads based on your previous visits to this and other websites. Google's use of advertising cookies lets it and its partners serve ads based on your visits to this site and other sites on the internet.</p>
+      <p>You can turn off personalised ads in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>, or opt out of some third-party vendors' cookies at <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener">aboutads.info</a>. Learn more in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">how Google uses information from sites that use its services</a>.</p>
+      <h2>Unit data</h2>
+      <p>Unit information is read from HDB's BTO sales brochures. Project images and drawings are © Housing &amp; Development Board and are used for reference.</p>
+      <h2>Changes</h2>
+      <p>If this policy changes, we will update this page and the date at the top.</p>
+    </div></section>
+"""),
     "analytics": dict(
         out="archive/analytics.html",         title="Analytics", img="garden-brook.webp", kicker="", color="forest",
         h1="<span id=\"analytics-name\"></span> Analytics",
@@ -210,7 +250,7 @@ def main():
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
         seo = SEO.format(site=SITE, title=p["title"], desc=p["desc"]) if p.get("seo") else ""
         lede_html = f'        <p>{p["lede"]}</p>\n' if p["lede"] else ""
-        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, seo=seo, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + FOOT.format(extra=p.get("extra", ""))
+        html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, seo=seo, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + (FOOT_PLAIN if p.get("plain") else FOOT.format(extra=p.get("extra", "")))
         (PUBLIC / p.get("out", f"{page}.html")).write_text(html)
         print("wrote", page)
         if page == "rank":  # the ranking page is also the home page; the old home page lives at /archive/home

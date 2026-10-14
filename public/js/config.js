@@ -6,4 +6,5 @@
 // ADS_ENABLED: false archives all ads (no pop-up before ranking, no video gate before Analytics). Set true to switch them back on (js/ads.js).
 // ANALYTICS_ENABLED: false hides the Analytics tab and button (the page itself lives at /archive/analytics; /analytics redirects to /). true brings them back.
 // GA_ID: Google Analytics 4 measurement id (Firebase project mybto-ce84f, app "MyBTO web"); empty switches it off (js/ga.js).
-window.MYBTO_CONFIG = { GA_ID: 'G-9ZTH2V44EX', ADS_ENABLED: false, ANALYTICS_ENABLED: false, ANALYTICS_SOURCE: 'sample', SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyhsuuDNnbhm_tlYIl-3o69peyRSHudmwVuyH-j1QKF7gxCnjMYl8LgbjyavONK94lPew/exec' };
+// ADSENSE_CLIENT: Google AdSense publisher id for Auto ads (js/adsense.js); empty switches AdSense off. ads.txt must carry the same pub id.
+window.MYBTO_CONFIG = { ADSENSE_CLIENT: 'ca-pub-6178711736030963', GA_ID: 'G-9ZTH2V44EX', ADS_ENABLED: false, ANALYTICS_ENABLED: false, ANALYTICS_SOURCE: 'sample', SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyhsuuDNnbhm_tlYIl-3o69peyRSHudmwVuyH-j1QKF7gxCnjMYl8LgbjyavONK94lPew/exec' };

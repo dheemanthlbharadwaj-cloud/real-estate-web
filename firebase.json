@@ -11,6 +11,11 @@
     ],
     "redirects": [
       {
+        "source": "/privacy.html",
+        "destination": "/privacy",
+        "type": 301
+      },
+      {
         "source": "/rank.html",
         "destination": "/rank",
         "type": 301
@@ -67,7 +72,7 @@
         "headers": [
           {
             "key": "Content-Security-Policy",
-            "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com https://www.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+            "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://www.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google https://www.googletagservices.com https://*.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; style-src-attr 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google https://www.googletagservices.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google https://www.googletagservices.com; frame-ancestors 'none'; upgrade-insecure-requests"
           },
           {
             "key": "X-Frame-Options",
@@ -87,7 +92,7 @@
           },
           {
             "key": "Cross-Origin-Opener-Policy",
-            "value": "same-origin"
+            "value": "same-origin-allow-popups"
           },
           {
             "key": "Strict-Transport-Security",
@@ -156,6 +161,10 @@
       {
         "source": "/archive/home",
         "destination": "/archive/home.html"
+      },
+      {
+        "source": "/privacy",
+        "destination": "/privacy.html"
       }
     ]
   }

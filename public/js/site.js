@@ -34,7 +34,7 @@
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
   footer.innerHTML = `<div class="wrap">
-      <p class="credits">An independent student project, not affiliated with HDB. Project images and drawings come from HDB’s BTO sales brochures, © Housing &amp; Development Board, and are used for reference. Visits are counted with Google Analytics.</p>
+      <p class="credits">An independent student project, not affiliated with HDB. Project images and drawings come from HDB’s BTO sales brochures, © Housing &amp; Development Board, and are used for reference. Visits are counted with Google Analytics. <a href="/privacy">Privacy policy</a></p>
     </div>`;
   document.body.append(footer);
 

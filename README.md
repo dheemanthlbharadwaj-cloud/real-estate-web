@@ -64,6 +64,9 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
 ## Visitor analytics
 Google Analytics 4 (`GA_ID` in `public/js/config.js`, loader `public/js/ga.js`, live site only) counts visits and the actions rank, shortlist add/remove, share, legend and coffee click. See analytics.google.com.
 
+## Ads
+Google AdSense Auto ads (`ADSENSE_CLIENT` in `public/js/config.js`, loader `public/js/adsense.js`, `public/ads.txt`, privacy policy at `/privacy`). Placement is controlled in the AdSense dashboard.
+
 ## Setup (one time)
 
 ### 1. Google Sheet and Apps Script
