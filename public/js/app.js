@@ -12,11 +12,11 @@ const FACTOR_HELP = {
   roof: 'On the same floor as an accessible roof.',
   chute: 'The front door is more than 10 m from the nearest refuse chute.',
   mrt: 'Block within 100 m of an MRT station.',
-  mscp: 'Block within 100 m of a multi-storey car park (estimated from the brochure site plan).',
+  mscp: 'Block within 100 m of a multi-storey car park.',
   wind_facing: 'The unit faces NE or SE. Singapore’s prevailing wind comes from the south-east to east, and a NE or SE window both catch wind from the east side.',
   wind_open: 'No other block stands within 30 m of the unit on its SE to E side, so the wind is not blocked.',
 };
-const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of it (near).';
+const FACILITY_HELP = 'In the unit’s block (has) or within 30 m of any part of the block (near).';
 const FUTURE_FAC_HELP = 'Future amenities/facilities: void deck space HDB has set aside for things like preschools, eldercare or a residents’ network centre.';
 const facilityHelp = name => (name === 'Future amenities/facilities' ? `${FUTURE_FAC_HELP} ${FACILITY_HELP}` : FACILITY_HELP);
 const BEARING = { NE: 45, SE: 135, SW: 225, NW: 315 };
@@ -808,7 +808,7 @@ function legendFigure(c) {
 function renderLegend() {
   if (!$('#legend') || $('#legend').childElementCount) return;
   $('#legend').innerHTML = LEGEND.map((c, i) => `<article class="lg" id="lg-${c.key}">
-    <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">${esc(c.rule)}</p></article>`).join('');
+    <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">Source: <a href="https://homes.hdb.gov.sg" target="_blank" rel="noopener">HDB sales brochure</a>${c.rule === 'scale' ? ', measured with its scale bar' : ''}.</p></article>`).join('');
 }
 function openLegend(key) {
   renderLegend();

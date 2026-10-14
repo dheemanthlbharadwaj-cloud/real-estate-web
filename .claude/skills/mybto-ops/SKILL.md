@@ -43,6 +43,9 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - Block-wide (user rule 2026-10-13): facilities_near, MRT within 100 m (`mrt_m`) and car park (`mscp_m`) are per BLOCK. A facility's 30 m circle touching any part of the block outline gives it to every unit in the block (any touch counts). `facilities_has` wins over near. Per-unit only: gt30m, facing, position, chute_m (to the general chute, within 10 m means <= 10), wind_open (from the living-room window wall, 90 to 135 deg inclusive). Each `pipeline/raw/real/<key>.json` keeps a `blocks` list.
 - Real data is live for all 7 projects (6,952 units). After editing `pipeline/raw/real/*.json`: `python3 pipeline/build_real_data.py` (review sheet in `review/`, gitignored), then `--publish`. The roof legend entry was removed (no unit has roof access).
 
+## Legend copy (live data, 2026-10-14)
+- Legend sources are only a link to the HDB sales brochure (https://homes.hdb.gov.sg) plus "measured with its scale bar" where something was measured: `rule: "scale"` or `rule: "plain"` in `public/js/legend.js`, rendered in `app.js`. No pdf names, page numbers, placeholder or estimate wording. The rank page lede does not mention the Analytics page.
+
 ## Crawling and SEO
 - `public/robots.txt` allows `/`, disallows `/data/`, `/archive/` and `/shortlist`; `public/sitemap.xml` lists only `/`. `/` and `/rank` carry canonical `https://mybto.web.app/`, description, Open Graph and Twitter tags (image `img/og-mybto.jpg`) and JSON-LD. `/data/**` sends `X-Robots-Tag: noindex`. The unit JSON must stay public for the ranker to work, so it can still be downloaded by a determined scraper; the Sheet (rankings, shortlists) is private.
 - Google Search Console needs the owner: steps in `docs/GOOGLE_INDEXING.md` (HTML verification file goes in `public/`, keep it there).

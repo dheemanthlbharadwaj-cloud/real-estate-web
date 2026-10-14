@@ -47,7 +47,7 @@ PAGES = {
     "rank": dict(
         title="Unofficial HDB BTO Flat Unit Ranker", img="garden-ridge.webp", kicker="", color="sky",
         h1="Unofficial HDB BTO Flat Unit Ranker",
-        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 100 units and check out the Analytics page.",
+        lede="Choose a project and filters, then rate each factor from minus 5 (avoid) to plus 5 (must have). Shortlist from the top 100 units.",
         desc="Free, unofficial tool to rank every unit in a Singapore HDB BTO project by your own priorities: floor, facing, block, MRT distance and more. Shortlist your best units.",
         seo=True,
         body="""
