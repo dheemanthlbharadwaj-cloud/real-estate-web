@@ -1,0 +1,12 @@
+# MyBTO
+
+> Free, unofficial tool that ranks every unit in a Singapore HDB BTO (Build-To-Order) project by your own priorities. Not affiliated with HDB.
+
+MyBTO covers the HDB June 2026 BTO sales exercise: Kebun Baru Breeze and Kebun Baru Ridge (Ang Mo Kio, Plus), Berlayar Rise (Bukit Merah, Prime), Lakeview Cascadia (Bishan, Prime), Sembawang Brook and Sembawang Portico (Sembawang, Standard) and Woodgrove Acres (Woodlands, Standard). That is 6,952 flats for sale.
+
+Pick a project, a flat type, blocks and a storey range, then rate each factor from minus 5 to plus 5: sun direction (NE, SE, SW, NW), facing the prevailing wind, not blocked from the wind, floor level, more than 30 m from the nearest visible unit, distance from the rubbish chute, MRT within 100 m, multi-storey car park within 100 m, corner or corridor unit, and facilities nearby (playgrounds, fitness stations, preschools and more). MyBTO ranks every matching unit, shows the top 100 and lets you shortlist and share units.
+
+All unit data is read from HDB's BTO sales brochures and site plans, measured with their scale bars.
+
+## Pages
+- [Rank units](https://mybto.web.app/): the ranker (free, no sign-in)

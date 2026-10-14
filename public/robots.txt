@@ -1,6 +1,7 @@
+# Every search engine and AI search bot is welcome.
+# /data/ can be fetched (the page needs it to render) but is never listed in results (X-Robots-Tag: noindex).
 User-agent: *
 Allow: /
-Disallow: /data/
 Disallow: /archive/
 Disallow: /shortlist
 

@@ -361,7 +361,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/rank?legend=${encodeURIComponent('"]x')}`);
     await p.waitForSelector('#legend-drawer.open');
     check(!(await p.evaluate(() => document.body.innerText)).includes("Couldn't load"), 'a bad ?legend= value opens the drawer without breaking the page');
-    for (const [f, re] of [['/robots.txt', /Disallow: \/data\//], ['/sitemap.xml', /<loc>https:\/\/mybto\.web\.app\/<\/loc>/]]) {
+    for (const [f, re] of [['/robots.txt', /^(?![\s\S]*Disallow: \/data\/)[\s\S]*Disallow: \/shortlist/], ['/sitemap.xml', /<loc>https:\/\/mybto\.web\.app\/<\/loc>/]]) {
       const r = await fetch(`${base}${f}`);
       check(r.status === 200 && re.test(await r.text()), `${f} is served`);
     }
