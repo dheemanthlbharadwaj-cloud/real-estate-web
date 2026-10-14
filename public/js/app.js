@@ -311,11 +311,22 @@ function saveRanking() {
   lsSet(`mybto:last:${state.project.key}`, last);
   rememberRanking(f, last);
   if (!state.consentedAt) return;
-  store.saveRanking({
+  const row = {
     project: state.project.key, project_type: state.project.project_type, housing_type: $('#f-types input:checked')?.value || 'Any', blocks: f.blocks,
     min_storey: f.minStorey, max_storey: f.maxStorey, floor_pref: last.floor_pref, weights: last.weights,
     consent: true, consented_at: state.consentedAt, ranking: state.ranked.map(u => u.id),
-  });
+  };
+  // Pressing Rank again with nothing changed (or a double tap) would add an identical row to the Sheet: send only new rankings.
+  const sig = hashText(JSON.stringify({ ...row, consented_at: undefined }));
+  const sentKey = `mybto:sent:${state.project.key}`;
+  if (lsGet(sentKey, null) === sig) return;
+  lsSet(sentKey, sig);
+  store.saveRanking(row);
+}
+function hashText(text) {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+  return `${text.length}:${h >>> 0}`;
 }
 
 // The latest ranking per project (ordered ids, dense ranks, scores, a short description and the time) plus the one before it,

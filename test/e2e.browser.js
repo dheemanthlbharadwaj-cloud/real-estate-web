@@ -60,6 +60,8 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(sent.length === 1 && sent[0].consent === true && !!sent[0].consented_at && sent[0].project === 'kebun-baru_breeze-5' && sent[0].units_ranked > 100 && sent[0].full_ranking.split(', ').length === sent[0].units_ranked, `the fake sheet got one ranking row with consent and the full ranking (${sent[0]?.units_ranked} units)`);
     check(sent[0].top50.split(', ').length === 50 && // the Sheet column keeps its name and size
        /^u[0-9a-f]{24}$/.test(sent[0].user) && !Object.keys(sent[0]).some(k => /queue|survey|email|age/.test(k)), 'row has the Sheet top50 column, an anonymous user id and no queue number or survey answers');
+    await p.click('#btn-rank'); await p.click('#btn-rank'); await p.waitForTimeout(500);
+    check((await dump()).rankings.length === 1, 'pressing Rank again with nothing changed (or a double tap) does not add another Sheet row');
     check((await p.evaluate(() => localStorage.getItem('mybto:uid'))) === sent[0].user && !!(await p.evaluate(() => localStorage.getItem('mybto:last:kebun-baru_breeze-5'))), 'user id and last settings are kept in this browser');
 
     await p.selectOption('#project', 'berlayar-rise-7');
