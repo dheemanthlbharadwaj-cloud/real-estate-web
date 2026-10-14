@@ -48,7 +48,7 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 
 ## Crawling and SEO
 - `public/robots.txt` allows `/`, disallows `/data/`, `/archive/` and `/shortlist`; `public/sitemap.xml` lists only `/`. `/` and `/rank` carry canonical `https://mybto.web.app/`, description, Open Graph and Twitter tags (image `img/og-mybto.jpg`) and JSON-LD. `/data/**` sends `X-Robots-Tag: noindex`. The unit JSON must stay public for the ranker to work, so it can still be downloaded by a determined scraper; the Sheet (rankings, shortlists) is private.
-- Google Search Console needs the owner: steps in `docs/GOOGLE_INDEXING.md` (HTML verification file goes in `public/`, keep it there).
+- Google Search Console: URL-prefix property `https://mybto.web.app/`, verified with the HTML file `public/googled48848b9b3ea2809.html` (2026-10-14). NEVER delete or rename it, or verification is lost. Steps: `docs/GOOGLE_INDEXING.md`.
 ## Support link
 - Buy Me a Coffee: https://buymeacoffee.com/mybto. Shown as the `#support` card under the results after a ranking (build_pages.py rank body, unhidden in runRank) and as "Support MyBTO" in the footer More list (site.js). Plain link only, no third-party widget script.
 
@@ -119,7 +119,8 @@ Repo: `/home/user/real-estate-web`. Branch `claude/jolly-meitner-llfg6y`. Node >
 - The `/exec` URL is public by design and is NOT a secret (it is in `config.js`). Abuse limits are the checks above plus (2026-10-13 pentest): `PROJECT_KEYS` allowlist (7 keys) for writes and analytics, typeof checks on user/project, unit ids must start alphanumeric, body size in bytes, per-user throttle (ranking 5 s, shortlist 2 s, `USER_GAP_SECONDS` in Code.gs, answers `slow down`), hourly ceilings (2000 rankings, 5000 shortlist writes), analytics reads only the needed columns of one project, and returns `not enough data yet` under 5 users. The human must re-paste Code.gs + Analytics.js and publish a new version for these to be live. The sheet itself is private; share it only with the team.
 - **Change the backend:** edit `apps-script/`, run `npm test`, tell the human to paste the changed files into the Apps Script editor and publish a new version: Deploy > Manage deployments > pencil > Version: New version > Deploy. The URL stays the same. If columns changed, the human must also fix the header row in the sheet (or clear the tab and run `setup()`), because rows are written by column order.
 - Excel: sheet > File > Download > Microsoft Excel (.xlsx). Users appear only as the anonymous browser id.
-- Status: NOT created yet. `SHEETS_URL` is empty until the human sends the `/exec` URL; then put it in `public/js/config.js`, test, commit, and have the human deploy. Update this note when done.
+- 2026-10-14: hardened backend deployed by the human; `SHEETS_URL` now ends `...94lPew/exec`. The older deployment `...sOag/exec` runs the old code and should be archived in Manage deployments.
+- Status (old note): NOT created yet. `SHEETS_URL` is empty until the human sends the `/exec` URL; then put it in `public/js/config.js`, test, commit, and have the human deploy. Update this note when done.
 
 ## Keys and secrets
 There are none in the repo and the code reads no environment variables. The Apps Script `/exec` URL and the Firebase project id are public. Do not add a Firebase service account or any key. If you ever see credentials in the diff, stop and remove them. (An old `.env.local` from the Vercel days may exist on a machine; it is unused and git-ignored.)
