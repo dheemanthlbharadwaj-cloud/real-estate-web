@@ -34,6 +34,7 @@ HEAD = """<!doctype html>
 
 FOOT = """  </main>
   <script src="/js/config.js"></script>
+  <script src="/js/ga.js"></script>
   <script src="/js/site.js"></script>{extra}
   <script src="/js/scoring.js"></script>
   <script src="/js/legend.js"></script>

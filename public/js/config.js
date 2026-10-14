@@ -5,4 +5,5 @@
 // switch to 'sheet' to show real rankings from the Google Sheet. Rankings are saved to the Sheet either way.
 // ADS_ENABLED: false archives all ads (no pop-up before ranking, no video gate before Analytics). Set true to switch them back on (js/ads.js).
 // ANALYTICS_ENABLED: false hides the Analytics tab and button (the page itself lives at /archive/analytics; /analytics redirects to /). true brings them back.
-window.MYBTO_CONFIG = { ADS_ENABLED: false, ANALYTICS_ENABLED: false, ANALYTICS_SOURCE: 'sample', SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyhsuuDNnbhm_tlYIl-3o69peyRSHudmwVuyH-j1QKF7gxCnjMYl8LgbjyavONK94lPew/exec' };
+// GA_ID: Google Analytics 4 measurement id (Firebase project mybto-ce84f, app "MyBTO web"); empty switches it off (js/ga.js).
+window.MYBTO_CONFIG = { GA_ID: 'G-9ZTH2V44EX', ADS_ENABLED: false, ANALYTICS_ENABLED: false, ANALYTICS_SOURCE: 'sample', SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyhsuuDNnbhm_tlYIl-3o69peyRSHudmwVuyH-j1QKF7gxCnjMYl8LgbjyavONK94lPew/exec' };

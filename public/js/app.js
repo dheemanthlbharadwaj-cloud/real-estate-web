@@ -238,6 +238,7 @@ function runRank() {
   renderResults();
   renderFloorGroups();
   saveRanking();
+  if (window.track) window.track('rank_units', { project: state.project.key, housing_type: selectedTypes().join(', '), units: state.ranked.length });
 }
 
 // Highest, middlemost and lowest storeys among the shown top units (SHOW_TOP), with every one of those units on them.
@@ -346,6 +347,7 @@ function persistFlags() {
   store.saveShortlist(state.project.key, state.flags);
 }
 function toggleFlag(id) {
+  if (window.track) window.track(state.flags.includes(id) ? 'shortlist_remove' : 'shortlist_add', { project: state.project.key });
   state.flags = state.flags.includes(id) ? state.flags.filter(x => x !== id) : [...state.flags, id];
   persistFlags();
 }
@@ -416,6 +418,7 @@ on('#btn-clear', 'click', () => {
 });
 on('#btn-share', 'click', async () => {
   const url = shortlistUrl();
+  if (window.track) window.track('share_shortlist', { project: state.project.key, units: state.flags.length });
   if (navigator.share) {
     try { await navigator.share({ title: `${state.project.name} shortlist`, text: `My shortlist for ${state.project.name}`, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
   }
@@ -811,6 +814,7 @@ function renderLegend() {
     <h3>${esc(c.title)}</h3>${legendFigure(c)}<p>${esc(c.text)}</p><p class="rule-txt">Source: <a href="https://homes.hdb.gov.sg" target="_blank" rel="noopener">HDB sales brochure</a>${c.rule === 'scale' ? ', measured with its scale bar' : ''}.</p></article>`).join('');
 }
 function openLegend(key) {
+  if (window.track) window.track('open_legend', { factor: String(key || '') });
   renderLegend();
   const d = $('#legend-drawer');
   if (!d) return;

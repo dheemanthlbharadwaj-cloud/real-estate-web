@@ -61,6 +61,9 @@ Images in `public/img/` are artist's impressions from HDB's June 2026 BTO brochu
 - `robots.txt` and `sitemap.xml` let search engines list the pages but not `/data/`. Steps to get into Google: [`docs/GOOGLE_INDEXING.md`](docs/GOOGLE_INDEXING.md).
 - Apps Script limits (project allowlist, per-user throttle, hourly ceilings) are in `apps-script/`; re-paste and publish a new version to apply them.
 
+## Visitor analytics
+Google Analytics 4 (`GA_ID` in `public/js/config.js`, loader `public/js/ga.js`, live site only) counts visits and the actions rank, shortlist add/remove, share, legend and coffee click. See analytics.google.com.
+
 ## Setup (one time)
 
 ### 1. Google Sheet and Apps Script
