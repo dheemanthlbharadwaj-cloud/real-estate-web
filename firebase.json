@@ -2,7 +2,7 @@
   "hosting": {
     "target": "site",
     "public": "public",
-    "cleanUrls": true,
+    "cleanUrls": false,
     "trailingSlash": false,
     "ignore": [
       "firebase.json",
@@ -10,6 +10,31 @@
       "**/node_modules/**"
     ],
     "redirects": [
+      {
+        "source": "/rank.html",
+        "destination": "/rank",
+        "type": 301
+      },
+      {
+        "source": "/shortlist.html",
+        "destination": "/shortlist",
+        "type": 301
+      },
+      {
+        "source": "/archive/analytics.html",
+        "destination": "/archive/analytics",
+        "type": 301
+      },
+      {
+        "source": "/archive/home.html",
+        "destination": "/archive/home",
+        "type": 301
+      },
+      {
+        "source": "/index.html",
+        "destination": "/",
+        "type": 301
+      },
       {
         "source": "/analysis",
         "destination": "/",
@@ -113,6 +138,24 @@
             "value": "public, max-age=604800, immutable"
           }
         ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/rank",
+        "destination": "/rank.html"
+      },
+      {
+        "source": "/shortlist",
+        "destination": "/shortlist.html"
+      },
+      {
+        "source": "/archive/analytics",
+        "destination": "/archive/analytics.html"
+      },
+      {
+        "source": "/archive/home",
+        "destination": "/archive/home.html"
       }
     ]
   }
