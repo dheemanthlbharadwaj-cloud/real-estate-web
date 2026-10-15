@@ -1,6 +1,6 @@
 ---
 name: mybto-ops
-description: Operate the MyBTO website (Singapore HDB BTO unit ranker, live at https://mybto.web.app, custom domain mybto.sg being connected) end to end. Use for ANY work on MyBTO - site pages and copy, unit data and the real-data pipeline, scoring, the Google Sheet and Apps Script backend, Firebase Hosting deploys, the mybto.sg domain and Vodien DNS, Google Analytics 4, Google AdSense, Search Console, SEO files, local dev servers and tests. Works for any agent with a shell (opencode, Claude Code, Codex).
+description: Operate the MyBTO website (Singapore HDB BTO unit ranker, live at https://mybto.sg since 2026-10-15; the old address mybto.web.app redirects there) end to end. Use for ANY work on MyBTO - site pages and copy, unit data and the real-data pipeline, scoring, the Google Sheet and Apps Script backend, Firebase Hosting deploys, the mybto.sg domain and Vodien DNS, Google Analytics 4, Google AdSense, Search Console, SEO files, local dev servers and tests. Works for any agent with a shell (opencode, Claude Code, Codex).
 ---
 
 # MyBTO operations manual
@@ -13,8 +13,7 @@ Read this file first. It is short on purpose. Open the files in `references/` wh
 - MyBTO ranks every sale unit of the HDB June 2026 BTO exercise (7 projects, 6,952 units) by the visitor's own importance weights, shows the top 100, and lets them shortlist and share units.
 - Owner: the user, based in Singapore. All unit data is real, read from the HDB brochures and an annotated board, and published for all 7 projects.
 - Static site in `public/` on Firebase Hosting (project `mybto-ce84f`, site `mybto`, Spark plan). No server code, no sign-in, no Cloud Functions.
-- Live address: https://mybto.web.app. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
-- Custom domain mybto.sg. Status: being connected on 2026-10-15; once live, mybto.sg is the primary address. Details in `references/hosting-domain-deploy.md`.
+- Live address: https://mybto.sg (custom domain, live since 2026-10-15). `www.mybto.sg` redirects to it. The old addresses (mybto.web.app, mybto.firebaseapp.com and the mybto-ce84f.* defaults) send pages to mybto.sg through `public/js/host.js`. Details in `references/hosting-domain-deploy.md`.
 - Rankings and shortlists go to a private Google Sheet through a Google Apps Script web app (`apps-script/`). The browser finds it via `SHEETS_URL` in `public/js/config.js`.
 - Google Analytics 4 (`G-9ZTH2V44EX`) and Google AdSense Auto ads (`ca-pub-6178711736030963`) load on the live host only.
 - Repo path in past sessions: `/home/user/real-estate-web`, branch `claude/jolly-meitner-llfg6y`. Node >= 20, Python 3 (plus `openpyxl` for one test).
@@ -48,8 +47,8 @@ python3 pipeline/build_pages.py               # regenerate pages after editing b
 npm test && CHROMIUM=/opt/pw-browsers/chromium node test/e2e.browser.js
 git add <files by name> && git commit
 npx firebase-tools deploy --only hosting:site --project mybto-ce84f --non-interactive
-curl -s -o /dev/null -w '%{http_code}\n' https://mybto.web.app/      # expect 200
-curl -s https://mybto.web.app/js/config.js | head -3                   # spot-check a changed file
+curl -s -o /dev/null -w '%{http_code}\n' https://mybto.sg/      # expect 200
+curl -s https://mybto.sg/js/config.js | head -3                   # spot-check a changed file
 ```
 - Needs `npx firebase-tools login` with an account that has access to `mybto-ce84f`.
 - Use the CLI. The Firebase MCP deploy tool once reported success without releasing anything.
@@ -70,8 +69,8 @@ curl -s https://mybto.web.app/js/config.js | head -3                   # spot-ch
 | Understand or update the tests | `references/testing.md` |
 
 ## Open items (2026-10-15)
-- Finish the mybto.sg switch: canonical, sitemap, robots, llms.txt, live-host checks in `ga.js` and `adsense.js`, redirect from mybto.web.app carrying localStorage. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
-- After the switch: add mybto.sg to Search Console (Domain property, DNS TXT at Vodien) and use Change of address; add mybto.sg as a site in AdSense.
+- The mybto.sg switch is done (live 2026-10-15). Owner to-dos: Search Console Domain property `mybto.sg` (DNS TXT at Vodien), submit `https://mybto.sg/sitemap.xml`, then Change of address from the old web.app property; AdSense: add mybto.sg as a site and request review; optional: update the GA4 web stream URL to https://mybto.sg. Steps in `docs/GOOGLE_INDEXING.md` and `references/seo-analytics-ads.md`.
+- `www.mybto.sg` certificate was still validating at switch time; it activates on its own. Check with the domain status call.
 - AdSense review requested 2026-10-14; ads show only after approval.
 - Ideas: an About or FAQ page. Analytics page stays archived (`ANALYTICS_ENABLED: false`, `ANALYTICS_SOURCE: 'sample'`).
 - Owner to clean up: the old Vercel project and the old Firebase project `sgrealestate-5fbd4` (anonymous auth). Do not touch them yourself.

@@ -5,4 +5,4 @@ Allow: /
 Disallow: /archive/
 Disallow: /shortlist
 
-Sitemap: https://mybto.web.app/sitemap.xml
+Sitemap: https://mybto.sg/sitemap.xml

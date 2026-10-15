@@ -295,7 +295,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await an.$$eval('.kpi-num', k => k.length === 3 && k.every(x => /\d/.test(x.textContent)))), 'Analytics has 3 KPI number tiles with numbers');
     check((await an.$$eval('.card canvas, .kpi canvas', c => c.length === 7 && c.every(x => x.width > 0))), 'Analytics renders 7 chart canvases (doughnut tile + 6 charts) from the sheet endpoint');
     check(await an.evaluate(() => !!window.Chart.registry.plugins.get('mybtoWatermark') && [...document.querySelectorAll('canvas')].every(c => Chart.getChart(c) && !Chart.getChart(c).options.events.length)), 'watermark plugin is registered and every chart is non-interactive');
-    check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::before').content.includes('mybto.web.app')))), 'every chart card carries the watermark');
+    check(await an.evaluate(() => [...document.querySelectorAll('.card')].every(c => c.querySelector('canvas') || (c.classList.contains('nocanvas') && getComputedStyle(c, '::before').content.includes('mybto.sg')))), 'every chart card carries the watermark');
     check(await an.evaluate(() => [...document.querySelectorAll('.card canvas, .kpi canvas')].every(c => {
       const ch = Chart.getChart(c), bx = ch.$wmBox, ca = ch.chartArea;
       if (ch.$wmCount !== 1 || !bx) return false;
@@ -363,7 +363,15 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     await p.goto(`${base}/rank?legend=${encodeURIComponent('"]x')}`);
     await p.waitForSelector('#legend-drawer.open');
     check(!(await p.evaluate(() => document.body.innerText)).includes("Couldn't load"), 'a bad ?legend= value opens the drawer without breaking the page');
-    for (const [f, re] of [['/privacy', /Google AdSense[\s\S]*aboutads\.info/], ['/ads.txt', /^google\.com, pub-6178711736030963, DIRECT, f08c47fec0942fa0/], ['/robots.txt', /^(?![\s\S]*Disallow: \/data\/)[\s\S]*Disallow: \/shortlist/], ['/sitemap.xml', /<loc>https:\/\/mybto\.web\.app\/<\/loc>/]]) {
+    { // Saved data carried over from mybto.web.app arrives in the URL fragment and is imported once (js/host.js)
+      const mc = await browser.newContext(); const mp = await mc.newPage();
+      const carried = { 'flags:berlayar-rise-7': JSON.stringify(['BR-201B-02-151']), 'mybto:uid': 'u0123456789abcdef01234567', 'evil': 'x' };
+      await mp.goto(`${base}/shortlist?project=berlayar-rise-7#mybto-migrate=${encodeURIComponent(JSON.stringify(carried))}`);
+      const got = await mp.evaluate(() => [localStorage.getItem('flags:berlayar-rise-7'), localStorage.getItem('mybto:uid'), localStorage.getItem('evil'), location.hash, location.search]);
+      check(got[0] === carried['flags:berlayar-rise-7'] && got[1] === carried['mybto:uid'] && got[2] === null && got[3] === '' && got[4] === '?project=berlayar-rise-7', 'shortlist and id carried from the old address are imported, unknown keys ignored, fragment removed');
+      await mc.close();
+    }
+    for (const [f, re] of [['/privacy', /Google AdSense[\s\S]*aboutads\.info/], ['/ads.txt', /^google\.com, pub-6178711736030963, DIRECT, f08c47fec0942fa0/], ['/robots.txt', /^(?![\s\S]*Disallow: \/data\/)[\s\S]*Disallow: \/shortlist/], ['/sitemap.xml', /<loc>https:\/\/mybto\.sg\/<\/loc>/]]) {
       const r = await fetch(`${base}${f}`);
       check(r.status === 200 && re.test(await r.text()), `${f} is served`);
     }

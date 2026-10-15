@@ -59,15 +59,13 @@ Old placeholders (rarely):
 See `backend-apps-script.md`. Always: identify rows, show the owner, the owner deletes after making a copy. Never write test rows.
 
 ## Check the mybto.sg domain status
-See `hosting-domain-deploy.md` (Hosting API call with a firebase-tools access token, `dig` against `ns1.vodien.com`, `curl -sI https://mybto.sg/`).
+See `hosting-domain-deploy.md` (Hosting API call with a firebase-tools access token, `dig` against `ns1.vodien.com`, `curl -sI https://mybto.sg/`). Expect `mybto.sg` HOST_ACTIVE and CERT_ACTIVE, and `www.mybto.sg` a redirect to `mybto.sg` (its certificate was CERT_VALIDATING at switch time and activates on its own).
 
-## Finish the domain switch (when Firebase shows mybto.sg as connected)
-<!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
-1. Commit the switch changes listed in `hosting-domain-deploy.md` (canonical, sitemap, robots, llms.txt, privacy text, live-host checks, watermark, `SAMPLE_URL`, `host.js` redirect with localStorage carry-over). Run both test suites.
-2. Deploy with approval. Check `https://mybto.sg/`, `https://www.mybto.sg/` (redirects), `https://mybto.web.app/` (hands over to mybto.sg with saved data).
-3. Owner pastes the new `Code.gs` (new `SAMPLE_URL`) only if `importSample()` will ever be used; it is not needed for normal running.
-4. Search Console: Domain property for mybto.sg (DNS TXT at Vodien), Change of address, submit the new sitemap. AdSense: add the site and request review.
-5. Replace every DOMAIN-SWITCH marker in this skill with the final facts, and update `AGENTS.md`, `README.md` and `docs/GOOGLE_INDEXING.md`.
+## After a deploy, check both addresses
+1. `curl -sI https://mybto.sg/ | head -1` gives 200, and `https://www.mybto.sg/` redirects to `https://mybto.sg/`.
+2. A browser visit to `https://mybto.web.app/shortlist` lands on `https://mybto.sg/shortlist` with the saved shortlist (host.js carries localStorage in `#mybto-migrate=`).
+3. Static files (`robots.txt`, `ads.txt`, `googled48848b9b3ea2809.html`) still load on both hosts without redirect.
+4. Apps Script `SAMPLE_URL` still points at mybto.web.app and keeps working. Update it only with the next re-paste of `Code.gs`.
 
 ## Hand over to the next agent
 - Make sure `SKILL.md` "Open items" is current, and add the day's decisions to `decisions-and-history.md`.

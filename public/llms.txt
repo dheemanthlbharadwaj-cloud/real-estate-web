@@ -9,4 +9,4 @@ Pick a project, a flat type, blocks and a storey range, then rate each factor fr
 All unit data is read from HDB's BTO sales brochures and site plans, measured with their scale bars.
 
 ## Pages
-- [Rank units](https://mybto.web.app/): the ranker (free, no sign-in)
+- [Rank units](https://mybto.sg/): the ranker (free, no sign-in)

@@ -504,11 +504,11 @@ async function openAnalytics() {
 
 // Dashboard colours come from the site tokens in site.css :root (checked with the dataviz validator).
 // Importance charts use pos/neg but never rely on colour: bars sit right/left of a zero line and carry signed labels.
-const WATERMARK = 'mybto.web.app';
+const WATERMARK = 'mybto.sg';
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const VIZ = { main: css('--accent-ink'), second: css('--accent'), pos: css('--pos'), neg: css('--neg'), neutral: css('--muted'),
   ink: css('--text'), mute: css('--text-2'), axis: css('--line-2') };
-// Draws one faint "mybto.web.app" per chart canvas, in the free space nearest the centre of the plot (not over bars, areas or
+// Draws one faint "mybto.sg" per chart canvas, in the free space nearest the centre of the plot (not over bars, areas or
 // value labels, and not in a corner), so removing it means cropping the chart itself. It survives screenshots and saved images.
 // The doughnut tile gets one copy in its hole. chart.$wmCount and chart.$wmBox are kept for the tests.
 function watermarkOccupied(chart) {

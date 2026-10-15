@@ -59,7 +59,7 @@ Useful query strings on the rank page: `?project=<key>` (choose project), `?rank
 ## Script order on generated pages
 Head: charset, viewport, theme-color, `google-adsense-account` meta, title, description, robots/SEO tags, icons, Google Fonts (Poppins, Inter), `site.css`, `app.css`.
 End of body: `config.js`, `ga.js`, `adsense.js`, `site.js`, then (not on plain pages) `scoring.js`, `legend.js`, `ads.js`, `app.js` (module). The archived Analytics page also loads Chart.js 4.4.1 from jsDelivr with SRI.
-<!-- DOMAIN-SWITCH: update when mybto.sg is primary --> (the switch adds `js/host.js` in the head of every generated page)
+`js/host.js` is loaded first in the head of every generated page (added by `pipeline/build_pages.py`). On mybto.web.app, mybto.firebaseapp.com, mybto-ce84f.web.app and mybto-ce84f.firebaseapp.com it does `location.replace` to the same path and query on https://mybto.sg, carrying the localStorage keys `project`, `mybto:uid`, `mybto:flagcount`, `flags:*` and `mybto:last:*` in the fragment `#mybto-migrate=<encoded JSON>` (never sent to a server). On mybto.sg it imports only keys the browser does not already have, ignores other keys, then removes the fragment with `history.replaceState`. Not carried: `mybto:lastrank:*` and `mybto:sent:*` (rebuilt on the next ranking). Static files have no host.js, so they load on the old hosts without redirect.
 
 ## Config switches (`public/js/config.js`)
 | Key | Value now | Effect |
@@ -74,7 +74,7 @@ End of body: `config.js`, `ga.js`, `adsense.js`, `site.js`, then (not on plain p
 A missing boolean key counts as false. `config.js` loads before every other script. With `DEV_FAKE_SHEETS=1`, `dev.js` replaces `config.js` with `{ SHEETS_URL: '/fake-sheets' }` only.
 
 ## Live-host checks
-`ga.js` and `adsense.js` load Google scripts only when `location.hostname` is the live host (`mybto.web.app` in the last commit). Local dev and tests never send analytics or load ads. <!-- DOMAIN-SWITCH: update when mybto.sg is primary --> (both checks change to `mybto.sg`)
+`ga.js` and `adsense.js` load Google scripts only when `location.hostname` is `mybto.sg`. Local dev, tests and the old hosts never send analytics or load ads (the old hosts redirect first).
 
 ## Browser storage
 localStorage (all reads and writes wrapped in try/catch):

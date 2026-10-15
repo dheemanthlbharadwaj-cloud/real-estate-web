@@ -14,6 +14,7 @@ HEAD = """<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
+  <script src="/js/host.js"></script>
   <meta name="google-adsense-account" content="ca-pub-6178711736030963">
   <title>{title} · MyBTO</title>
   <meta name="description" content="{desc}">{robots}{seo}
@@ -159,7 +160,7 @@ PAGES = {
         body="""
     <section class="tool"><div class="wrap prose">
       <h2>Who we are</h2>
-      <p>MyBTO (mybto.web.app) is a free, independent student project that ranks units in HDB BTO projects. It is not affiliated with HDB.</p>
+      <p>MyBTO (mybto.sg) is a free, independent student project that ranks units in HDB BTO projects. It is not affiliated with HDB.</p>
       <h2>What we collect</h2>
       <p>There are no accounts and we never ask for your name, email, NRIC or phone number.</p>
       <ul>
@@ -221,7 +222,7 @@ PAGES = {
 }
 
 
-SITE = "https://mybto.web.app"
+SITE = "https://mybto.sg"
 SEO = """
   <link rel="canonical" href="{site}/">
   <meta property="og:type" content="website">

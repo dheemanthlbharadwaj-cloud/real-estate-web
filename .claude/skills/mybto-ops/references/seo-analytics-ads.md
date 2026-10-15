@@ -1,28 +1,28 @@
 # SEO, analytics and ads
 
 ## Search Console
-- Property: URL prefix `https://mybto.web.app/`, verified on 2026-10-14 with the HTML file `public/googled48848b9b3ea2809.html`. NEVER delete or rename that file, or verification is lost. It is served directly because `firebase.json` has `cleanUrls: false`.
+- Old property: URL prefix `https://mybto.web.app/`, verified on 2026-10-14 with the HTML file `public/googled48848b9b3ea2809.html`. NEVER delete or rename that file, or verification is lost. It is served directly because `firebase.json` has `cleanUrls: false`.
 - Sitemap `sitemap.xml` submitted; the home page was indexed on 2026-10-14.
-- Owner-facing steps: `docs/GOOGLE_INDEXING.md` (still written for mybto.web.app).
-- After the switch to mybto.sg: <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
-  1. Add a **Domain** property `mybto.sg` in Search Console. Verify with the DNS TXT record Google gives (`google-site-verification=...`), added by the owner in the Vodien DNS zone next to the Firebase records. Do not remove `hosting-site=mybto`.
-  2. Keep the old mybto.web.app property and its file.
-  3. In the old property: Settings > Change of address > pick mybto.sg. This needs the old site to redirect to the new one.
-  4. Submit `https://mybto.sg/sitemap.xml` in the new property and request indexing of `https://mybto.sg/`.
-  5. Update `docs/GOOGLE_INDEXING.md`.
+- Owner-facing steps: `docs/GOOGLE_INDEXING.md` (Domain property and Change of address steps for mybto.sg, plus the web.app history).
+- mybto.sg is live (2026-10-15). Owner to-dos, in order (status unknown until the owner confirms):
+  1. Add a **Domain** property `mybto.sg` in Search Console. Verify with the DNS TXT record Google gives (`google-site-verification=...`), added by the owner at Vodien next to the Firebase records. Do not remove `hosting-site=mybto`.
+  2. Submit `https://mybto.sg/sitemap.xml` in the new property and request indexing of `https://mybto.sg/`.
+  3. In the old https://mybto.web.app/ property: Settings > Change of address > pick mybto.sg. Keep the old property and its verification file `googled48848b9b3ea2809.html` (served on web.app without redirect).
+  4. AdSense: Sites > add mybto.sg (same `ads.txt`, already served at https://mybto.sg/ads.txt) and request review. The site tag meta is on every page.
+  5. Google Analytics: optional, set the web stream URL to https://mybto.sg. Data keeps flowing either way.
 
 ## Crawling files
-- `public/robots.txt` (owner's call 2026-10-14): every crawler and AI search bot may crawl everything except `/archive/` and `/shortlist`. `/data/` must stay crawlable (the page needs it to render; Search Console showed "Couldn't load" when it was blocked). Sitemap line points at the live address. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
+- `public/robots.txt` (owner's call 2026-10-14): every crawler and AI search bot may crawl everything except `/archive/` and `/shortlist`. `/data/` must stay crawlable (the page needs it to render; Search Console showed "Couldn't load" when it was blocked). Sitemap line points at https://mybto.sg/sitemap.xml.
 - `/data/**` sends `X-Robots-Tag: noindex`, so the JSON never shows in results. The unit JSON must stay public for the ranker to work; the Sheet is private.
 - `public/sitemap.xml` lists `/` and `/privacy` with `lastmod`. Add new public pages here.
 - `public/llms.txt`: plain description of the site for AI search tools (projects, factors, 6,952 flats, data source, page links). Keep its facts in sync with the site.
-- `/` and `/rank` carry the canonical link, description, Open Graph and Twitter tags (image `img/og-mybto.jpg`) and JSON-LD `WebApplication`, all built from `SITE` and `SEO` in `pipeline/build_pages.py`. `SITE` was `https://mybto.web.app` in the last commit. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
+- `/` and `/rank` carry the canonical link, description, Open Graph and Twitter tags (image `img/og-mybto.jpg`) and JSON-LD `WebApplication`, all built from `SITE` and `SEO` in `pipeline/build_pages.py`. `SITE` is `https://mybto.sg`.
 - `/shortlist` and `/archive/analytics` have `<meta name="robots" content="noindex">`.
 - Title of the rank page: "Unofficial HDB BTO Flat Unit Ranker · MyBTO".
 
 ## Google Analytics 4
 - Measurement id `G-9ZTH2V44EX` (`GA_ID` in `public/js/config.js`), linked to the Firebase project `mybto-ce84f` and web app "MyBTO web". `npx firebase-tools apps:sdkconfig web 1:988755619847:web:f26d8cbb32088f29c6baa2 --project mybto-ce84f` shows it.
-- Loader `public/js/ga.js`: runs gtag only on the live host, so dev and tests never send data. `allow_google_signals: false`, `allow_ad_personalization_signals: false`. `window.track(name, params)` is always safe to call. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
+- Loader `public/js/ga.js`: runs gtag only when `location.hostname === 'mybto.sg'`, so dev, tests and the old hosts never send data. `allow_google_signals: false`, `allow_ad_personalization_signals: false`. `window.track(name, params)` is always safe to call.
 - Events:
 
 | Event | Params | Sent from |
@@ -40,7 +40,7 @@
 
 ## Google AdSense
 - Publisher `ca-pub-6178711736030963`. The account was first created through AdMob and upgraded for web on 2026-10-14. Site verified via `ads.txt`; review requested 2026-10-14. Ads show only after approval.
-- `ADSENSE_CLIENT` in `config.js`; loader `public/js/adsense.js` adds `adsbygoogle.js` only on the live host. Every generated page has `<meta name="google-adsense-account" content="ca-pub-6178711736030963">`. <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
+- `ADSENSE_CLIENT` in `config.js`; loader `public/js/adsense.js` adds `adsbygoogle.js` only when `location.hostname === 'mybto.sg'`. Every generated page has `<meta name="google-adsense-account" content="ca-pub-6178711736030963">`.
 - `public/ads.txt`: `google.com, pub-6178711736030963, DIRECT, f08c47fec0942fa0`.
 - Auto ads: Google decides placement. Settings the owner was given (AdSense > Ads > By site): Auto ads on, Banner (in-page) on, Multiplex off, Anchor on, Side rail on, Vignette off, Ad intents off, Auto optimize off.
 - CSP for ads: script, connect and frame-src allow *.googlesyndication.com, *.doubleclick.net, *.google.com, *.adtrafficquality.google, www.googletagservices.com (plus *.gstatic.com for scripts); img-src any https; style-src `'unsafe-inline'`; COOP `same-origin-allow-popups`. Blank ads usually mean a CSP violation: check the console and widen the list.

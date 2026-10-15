@@ -9,7 +9,7 @@ No passwords, tokens or card numbers are recorded here or anywhere in the repo. 
 | Google Analytics 4 property (`G-9ZTH2V44EX`) | Linked to `mybto-ce84f` | sataneko169@gmail.com has the IAM role `roles/firebase.analyticsViewer` on the project (view-only, owner's request 2026-10-14) |
 | Google Sheet "MyBTO user data" and its Apps Script | The owner's new Google account | Private. Only the owner can paste code and publish a new web app version |
 | Google AdSense `ca-pub-6178711736030963` | The owner (account created through AdMob) | Settings and payments only in the owner's login |
-| Google Search Console property `https://mybto.web.app/` | The owner | Verified by HTML file |
+| Google Search Console property `https://mybto.web.app/` (old; a Domain property `mybto.sg` is the owner to-do) | The owner | Verified by HTML file |
 | Domain mybto.sg at Vodien | The owner | Registrar and DNS host. Auto renew on, expires 15 Oct 2028 |
 | Buy Me a Coffee page https://buymeacoffee.com/mybto | The owner | |
 | Canva designs (legend pictures) | The owner | Never edit them. The legend webp files came from the owner's Canva legend |

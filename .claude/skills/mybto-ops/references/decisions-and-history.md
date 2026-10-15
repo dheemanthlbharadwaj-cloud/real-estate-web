@@ -49,7 +49,10 @@ Dated log of the decisions that shape the project, from `git log` and the owner'
 ## 2026-10-15: domain and handover
 - mybto.sg bought at Vodien (2 years, auto renew). DNS at Vodien: A 199.36.158.100, TXT `hosting-site=mybto`, CNAME `www` to `mybto.web.app`. Firebase custom domains `mybto.sg` (primary) and `www.mybto.sg` (redirect) added through the Hosting API; validation pending at writing time.
 - Skill restructured into `SKILL.md` + `references/`, `AGENTS.md` rewritten, `.opencode/skills/mybto-ops` symlinked so opencode, Claude Code and Codex share one skill.
-- <!-- DOMAIN-SWITCH: update when mybto.sg is primary --> Record here the date mybto.sg became primary and the redirect from mybto.web.app went live.
+- Later that day (about 16:40 UTC): the custom domain switch went LIVE. https://mybto.sg is the primary address. Firebase Hosting custom domains on site `mybto`: `mybto.sg` (HOST_ACTIVE, CERT_ACTIVE) and `www.mybto.sg` (Firebase redirect to `mybto.sg`; its certificate was still CERT_VALIDATING and activates on its own). Firebase first saw the old cached A record 103.9.103.5 for about 3 hours before validating.
+- Code changes in the switch: `SITE` in `pipeline/build_pages.py` is https://mybto.sg (canonical, Open Graph, Twitter, JSON-LD); `sitemap.xml`, the `robots.txt` Sitemap line and `llms.txt` use mybto.sg; privacy text, chart watermark text and CSS watermarks say mybto.sg; `ga.js` and `adsense.js` run only on `mybto.sg`; new `public/js/host.js` redirects the old hosts to mybto.sg and carries saved data (see `architecture.md`). Verified live in a browser: a shortlist saved on mybto.web.app appeared on mybto.sg/shortlist. The e2e test covers the migrate import and the sitemap address.
+- `apps-script/Code.gs` `SAMPLE_URL` was left on mybto.web.app on purpose (still works).
+- Owner to-dos after the switch: Search Console Domain property and Change of address, AdSense site, optional GA4 stream URL (see `seo-analytics-ads.md`).
 
 ## Standing owner preferences
 - Plain, human copy (humanizer style), short sentences, no marketing tone. No em dashes. No SVG.

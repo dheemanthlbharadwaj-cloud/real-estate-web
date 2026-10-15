@@ -3,7 +3,7 @@
 (function () {
   const id = (window.MYBTO_CONFIG || {}).GA_ID;
   window.dataLayer = window.dataLayer || [];
-  const live = id && location.hostname === 'mybto.web.app';
+  const live = id && location.hostname === 'mybto.sg';
   window.gtag = function () { if (live) window.dataLayer.push(arguments); };
   window.track = (name, params) => { try { window.gtag('event', name, params || {}); } catch { /* never break the page */ } };
   if (!live) return;

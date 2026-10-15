@@ -38,7 +38,7 @@ In `Code.gs`:
 - Hourly ceilings (`HOURLY_CEILING`): 2,000 rankings and 5,000 shortlist writes per clock hour across everyone.
 - Row caps: 200,000 rankings, 100,000 shortlists (last resort; archive rows if reached).
 - `LockService` around writes. Analytics reads only the columns up to `consent` and only the requested project.
-- `SAMPLE_URL` = `https://mybto.web.app/data/sample_submissions.json` (used only by `importSample()`). <!-- DOMAIN-SWITCH: update when mybto.sg is primary -->
+- `SAMPLE_URL` = `https://mybto.web.app/data/sample_submissions.json` (used only by `importSample()`). Still on the old address after the domain switch; it keeps working because Firebase serves the same files there. Update it to `https://mybto.sg/data/sample_submissions.json` with the next Apps Script re-paste (optional).
 
 ## Client side (`public/js/store.js`, `app.js`)
 - `saveRanking` sends the full order of all matching units after each Rank press. Before sending, `app.js` hashes the payload (without `consented_at`) and stores it in `mybto:sent:<project>`; an identical ranking (Rank pressed again with nothing changed, double tap) is not sent again.
