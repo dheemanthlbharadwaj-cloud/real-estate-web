@@ -70,7 +70,7 @@ curl -s https://mybto.sg/js/config.js | head -3                   # spot-check a
 
 ## Open items (2026-10-15)
 - The mybto.sg switch is done (live 2026-10-15). Owner to-dos: Search Console Domain property `mybto.sg` (DNS TXT at Vodien), submit `https://mybto.sg/sitemap.xml`, then Change of address from the old web.app property; AdSense: add mybto.sg as a site and request review; optional: update the GA4 web stream URL to https://mybto.sg. Steps in `docs/GOOGLE_INDEXING.md` and `references/seo-analytics-ads.md`.
-- `www.mybto.sg` certificate was still validating at switch time; it activates on its own. Check with the domain status call.
+- `www.mybto.sg` works: HTTPS certificate issued 2026-10-15 (about 18:38 UTC) and it 301-redirects to https://mybto.sg (same path).
 - AdSense review requested 2026-10-14; ads show only after approval.
 - Ideas: an About or FAQ page. Analytics page stays archived (`ANALYTICS_ENABLED: false`, `ANALYTICS_SOURCE: 'sample'`).
 - Owner to clean up: the old Vercel project and the old Firebase project `sgrealestate-5fbd4` (anonymous auth). Do not touch them yourself.

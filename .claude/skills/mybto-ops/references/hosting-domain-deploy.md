@@ -55,6 +55,7 @@ Status: LIVE since 2026-10-15 (deployed about 16:40 UTC). mybto.sg is the primar
 - Other Vodien default records (mail, ftp, cpanel, buynewlaunch and similar) were left untouched. Do not remove them without asking the owner.
 - Firebase custom domains on site `mybto` (added through the Hosting API on 2026-10-15): `mybto.sg` (primary, serves the site) and `www.mybto.sg` (redirects to `mybto.sg`).
 - Firebase state at the switch: `mybto.sg` HOST_ACTIVE and CERT_ACTIVE; `www.mybto.sg` redirect with its certificate still CERT_VALIDATING (activates on its own). TTL on the records is 14400. Firebase saw the old cached A record 103.9.103.5 (Vodien parking) for about 3 hours before validating.
+- 2026-10-15 18:38 UTC: `www.mybto.sg` certificate issued (CERT_PROPAGATING then CERT_ACTIVE); https://www.mybto.sg/<path> 301-redirects to https://mybto.sg/<path>. Both domains are fully live.
 
 ### What the switch changed (done, live 2026-10-15)
 - `SITE` in `pipeline/build_pages.py` is https://mybto.sg (canonical, Open Graph, Twitter, JSON-LD). `public/sitemap.xml`, the `robots.txt` Sitemap line and `llms.txt` use https://mybto.sg. Privacy text and chart and CSS watermarks say mybto.sg.
