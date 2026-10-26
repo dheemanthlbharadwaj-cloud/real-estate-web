@@ -371,7 +371,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
       check(got[0] === carried['flags:berlayar-rise-7'] && got[1] === carried['mybto:uid'] && got[2] === null && got[3] === '' && got[4] === '?project=berlayar-rise-7', 'shortlist and id carried from the old address are imported, unknown keys ignored, fragment removed');
       await mc.close();
     }
-    for (const [f, re] of [['/privacy', /Google AdSense[\s\S]*aboutads\.info/], ['/ads.txt', /^google\.com, pub-6178711736030963, DIRECT, f08c47fec0942fa0/], ['/robots.txt', /^(?![\s\S]*Disallow: \/data\/)[\s\S]*Disallow: \/shortlist/], ['/sitemap.xml', /<loc>https:\/\/mybto\.sg\/<\/loc>/]]) {
+    for (const [f, re] of [['/privacy', /Google AdSense[\s\S]*aboutads\.info/], ['/ads.txt', /^google\.com, pub-6178711736030963, DIRECT, f08c47fec0942fa0/], ['/robots.txt', /^(?![\s\S]*Disallow)[\s\S]*Allow: \/[\s\S]*Sitemap: https:\/\/mybto\.sg\/sitemap\.xml/], ['/sitemap.xml', /<loc>https:\/\/mybto\.sg\/<\/loc>/]]) {
       const r = await fetch(`${base}${f}`);
       check(r.status === 200 && re.test(await r.text()), `${f} is served`);
     }

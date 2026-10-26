@@ -1,8 +1,7 @@
-# Every search engine and AI search bot is welcome.
-# /data/ can be fetched (the page needs it to render) but is never listed in results (X-Robots-Tag: noindex).
+# Every search engine and AI search bot may crawl everything.
+# Pages that should not appear in results (shortlist, archive) carry <meta name="robots" content="noindex">,
+# and /data/ sends X-Robots-Tag: noindex. Google must be able to crawl a page to see its noindex.
 User-agent: *
 Allow: /
-Disallow: /archive/
-Disallow: /shortlist
 
 Sitemap: https://mybto.sg/sitemap.xml

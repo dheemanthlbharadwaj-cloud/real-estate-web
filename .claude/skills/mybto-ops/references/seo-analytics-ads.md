@@ -12,7 +12,7 @@
   5. Google Analytics: optional, set the web stream URL to https://mybto.sg. Data keeps flowing either way.
 
 ## Crawling files
-- `public/robots.txt` (owner's call 2026-10-14): every crawler and AI search bot may crawl everything except `/archive/` and `/shortlist`. `/data/` must stay crawlable (the page needs it to render; Search Console showed "Couldn't load" when it was blocked). Sitemap line points at https://mybto.sg/sitemap.xml.
+- `public/robots.txt` (owner's call 2026-10-26): `User-agent: *`, `Allow: /`, sitemap line, NO Disallow lines. Search Console flagged pages as blocked by robots.txt, so the old `/archive/` and `/shortlist` disallows were removed. Those pages stay out of results through `<meta name="robots" content="noindex">` (Google must be able to crawl a page to see noindex); `/data/**` sends `X-Robots-Tag: noindex`. Do not add Disallow lines back without the owner's say.
 - `/data/**` sends `X-Robots-Tag: noindex`, so the JSON never shows in results. The unit JSON must stay public for the ranker to work; the Sheet is private.
 - `public/sitemap.xml` lists `/` and `/privacy` with `lastmod`. Add new public pages here.
 - `public/llms.txt`: plain description of the site for AI search tools (projects, factors, 6,952 flats, data source, page links). Keep its facts in sync with the site.

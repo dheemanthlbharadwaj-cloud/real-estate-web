@@ -1,7 +1,7 @@
 # Getting mybto.sg into Google
 
 Google only lets the site owner request indexing, so these steps need your Google account (about 5 minutes).
-The site side is already done: `robots.txt` lets every crawler in except `/archive/` and `/shortlist` (`/data/` is crawlable but marked noindex),
+The site side is already done: `robots.txt` lets every crawler in everywhere (no Disallow); `/shortlist`, `/archive/` and `/data/` stay out of results through noindex,
 `sitemap.xml` lists https://mybto.sg/, and the home page has a canonical link, a description and social preview tags.
 
 The live address is https://mybto.sg (since 2026-10-15). The old address https://mybto.web.app redirects pages to it.

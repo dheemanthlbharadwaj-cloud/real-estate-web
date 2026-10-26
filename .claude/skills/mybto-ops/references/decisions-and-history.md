@@ -60,3 +60,4 @@ Dated log of the decisions that shape the project, from `git log` and the owner'
 - Keep the owner's exact words where given.
 - Update the skill in the same commit as any site or backend change.
 - Never edit Canva designs. Never publish secrets. Ask before destructive actions on the Sheet. Never delete the Search Console file.
+- 2026-10-26: robots.txt Disallow lines removed (owner: Search Console reported pages blocked by robots.txt). Everything crawlable; noindex keeps /shortlist and /archive/ out of results.
