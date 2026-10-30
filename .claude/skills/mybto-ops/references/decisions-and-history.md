@@ -54,6 +54,9 @@ Dated log of the decisions that shape the project, from `git log` and the owner'
 - `apps-script/Code.gs` `SAMPLE_URL` was left on mybto.web.app on purpose (still works).
 - Owner to-dos after the switch: Search Console Domain property and Change of address, AdSense site, optional GA4 stream URL (see `seo-analytics-ads.md`).
 
+## 2026-10-30: Measurements page
+- New public page `/measurements` with a "Measurements" header tab next to "Rank units". It shows the owner's annotated board images grouped by project (sun direction, distance from MRT for Berlayar Rise, facilities within 30 m, distance to opposite units, living room window direction) plus an "Other factors" group (floor level, corridor or corner, rubbish chute, roof access, near MRT, unit design). Each image links to the full WebP in a new tab. Images rendered fresh from the exported board PDF, 35 WebP files, about 3.4 MB total. Indexable, canonical set, in the sitemap and `llms.txt`. Credit line: images from HDB BTO sales brochures, © HDB, annotated by MyBTO.
+
 ## Standing owner preferences
 - Plain, human copy (humanizer style), short sentences, no marketing tone. No em dashes. No SVG.
 - No blue link-style words in analytics boxes. Footer: only the credit line and Privacy link.

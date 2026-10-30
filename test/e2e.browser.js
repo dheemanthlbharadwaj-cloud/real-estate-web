@@ -34,7 +34,7 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check(!(await p.$('#btn-csv')) && !(await p.$('#btn-save')) && !(await p.$('#queue')), 'no CSV, Save list or queue box on the page');
     check(!(await p.$('.site-header .nav')) && !(await p.$('.menu-btn')), 'header has no menu button');
     await p.waitForSelector('.site-header .tab');
-    check((await p.$$eval('.site-header .tab', t => t.map(x => x.textContent.trim()))).join() === 'Rank units' && !(await p.$('#tab-analytics')), 'Analytics is archived: the header has only the Rank units tab');
+    check((await p.$$eval('.site-header .tab', t => t.map(x => x.textContent.trim()))).join() === 'Rank units,Measurements' && !(await p.$('#tab-analytics')), 'Analytics is archived: the header has only the Rank units and Measurements tabs');
     check((await p.getAttribute('#tab-rank', 'aria-current')) === 'page', 'Rank units tab is marked active');
 
     // Ads are archived (ADS_ENABLED false in config.js): Rank shows results straight away, no pop-up.
@@ -378,12 +378,33 @@ const check = (cond, msg) => { if (!cond) { throw new Error(`FAIL: ${msg}`); } c
     check((await p.$$eval('svg', s => s.length)) === 0, 'no SVG on the page');
     const text = await p.evaluate(() => document.body.innerText);
     check(!text.includes('\u2014'), 'no em dashes on rank page');
-    for (const path of ['/', '/rank', '/shortlist', '/archive/analytics', '/archive/home', '/privacy']) {
+    for (const path of ['/', '/rank', '/shortlist', '/archive/analytics', '/archive/home', '/privacy', '/measurements']) {
       const r = await p.goto(`${base}${path}`);
       check(r.status() === 200, `${path} loads`);
       await p.waitForTimeout(300);
       check(!(await p.evaluate(() => document.body.innerText)).includes('\u2014'), `${path}: no em dashes`);
       check((await p.$$eval('svg', s => s.length)) === 0, `${path}: no SVG`);
+    }
+
+    // Measurements page: tab, every annotated image loads, plain link to the full image, indexable with canonical, no sideways scroll on a phone.
+    {
+      await p.goto(`${base}/measurements`);
+      check((await p.getAttribute('#tab-measurements', 'aria-current')) === 'page' && (await p.getAttribute('#tab-rank', 'aria-current')) === null, '/measurements: Measurements tab is current');
+      check((await p.getAttribute('link[rel=canonical]', 'href')) === 'https://mybto.sg/measurements' && !(await p.$('meta[name=robots]')), '/measurements: canonical set, indexable');
+      const n = await p.$$eval('.meas-fig img', imgs => imgs.length);
+      await p.evaluate(async () => { for (const i of document.querySelectorAll('.meas-fig img')) { i.loading = 'eager'; } await Promise.all([...document.querySelectorAll('.meas-fig img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))); });
+      const bad = await p.$$eval('.meas-fig img', imgs => imgs.filter(i => !(i.naturalWidth > 0) || !i.alt || !i.getAttribute('width') || i.closest('a')?.getAttribute('href') !== i.getAttribute('src')).map(i => i.src));
+      check(n >= 35 && bad.length === 0, `/measurements: all ${n} images load with alt, size and a full-size link (bad: ${bad.join(', ')})`);
+      check((await p.$$eval('.meas-proj h2', h => h.length)) === 8 && (await p.$$eval('.meas-jump a', a => a.length)) === 8, '/measurements: 7 projects plus other factors, with jump links');
+      const r = await fetch(`${base}/sitemap.xml`);
+      check(/<loc>https:\/\/mybto\.sg\/measurements<\/loc>/.test(await r.text()), 'sitemap lists /measurements');
+      const mp = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await mp.goto(`${base}/measurements`);
+      await mp.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await mp.waitForTimeout(300);
+      const ov = await mp.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      check(ov <= 0 && !!(await mp.$('#tab-measurements')), `phone: /measurements has the tab and does not scroll sideways (overflow ${ov}px)`);
+      await mp.close();
     }
 
     // Analytics switched back on (ANALYTICS_ENABLED true): the tab and the button return and point at /archive/analytics.

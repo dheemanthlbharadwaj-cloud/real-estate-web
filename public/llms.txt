@@ -10,3 +10,4 @@ All unit data is read from HDB's BTO sales brochures and site plans, measured wi
 
 ## Pages
 - [Rank units](https://mybto.sg/): the ranker (free, no sign-in)
+- [Measurements](https://mybto.sg/measurements): the annotated HDB site plans used to measure each factor, per project

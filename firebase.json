@@ -16,6 +16,11 @@
         "type": 301
       },
       {
+        "source": "/measurements.html",
+        "destination": "/measurements",
+        "type": 301
+      },
+      {
         "source": "/rank.html",
         "destination": "/rank",
         "type": 301
@@ -165,6 +170,10 @@
       {
         "source": "/privacy",
         "destination": "/privacy.html"
+      },
+      {
+        "source": "/measurements",
+        "destination": "/measurements.html"
       }
     ]
   }

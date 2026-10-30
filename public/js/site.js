@@ -10,6 +10,7 @@
       <a class="logo" href="/" aria-label="MyBTO home">${logo}</a>
       <nav class="tabs" aria-label="Main">
         <a class="tab" id="tab-rank" href="/?rank=1">Rank units</a>
+        <a class="tab" id="tab-measurements" href="/measurements">Measurements</a>
         ${analyticsOn ? '<a class="tab" id="tab-analytics" href="/archive/analytics"><span id="tab-analytics-name"></span> Analytics</a>' : ''}
       </nav>
     </div>`;
@@ -17,7 +18,7 @@
 
   // Active tab from the path; the Analytics tab follows the project last picked (localStorage `project`, written by app.js).
   const path = location.pathname.replace(/\/$/, '');
-  const active = ['', '/index', '/rank'].includes(path) ? 'rank' : path === '/archive/analytics' ? 'analytics' : '';
+  const active = ['', '/index', '/rank'].includes(path) ? 'rank' : path === '/archive/analytics' ? 'analytics' : ['/measurements', '/measurements.html'].includes(path) ? 'measurements' : '';
   if (active && header.querySelector(`#tab-${active}`)) header.querySelector(`#tab-${active}`).setAttribute('aria-current', 'page');
   let projects = [];
   const storedProject = () => { try { return JSON.parse(localStorage.getItem('project')); } catch { return null; } };

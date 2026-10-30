@@ -12,6 +12,7 @@ Read this file first. It is short on purpose. Open the files in `references/` wh
 ## What the project is
 - MyBTO ranks every sale unit of the HDB June 2026 BTO exercise (7 projects, 6,952 units) by the visitor's own importance weights, shows the top 100, and lets them shortlist and share units.
 - Owner: the user, based in Singapore. All unit data is real, read from the HDB brochures and an annotated board, and published for all 7 projects.
+- Public pages: the ranker (`/`), `/shortlist`, `/measurements` (annotated board images per project) and `/privacy`.
 - Static site in `public/` on Firebase Hosting (project `mybto-ce84f`, site `mybto`, Spark plan). No server code, no sign-in, no Cloud Functions.
 - Live address: https://mybto.sg (custom domain, live since 2026-10-15). `www.mybto.sg` redirects to it. The old addresses (mybto.web.app, mybto.firebaseapp.com and the mybto-ce84f.* defaults) send pages to mybto.sg through `public/js/host.js`. Details in `references/hosting-domain-deploy.md`.
 - Rankings and shortlists go to a private Google Sheet through a Google Apps Script web app (`apps-script/`). The browser finds it via `SHEETS_URL` in `public/js/config.js`.

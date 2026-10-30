@@ -1,4 +1,4 @@
-"""Generate the inner pages (rank, shortlist, analytics) from one shared shell.
+"""Generate the inner pages (rank, shortlist, privacy, measurements, analytics) from one shared shell.
 
 Analytics is archived: it is written to public/archive/analytics.html (see ANALYTICS_ENABLED in public/js/config.js).
 
@@ -222,14 +222,72 @@ PAGES = {
 }
 
 
+# Measurements page: annotated site plans from the owner's board (images in public/img/measurements/, rendered from the board PDF).
+MEAS_PROJECTS = [
+    ("sembawang-brook", "Sembawang Brook"), ("woodgrove-acres", "Woodgrove Acres"), ("berlayar-rise", "Berlayar Rise"),
+    ("kebun-baru-ridge", "Kebun Baru Ridge"), ("sembawang-portico", "Sembawang Portico"), ("lakeview-cascadia", "Lakeview Cascadia"),
+    ("kebun-baru-breeze", "Kebun Baru Breeze"),
+]
+MEAS_FACTORS = [
+    ("sun", "Sun direction", "The compass on the site plan shows which way each block faces (NE, SE, SW or NW)."),
+    ("mrt", "Distance from MRT (100 m)", "The red circle is 100 m around the MRT station. Units inside it count as near the MRT."),
+    ("facilities", "Facilities within 30 m", "Each coloured circle is 30 m around a numbered facility from the site plan legend. A unit inside a circle has that facility nearby."),
+    ("opposite", "Distance to opposite units (30 m)", "Each window has a 30 m semicircle. Green means no other unit within 30 m. Red means a unit is within 30 m."),
+    ("window", "Living room window direction", "Each arrow shows which way a unit's living room window faces. Colours by direction: NW magenta, NE blue, SW red, SE purple."),
+]
+MEAS_GENERAL = [
+    ("floor-level", "Floor level", "Floors are split into lower, middle and higher thirds of each block."),
+    ("corridor-corner", "Corridor or corner unit", "A corner unit sits at the end of its corridor. A corridor unit's door opens into the shared corridor."),
+    ("rubbish-chute", "Distance from rubbish chute", "The straight line distance from the unit's front door to the nearest refuse chute, measured with the floor plan scale bar."),
+    ("roof-access", "Access to roof", "Units on the storeys next to an accessible roof garden, from the notes on the floor plan."),
+    ("near-mrt", "Near MRT", "How far the unit's block is from the nearest MRT station, using the site plan scale bar."),
+    ("unit-design", "Unit design", "Flat types that come in more than one layout, such as 2-room Flexi Type 1 and Type 2."),
+]
+
+
+def _meas_fig(key, cap, note, alt):
+    from PIL import Image  # only to read width and height for the img tags
+    w, h = Image.open(PUBLIC / "img" / "measurements" / f"{key}.webp").size
+    src = f"/img/measurements/{key}.webp"
+    return (f'        <figure class="meas-fig"><a href="{src}" target="_blank" rel="noopener"><img src="{src}" width="{w}" height="{h}" loading="lazy" decoding="async" alt="{alt}"></a>'
+            f'<figcaption><b>{cap}</b> {note}</figcaption></figure>\n')
+
+
+def measurements_body():
+    jump = "".join(f'<a class="meas-chip" href="#{k}">{n}</a>' for k, n in MEAS_PROJECTS) + '<a class="meas-chip" href="#other-factors">Other factors</a>'
+    out = ['\n    <section class="tool"><div class="wrap meas">\n',
+           '      <p class="meas-intro">These are the annotated site plans used to measure each factor on MyBTO. The plans are from the HDB sales brochures, and distances are measured with their scale bars. Tap an image to open it full size.</p>\n',
+           f'      <nav class="meas-jump" aria-label="Projects">{jump}</nav>\n']
+    for k, n in MEAS_PROJECTS:
+        out.append(f'      <section class="meas-proj" id="{k}">\n        <h2>{n}</h2>\n        <div class="meas-grid">\n')
+        for f, cap, note in MEAS_FACTORS:
+            if (PUBLIC / "img" / "measurements" / f"{k}-{f}.webp").exists():
+                out.append(_meas_fig(f"{k}-{f}", cap, note, f"{n} site plan annotated for {cap.lower()}"))
+        out.append('        </div>\n      </section>\n')
+    out.append('      <section class="meas-proj" id="other-factors">\n        <h2>Other factors</h2>\n        <p class="small muted">These examples show how the factors that are not drawn per project are read from the floor plans.</p>\n        <div class="meas-grid">\n')
+    for f, cap, note in MEAS_GENERAL:
+        out.append(_meas_fig(f"general-{f}", cap, note, f"Example floor plan annotated for {cap.lower()}"))
+    out.append('        </div>\n      </section>\n')
+    out.append('      <p class="small muted meas-credit">Images from HDB BTO sales brochures, © Housing &amp; Development Board, annotated by MyBTO.</p>\n    </div></section>\n')
+    return "".join(out)
+
+
+PAGES["measurements"] = dict(
+    title="Measurements", img="garden-ridge.webp", kicker="", color="sky",
+    h1="Measurements", lede="",
+    desc="The annotated HDB site plans MyBTO uses to measure sun direction, MRT distance, nearby facilities, distance to opposite units and window direction for each BTO project.",
+    plain=True, seo=True, path="/measurements", body=measurements_body(),
+)
+
+
 SITE = "https://mybto.sg"
 SEO = """
-  <link rel="canonical" href="{site}/">
+  <link rel="canonical" href="{site}{path}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="MyBTO">
   <meta property="og:title" content="{title} · MyBTO">
   <meta property="og:description" content="{desc}">
-  <meta property="og:url" content="{site}/">
+  <meta property="og:url" content="{site}{path}">
   <meta property="og:image" content="{site}/img/og-mybto.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title} · MyBTO">
@@ -249,7 +307,7 @@ def main():
     for page, p in PAGES.items():
         kicker_html = f'        <span class="label">{p["kicker"]}</span>\n' if p["kicker"] else ""
         robots = '\n  <meta name="robots" content="noindex">' if p.get("robots") else ""
-        seo = SEO.format(site=SITE, title=p["title"], desc=p["desc"]) if p.get("seo") else ""
+        seo = SEO.format(site=SITE, path=p.get("path", "/"), title=p["title"], desc=p["desc"]) if p.get("seo") else ""
         lede_html = f'        <p>{p["lede"]}</p>\n' if p["lede"] else ""
         html = HEAD.format(page=page, kicker_html=kicker_html, robots=robots, seo=seo, lede_html=lede_html, **{k: p[k] for k in ("title", "desc", "img", "h1", "color")}) + p["body"] + (FOOT_PLAIN if p.get("plain") else FOOT.format(extra=p.get("extra", "")))
         (PUBLIC / p.get("out", f"{page}.html")).write_text(html)

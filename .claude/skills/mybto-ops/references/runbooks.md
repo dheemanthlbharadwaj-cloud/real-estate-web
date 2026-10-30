@@ -29,7 +29,13 @@ Every recipe ends the same way: run the tests, update this skill in the same com
 3. `public/sitemap.xml`: add the URL with today's `lastmod` if it should be indexed. Check `robots.txt`.
 4. Link it from where the owner wants (the footer stays one credit line plus Privacy unless the owner says otherwise).
 5. Add the path to the e2e loops that check no em dashes and no SVG, and a redirect check if you added one.
-6. Possible next page: About or FAQ (idea only, not agreed).
+6. A plain page with `seo=True` gets canonical and social tags; set `path="/name"` so the canonical is not `/`.
+7. Possible next page: About or FAQ (idea only, not agreed).
+
+## Update the Measurements page images
+1. Images live in `public/img/measurements/<project_key>-<factor>.webp` (factor: `sun`, `mrt` (Berlayar only), `facilities`, `opposite`, `window`) and `general-<name>.webp` (floor-level, corridor-corner, rubbish-chute, roof-access, near-mrt, unit-design).
+2. They are rendered from the owner's board exported as PDF (never edit the Canva design). Open the PDF only with a `python3 -I` script kept outside the repo: use `page.get_image_info()` for each panel's bbox, render with pymupdf at a zoom that gives about 1600 px on the long side, save with Pillow as WebP quality 80. 35 images were about 3.4 MB on 2026-10-30.
+3. Captions and notes are `MEAS_FACTORS` / `MEAS_GENERAL` in `pipeline/build_pages.py`; a figure is only written if its file exists. The script reads image sizes with Pillow, so `build_pages.py` needs Pillow installed. Run the script, then the browser test (it checks every image loads).
 
 ## Update the Apps Script backend
 1. Edit `apps-script/Code.gs` / `Analytics.js`. `npm test`. `python3 pipeline/build_pages.py`.
